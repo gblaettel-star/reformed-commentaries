@@ -57,10 +57,13 @@ sup{font-size:.7em;vertical-align:super}
 
 /* ── Mobile ── */
 @media(max-width:600px){
-  header{padding:.6rem .8rem;overflow:hidden}
+  header{padding:.5rem .6rem;gap:.4rem;overflow:hidden}
   header h1{display:none}
-  nav{flex:1}
-  #unit-select{max-width:none}
+  #home-btn{padding:.3rem .5rem;font-size:.8rem}
+  #home-btn .btn-text{display:none}
+  nav{flex:1;gap:.3rem}
+  nav button{padding:.3rem .6rem;font-size:.9rem;flex-shrink:0}
+  #unit-select{flex:1;width:0;min-width:0;max-width:none;font-size:.85rem}
   .row-sub{display:none}
 }
 </style>
@@ -69,7 +72,7 @@ sup{font-size:.7em;vertical-align:super}
 
 <header>
   <h1>Reformed Commentaries</h1>
-  <button id="home-btn" onclick="showHome()" style="display:none">&#8962; Books</button>
+  <button id="home-btn" onclick="showHome()" style="display:none">&#8962;<span class="btn-text"> Books</span></button>
   <nav id="reader-nav" style="display:none">
     <button onclick="navigate(-1)">&#8592;</button>
     <select id="unit-select" onchange="goTo(+this.value)"></select>
