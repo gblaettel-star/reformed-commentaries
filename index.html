@@ -160,7 +160,9 @@ function openBook(id) {
       currentKeys.forEach(k => {
         var o = document.createElement('option');
         o.value = k;
-        o.textContent = data[k].ref || data[k].subtitle || ('Unit ' + k);
+        var ref = data[k].ref || String(k);
+        var num = ref.match(/\d+/);
+        o.textContent = num ? num[0] : ref.substring(0, 5);
         sel.appendChild(o);
       });
       var saved = localStorage.getItem(id + '-pos');
