@@ -54,6 +54,9 @@ summary:hover{background:#22487a}
 .accent-box p:last-child{margin-bottom:0}
 footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-top:1px solid #2a4a6c;margin-top:2rem}
 sup{font-size:.7em;vertical-align:super}
+.verse-map{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
+.verse-chip{background:#112840;border:1px solid #2a4a6c;color:#c9a84c;font-size:.8rem;padding:.25rem .6rem;border-radius:20px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.verse-chip:hover{background:#1a3a5c;border-color:#c9a84c}
 
 /* ── Mobile ── */
 @media(max-width:600px){
@@ -201,11 +204,18 @@ function render(idx) {
     html += '<details open><summary>Overview</summary><div class="detail-body">' + intro + '</div></details>';
   }
 
-  // Verse by verse (Genesis/John/Matthew/Acts/Ecclesiastes/Ephesians/Proverbs style)
+  // Verse by verse
   if (ch.verseByVerse && ch.verseByVerse.length > 0) {
+    // Chip map
+    html += '<div class="verse-map">';
+    ch.verseByVerse.forEach((v, i) => {
+      html += '<a class="verse-chip" href="#vs' + i + '">' + v.ref + '</a>';
+    });
+    html += '</div>';
+    // Sections with anchors
     html += '<details open><summary>Verse by Verse</summary>';
-    ch.verseByVerse.forEach(v => {
-      html += '<div class="vbv-entry">';
+    ch.verseByVerse.forEach((v, i) => {
+      html += '<div class="vbv-entry" id="vs' + i + '">';
       html += '<div class="vbv-ref">' + v.ref + '</div>';
       if (v.quote) html += '<div class="vbv-quote">&ldquo;' + v.quote + '&rdquo;</div>';
       if (v.commentary) html += '<div class="vbv-commentary">' + v.commentary + '</div>';
