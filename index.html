@@ -57,6 +57,11 @@ sup{font-size:.7em;vertical-align:super}
 .verse-map{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
 .verse-chip{background:#112840;border:1px solid #2a4a6c;color:#c9a84c;font-size:.8rem;padding:.25rem .6rem;border-radius:20px;cursor:pointer;text-decoration:none;white-space:nowrap}
 .verse-chip:hover{background:#1a3a5c;border-color:#c9a84c}
+.section-chip{background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;font-size:.8rem;padding:.25rem .7rem;border-radius:4px;cursor:pointer;text-decoration:none;white-space:nowrap;font-weight:bold}
+.section-chip:hover{background:#c9a84c;color:#0d2137}
+.section-hd{background:#0a1e30;border-top:2px solid #c9a84c;padding:1rem 1rem .5rem}
+.section-hd-ref{color:#c9a84c;font-weight:bold;font-size:.95rem;letter-spacing:.04em;margin-bottom:.6rem}
+.section-hd-overview{color:#c4b49a;font-style:italic;line-height:1.8}
 
 /* ── Mobile ── */
 @media(max-width:600px){
@@ -236,16 +241,26 @@ function render(idx) {
     // Chip map
     html += '<div class="verse-map">';
     ch.verseByVerse.forEach((v, i) => {
-      html += '<a class="verse-chip" href="#vs' + i + '">' + v.ref + '</a>';
+      if (v.sectionBreak) {
+        html += '<a class="section-chip" href="#vs' + i + '">' + v.ref + '</a>';
+      } else {
+        html += '<a class="verse-chip" href="#vs' + i + '">' + v.ref + '</a>';
+      }
     });
     html += '</div>';
     // Sections with anchors
     html += '<details open><summary>' + (currentBook.testament === 'ST' ? 'Details' : 'Verse by Verse') + '</summary>';
     ch.verseByVerse.forEach((v, i) => {
-      html += '<div class="vbv-entry" id="vs' + i + '">';
-      html += '<div class="vbv-ref">' + v.ref + '</div>';
-      if (v.quote) html += '<div class="vbv-quote">&ldquo;' + v.quote + '&rdquo;</div>';
-      if (v.commentary) html += '<div class="vbv-commentary">' + v.commentary + '</div>';
+      if (v.sectionBreak) {
+        html += '<div class="vbv-entry section-hd" id="vs' + i + '">';
+        html += '<div class="section-hd-ref">' + v.ref + '</div>';
+        if (v.sectionOverview) html += '<div class="section-hd-overview">' + v.sectionOverview + '</div>';
+      } else {
+        html += '<div class="vbv-entry" id="vs' + i + '">';
+        html += '<div class="vbv-ref">' + v.ref + '</div>';
+        if (v.quote) html += '<div class="vbv-quote">&ldquo;' + v.quote + '&rdquo;</div>';
+        if (v.commentary) html += '<div class="vbv-commentary">' + v.commentary + '</div>';
+      }
       html += '</div>';
     });
     html += '</details>';
