@@ -304,7 +304,10 @@ if (lastBook && BOOKS.find(b => b.id === lastBook)) {
   showHome();
 }
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+  navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
+}
 </script>
 </body>
 </html>
