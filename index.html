@@ -180,8 +180,19 @@ function openBook(id) {
         var o = document.createElement('option');
         o.value = k;
         var ref = data[k].ref || String(k);
-        var num = ref.match(/\d+/);
-        o.textContent = num ? num[0] : ref.substring(0, 5);
+        if (currentBook.testament === 'ST') {
+          var title = data[k].title || '';
+          var rangeMatch = title.match(/(\d{2,4})[–—\-](\d{2,4})/);
+          if (rangeMatch) {
+            o.textContent = rangeMatch[1] + '–' + rangeMatch[2];
+          } else {
+            var yearMatch = title.match(/\d{3,4}/);
+            o.textContent = yearMatch ? yearMatch[0] : (ref.match(/\d+/) ? ref.match(/\d+/)[0] : ref.substring(0, 5));
+          }
+        } else {
+          var num = ref.match(/\d+/);
+          o.textContent = num ? num[0] : ref.substring(0, 5);
+        }
         sel.appendChild(o);
       });
       var saved = localStorage.getItem(id + '-pos');
@@ -229,7 +240,7 @@ function render(idx) {
     });
     html += '</div>';
     // Sections with anchors
-    html += '<details open><summary>Verse by Verse</summary>';
+    html += '<details open><summary>' + (currentBook.testament === 'ST' ? 'Details' : 'Verse by Verse') + '</summary>';
     ch.verseByVerse.forEach((v, i) => {
       html += '<div class="vbv-entry" id="vs' + i + '">';
       html += '<div class="vbv-ref">' + v.ref + '</div>';
