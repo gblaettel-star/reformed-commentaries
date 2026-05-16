@@ -105,6 +105,11 @@ const BOOKS = [
   { id:'acts',        title:'Acts',        subtitle:'The Unhindered Word',               testament:'NT', chapters:28 },
   { id:'ephesians',   title:'Ephesians',   subtitle:'Every Spiritual Blessing',          testament:'NT', chapters:6  },
   { id:'1john',       title:'1 John',      subtitle:'That You May Know',                 testament:'NT', chapters:5  },
+  // Studies
+  { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',       testament:'ST', chapters:8 },
+  { id:'biblical-counseling',   title:'Biblical Counseling',   subtitle:'Caring for Souls with the Word of God',            testament:'ST', chapters:6 },
+  { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',   testament:'ST', chapters:6 },
+  { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                      testament:'ST', chapters:8 },
 ];
 
 var currentBook = null;
@@ -126,11 +131,14 @@ function showHome() {
 function buildHome() {
   var ot = BOOKS.filter(b => b.testament === 'OT');
   var nt = BOOKS.filter(b => b.testament === 'NT');
+  var st = BOOKS.filter(b => b.testament === 'ST');
   var html = '';
   html += '<div class="testament-label">Old Testament</div>';
   html += ot.map(row).join('');
   html += '<div class="testament-label">New Testament</div>';
   html += nt.map(row).join('');
+  html += '<div class="testament-label">Studies</div>';
+  html += st.map(row).join('');
   document.getElementById('book-list').innerHTML = html;
 }
 
