@@ -250,10 +250,14 @@ function render(idx) {
     // Verse entries are buffered and flushed into a <details> per section.
     var vbvLabel = currentBook.testament === 'ST' ? 'Details' : 'Verse by Verse';
     var verseBuffer = [];
+    var curTheology = '';
+    var curExamples = '';
     function flushVerses() {
       if (!verseBuffer.length) return;
       html += '<details open><summary>' + vbvLabel + '</summary>' + verseBuffer.join('') + '</details>';
       verseBuffer = [];
+      if (curTheology) { html += '<details><summary>Theology</summary><div class="accent-box">' + curTheology + '</div></details>'; curTheology = ''; }
+      if (curExamples) { html += '<details><summary>Then &amp; Now</summary><div class="accent-box">' + curExamples + '</div></details>'; curExamples = ''; }
     }
     ch.verseByVerse.forEach((v, i) => {
       if (v.sectionBreak) {
@@ -262,6 +266,8 @@ function render(idx) {
         html += '<div class="section-hd-ref">' + v.ref + '</div>';
         if (v.sectionOverview) html += '<div class="section-hd-overview">' + v.sectionOverview + '</div>';
         html += '</div>';
+        curTheology = v.theology || '';
+        curExamples = v.examples || '';
       } else {
         var entry = '<div class="vbv-entry" id="vs' + i + '">';
         entry += '<div class="vbv-ref">' + v.ref + '</div>';
