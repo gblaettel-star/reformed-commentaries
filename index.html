@@ -115,16 +115,6 @@ const BOOKS = [
   { id:'1corinthians', title:'1 Corinthians', subtitle:'The Cross at the Centre',          testament:'NT', chapters:16 },
   { id:'hebrews',      title:'Hebrews',      subtitle:'Jesus Is Better',                   testament:'NT', chapters:13 },
   { id:'1john',        title:'1 John',        subtitle:'That You May Know',                testament:'NT', chapters:5  },
-  // General Studies
-  { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',    testament:'SG', chapters:6 },
-  { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                       testament:'SG', chapters:8 },
-  { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',         testament:'SG', chapters:8 },
-  { id:'covenant-theology',     title:'Covenant Theology',     subtitle:'The Backbone of Reformed Biblical Theology',        testament:'SG', chapters:6 },
-  { id:'end-times',             title:'End Times Models',      subtitle:'Amillennialism, Premillennialism, Postmillennialism',testament:'SG', chapters:5 },
-  { id:'dispensational-distinctives', title:'Dispensational Distinctives', subtitle:'A Biblical Guide to the Dispensational Framework', testament:'SG', chapters:6 },
-  { id:'denominations',         title:'Denominations',         subtitle:'The Major Christian Traditions and Their Distinctives',testament:'SG', chapters:9 },
-  { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',       testament:'SG', chapters:6 },
-  { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',            testament:'SG', chapters:6 },
   // Christian Living Studies
   { id:'biblical-counseling',   title:'Biblical Counseling',   subtitle:'Caring for Souls with the Word of God',              testament:'SL', chapters:6 },
   { id:'counseling-hard-cases', title:'Hard Cases',            subtitle:'Pastoral Care in Difficult Counseling Situations',    testament:'SL', chapters:9 },
@@ -136,6 +126,16 @@ const BOOKS = [
   { id:'christian-marriage',    title:'Christian Marriage',    subtitle:'Covenant Love and the Gospel',                        testament:'SL', chapters:6 },
   { id:'christian-parenting',   title:'Christian Parenting',   subtitle:'Training Up Children in the Fear of the Lord',        testament:'SL', chapters:6 },
   { id:'christian-suffering',   title:'Christian Suffering',   subtitle:'Held Fast Through the Fire',                         testament:'SL', chapters:6 },
+  { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',        testament:'SL', chapters:6 },
+  { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', chapters:6 },
+  // General Studies
+  { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',      testament:'SG', chapters:6 },
+  { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                         testament:'SG', chapters:8 },
+  { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',           testament:'SG', chapters:8 },
+  { id:'covenant-theology',     title:'Covenant Theology',     subtitle:'The Backbone of Reformed Biblical Theology',          testament:'SG', chapters:6 },
+  { id:'end-times',             title:'End Times Models',      subtitle:'Amillennialism, Premillennialism, Postmillennialism',  testament:'SG', chapters:5 },
+  { id:'dispensational-distinctives', title:'Dispensational Distinctives', subtitle:'A Biblical Guide to the Dispensational Framework', testament:'SG', chapters:6 },
+  { id:'denominations',         title:'Denominations',         subtitle:'The Major Christian Traditions and Their Distinctives',testament:'SG', chapters:9 },
 ];
 
 var currentBook = null;
@@ -164,10 +164,10 @@ function buildHome() {
   html += ot.map(row).join('');
   html += '<div class="testament-label">New Testament</div>';
   html += nt.map(row).join('');
-  html += '<div class="testament-label">General Studies</div>';
-  html += sg.map(row).join('');
   html += '<div class="testament-label">Christian Living Studies</div>';
   html += sl.map(row).join('');
+  html += '<div class="testament-label">General Studies</div>';
+  html += sg.map(row).join('');
   document.getElementById('book-list').innerHTML = html;
 }
 
