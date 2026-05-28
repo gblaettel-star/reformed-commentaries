@@ -65,11 +65,6 @@ sup{font-size:.7em;vertical-align:super}
 .section-hd-overview p{margin-bottom:.85rem}
 .section-hd-overview p:last-child{margin-bottom:0}
 
-/* ── TTS button (remove block to disable listen feature) ── */
-#tts-btn{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.35rem .7rem;border-radius:4px;cursor:pointer;font-size:.85rem;flex-shrink:0;min-width:2.2rem}
-#tts-btn:hover{background:#c9a84c;color:#0d2137}
-#tts-btn.tts-playing{background:#c9a84c;color:#0d2137}
-
 /* ── Mobile ── */
 @media(max-width:600px){
   header{padding:.5rem .6rem;gap:.4rem;overflow:hidden}
@@ -92,8 +87,6 @@ sup{font-size:.7em;vertical-align:super}
     <button onclick="navigate(-1)">&#8592;</button>
     <select id="unit-select" onchange="goTo(+this.value)"></select>
     <button onclick="navigate(1)">&#8594;</button>
-    <!-- TTS: remove this button to disable listen feature -->
-    <button id="tts-btn" onclick="ttsToggle()" title="Listen" style="display:none">&#9654;</button>
   </nav>
 </header>
 
@@ -359,107 +352,6 @@ function render(idx) {
 
 function goTo(k)         { ttsStop(); render(currentKeys.indexOf(+k)); }
 function navigate(dir)   { ttsStop(); render(currentIdx + dir); }
-
-// ── TTS (Listen feature) ─────────────────────────────────────────────────
-// To remove: delete this block + the #tts-btn button + #tts-btn CSS above.
-
-(function() {
-  var synth = window.speechSynthesis;
-  if (!synth) return; // browser doesn't support — button stays hidden
-
-  var btn = document.getElementById('tts-btn');
-  btn.style.display = '';   // show button now we know synth is available
-
-  var playing = false;
-
-  // Strip HTML tags and decode entities, return plain readable text
-  function extractText() {
-    var el = document.getElementById('content');
-    if (!el) return '';
-    // Clone so we don't disturb the DOM
-    var clone = el.cloneNode(true);
-    // Remove <summary> elements (accordion labels) — they repeat section names
-    clone.querySelectorAll('summary').forEach(function(s){ s.remove(); });
-    var raw = clone.textContent || clone.innerText || '';
-    // Collapse whitespace
-    return raw.replace(/\s+/g, ' ').trim();
-  }
-
-  // Pick the best available voice for English
-  function bestVoice() {
-    var voices = synth.getVoices();
-    if (!voices.length) return null;
-    // Priority list — Neural / natural voices on Apple & Google platforms
-    var preferred = [
-      'Samantha', 'Daniel', 'Karen', 'Moira', 'Rishi',  // macOS/iOS EN
-      'Google UK English Female', 'Google US English',    // Chrome desktop
-      'Microsoft Aria Online', 'Microsoft Jenny Online',  // Edge neural
-    ];
-    for (var i = 0; i < preferred.length; i++) {
-      var v = voices.find(function(v){ return v.name.indexOf(preferred[i]) === 0; });
-      if (v) return v;
-    }
-    // Fallback: first English voice
-    return voices.find(function(v){ return v.lang.startsWith('en'); }) || voices[0];
-  }
-
-  function ttsStart() {
-    synth.cancel();
-    var text = extractText();
-    if (!text) return;
-
-    // Split into sentences to avoid the ~32KB utterance limit some browsers have
-    var sentences = text.match(/[^.!?]+[.!?]*/g) || [text];
-    var chunks = [];
-    var chunk = '';
-    sentences.forEach(function(s) {
-      if ((chunk + s).length > 180) { chunks.push(chunk.trim()); chunk = s; }
-      else chunk += s;
-    });
-    if (chunk.trim()) chunks.push(chunk.trim());
-
-    var idx = 0;
-    function speakNext() {
-      if (idx >= chunks.length || !playing) { ttsStop(); return; }
-      var utt = new SpeechSynthesisUtterance(chunks[idx++]);
-      utt.rate  = 0.92;
-      utt.pitch = 1.0;
-      var v = bestVoice();
-      if (v) utt.voice = v;
-      utt.onend = speakNext;
-      utt.onerror = function(e) { if (e.error !== 'interrupted') ttsStop(); };
-      synth.speak(utt);
-    }
-
-    // Voices may load asynchronously on first call
-    if (synth.getVoices().length) {
-      speakNext();
-    } else {
-      synth.onvoiceschanged = function() { synth.onvoiceschanged = null; speakNext(); };
-    }
-  }
-
-  window.ttsStop = function() {
-    playing = false;
-    synth.cancel();
-    btn.textContent = '▶';     // ▶
-    btn.classList.remove('tts-playing');
-    btn.title = 'Listen';
-  };
-
-  window.ttsToggle = function() {
-    if (playing) {
-      ttsStop();
-    } else {
-      playing = true;
-      btn.textContent = '⏹';   // ⏹
-      btn.classList.add('tts-playing');
-      btn.title = 'Stop';
-      ttsStart();
-    }
-  };
-})();
-// ── End TTS ───────────────────────────────────────────────────────────────
 
 // ── Init ─────────────────────────────────────────────────────────────────
 buildHome();
