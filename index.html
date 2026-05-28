@@ -160,7 +160,6 @@ var currentIdx  = 0;
 // ── Home ─────────────────────────────────────────────────────────────────
 
 function showHome() {
-  ttsStop();
   document.getElementById('home-screen').style.display = '';
   document.getElementById('reader-screen').style.display = 'none';
   document.getElementById('home-btn').style.display = 'none';
@@ -350,8 +349,8 @@ function render(idx) {
   window.scrollTo(0,0);
 }
 
-function goTo(k)         { ttsStop(); render(currentKeys.indexOf(+k)); }
-function navigate(dir)   { ttsStop(); render(currentIdx + dir); }
+function goTo(k)         { render(currentKeys.indexOf(+k)); }
+function navigate(dir)   { render(currentIdx + dir); }
 
 // ── Init ─────────────────────────────────────────────────────────────────
 buildHome();
