@@ -10,20 +10,15 @@
 body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
 
 /* ── Header ── */
-header{background:#1a3a5c;padding:.5rem 1rem .4rem;display:flex;flex-direction:column;gap:.3rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
-#header-top{display:flex;align-items:center;gap:.6rem;min-height:2.75rem}
-header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.05em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#chapter-title-bar{font-size:.78rem;color:#a09070;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
-#home-btn{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.45rem .9rem;border-radius:6px;cursor:pointer;font-size:.9rem;white-space:nowrap;flex-shrink:0;min-height:2.75rem;touch-action:manipulation}
-#home-btn:hover{background:#c9a84c;color:#0d2137}
+header{background:#1a3a5c;padding:.5rem 1rem .5rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;text-align:center;cursor:pointer;padding:.3rem 0;touch-action:manipulation;user-select:none}
+header h1:hover{opacity:.8}
 nav{display:flex;align-items:stretch;gap:.4rem}
 nav button{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:1.1rem;flex-shrink:0;min-height:2.75rem;min-width:3rem;touch-action:manipulation}
 nav button:hover{background:#c9a84c;color:#0d2137}
 nav button:disabled{opacity:.3;cursor:default}
 nav button:disabled:hover{background:none;color:#c9a84c}
 #unit-select{background:#0d2137;color:#c9a84c;border:1px solid #c9a84c;padding:.4rem .6rem;border-radius:6px;font-size:.95rem;flex:1;min-width:0;min-height:2.75rem}
-#progress-bar{height:3px;background:#2a4a6c}
-#progress-fill{height:100%;background:#c9a84c;transition:width .25s ease;width:0}
 
 /* ── Home screen ── */
 #home-screen{max-width:640px;margin:0 auto;padding:0}
@@ -73,7 +68,7 @@ sup{font-size:.7em;vertical-align:super}
 
 /* ── Mobile ── */
 @media(max-width:640px){
-  header{padding:.4rem .75rem .35rem}
+  header{padding:.4rem .75rem .4rem}
   nav button{min-width:2.75rem;padding:.4rem .7rem}
   #unit-select{font-size:.85rem}
   .row-sub{display:none}
@@ -84,7 +79,6 @@ sup{font-size:.7em;vertical-align:super}
 @media(max-width:380px){
   header h1{font-size:1rem}
   nav button{min-width:2.5rem;padding:.4rem .5rem;font-size:1rem}
-  #home-btn{padding:.4rem .55rem;font-size:.82rem}
   #unit-select{font-size:.8rem}
 }
 </style>
@@ -92,17 +86,12 @@ sup{font-size:.7em;vertical-align:super}
 <body>
 
 <header>
-  <div id="header-top">
-    <h1>Reformed Commentaries</h1>
-    <button id="home-btn" onclick="showHome()" style="display:none">&#8962; Books</button>
-  </div>
+  <h1 onclick="showHome()">Reformed Commentaries</h1>
   <nav id="reader-nav" style="display:none">
     <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
     <select id="unit-select" onchange="goTo(+this.value)"></select>
     <button id="next-btn" onclick="navigate(1)">&#8594;</button>
   </nav>
-  <div id="chapter-title-bar"></div>
-  <div id="progress-bar" style="display:none"><div id="progress-fill"></div></div>
 </header>
 
 <div id="home-screen">
@@ -184,10 +173,7 @@ var currentIdx  = 0;
 function showHome() {
   document.getElementById('home-screen').style.display = '';
   document.getElementById('reader-screen').style.display = 'none';
-  document.getElementById('home-btn').style.display = 'none';
   document.getElementById('reader-nav').style.display = 'none';
-  document.getElementById('chapter-title-bar').style.display = 'none';
-  document.getElementById('progress-bar').style.display = 'none';
   document.title = 'Reformed Commentaries';
   window.scrollTo(0,0);
 }
@@ -224,9 +210,7 @@ function openBook(id) {
   localStorage.setItem('last-book', id);
   document.getElementById('home-screen').style.display = 'none';
   document.getElementById('reader-screen').style.display = 'block';
-  document.getElementById('home-btn').style.display = 'block';
   document.getElementById('reader-nav').style.display = 'flex';
-  document.getElementById('progress-bar').style.display = 'block';
   document.title = currentBook.title;
   document.getElementById('content').innerHTML = '<p style="padding:2rem;color:#a09070;text-align:center">Loading&hellip;</p>';
 
@@ -279,14 +263,6 @@ function render(idx) {
   var ch = currentData[k];
   document.getElementById('unit-select').value = k;
   localStorage.setItem(currentBook.id + '-pos', k);
-  var titleBar = document.getElementById('chapter-title-bar');
-  var barText = ch.title || ch.subtitle || '';
-  if (barText) {
-    titleBar.textContent = barText;
-    titleBar.style.display = 'block';
-  } else {
-    titleBar.style.display = 'none';
-  }
 
   var html = '';
 
@@ -386,10 +362,6 @@ function render(idx) {
   }
 
   document.getElementById('content').innerHTML = html;
-
-  // Progress bar
-  var pct = currentKeys.length > 1 ? (idx / (currentKeys.length - 1)) * 100 : 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
 
   // Prev/next button state
   document.getElementById('prev-btn').disabled = (idx === 0 && !prevBook());
