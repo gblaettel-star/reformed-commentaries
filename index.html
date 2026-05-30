@@ -199,6 +199,12 @@ function buildHome() {
   html += sl.map(row).join('');
   html += '<div class="testament-label">General Studies</div>';
   html += sg.map(row).join('');
+  html += '<div class="testament-label">Reference</div>';
+  html += '<div class="book-row" onclick="window.location.href=\'dictionary.html\'">'
+    + '<div class="row-name">Theological Dictionary</div>'
+    + '<div class="row-sub">Key words of the faith — explained and felt</div>'
+    + '<div class="row-arrow">&#8250;</div>'
+    + '</div>';
   html += '<div class="about-section">'
     + '<div class="about-title">About Soli Deo Gloria</div>'
     + '<div class="about-body">'

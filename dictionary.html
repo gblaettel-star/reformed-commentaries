@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theological Dictionary — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;gap:.8rem}
+.back-btn{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:1.1rem;min-height:2.75rem;touch-action:manipulation;flex-shrink:0}
+.back-btn:hover{background:#c9a84c;color:#0d2137}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* A-Z jump bar */
+.az-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.75rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.az-link{color:#c9a84c;font-size:.8rem;padding:.2rem .45rem;border:1px solid #2a4a6c;border-radius:4px;text-decoration:none;cursor:pointer}
+.az-link:hover{background:#1a3a5c;border-color:#c9a84c}
+
+main{padding:1.5rem 2rem;max-width:760px;margin:0 auto}
+
+/* Letter heading */
+.letter-head{color:#c9a84c;font-size:1.3rem;font-weight:bold;letter-spacing:.12em;border-bottom:2px solid #c9a84c;padding-bottom:.4rem;margin:2rem 0 1.2rem}
+
+/* Term card */
+.term-card{margin-bottom:2rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+.term-header{background:#1a3a5c;padding:.85rem 1.2rem}
+.term-name{color:#c9a84c;font-size:1.2rem;font-weight:bold;letter-spacing:.04em}
+.term-anchor-word{color:#7090b0;font-size:.8rem;font-style:italic;margin-top:.2rem}
+.term-body{padding:1.2rem 1.4rem;line-height:1.85}
+.term-body p{margin-bottom:.9rem}
+.term-body p:last-child{margin-bottom:0}
+
+/* Key verses block */
+.key-verses-label{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;margin:1.2rem 0 .6rem;border-top:1px solid #2a4a6c;padding-top:1rem}
+.verse-entry{margin-bottom:1rem}
+.verse-ref{color:#c9a84c;font-weight:bold;font-size:.9rem;margin-bottom:.25rem}
+.verse-text{font-style:italic;color:#d4c4a8;line-height:1.75;margin-bottom:.35rem}
+.verse-note{color:#e8dcc8;line-height:1.75;font-size:.92rem}
+
+/* Why this matters */
+.wtm-box{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;margin-top:1.2rem;border-radius:0 4px 4px 0}
+.wtm-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.wtm-text{line-height:1.8;font-style:italic}
+
+footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-top:1px solid #2a4a6c;margin-top:2rem}
+
+@media(max-width:640px){
+  main{padding:1rem}
+  .term-body{padding:1rem}
+  .term-header{padding:.75rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <button class="back-btn" onclick="window.location.href='index.html'">&#8592;</button>
+    <h1>Theological Dictionary</h1>
+  </div>
+  <h2>Key Words of the Faith — Explained and Felt</h2>
+</header>
+
+<div class="az-bar" id="az-bar"></div>
+
+<main id="dict-main"></main>
+
+<footer>Soli Deo Gloria &mdash; To God Alone Be Glory<br>
+<span style="font-size:.78rem">Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</span>
+</footer>
+
+<script>
+const TERMS = [
+
+  {
+    letter: 'F',
+    name: 'Faith',
+    anchor: 'faith',
+    anchorWord: 'pistis (Greek) — trust, reliance, conviction',
+    body: `<p>Faith is not a leap in the dark. It is not the triumph of feeling over reason, nor the desperate hope of a man who can find no better option. Faith, in the biblical sense, is the soul's wholehearted embrace of God as He has revealed Himself — Father, Son, and Holy Spirit — resting the whole weight of its eternal existence upon what He has said and done.</p>
+<p>The great Reformers rightly identified faith as having three inseparable elements: <em>notitia</em> (knowledge of the gospel), <em>assensus</em> (assent that it is true), and <em>fiducia</em> (personal trust — the decisive act of throwing oneself upon Christ alone). Many people possess the first two and perish in the third. The demons know and tremble (James 2:19). Saving faith goes further: it casts itself helplessly and joyfully upon the mercy of God in Jesus Christ.</p>
+<p>This is why faith and works are not competitors. True faith, rooted in the grace of God, always produces a changed life — not as the ground of justification, but as its inevitable fruit. A faith that never transforms is not the faith the New Testament describes. It is a corpse wearing Sunday clothes.</p>`,
+    verses: [
+      {
+        ref: 'Hebrews 11:1',
+        text: 'Now faith is the assurance of things hoped for, the conviction of things not seen.',
+        note: 'This is not wishful thinking but solid ground — "assurance" and "conviction" are courtroom words, the language of settled certainty. Faith holds the unseen as firmly as the hand holds what it can touch.'
+      },
+      {
+        ref: 'Romans 10:17',
+        text: 'So faith comes from hearing, and hearing through the word of Christ.',
+        note: 'Faith is not manufactured by willpower or stirred up by emotion alone. It comes — it arrives — through the preached Word. This is why the pulpit matters so much. God has ordained that faith be born in hearing.'
+      },
+      {
+        ref: 'Galatians 2:20',
+        text: 'I have been crucified with Christ. It is no longer I who live, but Christ who lives in me. And the life I now live in the flesh I live by faith in the Son of God, who loved me and gave himself for me.',
+        note: 'Faith is not an occasional posture but the very air the Christian breathes. Every day, in every circumstance, the believer lives <em>by faith</em> — leaning on Christ, drawing from Christ, sustained by Christ.'
+      }
+    ],
+    wtm: 'Faith is the hand that receives the gift. God does all the giving; faith does all the receiving. It is the very opposite of pride — to believe is to admit that you cannot save yourself and that He can.'
+  },
+
+  {
+    letter: 'F',
+    name: 'Fear of God',
+    anchor: 'fear-of-god',
+    anchorWord: 'yir\'ah (Hebrew) — awe, reverence, holy dread',
+    body: `<p>We have domesticated God. We have made Him comfortable, manageable, broadly supportive of our plans — a cosmic life coach who wants us to be our best selves. And in doing so, we have lost one of the most essential and glorious realities in all of Scripture: the fear of the Lord.</p>
+<p>The fear of God is not the same as terror. The man who fears God does not cower like a criminal before a judge who wants only to condemn him. He bows like a creature before a Creator who is utterly holy, entirely sovereign, and breathtakingly good. It is the trembling of Isaiah in the temple: "Woe is me! For I am lost; for I am a man of unclean lips" — followed not by destruction but by a coal of cleansing fire from the altar of God (Isaiah 6:5–7). The fear of God drives us <em>to</em> God, not from Him.</p>
+<p>Proverbs calls the fear of the Lord "the beginning of wisdom" (Proverbs 9:10) — not a chapter of wisdom, not an advanced level, but the very foundation. A man cannot think clearly about anything — his money, his marriage, his mortality — until he thinks about it in the light of who God is. The fear of God is the lens through which reality comes into focus.</p>`,
+    verses: [
+      {
+        ref: 'Proverbs 9:10',
+        text: 'The fear of the LORD is the beginning of wisdom, and knowledge of the Holy One is understanding.',
+        note: 'Wisdom does not begin with intelligence, education, or experience. It begins here — with a right estimation of God. Every fool in Scripture is, at root, a man who does not fear God.'
+      },
+      {
+        ref: 'Psalm 112:1',
+        text: 'Blessed is the man who fears the LORD, who greatly delights in his commandments!',
+        note: 'Notice that the man who fears the Lord <em>greatly delights</em> in His commandments. Fear and delight are not opposites. In a healthy soul they grow together — the more clearly we see God\'s holiness, the more we love His ways.'
+      },
+      {
+        ref: 'Luke 12:4–5',
+        text: '"I tell you, my friends, do not fear those who kill the body, and after that have nothing more that they can do. But I will warn you whom to fear: fear him who, after he has killed, has the power to cast into hell. Yes, I tell you, fear him!"',
+        note: 'Jesus does not abolish the fear of God — He commands it. This is not a counsel of despair but of liberation. When we fear God rightly, we are freed from the tyranny of fearing everything else.'
+      }
+    ],
+    wtm: 'The fear of God is not the enemy of joy — it is the guardian of it. The man who fears God sleeps better, loves better, and dies better than the man who fears nothing above himself.'
+  },
+
+  {
+    letter: 'R',
+    name: 'Redemption',
+    anchor: 'redemption',
+    anchorWord: 'ge\'ullah (Hebrew) / apolytrōsis (Greek) — buying back, setting free by ransom',
+    body: `<p>Redemption is a marketplace word pressed into service for the most staggering transaction in the history of the universe. In the ancient world, a redeemer was a kinsman who stepped in to buy a family member out of slavery, paying the price that set them free. The moment the price was paid, the slave walked out into the light — not on probation, not on parole, but fully and permanently free.</p>
+<p>This is the framework God gave Israel through the law of the kinsman-redeemer, and it reaches its magnificent fulfilment in Jesus Christ. We were not merely in debt — we were in bondage. Sin had enslaved us, and the wages of that slavery was death. No amount of good behaviour could purchase our freedom; the price was beyond anything we possessed. So God became our kinsman. The eternal Son took on flesh, became bone of our bone and blood of our blood, and paid what we could never pay.</p>
+<p>The cross is the moment of purchase. "You were bought with a price," Paul says (1 Corinthians 6:20) — not with gold or silver, Peter adds, "but with the precious blood of Christ, like that of a lamb without blemish or spot" (1 Peter 1:18–19). The one who buys is also the price paid. This is the glory that staggers angels and ought to bring grown men to their knees.</p>`,
+    verses: [
+      {
+        ref: 'Ephesians 1:7',
+        text: 'In him we have redemption through his blood, the forgiveness of our trespasses, according to the riches of his grace.',
+        note: '"In him" — not in our resolve, our religion, or our record. The entire basis of redemption is located outside of us, in Christ. This is not a humiliation; it is the greatest security imaginable.'
+      },
+      {
+        ref: '1 Peter 1:18–19',
+        text: '...knowing that you were ransomed from the futile ways inherited from your forefathers, not with perishable things such as silver or gold, but with the precious blood of Christ, like that of a lamb without blemish or spot.',
+        note: 'Peter wants us to feel the weight of the price paid. Silver and gold seem precious to us — but they perish. The blood of Christ does not perish. It speaks forever in heaven on our behalf.'
+      },
+      {
+        ref: 'Galatians 3:13',
+        text: 'Christ redeemed us from the curse of the law by becoming a curse for us — for it is written, "Cursed is everyone who is hanged on a tree."',
+        note: 'The mechanics of redemption are substitutionary: He took our curse so that we could receive His blessing. The exchange is total, irrevocable, and rooted in the love of God from before the foundation of the world.'
+      }
+    ],
+    wtm: 'You are not a reformed person trying hard to stay free. You are a purchased person, owned by Christ, living in the freedom He bought at infinite cost. Let that change how you walk through today.'
+  }
+
+];
+
+// Build A-Z bar
+function buildAzBar() {
+  var letters = [...new Set(TERMS.map(t => t.letter))].sort();
+  var bar = document.getElementById('az-bar');
+  letters.forEach(function(l) {
+    var a = document.createElement('a');
+    a.className = 'az-link';
+    a.textContent = l;
+    a.href = '#letter-' + l;
+    bar.appendChild(a);
+  });
+}
+
+// Build dictionary
+function buildDict() {
+  var main = document.getElementById('dict-main');
+  var html = '';
+  var currentLetter = '';
+  TERMS.forEach(function(t) {
+    if (t.letter !== currentLetter) {
+      currentLetter = t.letter;
+      html += '<div class="letter-head" id="letter-' + t.letter + '">' + t.letter + '</div>';
+    }
+    html += '<div class="term-card" id="term-' + t.anchor + '">';
+    html += '<div class="term-header">';
+    html += '<div class="term-name">' + t.name + '</div>';
+    if (t.anchorWord) html += '<div class="term-anchor-word">' + t.anchorWord + '</div>';
+    html += '</div>';
+    html += '<div class="term-body">';
+    html += t.body;
+    html += '<div class="key-verses-label">Key Verses</div>';
+    t.verses.forEach(function(v) {
+      html += '<div class="verse-entry">';
+      html += '<div class="verse-ref">' + v.ref + '</div>';
+      html += '<div class="verse-text">&ldquo;' + v.text + '&rdquo;</div>';
+      if (v.note) html += '<div class="verse-note">' + v.note + '</div>';
+      html += '</div>';
+    });
+    if (t.wtm) {
+      html += '<div class="wtm-box"><div class="wtm-label">Why This Matters</div><div class="wtm-text">' + t.wtm + '</div></div>';
+    }
+    html += '</div></div>';
+  });
+  main.innerHTML = html;
+}
+
+buildAzBar();
+buildDict();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>
