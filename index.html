@@ -36,7 +36,7 @@ main{width:100%;padding:1.5rem 2rem;overflow-wrap:break-word;word-break:break-wo
 h2{color:#c9a84c;font-size:1.4rem;margin-bottom:.3rem}
 .ref{color:#a09070;font-size:.95rem;margin-bottom:1.2rem}
 details{margin-bottom:.8rem;border:1px solid #2a4a6c;border-radius:6px;overflow:hidden}
-summary{background:#1a3a5c;padding:.7rem 1rem;cursor:pointer;color:#c9a84c;font-weight:bold;list-style:none;user-select:none;-webkit-user-select:none}
+summary{background:#1a3a5c;padding:.7rem 1rem;cursor:pointer;color:#c9a84c;font-weight:bold;list-style:none}
 summary::-webkit-details-marker{display:none}
 summary:hover{background:#22487a}
 .detail-body{padding:1rem;line-height:1.8}
@@ -438,46 +438,6 @@ document.addEventListener('keydown', function(e) {
       navigate(dx < 0 ? 1 : -1);
     }
   }, { passive: true });
-})();
-
-// ── Long-press to share ───────────────────────────────────────────────────
-(function() {
-  if (!navigator.share) return; // not supported — do nothing
-  var pressTimer = null;
-  var HOLD_MS = 600;
-
-  function extractText(details) {
-    var label = (details.querySelector('summary') || {}).textContent || '';
-    var body = '';
-    details.querySelectorAll('.detail-body,.passage-text,.vbv-entry,.accent-box').forEach(function(el) {
-      body += el.innerText.trim() + '\n\n';
-    });
-    return { label: label.trim(), body: body.trim() };
-  }
-
-  function doShare(details) {
-    var t = extractText(details);
-    var chTitle = (currentBook ? currentBook.title : '') + (currentData && currentKeys ? ' — ' + (currentData[currentKeys[currentIdx]].ref || '') : '');
-    navigator.share({
-      title: 'Soli Deo Gloria — ' + chTitle,
-      text: (t.label ? t.label + '\n\n' : '') + t.body
-    }).catch(function(){});
-  }
-
-  document.addEventListener('touchstart', function(e) {
-    var summary = e.target.closest('summary');
-    if (!summary) return;
-    var details = summary.closest('details');
-    if (!details) return;
-    pressTimer = setTimeout(function() {
-      pressTimer = null;
-      doShare(details);
-    }, HOLD_MS);
-  }, { passive: true });
-
-  document.addEventListener('touchend',   function() { clearTimeout(pressTimer); pressTimer = null; }, { passive: true });
-  document.addEventListener('touchmove',  function() { clearTimeout(pressTimer); pressTimer = null; }, { passive: true });
-  document.addEventListener('touchcancel',function() { clearTimeout(pressTimer); pressTimer = null; }, { passive: true });
 })();
 
 // ── Init ─────────────────────────────────────────────────────────────────
