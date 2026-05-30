@@ -10,8 +10,10 @@
 body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
 
 /* ── Header ── */
-header{background:#1a3a5c;padding:1rem 1.5rem;display:flex;align-items:center;gap:.8rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+header{background:#1a3a5c;padding:.6rem 1.5rem .5rem;display:flex;flex-direction:column;gap:.3rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+#header-row{display:flex;align-items:center;gap:.8rem}
 header h1{font-size:1.3rem;color:#c9a84c;letter-spacing:.05em;white-space:nowrap}
+#chapter-title-bar{font-size:.8rem;color:#a09070;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:.1rem;display:none}
 #home-btn{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.3rem .8rem;border-radius:4px;cursor:pointer;font-size:.9rem;white-space:nowrap;flex-shrink:0}
 #home-btn:hover{background:#c9a84c;color:#0d2137}
 nav{display:flex;align-items:center;gap:.4rem;flex:1;justify-content:flex-end}
@@ -67,13 +69,15 @@ sup{font-size:.7em;vertical-align:super}
 
 /* ── Mobile ── */
 @media(max-width:600px){
-  header{padding:.5rem .6rem;gap:.4rem;overflow:hidden}
+  header{padding:.4rem .6rem .35rem;gap:.25rem;overflow:hidden}
+  #header-row{gap:.4rem}
   header h1{display:none}
   #home-btn{padding:.3rem .5rem;font-size:.8rem}
   #home-btn .btn-text{display:none}
   nav{flex:1;gap:.3rem}
   nav button{padding:.3rem .6rem;font-size:.9rem;flex-shrink:0}
   #unit-select{flex:1;width:0;min-width:0;max-width:none;font-size:.85rem}
+  #chapter-title-bar{font-size:.75rem}
   .row-sub{display:none}
 }
 </style>
@@ -81,13 +85,16 @@ sup{font-size:.7em;vertical-align:super}
 <body>
 
 <header>
-  <h1>Reformed Commentaries</h1>
-  <button id="home-btn" onclick="showHome()" style="display:none">&#8962;<span class="btn-text"> Books</span></button>
-  <nav id="reader-nav" style="display:none">
-    <button onclick="navigate(-1)">&#8592;</button>
-    <select id="unit-select" onchange="goTo(+this.value)"></select>
-    <button onclick="navigate(1)">&#8594;</button>
-  </nav>
+  <div id="header-row">
+    <h1>Reformed Commentaries</h1>
+    <button id="home-btn" onclick="showHome()" style="display:none">&#8962;<span class="btn-text"> Books</span></button>
+    <nav id="reader-nav" style="display:none">
+      <button onclick="navigate(-1)">&#8592;</button>
+      <select id="unit-select" onchange="goTo(+this.value)"></select>
+      <button onclick="navigate(1)">&#8594;</button>
+    </nav>
+  </div>
+  <div id="chapter-title-bar"></div>
 </header>
 
 <div id="home-screen">
@@ -169,6 +176,7 @@ function showHome() {
   document.getElementById('reader-screen').style.display = 'none';
   document.getElementById('home-btn').style.display = 'none';
   document.getElementById('reader-nav').style.display = 'none';
+  document.getElementById('chapter-title-bar').style.display = 'none';
   document.title = 'Reformed Commentaries';
   window.scrollTo(0,0);
 }
@@ -221,19 +229,26 @@ function openBook(id) {
         var o = document.createElement('option');
         o.value = k;
         var ref = data[k].ref || String(k);
+        var chTitle = data[k].title || data[k].subtitle || '';
+        var label;
         if (currentBook.testament === 'ST') {
           var title = data[k].title || '';
           var rangeMatch = title.match(/(\d{2,4})[–—\-](\d{2,4})/);
           if (rangeMatch) {
-            o.textContent = rangeMatch[1] + '–' + rangeMatch[2];
+            label = rangeMatch[1] + '–' + rangeMatch[2];
           } else {
             var yearMatch = title.match(/\d{3,4}/);
-            o.textContent = yearMatch ? yearMatch[0] : (ref.match(/\d+/) ? ref.match(/\d+/)[0] : ref.substring(0, 5));
+            label = yearMatch ? yearMatch[0] : (ref.match(/\d+/) ? ref.match(/\d+/)[0] : ref.substring(0, 5));
           }
         } else {
           var num = ref.match(/\d+/);
-          o.textContent = num ? num[0] : ref.substring(0, 5);
+          label = num ? num[0] : (k === 0 ? 'Intro' : ref.substring(0, 5));
         }
+        if (chTitle) {
+          var short = chTitle.length > 30 ? chTitle.substring(0, 28) + '…' : chTitle;
+          label = label + ' · ' + short;
+        }
+        o.textContent = label;
         sel.appendChild(o);
       });
       var saved = localStorage.getItem(id + '-pos');
@@ -252,6 +267,14 @@ function render(idx) {
   var ch = currentData[k];
   document.getElementById('unit-select').value = k;
   localStorage.setItem(currentBook.id + '-pos', k);
+  var titleBar = document.getElementById('chapter-title-bar');
+  var barText = ch.title || ch.subtitle || '';
+  if (barText) {
+    titleBar.textContent = barText;
+    titleBar.style.display = 'block';
+  } else {
+    titleBar.style.display = 'none';
+  }
 
   var html = '';
 
