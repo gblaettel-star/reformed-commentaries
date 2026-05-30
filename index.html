@@ -241,7 +241,8 @@ function openBook(id) {
           label = num ? num[0] : (k === 0 ? 'Intro' : ref.substring(0, 5));
         }
         if (chTitle) {
-          var short = chTitle.length > 30 ? chTitle.substring(0, 28) + '…' : chTitle;
+          var decoded = chTitle.replace(/&rsquo;/g,"'").replace(/&lsquo;/g,"'").replace(/&ldquo;/g,'"').replace(/&rdquo;/g,'"').replace(/&ndash;/g,'–').replace(/&mdash;/g,'—').replace(/&amp;/g,'&');
+          var short = decoded.length > 30 ? decoded.substring(0, 28) + '…' : decoded;
           label = label + ' · ' + short;
         }
         o.textContent = label;
