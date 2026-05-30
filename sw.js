@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v51';
+const CACHE = 'commentaries-v52';
 const SHELL = ['./index.html'];
 
 self.addEventListener('install', e => {
