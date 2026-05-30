@@ -10,20 +10,20 @@
 body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
 
 /* ── Header ── */
-header{background:#1a3a5c;padding:.6rem 1.5rem .5rem;display:flex;flex-direction:column;gap:.3rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
-#header-row{display:flex;align-items:center;gap:.8rem}
-header h1{font-size:1.3rem;color:#c9a84c;letter-spacing:.05em;white-space:nowrap}
-#chapter-title-bar{font-size:.8rem;color:#a09070;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:.1rem;display:none}
-#home-btn{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.3rem .8rem;border-radius:4px;cursor:pointer;font-size:.9rem;white-space:nowrap;flex-shrink:0}
+header{background:#1a3a5c;padding:.5rem 1rem .4rem;display:flex;flex-direction:column;gap:.3rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+#header-top{display:flex;align-items:center;gap:.6rem;min-height:2.75rem}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.05em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#chapter-title-bar{font-size:.78rem;color:#a09070;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
+#home-btn{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.45rem .9rem;border-radius:6px;cursor:pointer;font-size:.9rem;white-space:nowrap;flex-shrink:0;min-height:2.75rem;touch-action:manipulation}
 #home-btn:hover{background:#c9a84c;color:#0d2137}
-nav{display:flex;align-items:center;gap:.4rem;flex:1;justify-content:flex-end}
-nav button{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.35rem .8rem;border-radius:4px;cursor:pointer;font-size:.95rem;flex-shrink:0}
+nav{display:flex;align-items:stretch;gap:.4rem}
+nav button{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:1.1rem;flex-shrink:0;min-height:2.75rem;min-width:3rem;touch-action:manipulation}
 nav button:hover{background:#c9a84c;color:#0d2137}
 nav button:disabled{opacity:.3;cursor:default}
 nav button:disabled:hover{background:none;color:#c9a84c}
-#unit-select{background:#0d2137;color:#c9a84c;border:1px solid #c9a84c;padding:.35rem .5rem;border-radius:4px;font-size:.9rem;flex:1;min-width:0;max-width:220px}
-#progress-bar{height:2px;background:#2a4a6c;position:relative;margin-top:.2rem}
-#progress-fill{height:100%;background:#c9a84c;transition:width .2s ease;width:0}
+#unit-select{background:#0d2137;color:#c9a84c;border:1px solid #c9a84c;padding:.4rem .6rem;border-radius:6px;font-size:.95rem;flex:1;min-width:0;min-height:2.75rem}
+#progress-bar{height:3px;background:#2a4a6c}
+#progress-fill{height:100%;background:#c9a84c;transition:width .25s ease;width:0}
 
 /* ── Home screen ── */
 #home-screen{max-width:640px;margin:0 auto;padding:0}
@@ -72,32 +72,35 @@ sup{font-size:.7em;vertical-align:super}
 .section-hd-overview p:last-child{margin-bottom:0}
 
 /* ── Mobile ── */
-@media(max-width:600px){
-  header{padding:.4rem .6rem .35rem;gap:.25rem;overflow:hidden}
-  #header-row{gap:.4rem}
-  header h1{display:none}
-  #home-btn{padding:.3rem .5rem;font-size:.8rem}
-  #home-btn .btn-text{display:none}
-  nav{flex:1;display:grid;grid-template-columns:auto 1fr auto;gap:.3rem}
-  nav button{padding:.3rem .6rem;font-size:.9rem}
-  #unit-select{width:0;min-width:0;max-width:none;font-size:.85rem}
-  #chapter-title-bar{font-size:.75rem}
+@media(max-width:640px){
+  header{padding:.4rem .75rem .35rem}
+  nav button{min-width:2.75rem;padding:.4rem .7rem}
+  #unit-select{font-size:.85rem}
   .row-sub{display:none}
+  .book-row{padding:.9rem 1rem}
+  .row-name{font-size:.95rem}
+}
+/* Tiny phones / very large zoom */
+@media(max-width:380px){
+  header h1{font-size:1rem}
+  nav button{min-width:2.5rem;padding:.4rem .5rem;font-size:1rem}
+  #home-btn{padding:.4rem .55rem;font-size:.82rem}
+  #unit-select{font-size:.8rem}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div id="header-row">
+  <div id="header-top">
     <h1>Reformed Commentaries</h1>
-    <button id="home-btn" onclick="showHome()" style="display:none">&#8962;<span class="btn-text"> Books</span></button>
-    <nav id="reader-nav" style="display:none">
-      <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
-      <select id="unit-select" onchange="goTo(+this.value)"></select>
-      <button id="next-btn" onclick="navigate(1)">&#8594;</button>
-    </nav>
+    <button id="home-btn" onclick="showHome()" style="display:none">&#8962; Books</button>
   </div>
+  <nav id="reader-nav" style="display:none">
+    <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
+    <select id="unit-select" onchange="goTo(+this.value)"></select>
+    <button id="next-btn" onclick="navigate(1)">&#8594;</button>
+  </nav>
   <div id="chapter-title-bar"></div>
   <div id="progress-bar" style="display:none"><div id="progress-fill"></div></div>
 </header>
@@ -159,7 +162,7 @@ const BOOKS = [
   { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',        testament:'SL', chapters:6 },
   { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', chapters:6 },
   // General Studies
-  { id:'how-we-got-our-bible',  title:'How We Got Our Bible',  subtitle:'Inspiration, Canon, Transmission, and Translation',   testament:'SG', chapters:6 },
+  { id:'how-we-got-our-bible',  title:'How We Got Our Bible',  subtitle:'Inspiration, Canon, Transmission, and Translation',   testament:'SG', chapters:7 },
   { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',      testament:'SG', chapters:6 },
   { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                         testament:'SG', chapters:8 },
   { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',           testament:'SG', chapters:8 },
