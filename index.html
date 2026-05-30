@@ -394,21 +394,14 @@ function render(idx) {
   document.getElementById('prev-btn').disabled = (idx === 0 && !prevBook());
   document.getElementById('next-btn').disabled = (idx === currentKeys.length - 1 && !nextBook());
 
-  // Cross-book nav: append buttons at end/start of content
-  var atEnd   = idx === currentKeys.length - 1;
-  var atStart = idx === 0;
-  var nb = nextBook(), pb = prevBook();
+  // Cross-book nav: "Continue to" at end only
+  var atEnd = idx === currentKeys.length - 1;
+  var nb = nextBook();
   if (atEnd && nb) {
     document.getElementById('content').insertAdjacentHTML('beforeend',
       '<div style="text-align:center;padding:2rem 0">'
       + '<button onclick="openBook(\'' + nb.id + '\')" style="background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;padding:.6rem 1.4rem;border-radius:4px;cursor:pointer;font-size:.95rem">'
       + 'Continue to ' + nb.title + ' &#8594;</button></div>');
-  }
-  if (atStart && pb) {
-    document.getElementById('content').insertAdjacentHTML('afterbegin',
-      '<div style="text-align:center;padding:2rem 0">'
-      + '<button onclick="openBook(\'' + pb.id + '\')" style="background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;padding:.6rem 1.4rem;border-radius:4px;cursor:pointer;font-size:.95rem">'
-      + '&#8592; Back to ' + pb.title + '</button></div>');
   }
 
   window.scrollTo(0,0);
