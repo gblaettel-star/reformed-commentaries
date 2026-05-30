@@ -19,7 +19,11 @@ header h1{font-size:1.3rem;color:#c9a84c;letter-spacing:.05em;white-space:nowrap
 nav{display:flex;align-items:center;gap:.4rem;flex:1;justify-content:flex-end}
 nav button{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.35rem .8rem;border-radius:4px;cursor:pointer;font-size:.95rem;flex-shrink:0}
 nav button:hover{background:#c9a84c;color:#0d2137}
+nav button:disabled{opacity:.3;cursor:default}
+nav button:disabled:hover{background:none;color:#c9a84c}
 #unit-select{background:#0d2137;color:#c9a84c;border:1px solid #c9a84c;padding:.35rem .5rem;border-radius:4px;font-size:.9rem;flex:1;min-width:0;max-width:220px}
+#progress-bar{height:2px;background:#2a4a6c;position:relative;margin-top:.2rem}
+#progress-fill{height:100%;background:#c9a84c;transition:width .2s ease;width:0}
 
 /* ── Home screen ── */
 #home-screen{max-width:640px;margin:0 auto;padding:0}
@@ -89,12 +93,13 @@ sup{font-size:.7em;vertical-align:super}
     <h1>Reformed Commentaries</h1>
     <button id="home-btn" onclick="showHome()" style="display:none">&#8962;<span class="btn-text"> Books</span></button>
     <nav id="reader-nav" style="display:none">
-      <button onclick="navigate(-1)">&#8592;</button>
+      <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
       <select id="unit-select" onchange="goTo(+this.value)"></select>
-      <button onclick="navigate(1)">&#8594;</button>
+      <button id="next-btn" onclick="navigate(1)">&#8594;</button>
     </nav>
   </div>
   <div id="chapter-title-bar"></div>
+  <div id="progress-bar" style="display:none"><div id="progress-fill"></div></div>
 </header>
 
 <div id="home-screen">
@@ -154,6 +159,7 @@ const BOOKS = [
   { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',        testament:'SL', chapters:6 },
   { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', chapters:6 },
   // General Studies
+  { id:'how-we-got-our-bible',  title:'How We Got Our Bible',  subtitle:'Inspiration, Canon, Transmission, and Translation',   testament:'SG', chapters:6 },
   { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',      testament:'SG', chapters:6 },
   { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                         testament:'SG', chapters:8 },
   { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',           testament:'SG', chapters:8 },
@@ -177,6 +183,7 @@ function showHome() {
   document.getElementById('home-btn').style.display = 'none';
   document.getElementById('reader-nav').style.display = 'none';
   document.getElementById('chapter-title-bar').style.display = 'none';
+  document.getElementById('progress-bar').style.display = 'none';
   document.title = 'Reformed Commentaries';
   window.scrollTo(0,0);
 }
@@ -215,6 +222,7 @@ function openBook(id) {
   document.getElementById('reader-screen').style.display = 'block';
   document.getElementById('home-btn').style.display = 'block';
   document.getElementById('reader-nav').style.display = 'flex';
+  document.getElementById('progress-bar').style.display = 'block';
   document.title = currentBook.title;
   document.getElementById('content').innerHTML = '<p style="padding:2rem;color:#a09070;text-align:center">Loading&hellip;</p>';
 
@@ -374,11 +382,78 @@ function render(idx) {
   }
 
   document.getElementById('content').innerHTML = html;
+
+  // Progress bar
+  var pct = currentKeys.length > 1 ? (idx / (currentKeys.length - 1)) * 100 : 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // Prev/next button state
+  document.getElementById('prev-btn').disabled = (idx === 0 && !prevBook());
+  document.getElementById('next-btn').disabled = (idx === currentKeys.length - 1 && !nextBook());
+
+  // Cross-book nav: append buttons at end/start of content
+  var atEnd   = idx === currentKeys.length - 1;
+  var atStart = idx === 0;
+  var nb = nextBook(), pb = prevBook();
+  if (atEnd && nb) {
+    document.getElementById('content').insertAdjacentHTML('beforeend',
+      '<div style="text-align:center;padding:2rem 0">'
+      + '<button onclick="openBook(\'' + nb.id + '\')" style="background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;padding:.6rem 1.4rem;border-radius:4px;cursor:pointer;font-size:.95rem">'
+      + 'Continue to ' + nb.title + ' &#8594;</button></div>');
+  }
+  if (atStart && pb) {
+    document.getElementById('content').insertAdjacentHTML('afterbegin',
+      '<div style="text-align:center;padding:2rem 0">'
+      + '<button onclick="openBook(\'' + pb.id + '\')" style="background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;padding:.6rem 1.4rem;border-radius:4px;cursor:pointer;font-size:.95rem">'
+      + '&#8592; Back to ' + pb.title + '</button></div>');
+  }
+
   window.scrollTo(0,0);
 }
 
+function prevBook() {
+  if (!currentBook) return null;
+  var idx = BOOKS.indexOf(currentBook);
+  return idx > 0 ? BOOKS[idx - 1] : null;
+}
+function nextBook() {
+  if (!currentBook) return null;
+  var idx = BOOKS.indexOf(currentBook);
+  return idx < BOOKS.length - 1 ? BOOKS[idx + 1] : null;
+}
+
 function goTo(k)         { render(currentKeys.indexOf(+k)); }
-function navigate(dir)   { render(currentIdx + dir); }
+function navigate(dir) {
+  var newIdx = currentIdx + dir;
+  if (newIdx < 0) { var pb = prevBook(); if (pb) openBook(pb.id); return; }
+  if (newIdx >= currentKeys.length) { var nb = nextBook(); if (nb) openBook(nb.id); return; }
+  render(newIdx);
+}
+
+// ── Keyboard navigation ───────────────────────────────────────────────────
+document.addEventListener('keydown', function(e) {
+  if (!currentBook) return;
+  if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(-1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
+});
+
+// ── Swipe navigation ──────────────────────────────────────────────────────
+(function() {
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    if (!currentBook) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+      navigate(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+})();
 
 // ── Init ─────────────────────────────────────────────────────────────────
 buildHome();
