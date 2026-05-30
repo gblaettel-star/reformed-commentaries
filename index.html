@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reformed Commentaries</title>
+<title>Soli Deo Gloria</title>
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -86,7 +86,7 @@ sup{font-size:.7em;vertical-align:super}
 <body>
 
 <header>
-  <h1 onclick="showHome()">Reformed Commentaries</h1>
+  <h1 onclick="showHome()">Soli Deo Gloria</h1>
   <nav id="reader-nav" style="display:none">
     <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
     <select id="unit-select" onchange="goTo(+this.value)"></select>
@@ -174,7 +174,7 @@ function showHome() {
   document.getElementById('home-screen').style.display = '';
   document.getElementById('reader-screen').style.display = 'none';
   document.getElementById('reader-nav').style.display = 'none';
-  document.title = 'Reformed Commentaries';
+  document.title = 'Soli Deo Gloria';
   window.scrollTo(0,0);
 }
 
@@ -316,7 +316,7 @@ function render(idx) {
       } else {
         var entry = '<div class="vbv-entry" id="vs' + i + '">';
         entry += '<div class="vbv-ref">' + v.ref + '</div>';
-        if (v.quote) entry += '<div class="vbv-quote">&ldquo;' + v.quote + '&rdquo;</div>';
+        if (v.quote) { var q = v.quote.replace(/^[“”"]+/, '').replace(/^(&ldquo;|&rdquo;)+/, '').replace(/[“”"]+$/, '').replace(/(&ldquo;|&rdquo;)+$/, ''); entry += '<div class="vbv-quote">&ldquo;' + q + '&rdquo;</div>'; }
         if (v.commentary) entry += '<div class="vbv-commentary">' + v.commentary + '</div>';
         entry += '</div>';
         verseBuffer.push(entry);
@@ -346,7 +346,7 @@ function render(idx) {
   if (ch.keyVerse) {
     html += '<details><summary>Key Verse</summary><div class="accent-box">'
       + '<div class="vbv-ref">' + ch.keyVerse.ref + '</div>'
-      + '<div class="vbv-quote">&ldquo;' + ch.keyVerse.quote + '&rdquo;</div>'
+      + '<div class="vbv-quote">&ldquo;' + ch.keyVerse.quote.replace(/^["""]+/, '').replace(/^(&ldquo;|&rdquo;)+/, '').replace(/["""]+$/, '').replace(/(&ldquo;|&rdquo;)+$/, '') + '&rdquo;</div>'
       + (ch.keyVerse.note ? '<div class="vbv-commentary">' + ch.keyVerse.note + '</div>' : '')
       + '</div></details>';
   }
