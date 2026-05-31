@@ -10,6 +10,9 @@
 body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
 
 header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
 header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;cursor:pointer;user-select:none}
 header h1:hover{opacity:.8}
 header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
@@ -89,7 +92,11 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
 <body>
 
 <header>
-  <h1 onclick="resetDict()">Theological Dictionary</h1>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1 onclick="resetDict()">Theological Dictionary</h1>
+    <span style="width:4.5rem"></span>
+  </div>
   <h2>Key Words of the Faith — Explained and Felt</h2>
 </header>
 
