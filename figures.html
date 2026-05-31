@@ -87,7 +87,7 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
 <div class="era-bar" id="era-bar"></div>
 
 <div class="fig-index-wrap">
-  <button class="fig-index-toggle" onclick="toggleFigIndex()" id="fig-index-toggle">Browse all 10 figures ▾</button>
+  <button class="fig-index-toggle" onclick="toggleFigIndex()" id="fig-index-toggle">Browse all 18 figures ▾</button>
   <div class="fig-index-chips" id="fig-index-chips"></div>
 </div>
 
@@ -259,10 +259,140 @@ const FIGURES = [
     whyRead: 'Because Keller understood that most people who reject Christianity are rejecting a caricature of it — and he knew how to show them the real thing. Read him when your faith feels difficult to explain, or when you feel the weight of living in a world that no longer shares your assumptions.'
   }
 
+,
+
+  {
+    era: 'Medieval',
+    name: 'Anselm of Canterbury',
+    anchor: 'anselm',
+    dates: 'c. 1033–1109',
+    tradition: 'Scholastic / Western Catholic',
+    tagline: 'The theologian who asked why God became man — and answered it in a way the church has never forgotten',
+    body: `<p>Anselm was born in Aosta in northern Italy, entered the Benedictine monastery of Bec in Normandy as a young man, and eventually became Archbishop of Canterbury under William Rufus — a position that brought him into repeated, bruising conflict with the English crown over the freedom of the church. He was twice exiled. He endured it with a patience that embarrassed his opponents. But his lasting legacy is not political — it is theological, and specifically it is the answer he gave to a question no one before him had asked with such rigour: <em>Cur Deus Homo?</em> Why did God become man? Why was the incarnation not merely convenient but necessary?</p>
+<p>His answer, set out in the work of that name, is the satisfaction theory of the atonement. Humanity has sinned — and sin is not merely rule-breaking; it is an infinite offence against an infinite God, a dishonour that no finite creature can repair. A human being owes the satisfaction but cannot pay it. God alone can pay it but does not owe it. Therefore, the only solution is one who is both: a God-man, who owes the debt as man and can pay it as God. Anselm's logic is breathtaking in its elegance and its pastoral implications: the incarnation was not Plan B. It was the only possible Plan A. Only this person, in this way, could accomplish what needed to be accomplished. The cross was not an accident of history or a moral example — it was a cosmic necessity, the only way the ledger of infinite debt could be settled.</p>
+<p>Anselm's satisfaction theory was later developed by Calvin into the penal substitution framework that stands at the heart of Reformed soteriology — and it has been challenged, qualified, and debated ever since. But the core insight has never been improved upon: the weight of what humanity owed required a payee of infinite worth. Only God incarnate would do. Alongside his atonement theology, Anselm gave the church his famous ontological argument for the existence of God — the argument that God, as "that than which nothing greater can be conceived," must exist, since existence is greater than non-existence. Whether the argument succeeds is still debated by philosophers. What is not in question is the quality of the mind that produced it: Anselm thought more carefully about God than almost anyone before or since.</p>`,
+    quote: 'God can do everything except lie, be corrupted, or cease to be God.',
+    quoteSource: 'Cur Deus Homo',
+    keyWork: 'Cur Deus Homo (Why God Became Man) (1094–98) — A dialogue that sets out with philosophical precision why the incarnation and atonement were not arbitrary but necessary. Remarkably accessible for an eleventh-century work.',
+    whyRead: 'Because Anselm will show you that the cross was not a contingency plan — it was the only possible answer to the only problem that mattered. His logic will give your faith a backbone it may not have had before.'
+  },
+
+  {
+    era: 'Reformation',
+    name: 'William Tyndale',
+    anchor: 'tyndale',
+    dates: 'c. 1494–1536',
+    tradition: 'Reformed / English Reformation',
+    tagline: 'The man who gave England the Bible in its own tongue — and was burned alive for it',
+    body: `<p>William Tyndale had one goal, and he stated it plainly to a learned clergyman who told him the English people had no need of the Scripture in English: "I defy the Pope, and all his laws; and if God spare my life, ere many years I will cause a boy that driveth the plough to know more of the Scripture than thou dost." He spent the rest of his short life making good on that promise, and the English-speaking world has never been the same. Tyndale translated the New Testament from Greek into English — not from the Latin Vulgate, as previous translators had done, but from Erasmus's Greek text — and smuggled copies into England hidden in bales of cloth, because the church had banned the English Bible. His translation was the first printed English New Testament. Much of what he wrote went directly into the King James Bible of 1611. Scholars estimate that 83 per cent of the King James New Testament is Tyndale's translation, word for word.</p>
+<p>He was a linguistic genius of the first order. The cadences of the King James Bible — its music, its weight, its memorability — are largely Tyndale's cadences. He coined or fixed in the English language words and phrases that have never left it: "Passover," "atonement," "scapegoat," "mercy seat," "let there be light," "the powers that be," "fight the good fight," "a law unto themselves," "the salt of the earth." He was also a thorough Reformation theologian — deeply influenced by Luther, committed to justification by faith alone, convinced that the Word of God in the hands of ordinary people was the engine of reformation. His prefaces and prologues to the New Testament books are themselves works of pastoral theology: clear, warm, urgent, full of the gospel.</p>
+<p>He spent years on the run from agents of Henry VIII and the English church, working in Hamburg, Wittenberg, Antwerp, and Cologne — never able to return to England, always one informer away from arrest. In 1535 he was betrayed by a man he had befriended, arrested, imprisoned in the castle of Vilvoorde near Brussels, and tried for heresy. He was condemned, strangled, and burned at the stake in October 1536. His last words, spoken loudly from the stake, were a prayer: "Lord, open the King of England's eyes." Within three years, Henry VIII had authorised an English Bible for every parish church in England. The prayer was answered, at a cost Tyndale had already paid in full.</p>`,
+    quote: 'Lord, open the King of England\'s eyes.',
+    quoteSource: 'Last words at the stake, Vilvoorde, 1536',
+    keyWork: 'The New Testament (1526) — The first printed English New Testament translated from the Greek. The ancestor of the King James Bible. Read it alongside a modern translation and feel the continuity across five centuries.',
+    whyRead: 'Because Tyndale died so that you could read your Bible in English. That is not a metaphor. When you open the Scriptures tonight, you are reading the words of a man who was strangled and burned to put them in your hands. Let that change how you hold the book.'
+  },
+
+  {
+    era: 'Reformation',
+    name: 'John Knox',
+    anchor: 'knox',
+    dates: 'c. 1514–1572',
+    tradition: 'Reformed / Presbyterian',
+    tagline: 'The thunderer of Scotland — who feared God so completely that he feared no one else at all',
+    body: `<p>John Knox spent nineteen months as a galley slave on a French ship — chained to an oar, beaten, forced to row — and emerged from it as the most uncompromising Reformer in Europe. He had been captured when the castle of St Andrews fell to French forces in 1547, taken prisoner along with the Protestant garrison, and put to work on the galleys. During those months, the sailors reportedly tried to make him venerate a statue of the Virgin Mary. Knox threw it into the sea. When he was finally released through diplomatic pressure and made his way to England, then to Geneva, then finally back to Scotland, he carried with him a ferocity and a certainty that nothing — no queen, no bishop, no threat of death — could touch. He had already paid a price that put everything else into proportion.</p>
+<p>In Geneva he came under the influence of Calvin, who described Knox as a man shaped by God for great ends. Back in Scotland from 1559, Knox drove the Scottish Reformation with a force that was almost entirely personal. He preached in St Giles' Cathedral in Edinburgh with such power that listeners said one hour of Knox's preaching put more life in them than five hundred trumpets. He faced down Mary Queen of Scots in a series of private audiences that became legendary — the young Catholic queen weeping, Knox immovable. She said she feared his prayers more than an army of ten thousand men. She was right to. The Scottish Parliament adopted a Reformed confession of faith in 1560, largely Knox's work. The Church of Scotland — Presbyterian in polity, Reformed in doctrine, fiercely independent of state control — is his lasting monument.</p>
+<p>His famous prayer — "Give me Scotland or I die" — captures the man completely. He did not pray for personal safety, career success, or theological reputation. He prayed for a nation. And he prayed it in the full expectation that God heard and acted. His <em>History of the Reformation in Scotland</em> is not a dispassionate chronicle; it is a passionate argument that God had been at work in every event, overruling kings and councils and armies to bring the gospel to a people He had not abandoned. Knox died in 1572, having heard the thirty-first chapter of the Gospel of John read aloud to him. Those who attended his burial said he died as he had lived: without a flicker of uncertainty.</p>`,
+    quote: 'Give me Scotland, or I die.',
+    quoteSource: 'Attributed prayer, c. 1556',
+    keyWork: 'History of the Reformation in Scotland (1586, posthumous) — Knox\'s own account of the Scottish Reformation, written with the partisan fire of a man who lived it. Essential background to the Presbyterian tradition.',
+    whyRead: 'Because Knox will embarrass your timidity. He was not fearless — he was afraid of the right things. He feared God so much that there was no room left to fear men. Read him when your faith is comfortable and your prayers are polite.'
+  },
+
+  {
+    era: 'Post-Reformation',
+    name: 'John Bunyan',
+    anchor: 'bunyan',
+    dates: '1628–1688',
+    tradition: 'Reformed Baptist / Puritan',
+    tagline: 'The Bedford tinker who wrote the most-read Christian book in history — in a prison cell, with a pen made from a chair leg',
+    body: `<p>John Bunyan had no education worth mentioning, no social standing, and no influence. He was a tinker — a mender of pots and pans — from the village of Elstow near Bedford, a man who by his own account spent his youth in profanity, dancing, and bell-ringing (which he later repented of with some drama). His conversion in the early 1650s was agonising: years of conviction, despair, near-madness, and the gradual, hard-won assurance that the blood of Christ was sufficient even for him. He wrote about it in <em>Grace Abounding to the Chief of Sinners</em> — one of the most searing spiritual autobiographies ever written — and the experience of that long, dark conversion shaped everything he would ever write thereafter. He knew what it was to almost not make it. He wrote for people who felt the same.</p>
+<p>In 1660 he was arrested for preaching without a licence and spent the next twelve years in Bedford jail. It was there, with a pen fashioned from a chair leg and ink he made himself, that he began writing <em>The Pilgrim's Progress</em>. Published in 1678, it is an allegory of the Christian life: Christian, burdened by his sins, sets out from the City of Destruction toward the Celestial City, passing through the Slough of Despond, Vanity Fair, Doubting Castle, and the Valley of the Shadow of Death, accompanied by Faithful and Hopeful, opposed by Apollyon and Giant Despair. Every character, every landmark, every encounter is drawn from Bunyan's own interior life — the doubts he had actually experienced, the temptations he had actually faced, the assurance he had actually fought for. It reads like a dream because Bunyan presented it as one. It reads like truth because it is.</p>
+<p><em>The Pilgrim's Progress</em> has never been out of print since 1678. It has been translated into more than two hundred languages. It was the book most commonly found alongside the Bible in English-speaking households for three centuries. Spurgeon said he had read it more than a hundred times. It shaped the imagination of the English-speaking world's understanding of what the Christian life is: a journey, not an arrival; a pilgrimage through real terrain, with real enemies and real companions, toward a real destination. Bunyan died in 1688 after riding through rain to reconcile a father and son, catching a fever, and dying in London. He was sixty years old. He had written sixty books. And a tinker from Bedford had done more for the cause of ordinary Christian souls than most bishops ever have.</p>`,
+    quote: 'He that is down needs fear no fall; he that is low, no pride; he that is humble, ever shall have God to be his guide.',
+    quoteSource: 'The Pilgrim\'s Progress',
+    keyWork: 'The Pilgrim\'s Progress (1678) — The greatest Christian allegory ever written. If you have never read it, read it now. If you read it as a child, read it again as an adult. It is a different book at every stage of the journey.',
+    whyRead: 'Because Bunyan wrote for people who are barely holding on — and he wrote from experience. He knew the Slough of Despond and Doubting Castle from the inside. His Christian made it through. So will you.'
+  },
+
+  {
+    era: 'Post-Reformation',
+    name: 'George Whitefield',
+    anchor: 'whitefield',
+    dates: '1714–1770',
+    tradition: 'Reformed / Calvinist Methodist',
+    tagline: 'The greatest open-air preacher the world has ever seen — whose voice carried the gospel to tens of thousands who had never set foot in a church',
+    body: `<p>George Whitefield preached to more people than any human being who had ever lived — and he did it without a microphone, without a building, and without a denomination. His voice, trained in the theatre before his conversion, could reportedly be heard from a quarter of a mile away. Benjamin Franklin — no friend of religion — conducted an experiment in Philadelphia, walking backwards from Whitefield until he could no longer hear him, and calculated that the crowd of 30,000 who had gathered to listen could all have heard clearly. Franklin did not become a Christian. But he printed Whitefield's sermons, because they sold. Whitefield was the most famous person in the English-speaking world of the mid-eighteenth century — more famous than any politician, more famous than any general. And he used every ounce of that fame for one thing: preaching the new birth.</p>
+<p>He had been converted as a young man at Oxford, where he was part of the "Holy Club" with John and Charles Wesley. The Wesleys and Whitefield together launched the Methodist revival — but Whitefield and John Wesley parted over theology. Wesley was an Arminian; Whitefield was a Calvinist. He wrote to Wesley: "I think you are in an error… You fight against God in opposing election." The friendship survived the theological difference — at Wesley's funeral, he would preach the sermon — but Whitefield never wavered in his conviction that the sovereignty of God in salvation was not a cold doctrine but the most warming truth in the gospel. It was because God chose that Whitefield could preach to crowds of miners with black faces and white-streaked cheeks where the tears had run through the coal dust, and trust that God would save whom He would save.</p>
+<p>He crossed the Atlantic thirteen times. He preached an estimated eighteen thousand sermons in his thirty-three years of ministry. He died in 1770 in Newburyport, Massachusetts, having preached the night before for two hours while standing on a barrel in a field, by candlelight, to a crowd gathered in the dark. He had asthma, a failing heart, and had been advised to stop preaching. "Lord Jesus, I am weary in thy work, but not of it," he had prayed. "If I have not yet finished my course, let me go and speak for thee once more in the fields, seal thy truth, and come home and die." He did exactly that. He was fifty-five.</p>`,
+    quote: 'God forbid that I should travel with anybody a quarter of an hour without speaking of Christ to them.',
+    quoteSource: 'Personal journal',
+    keyWork: 'Sermons of George Whitefield — His sermons on "The New Birth" and "Abraham\'s Offering Up His Son Isaac" are the best entry points. Vivid, urgent, Christ-saturated — the printed page still carries the heat of the field.',
+    whyRead: 'Because Whitefield had one message and he gave his entire life to it. His singleness of purpose — every sermon toward Christ, every crowd an occasion for the gospel — is a rebuke to how easily our own lives scatter. Read him when you need to be re-centred.'
+  },
+
+  {
+    era: '19th Century',
+    name: 'B. B. Warfield',
+    anchor: 'warfield',
+    dates: '1851–1921',
+    tradition: 'Reformed / Old Princeton',
+    tagline: 'The theological sentinel of Princeton — who held the line for the inspiration and authority of Scripture when the academy was abandoning it',
+    body: `<p>Benjamin Breckinridge Warfield was the last of the great Old Princeton theologians — the tradition established by Charles Hodge and carried forward by his son A.A. Hodge before passing to Warfield, who held the chair of theology at Princeton Seminary from 1887 until his death in 1921. In those thirty-four years he produced a body of work on the inspiration and authority of Scripture that remains the most rigorous and comprehensive Reformed account of biblical inerrancy ever written. The word "inerrancy" — the claim that Scripture, as originally given, is without error in all that it affirms — was largely given its precise theological definition by Warfield, in a series of essays, articles, and the landmark paper on "Inspiration" co-written with A.A. Hodge in 1881.</p>
+<p>He worked in an era of enormous pressure. German higher criticism was dismantling the historical reliability of Scripture in the universities. Liberal theology was redefining Christianity as a religion of moral influence rather than redemptive fact. Warfield engaged both with a combination of scholarly precision and pastoral urgency. His argument was not merely that the church had always believed in the inerrancy of Scripture — though it had — but that the data of Scripture itself, and the teaching of Jesus in particular, required it. Jesus cited Scripture as settling arguments, as incapable of being broken, as the authoritative voice of God Himself. To abandon inerrancy was not to free the church from an embarrassing tradition; it was to contradict Christ.</p>
+<p>But Warfield was not merely a polemicist. His essays on the emotional life of Christ — tracing every reference in the Gospels to Jesus's sorrow, joy, anger, and compassion — are among the most moving pieces of devotional theology ever written by a systematic theologian. His studies on perfectionism, the Holy Spirit, and the person of Christ are models of careful, warm, Reformed scholarship. He spent the last thirty-four years of his life caring personally for his wife, who had been disabled by a nervous disorder since their honeymoon, rarely leaving the house for more than two hours at a time. The man who defended the authority of Scripture with unmatched rigour spent his deepest energies at his wife's bedside. Theology and love were not separate compartments. In Warfield they were one life.</p>`,
+    quote: 'The Bible is the Word of God in such a sense that its words, though written by men and bearing indelibly impressed upon them the marks of their human origin, were written, nevertheless, under such an influence of the Holy Ghost as to be also the words of God, the adequate expression of His mind and will.',
+    quoteSource: 'The Inspiration and Authority of the Bible',
+    keyWork: 'The Inspiration and Authority of the Bible (collected essays, 1948) — The definitive Reformed account of why Scripture is what it claims to be. Dense but rewarding. His essay "God-Inspired Scripture" is the best entry point.',
+    whyRead: 'Because the authority of Scripture is not a question you can avoid — it is the question on which everything else in your Christian life rests. Warfield will give you the clearest, most rigorous answer the Reformed tradition has produced. Read him and hold the line.'
+  },
+
+  {
+    era: 'Modern',
+    name: 'J. Gresham Machen',
+    anchor: 'machen',
+    dates: '1881–1937',
+    tradition: 'Reformed / Presbyterian',
+    tagline: 'The scholar who saw that liberalism was not a different kind of Christianity — it was a different religion',
+    body: `<p>J. Gresham Machen grew up in a cultured Baltimore family, studied at Johns Hopkins, Princeton, and the universities of Marburg and Göttingen in Germany — where he encountered liberal theology at its most sophisticated and its most seductive. He came back to Princeton Seminary a convinced conservative, not because he had not understood liberalism but because he had understood it completely and found it wanting. He joined the faculty at Princeton in 1906 and for the next three decades produced scholarship of the highest order — his <em>The Origin of Paul's Religion</em> and <em>The Virgin Birth of Christ</em> are still standard academic references — while watching with increasing alarm as liberal theology infiltrated the mainline Presbyterian church and its seminaries.</p>
+<p>In 1923 he published <em>Christianity and Liberalism</em>, the book for which he is best remembered and which stands as the most important work of twentieth-century Reformed apologetics. Its thesis is simple, bold, and devastating: liberalism is not a revision of Christianity. It is a different religion. Christianity is built on historical facts — the incarnation, the virgin birth, the atoning death, the bodily resurrection. These are not myths encoding timeless moral truths; they are things that either happened or did not happen. Liberalism, by reinterpreting them as symbols or principles, has not saved Christianity from embarrassment — it has replaced it with something that shares the vocabulary but contradicts the substance. Machen made the separation explicit because he believed honesty required it. The people in the pew deserved to know what the argument was actually about.</p>
+<p>He paid for his clarity. Princeton Seminary was reorganised in 1929 on a more inclusive theological basis, and Machen left to found Westminster Theological Seminary in Philadelphia — the institution that would train generations of Reformed ministers, including many of the most significant voices of the twentieth century. Suspended from the Presbyterian ministry in 1936 for founding an independent mission board, he founded the Presbyterian Church of America (later the Orthodox Presbyterian Church). He died of pneumonia in 1937 in Bismarck, North Dakota, exhausted by the battles. His last telegram, sent from his deathbed, read: "I'm so thankful for active obedience of Christ. No hope without it." He died as he had lived — with the gospel in view and nothing softened.</p>`,
+    quote: 'Christianity is not a system of philosophy or a code of ethics or a series of spiritual experiences. It is a message about an event — something that has happened.',
+    quoteSource: 'Christianity and Liberalism',
+    keyWork: 'Christianity and Liberalism (1923) — One hundred years old and still the clearest, most necessary diagnosis of what happens when the church accommodates the spirit of the age. Required reading for anyone who wants to understand the battle the church is still fighting.',
+    whyRead: 'Because Machen will teach you to see the difference between a Christianity that has been adjusted to make the modern world comfortable and a Christianity that is actually true. That difference is the difference between a religion and the gospel.'
+  },
+
+  {
+    era: 'Modern',
+    name: 'Francis Schaeffer',
+    anchor: 'schaeffer',
+    dates: '1912–1984',
+    tradition: 'Reformed / Presbyterian',
+    tagline: 'The apologist in the mountains — who opened his home to the broken and showed them that Christianity had answers to the questions they were actually asking',
+    body: `<p>In 1955, Francis and Edith Schaeffer moved to a chalet in the Swiss Alps called L'Abri — "the shelter" — and opened their home to anyone who wanted to come and ask questions. Over the next thirty years, a stream of students, artists, hippies, intellectuals, sceptics, and burned-out young people made their way up the mountain, found a table set for them, and discovered a man who would take their questions seriously. Not dismiss them. Not give them a tract. Not offer them a programme. Take them seriously, engage them philosophically, and show them that Christianity was not a retreat from hard thinking but its only solid foundation. L'Abri became one of the most unlikely and significant Christian communities of the twentieth century.</p>
+<p>Schaeffer's great contribution was apologetics — but not the narrow kind that simply answers objections. He worked at the level of worldview: tracing the history of Western thought from the Greeks through the Renaissance, the Enlightenment, the Romantic movement, and into the fragmented, despairing culture of the 1960s and 70s, showing at each point how the rejection of the Christian framework had consequences — philosophical, cultural, moral, aesthetic — that worked themselves out with a kind of terrible logic. His two most important books, <em>The God Who Is There</em> and <em>He Is There and He Is Not Silent</em>, are the architecture of that argument. His basic claim: humanity has tried every alternative to the Christian worldview and each one eventually collapses under the weight of its own internal contradictions. Only a God who is there — a personal, infinite God who has spoken — provides the preconditions for meaning, morality, and truth.</p>
+<p>He was not without controversy — some of his later political engagement (particularly around abortion, in <em>Whatever Happened to the Human Race?</em> with C. Everett Koop) drew criticism from those who felt he had abandoned cultural analysis for partisan politics. But his core vision — that the gospel addresses the whole person, that ideas have consequences, that the Christian is called to love God with all his mind as well as his heart, and that the questions the secular world is asking are the questions Christianity was always answering — shaped an entire generation of thinking Christians. He died in 1984 of cancer, having continued to write and speak until near the end. His last major public appearance was a lecture at the Mayo Clinic, delivered from a wheelchair, on the lordship of Christ over all of life. He meant every word.</p>`,
+    quote: 'Christianity is not a series of truths in the plural, but rather Truth spelled with a capital T. Truth about total reality, not just religious things.',
+    quoteSource: 'The God Who Is There',
+    keyWork: 'The God Who Is There (1968) — Schaeffer\'s foundational work. Part cultural diagnosis, part philosophical apologetics, part evangelism. Begin here and let it reorder how you see the world around you.',
+    whyRead: 'Because Schaeffer will train you to see the questions behind the questions — to hear what the people around you are actually asking beneath the surface, and to know that the gospel has been addressing those questions all along. Read him and become a more useful Christian in a confused world.'
+  }
+
 ];
 
 // ── Era order ──────────────────────────────────────────────────────────────
-const ERA_ORDER = ['Early Church','Reformation','Post-Reformation','19th Century','Modern'];
+const ERA_ORDER = ['Early Church','Medieval','Reformation','Post-Reformation','19th Century','Modern'];
 
 // ── State ──────────────────────────────────────────────────────────────────
 var currentEra = 'All';
