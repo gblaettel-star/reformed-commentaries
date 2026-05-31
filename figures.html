@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theological Figures — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;user-select:none}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Era filter bar */
+.era-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.era-btn{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.25rem .65rem;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s}
+.era-btn:hover{border-color:#c9a84c;color:#c9a84c}
+.era-btn.active{background:#c9a84c;border-color:#c9a84c;color:#0d2137;font-weight:bold}
+
+/* Figure index (collapsible) */
+.fig-index-wrap{background:#0a1e30;border-bottom:2px solid #2a4a6c}
+.fig-index-toggle{width:100%;background:none;border:none;color:#7090b0;padding:.5rem 1rem;font-size:.78rem;font-family:'Georgia',serif;cursor:pointer;text-align:left;letter-spacing:.08em}
+.fig-index-toggle:hover{color:#c9a84c}
+.fig-index-chips{display:none;flex-wrap:wrap;gap:.3rem;padding:.5rem 1rem .75rem}
+.fig-index-chips.open{display:flex}
+.fig-chip-idx{background:none;border:1px solid #2a4a6c;color:#a09070;padding:.2rem .55rem;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Georgia',serif;white-space:nowrap;text-decoration:none}
+.fig-chip-idx:hover{border-color:#c9a84c;color:#c9a84c}
+
+/* No results */
+.no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
+
+main{padding:1.5rem 2rem;max-width:760px;margin:0 auto}
+
+/* Era heading */
+.era-head{color:#c9a84c;font-size:1.1rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase;border-bottom:2px solid #c9a84c;padding-bottom:.4rem;margin:2rem 0 1.2rem}
+
+/* Figure card */
+.fig-card{margin-bottom:2rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+.fig-header{background:#1a3a5c;padding:.85rem 1.2rem}
+.fig-name{color:#c9a84c;font-size:1.2rem;font-weight:bold;letter-spacing:.04em}
+.fig-meta{color:#7090b0;font-size:.8rem;font-style:italic;margin-top:.2rem}
+.fig-body{padding:1.2rem 1.4rem;line-height:1.85}
+.fig-body p{margin-bottom:.9rem}
+.fig-body p:last-child{margin-bottom:0}
+
+/* Quote block */
+.fig-quote-wrap{background:#0d2137;border:1px solid #2a4a6c;border-radius:6px;padding:1rem 1.2rem;margin-top:1.2rem}
+.fig-quote-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.6rem}
+.fig-quote-text{font-style:italic;color:#d4c4a8;line-height:1.8;font-size:.97rem}
+.fig-quote-source{color:#7090b0;font-size:.78rem;margin-top:.5rem}
+
+/* Key work */
+.fig-work-wrap{background:#0d2137;border:1px solid #2a4a6c;border-radius:6px;padding:.75rem 1.2rem;margin-top:.75rem;display:flex;gap:.75rem;align-items:baseline}
+.fig-work-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.fig-work-text{color:#d4c4a8;font-size:.9rem;line-height:1.6}
+
+/* Why read */
+.fig-why-wrap{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;margin-top:1.2rem;border-radius:0 4px 4px 0}
+.fig-why-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.fig-why-text{line-height:1.8;font-style:italic}
+
+footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-top:1px solid #2a4a6c;margin-top:2rem}
+
+@media(max-width:640px){
+  main{padding:1rem}
+  .fig-body{padding:1rem}
+  .fig-header{padding:.75rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1>Theological Figures</h1>
+    <span style="width:4.5rem"></span>
+  </div>
+  <h2>Faithful Voices Across the Centuries</h2>
+</header>
+
+<div class="era-bar" id="era-bar"></div>
+
+<div class="fig-index-wrap">
+  <button class="fig-index-toggle" onclick="toggleFigIndex()" id="fig-index-toggle">Browse all 10 figures ▾</button>
+  <div class="fig-index-chips" id="fig-index-chips"></div>
+</div>
+
+<div id="no-results" class="no-results" style="display:none">No figures match this filter.</div>
+<main id="fig-main"></main>
+
+<footer>Soli Deo Gloria &mdash; To God alone be the glory</footer>
+
+<script>
+const FIGURES = [
+
+  {
+    era: 'Early Church',
+    name: 'Athanasius of Alexandria',
+    anchor: 'athanasius',
+    dates: 'c. 296–373',
+    tradition: 'Patristic / Proto-Reformed',
+    tagline: 'Defender of the Trinity — the man who held the line when the whole world went Arian',
+    body: `<p>Athanasius did not choose his battle — his battle chose him. In the fourth century, the most dangerous heresy the church had ever faced was spreading with imperial backing: Arianism, the teaching that the Son of God was a created being, exalted above all others but not truly God. At the Council of Nicaea in 325, Athanasius — then a young deacon — helped forge the Nicene Creed, the great declaration that the Son is "of the same substance" as the Father. It should have settled the matter. It did not. For the next four decades, the Arian party controlled emperors, councils, and bishoprics. Athanasius was exiled five times from his see in Alexandria. The phrase that followed him through history — <em>Athanasius contra mundum</em>, Athanasius against the world — was not a boast. It was simply what happened.</p>
+<p>What drove him was not stubbornness but soteriology. Athanasius understood with a clarity few have matched that if the Son is not truly God, then the incarnation does not save us — it merely impresses us. A created being cannot bear the infinite weight of human sin. A creature cannot give us participation in the divine nature. Only God can save, and therefore the Saviour must be God. His great work <em>On the Incarnation</em>, written when he was barely twenty, contains the sentence that has rung through the centuries: "He became what we are so that we might become what He is." That sentence is only possible if the Son is fully divine. Everything depended on it, and Athanasius knew it.</p>
+<p>He died in 373, restored finally to his see, the Nicene faith beginning its long vindication. The Arian emperors who had exiled him were dust. The creed he had defended would become the confession of the universal church. C.S. Lewis wrote the introduction to a modern edition of <em>On the Incarnation</em> and urged every Christian to read it — not as an antique curiosity but as a living, luminous statement of why the incarnation is the hinge of all history. Athanasius was right. The world was wrong. And it matters now as much as it mattered then.</p>`,
+    quote: 'He became what we are so that we might become what He is.',
+    quoteSource: 'On the Incarnation',
+    keyWork: 'On the Incarnation (c. 318) — Written at around age twenty, this slim masterpiece is the most compelling account of why the eternal Son had to become flesh. C.S. Lewis called it one of the greatest works of Christian thought and wrote its modern introduction.',
+    whyRead: 'Because the deity of Christ is not a theological technicality — it is the load-bearing wall of your salvation. Athanasius knew that. He paid for it with five exiles. Read him and feel the weight of what he held.'
+  },
+
+  {
+    era: 'Early Church',
+    name: 'Augustine of Hippo',
+    anchor: 'augustine',
+    dates: '354–430',
+    tradition: 'Patristic / Proto-Reformed',
+    tagline: 'The theologian of grace — whose restless heart found rest, and whose mind shaped the next thousand years',
+    body: `<p>Augustine is the towering figure of Western Christianity. Everything that came after him — medieval theology, the Reformation, the Counter-Reformation, modern evangelicalism — is in some sense a conversation with Augustine. He gave the church its most precise articulation of original sin, of the sovereignty of grace, of the bondage of the will, of predestination. Luther and Calvin drank deeply from him. But before all of that, he was a man who spent the first thirty-three years of his life running from God — through Manichaeism, through philosophy, through pleasure, through ambition — and who was finally stopped, sitting in a garden in Milan in 386, weeping over his inability to do the good he knew he should do, when he heard a child's voice say "Take up and read." He opened Paul's letter to the Romans. And the restlessness ended.</p>
+<p>The <em>Confessions</em>, written after his conversion and eventual consecration as Bishop of Hippo in North Africa, is the most intimate theological autobiography ever written — a long, aching prayer addressed directly to God, recounting the years of wandering and the relentless mercy that pursued him through them. Its opening sentence is the most famous in Christian literature: "You have made us for yourself, O Lord, and our heart is restless until it rests in you." This was not a decorative sentiment. It was the distillation of thirty-three years of misdirected longing, now finally understood. The desires were never wrong; they were aimed at the wrong things. Grace aimed them rightly.</p>
+<p>His theological battles with Pelagius — who taught that humans have the natural ability to choose God without divine assistance — produced the church's clearest account of grace and free will. Augustine insisted, against Pelagius, that the will is not neutral: it is bent by sin, incapable of choosing God from its own resources, and only freed by the sovereign, undeserved grace of God. This is the heartbeat of Reformed soteriology. Luther would later say that if he had to choose one theologian to read after Paul, it would be Augustine. The Reformation was, in many respects, Augustine rediscovering himself after a thousand years of Pelagian drift.</p>`,
+    quote: 'You have made us for yourself, O Lord, and our heart is restless until it rests in you.',
+    quoteSource: 'Confessions, Book I',
+    keyWork: 'Confessions (397–400) — Part autobiography, part theology, part prayer — the most human and most profound account of what it means to be found by God. Every Christian should read it at least once.',
+    whyRead: 'Because Augustine names the restlessness you feel and shows you where it ends. His story is your story — desire aimed at everything except the one thing that satisfies. Read him and feel the relief of being understood.'
+  },
+
+  {
+    era: 'Reformation',
+    name: 'Martin Luther',
+    anchor: 'luther',
+    dates: '1483–1546',
+    tradition: 'Lutheran / Reformation',
+    tagline: 'The man who nailed a piece of paper to a door and set the world on fire',
+    body: `<p>Martin Luther did not set out to start the Reformation. He set out to dispute some abuses in the sale of indulgences — the church's practice of selling certificates of reduced punishment in purgatory. On October 31, 1517, he nailed ninety-five theses to the door of the Castle Church in Wittenberg. It was an academic gesture, a call for debate. Within weeks, thanks to the printing press, his theses had spread across Germany. Within years, the unified Western church had fractured. The Reformation had begun — not because Luther was a revolutionary, but because the question he was asking turned out to be the most important question in the world: how is a sinful person made right with a holy God?</p>
+<p>The answer came to him in what he called his "tower experience" — studying Romans 1:17, the phrase "the righteousness of God." He had always read it as the righteousness by which God judges, and it had terrified him. He was a monk of exceptional rigour, going to confession so frequently that his confessor told him he was making things up. He could not find peace. Then the text broke open: "the righteousness of God" is not the righteousness God demands but the righteousness God gives — freely, through faith alone, on the basis of Christ alone. "I felt myself to be reborn and to have gone through open doors into paradise." Justification by faith alone — <em>sola fide</em> — was not Luther's invention. It was Paul's. But Luther gave it back to the church, and it changed everything.</p>
+<p>When the Emperor demanded he recant at the Diet of Worms in 1521, Luther's answer has become one of the most famous stands in history: "Here I stand. I can do no other. God help me." He was placed under imperial ban — an outlaw. He was hidden in Wartburg Castle, where he translated the entire New Testament into German in eleven weeks, giving the common people the Word of God in their own language. Luther was not a perfect man — his later writings against the Jews are a dark stain on his legacy, and Reformed theologians would sharpen and correct his theology in significant ways. But the light he recovered — that sinners are justified freely, by grace alone, through faith alone, in Christ alone — is the light the church had been waiting to recover for a thousand years.</p>`,
+    quote: 'Here I stand. I can do no other. God help me.',
+    quoteSource: 'Diet of Worms, 1521',
+    keyWork: 'The Freedom of a Christian (1520) — A short, incandescent masterpiece: "A Christian is a perfectly free lord of all, subject to none. A Christian is a perfectly dutiful servant of all, subject to all." Two sentences that contain the whole of Reformed ethics.',
+    whyRead: 'Because Luther lived the gospel before he understood it, and understanding it nearly destroyed him with joy. His story is the story of a man who discovered that the righteousness of God is a gift. That discovery is worth inhabiting.'
+  },
+
+  {
+    era: 'Reformation',
+    name: 'John Calvin',
+    anchor: 'calvin',
+    dates: '1509–1564',
+    tradition: 'Reformed',
+    tagline: 'The architect of Reformed theology — who gave the Reformation its systematic nerve and its God-centred soul',
+    body: `<p>If Luther lit the fire, Calvin built the hearth. Where Luther was volcanic — passionate, polemical, driven by personal anguish — Calvin was precise, exhaustive, and architectural. His <em>Institutes of the Christian Religion</em>, first published in 1536 when he was twenty-six and expanded through four editions until 1559, is the greatest work of systematic theology produced by the Reformation — a comprehensive, ordered account of the entire Christian faith, organised around the knowledge of God and the knowledge of self. Calvin's guiding conviction was that all true knowledge begins with God: "Nearly all the wisdom we possess, that is to say, true and sound wisdom, consists of two parts: the knowledge of God and of ourselves." Everything else follows from that.</p>
+<p>Calvin's theology is defined above all by the sovereignty of God — the conviction that God governs all things according to His own purposes, that salvation is entirely His work from election to glorification, and that the glory of God is the ultimate end of all creation. This is sometimes caricatured as cold or mechanical. Reading Calvin himself cures the caricature instantly. His commentaries — on nearly every book of the Bible — are full of pastoral warmth, practical application, and a breathtaking attentiveness to the text. His sermons, preached verse by verse through entire books of the Bible, filled Geneva's church week after week for twenty-five years. Calvin was not primarily a theologian who happened to pastor; he was a pastor who happened to produce theology of unmatched rigour.</p>
+<p>His influence is impossible to overstate. The Presbyterian and Reformed church traditions across the world trace their doctrine directly to him. The Puritans drank from him. Edwards, Whitefield, Spurgeon, Lloyd-Jones — all of them are, in significant respects, Calvin's theological children. His insistence on the sovereignty of grace, the authority of Scripture, the glory of God in all things, and the necessity of a church ordered by the Word has shaped Reformed Christianity for five centuries. He died in 1564 at fifty-four, worn out by work and illness. His last words were characteristic: "How long, O Lord?" And then: "Thou, Lord, bruisest me, but I am abundantly satisfied, since it is from thy hand."</p>`,
+    quote: 'We are not our own; therefore, neither our reason nor our will should predominate in our deliberations and actions. We are not our own; therefore, let us not presuppose it as our end to seek what may be expedient for us according to the flesh. We are not our own; therefore, let us forget ourselves and all that is ours. Conversely, we are God\'s.',
+    quoteSource: 'Institutes of the Christian Religion, III.7.1',
+    keyWork: 'Institutes of the Christian Religion (final ed. 1559) — The summit of Reformation theology. Daunting in scope; electrifying in content. Begin with Book III on the Holy Spirit and the Christian life.',
+    whyRead: 'Because Calvin will show you a God so large, so sovereign, so gloriously in control of all things, that your anxieties will seem small by comparison. He does not shrink God to fit your questions. He enlarges your questions to fit God.'
+  },
+
+  {
+    era: 'Post-Reformation',
+    name: 'John Owen',
+    anchor: 'owen',
+    dates: '1616–1683',
+    tradition: 'Reformed / Puritan',
+    tagline: 'The prince of the Puritans — the deepest theologian of the Holy Spirit the church has ever produced',
+    body: `<p>John Owen is not easy reading. He wrote in the dense, subordinate-clause-layered prose of seventeenth-century Puritan scholarship, and a single sentence can run for half a page. But those who push through are rewarded with a depth of theological insight into the interior life — the work of the Spirit, the nature of temptation, the practice of mortification, the communion of the soul with God — that has rarely been matched in Christian history. Charles Spurgeon said he would give a hand to write as Owen did. J.I. Packer wrote that Owen "made him" as a theologian. Sinclair Ferguson has spent decades helping the modern church rediscover him.</p>
+<p>Owen served as chaplain to Oliver Cromwell, was Vice-Chancellor of Oxford, and preached before Parliament. But his lasting contribution is not political — it is pastoral and theological. His <em>Communion with God</em> lays out with extraordinary precision what it means to enjoy fellowship with each person of the Trinity — the Father in love, the Son in grace, the Spirit in comfort. His treatise on the mortification of sin contains the most direct and penetrating account of how a Christian actually deals with indwelling sin: "Be killing sin or it will be killing you." His massive <em>Death of Death in the Death of Christ</em> is the definitive Reformed account of definite atonement — the argument that Christ's death actually saves those for whom it was intended, rather than merely making salvation possible for anyone.</p>
+<p>Owen knew the inside of suffering. He buried ten of his eleven children. He was ejected from his church under the Act of Uniformity. He watched the Puritan project he had given his life to crumble around him. And yet his theology was not abstract — it was the living framework within which he endured everything. His final letter, dictated on his deathbed, reads: "I am going to Him whom my soul hath loved, or rather who hath loved me with an everlasting love — which is the whole ground of all my consolation." The theologian and the man were one and the same. That is the rarest thing.</p>`,
+    quote: 'Be killing sin or it will be killing you.',
+    quoteSource: 'Of the Mortification of Sin in Believers',
+    keyWork: 'Of the Mortification of Sin in Believers (1656) — Short, severe, and surgically precise. The best practical theology of dealing with indwelling sin ever written. Every Christian should read it at least once a decade.',
+    whyRead: 'Because Owen will not let you be vague about your sin or sentimental about your spiritual life. He is the surgeon of the soul — precise, honest, and ultimately full of hope. The depth of his Christ-centredness will change how you read the rest of theology.'
+  },
+
+  {
+    era: 'Post-Reformation',
+    name: 'Jonathan Edwards',
+    anchor: 'edwards',
+    dates: '1703–1758',
+    tradition: 'Reformed / Puritan',
+    tagline: 'America\'s greatest theologian — whose mind was a cathedral and whose heart was a furnace',
+    body: `<p>Jonathan Edwards is routinely described as the greatest theologian America has ever produced — but that category is almost too small. He was a philosopher of the first rank, a revival preacher of extraordinary power, a pastor of deep tenderness, a biblical expositor of startling originality, and a man whose private spiritual life — recorded in his journals and his <em>Personal Narrative</em> — was one of sustained, almost overwhelming delight in God. He lived in Northampton, Massachusetts, serving a Congregational church, and in 1734–35 he witnessed a remarkable outpouring of the Spirit that became one of the first great revivals of the First Great Awakening. George Whitefield came and preached; the revival spread up and down the Eastern seaboard.</p>
+<p>His most famous sermon, "Sinners in the Hands of an Angry God" (1741), is often misread as a piece of fire-and-brimstone manipulation. It is actually a careful, scripturally grounded account of the radical contingency of human existence before a holy God — and it was delivered in a measured, quiet tone while men and women gripped the pillars of the church as if the floor were giving way. But Edwards's deepest concern was not terror — it was beauty. His <em>Religious Affections</em> is the most penetrating analysis of genuine Christian experience ever written, asking the question that revivals always raise: how do you tell real faith from its counterfeits? His answer revolves around the beauty of holiness, the transformation of the affections toward God, the practical fruit of a life genuinely changed.</p>
+<p>He was appointed president of Princeton (then the College of New Jersey) in 1758, and died within weeks of arriving — from a smallpox inoculation gone wrong. He was fifty-four. His last words were characteristically focused outward: "Give my love to them all." His influence, particularly through his <em>Freedom of the Will</em> and <em>Religious Affections</em>, shaped the entire trajectory of Reformed theology in America. But the quality that leaps from his pages is not his intellect — it is his joy. Edwards had tasted something — the "excellent brightness" of Christ — and everything he wrote came from a man who could not get over it.</p>`,
+    quote: 'God is the highest good of the reasonable creature, and the enjoyment of Him is our proper happiness, and is the only happiness with which our souls can be satisfied.',
+    quoteSource: 'The End for Which God Created the World',
+    keyWork: 'Religious Affections (1746) — The definitive account of what genuine Christian experience looks like, and how to distinguish it from its imitations. Demanding but transformative.',
+    whyRead: 'Because Edwards had a vision of God that was so large and so beautiful that it reorganised everything else around it. Read him when your faith feels small or routine. You will not feel that way for long.'
+  },
+
+  {
+    era: '19th Century',
+    name: 'Charles Haddon Spurgeon',
+    anchor: 'spurgeon',
+    dates: '1834–1892',
+    tradition: 'Reformed Baptist',
+    tagline: 'The Prince of Preachers — who filled the largest auditorium in London week after week with nothing but the Bible and the gospel',
+    body: `<p>Charles Spurgeon began preaching at sixteen, became pastor of New Park Street Chapel in London at nineteen, and by twenty-two was preaching to crowds of ten thousand at the Surrey Gardens Music Hall while his permanent home, the Metropolitan Tabernacle, was being built. He never attended university. He never studied at a seminary. He simply opened his Bible, preached Christ with every ounce of his enormous gifts, and London came. For nearly forty years, he preached twice on Sundays and once on Thursday evenings to congregations of five to six thousand — and his printed sermons were read by millions more. By the end of his life, he had preached to an estimated ten million people and published more words than any other Christian writer in history.</p>
+<p>What made Spurgeon extraordinary was not technique but substance. He was, to the marrow, a Calvinist — a man who believed that the sovereignty of God was not a theological abstraction but the most comforting and energising truth in the world. "I have my own private opinion," he once said, "that there is no such thing as preaching Christ and Him crucified, unless we preach what is nowadays called Calvinism. It is a nickname to call it Calvinism; Calvinism is the gospel, and nothing else." He preached every text toward Christ, every sermon toward the cross, every appeal toward the mercy of God for sinners. His illustrations were vivid, his humour disarming, his tenderness for struggling souls immense. He wept in the pulpit. He wept in his study. He suffered from severe depression throughout his ministry — a fact he spoke of with remarkable openness — and yet the note that rings through his sermons is irrepressible joy.</p>
+<p>He was also a doer. He founded an orphanage, a college for training pastors, and a ministry to distribute literature to the poor. He fought the slave trade when many of his fellow ministers stayed silent, at the cost of enormous popularity in America. He fought theological liberalism — "the Down-Grade Controversy" — when it began to infiltrate English Nonconformity, at the cost of his own health. He died at fifty-seven, worn out and in pain, in Menton, France. His last words from the pulpit had been: "If you wear the livery of Christ, you will find Him so meek and lowly of heart that you will find rest unto your souls." He had. And he wanted everyone else to find it too.</p>`,
+    quote: 'I have learned to kiss the wave that throws me against the Rock of Ages.',
+    quoteSource: 'Sermon, Metropolitan Tabernacle',
+    keyWork: 'Morning by Morning / Evening by Evening (1865–66) — Daily devotionals that have fed Christians for 160 years. The best entry point into Spurgeon. Open to any page and you will be fed.',
+    whyRead: 'Because Spurgeon preached like a man who had been saved from drowning and could not stop talking about it. His joy in Christ is contagious across 130 years. Read him when you need to remember why the gospel is good news.'
+  },
+
+  {
+    era: 'Modern',
+    name: 'Martyn Lloyd-Jones',
+    anchor: 'lloyd-jones',
+    dates: '1899–1981',
+    tradition: 'Reformed / Calvinist Methodist',
+    tagline: 'The last of the great expository preachers — who believed that preaching was the highest calling and proved it every Sunday for thirty years',
+    body: `<p>David Martyn Lloyd-Jones was a brilliant young physician in London — already on a trajectory toward the top of his profession, personal physician to the royal family — when he walked away from medicine at twenty-seven to become a preacher. His mentor, the great Sir Thomas Horder, told him it was the greatest waste of a medical career he had ever seen. Lloyd-Jones told him he was moving from treating the symptoms to treating the disease. He never looked back. He served a small church in Aberavon, Wales, for eleven years — declining far larger and more prestigious pulpits — before accepting the call to Westminster Chapel in London, where he would preach for thirty years to congregations that came from all over the world to hear him.</p>
+<p>What they came to hear was not entertainment. Lloyd-Jones preached long — often forty-five minutes to an hour — expository sermons, working through books of the Bible verse by verse, with an intensity and a doctrinal weight that seemed entirely out of step with the direction of twentieth-century preaching. But the power was unmistakable. He had been a diagnostician of disease; he remained a diagnostician of the human soul. He would establish the text, expose the underlying condition of the heart, and then bring the remedy of the gospel with a building urgency that left audiences in silence. He never raised his voice unnecessarily. He never used cheap illustrations. He was not trying to move people emotionally — he was trying to preach the truth, and the truth moved people.</p>
+<p>His Friday-night Bible studies on the book of Romans ran for thirteen years and produced fourteen published volumes. His sermons on Ephesians fill eight volumes. His <em>Spiritual Depression</em> — a series on Psalm 42 and related texts — is arguably the most helpful book ever written for Christians who struggle with darkness of soul. He was Reformed to the core, deeply suspicious of revivalism that bypassed the mind, fiercely committed to the sovereignty of God in salvation, and equally fiercely committed to the reality of the Holy Spirit's power. He saw no contradiction between those two commitments, and he embodied both. He died in 1981, having asked that no tribute be paid at his funeral. He had preached Christ for fifty years. That was enough.</p>`,
+    quote: 'The work of preaching is the highest and the greatest and the most glorious calling to which anyone can ever be called.',
+    quoteSource: 'Preaching and Preachers',
+    keyWork: 'Spiritual Depression: Its Causes and Cure (1965) — Pastoral theology at its finest. If you or someone you love is struggling with depression, darkness, or doubt, this is the first book to reach for.',
+    whyRead: 'Because Lloyd-Jones preached like a man who had seen the glory of God and could not be satisfied with anything less in the pulpit — or in the pew. Read him when your faith has become routine. He will not leave it that way.'
+  },
+
+  {
+    era: 'Modern',
+    name: 'J. I. Packer',
+    anchor: 'packer',
+    dates: '1926–2020',
+    tradition: 'Reformed Anglican',
+    tagline: 'The teacher who gave a generation back its theology — and showed them that knowing God is not an academic exercise but a lifelong friendship',
+    body: `<p>James Innell Packer was born in Gloucester, England, in 1926, and converted to Christ at Oxford through the witness of the InterVarsity Christian Union. He spent his academic career at Tyndale Hall and later Regent College in Vancouver, becoming one of the most widely read and trusted Reformed voices of the twentieth century — a theologian who could write for scholars and for ordinary Christians with equal clarity, and who always kept the pastoral question in front of him: what difference does this make for the person in the pew? He was a disciple of John Owen and spent years editing and introducing Owen's works for modern readers, giving a new generation access to one of the richest veins of Puritan theology.</p>
+<p><em>Knowing God</em>, published in 1973, is the book most associated with his name — and it is one of the most important books of Christian theology written in the twentieth century. It is not a systematic theology in the technical sense; it is an invitation. Chapter by chapter, Packer introduces the attributes of God — His wisdom, His faithfulness, His grace, His wrath, His sovereignty — not as propositions to be memorised but as aspects of a person to be known. The book's central argument is that Christianity is not primarily about knowing things about God but about knowing God Himself, personally, relationally, across a lifetime. That distinction — between knowing about and knowing — is the difference between theology that is alive and theology that is a corpse.</p>
+<p>Packer was not without controversy. His signing of <em>Evangelicals and Catholics Together</em> in 1994 cost him friendships and raised serious questions that remain unresolved. His later ministry at Regent College, cut short by the macular degeneration that took his sight in his eighties, was marked by a gentleness and a depth that those who knew him speak of with awe. He died in 2020 at ninety-three, having never retired from thinking, writing, and teaching. His last years were spent in silence — unable to read, unable to write — and those who visited report that he was more at peace than ever. The man who had spent his life teaching others to know God had, it seems, arrived somewhere most of us are still journeying toward.</p>`,
+    quote: 'Disregard the study of God, and you sentence yourself to stumble and blunder through life blindfolded, as it were, with no sense of direction and no understanding of what surrounds you.',
+    quoteSource: 'Knowing God',
+    keyWork: 'Knowing God (1973) — The book that introduced a generation to the character of God as something to be loved, not merely catalogued. Essential reading for every Christian.',
+    whyRead: 'Because Packer will show you that theology is not a subject — it is a relationship. And that the God you have been believing in is more glorious, more personal, and more worthy of your entire life than you have yet begun to understand.'
+  },
+
+  {
+    era: 'Modern',
+    name: 'Timothy Keller',
+    anchor: 'keller',
+    dates: '1950–2023',
+    tradition: 'Reformed / Presbyterian',
+    tagline: 'The apologist of grace — who made the gospel legible to a secular age without ever softening it',
+    body: `<p>Tim Keller planted Redeemer Presbyterian Church in Manhattan in 1989 — a young Reformed pastor arriving in one of the most secular, educated, and spiritually hostile cities in America, with no guarantee that anyone would come. They came. Within years, Redeemer was drawing thousands of young professionals, artists, intellectuals, and sceptics who had written off Christianity — or had never seriously considered it — and finding that this pastor's preaching addressed their real questions with a rigour and a grace they had not expected from the church. Keller understood the secular mind from the inside: he had read their philosophers, engaged their objections, and could speak their language without abandoning his own. He was, in the deepest sense, a missionary to his own culture.</p>
+<p>His great gift was the ability to hold together what others tend to separate: intellectual rigour and pastoral tenderness, Reformed orthodoxy and cultural engagement, the demands of the law and the freedom of the gospel. He had been deeply formed by Jonathan Edwards, by John Owen, by C.S. Lewis, and — above all — by the insight that the gospel is not just the entry point of the Christian life but its entire ongoing oxygen. The key move in all his preaching was the distinction between the religious person (who obeys God to earn acceptance) and the gospel person (who obeys God out of the acceptance already given in Christ). That distinction — between religion and the gospel — cut through to something that vast numbers of people in both church and world recognised as the description of their actual condition.</p>
+<p>He was diagnosed with pancreatic cancer in 2020, and died in May 2023. His final years were marked by the same combination of sharp thinking and deep peace that had characterised his ministry. He wrote and spoke about dying with the same grace with which he had preached the gospel for forty years. His last book, <em>On Death</em>, was completed in his final months. In it he wrote: "I have never been able to shake God's love — and I am almost on the other side, and I am not afraid." The pastor who had spent his life making the gospel legible to the fearful died with the gospel's promise confirmed in his own experience. He was not afraid. He knew where he was going.</p>`,
+    quote: 'The gospel is this: We are more sinful and flawed in ourselves than we ever dared believe, yet at the very same time we are more loved and accepted in Jesus Christ than we ever dared hope.',
+    quoteSource: 'The Meaning of Marriage',
+    keyWork: 'The Reason for God (2008) — The finest piece of Reformed apologetics written for a secular audience in the last fifty years. Required reading for any Christian who lives and works among people who think Christianity is intellectually indefensible.',
+    whyRead: 'Because Keller understood that most people who reject Christianity are rejecting a caricature of it — and he knew how to show them the real thing. Read him when your faith feels difficult to explain, or when you feel the weight of living in a world that no longer shares your assumptions.'
+  }
+
+];
+
+// ── Era order ──────────────────────────────────────────────────────────────
+const ERA_ORDER = ['Early Church','Reformation','Post-Reformation','19th Century','Modern'];
+
+// ── State ──────────────────────────────────────────────────────────────────
+var currentEra = 'All';
+var figIndexOpen = false;
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  buildEraBar();
+  buildFigIndex();
+  renderFigures();
+});
+
+function buildEraBar() {
+  var bar = document.getElementById('era-bar');
+  var eras = ['All'].concat(ERA_ORDER);
+  bar.innerHTML = eras.map(function(e) {
+    return '<button class="era-btn' + (e === 'All' ? ' active' : '') + '" onclick="setEra(\'' + e + '\')">' + e + '</button>';
+  }).join('');
+}
+
+function setEra(era) {
+  currentEra = era;
+  document.querySelectorAll('.era-btn').forEach(function(b) {
+    b.classList.toggle('active', b.textContent === era);
+  });
+  renderFigures();
+}
+
+function buildFigIndex() {
+  var chips = document.getElementById('fig-index-chips');
+  var sorted = FIGURES.slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
+  chips.innerHTML = sorted.map(function(f) {
+    return '<a class="fig-chip-idx" onclick="jumpToFig(\'' + f.anchor + '\')">' + f.name + '</a>';
+  }).join('');
+  updateToggleLabel();
+}
+
+function toggleFigIndex() {
+  figIndexOpen = !figIndexOpen;
+  document.getElementById('fig-index-chips').classList.toggle('open', figIndexOpen);
+  updateToggleLabel();
+}
+
+function updateToggleLabel() {
+  var visible = currentEra === 'All' ? FIGURES.length : FIGURES.filter(function(f){ return f.era === currentEra; }).length;
+  document.getElementById('fig-index-toggle').textContent = 'Browse ' + visible + ' figure' + (visible !== 1 ? 's' : '') + (figIndexOpen ? ' ▴' : ' ▾');
+}
+
+function jumpToFig(anchor) {
+  // ensure era allows this figure
+  var fig = FIGURES.find(function(f){ return f.anchor === anchor; });
+  if (fig && currentEra !== 'All' && fig.era !== currentEra) {
+    setEra('All');
+  }
+  setTimeout(function() {
+    var el = document.getElementById(anchor);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+function renderFigures() {
+  var filtered = currentEra === 'All' ? FIGURES : FIGURES.filter(function(f){ return f.era === currentEra; });
+  var noResults = document.getElementById('no-results');
+  var main = document.getElementById('fig-main');
+
+  if (filtered.length === 0) {
+    noResults.style.display = '';
+    main.innerHTML = '';
+    updateToggleLabel();
+    return;
+  }
+  noResults.style.display = 'none';
+
+  // Group by era in ERA_ORDER sequence
+  var groups = {};
+  ERA_ORDER.forEach(function(e){ groups[e] = []; });
+  filtered.forEach(function(f){ if(groups[f.era]) groups[f.era].push(f); });
+
+  var html = '';
+  ERA_ORDER.forEach(function(era) {
+    var list = groups[era];
+    if (!list || list.length === 0) return;
+    html += '<div class="era-head">' + era + '</div>';
+    list.forEach(function(f) {
+      html += buildCard(f);
+    });
+  });
+
+  main.innerHTML = html;
+  updateToggleLabel();
+}
+
+function buildCard(f) {
+  return '<div class="fig-card" id="' + f.anchor + '">'
+    + '<div class="fig-header">'
+    +   '<div class="fig-name">' + f.name + '</div>'
+    +   '<div class="fig-meta">' + f.dates + ' &nbsp;·&nbsp; ' + f.tradition + ' &nbsp;·&nbsp; <em>' + f.tagline + '</em></div>'
+    + '</div>'
+    + '<div class="fig-body">'
+    +   f.body
+    +   '<div class="fig-quote-wrap">'
+    +     '<div class="fig-quote-label">Famous Quote</div>'
+    +     '<div class="fig-quote-text">&ldquo;' + f.quote + '&rdquo;</div>'
+    +     '<div class="fig-quote-source">&mdash; ' + f.quoteSource + '</div>'
+    +   '</div>'
+    +   '<div class="fig-work-wrap">'
+    +     '<div class="fig-work-label">Key Work</div>'
+    +     '<div class="fig-work-text">' + f.keyWork + '</div>'
+    +   '</div>'
+    +   '<div class="fig-why-wrap">'
+    +     '<div class="fig-why-label">Why Read Him</div>'
+    +     '<div class="fig-why-text">' + f.whyRead + '</div>'
+    +   '</div>'
+    + '</div>'
+    + '</div>';
+}
+</script>
+</body>
+</html>
