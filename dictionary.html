@@ -10,10 +10,8 @@
 body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
 
 header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
-.header-top{display:flex;align-items:center;gap:.8rem}
-.back-btn{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:1.1rem;min-height:2.75rem;touch-action:manipulation;flex-shrink:0}
-.back-btn:hover{background:#c9a84c;color:#0d2137}
-header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;cursor:pointer;user-select:none}
+header h1:hover{opacity:.8}
 header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
 
 /* Search box */
@@ -91,10 +89,7 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
 <body>
 
 <header>
-  <div class="header-top">
-    <button class="back-btn" onclick="window.location.href='index.html'">&#8592;</button>
-    <h1>Theological Dictionary</h1>
-  </div>
+  <h1 onclick="resetDict()">Theological Dictionary</h1>
   <h2>Key Words of the Faith — Explained and Felt</h2>
 </header>
 
@@ -2909,6 +2904,17 @@ function render() {
     html += '</div></div>';
   });
   main.innerHTML = html;
+}
+
+// ── Reset (title click) ───────────────────────────────────────────────────
+function resetDict() {
+  currentCategory = 'All';
+  currentSearch   = '';
+  document.getElementById('search-input').value = '';
+  document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelector('.theme-btn').classList.add('active');
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
