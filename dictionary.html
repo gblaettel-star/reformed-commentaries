@@ -16,10 +16,34 @@ header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;
 header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center}
 header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
 
+/* Search box */
+.search-wrap{padding:.5rem 1rem;background:#1a3a5c}
+.search-input{width:100%;background:#0d2137;color:#e8dcc8;border:1px solid #2a4a6c;border-radius:6px;padding:.5rem .8rem;font-size:.95rem;font-family:'Georgia',serif;outline:none}
+.search-input:focus{border-color:#c9a84c}
+.search-input::placeholder{color:#4a6a8c}
+
+/* Theme bar */
+.theme-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.theme-btn{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.25rem .65rem;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s}
+.theme-btn:hover{border-color:#c9a84c;color:#c9a84c}
+.theme-btn.active{background:#c9a84c;border-color:#c9a84c;color:#0d2137;font-weight:bold}
+
 /* A-Z jump bar */
-.az-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.75rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.az-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
 .az-link{color:#c9a84c;font-size:.8rem;padding:.2rem .45rem;border:1px solid #2a4a6c;border-radius:4px;text-decoration:none;cursor:pointer}
 .az-link:hover{background:#1a3a5c;border-color:#c9a84c}
+
+/* Term index (collapsible) */
+.term-index-wrap{background:#0a1e30;border-bottom:2px solid #2a4a6c}
+.term-index-toggle{width:100%;background:none;border:none;color:#7090b0;padding:.5rem 1rem;font-size:.78rem;font-family:'Georgia',serif;cursor:pointer;text-align:left;letter-spacing:.08em}
+.term-index-toggle:hover{color:#c9a84c}
+.term-index-chips{display:none;flex-wrap:wrap;gap:.3rem;padding:.5rem 1rem .75rem}
+.term-index-chips.open{display:flex}
+.term-chip-idx{background:none;border:1px solid #2a4a6c;color:#a09070;padding:.2rem .55rem;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Georgia',serif;white-space:nowrap;text-decoration:none}
+.term-chip-idx:hover{border-color:#c9a84c;color:#c9a84c}
+
+/* No results */
+.no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
 
 main{padding:1.5rem 2rem;max-width:760px;margin:0 auto}
 
@@ -74,7 +98,15 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
   <h2>Key Words of the Faith — Explained and Felt</h2>
 </header>
 
+<div class="search-wrap">
+  <input class="search-input" id="search-input" type="text" placeholder="&#128269; Search 80 terms…" oninput="onSearch(this.value)" autocomplete="off" spellcheck="false">
+</div>
+<div class="theme-bar" id="theme-bar"></div>
 <div class="az-bar" id="az-bar"></div>
+<div class="term-index-wrap">
+  <button class="term-index-toggle" id="term-index-toggle" onclick="toggleTermIndex()">&#9656; Browse all terms</button>
+  <div class="term-index-chips" id="term-index-chips"></div>
+</div>
 
 <main id="dict-main"></main>
 
@@ -2728,11 +2760,65 @@ const TERMS = [
 
 ];
 
-// Build A-Z bar
-function buildAzBar() {
-  var letters = [...new Set(TERMS.map(t => t.letter))].sort();
+// ── Categories ────────────────────────────────────────────────────────────
+const CATEGORY_MAP = {
+  'God & Trinity':   ['god','god-the-father','god-the-holy-spirit','god-the-son','logos','holiness','glory','sovereignty','providence','faithfulness','power-and-glory','truth','wrath-of-god','angels'],
+  'Christ':          ['incarnation','messiah','son-of-man','lord','crucifixion','resurrection','ascension'],
+  'Salvation':       ['grace','atonement','redemption','justification','reconciliation','forgiveness','adoption','election','new-birth','in-adam','in-christ','salvation','repentance','faith','covenant','sin'],
+  'Christian Life':  ['fear-of-god','hope','joy','peace','love','humility','obedience','prayer','worship','suffering','sanctification','disciple','intercession','praying-in-the-name','flesh','spirit','tribulation','eternal-life'],
+  'Church & Word':   ['church','baptism','lords-supper','scripture','gospel','nations','martyr','signs-and-wonders','speaking-in-tongues','temple','holy-place','false-prophets','hypocrites'],
+  'End Times':       ['kingdom-of-god','day-of-the-lord','rapture','jesus-return','great-white-throne','new-creation','antichrist','false-christs','apostasy','abomination-of-desolation','weeping-and-gnashing','birth-pains']
+};
+const ANCHOR_CATEGORY = {};
+Object.keys(CATEGORY_MAP).forEach(function(cat) {
+  CATEGORY_MAP[cat].forEach(function(a) { ANCHOR_CATEGORY[a] = cat; });
+});
+function getCategory(t) { return ANCHOR_CATEGORY[t.anchor] || 'Other'; }
+
+var currentCategory = 'All';
+var currentSearch   = '';
+var termIndexOpen   = false;
+
+function filtered() {
+  var s = currentSearch.toLowerCase();
+  return TERMS.filter(function(t) {
+    var matchCat  = currentCategory === 'All' || getCategory(t) === currentCategory;
+    var matchSearch = !s || t.name.toLowerCase().indexOf(s) !== -1 || (t.anchorWord && t.anchorWord.toLowerCase().indexOf(s) !== -1);
+    return matchCat && matchSearch;
+  });
+}
+
+// ── Search ────────────────────────────────────────────────────────────────
+function onSearch(val) {
+  currentSearch = val.trim();
+  render();
+}
+
+// ── Theme bar ─────────────────────────────────────────────────────────────
+function buildThemeBar() {
+  var bar = document.getElementById('theme-bar');
+  var cats = ['All'].concat(Object.keys(CATEGORY_MAP));
+  cats.forEach(function(cat) {
+    var btn = document.createElement('button');
+    btn.className = 'theme-btn' + (cat === 'All' ? ' active' : '');
+    btn.textContent = cat;
+    btn.onclick = function() {
+      currentCategory = cat;
+      document.querySelectorAll('.theme-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      render();
+    };
+    bar.appendChild(btn);
+  });
+}
+
+// ── A-Z bar ───────────────────────────────────────────────────────────────
+function refreshAzBar() {
   var bar = document.getElementById('az-bar');
-  letters.forEach(function(l) {
+  bar.innerHTML = '';
+  var letters = [];
+  filtered().forEach(function(t) { if (letters.indexOf(t.letter) === -1) letters.push(t.letter); });
+  letters.sort().forEach(function(l) {
     var a = document.createElement('a');
     a.className = 'az-link';
     a.textContent = l;
@@ -2741,12 +2827,53 @@ function buildAzBar() {
   });
 }
 
-// Build dictionary
-function buildDict() {
-  var main = document.getElementById('dict-main');
+// ── Term index ────────────────────────────────────────────────────────────
+function buildTermIndex() {
+  var wrap = document.getElementById('term-index-chips');
+  wrap.innerHTML = '';
+  TERMS.slice().sort(function(a,b){ return a.name.localeCompare(b.name); }).forEach(function(t) {
+    var a = document.createElement('a');
+    a.className = 'term-chip-idx';
+    a.textContent = t.name;
+    a.href = '#term-' + t.anchor;
+    a.onclick = function() {
+      // if term is hidden by filter, reset
+      var vis = filtered().find(function(f){ return f.anchor === t.anchor; });
+      if (!vis) {
+        currentCategory = 'All';
+        currentSearch = '';
+        document.getElementById('search-input').value = '';
+        document.querySelectorAll('.theme-btn').forEach(function(b){ b.classList.remove('active'); });
+        document.querySelector('.theme-btn').classList.add('active');
+        render();
+      }
+    };
+    wrap.appendChild(a);
+  });
+  var toggle = document.getElementById('term-index-toggle');
+  toggle.textContent = '▶ Browse all ' + TERMS.length + ' terms';
+}
+
+function toggleTermIndex() {
+  termIndexOpen = !termIndexOpen;
+  var chips = document.getElementById('term-index-chips');
+  var toggle = document.getElementById('term-index-toggle');
+  chips.classList.toggle('open', termIndexOpen);
+  toggle.textContent = (termIndexOpen ? '▼' : '▶') + ' Browse all ' + TERMS.length + ' terms';
+}
+
+// ── Main render ───────────────────────────────────────────────────────────
+function render() {
+  refreshAzBar();
+  var terms = filtered();
+  var main  = document.getElementById('dict-main');
+  if (!terms.length) {
+    main.innerHTML = '<div class="no-results">No terms found for &ldquo;' + (currentSearch || currentCategory) + '&rdquo;</div>';
+    return;
+  }
   var html = '';
   var currentLetter = '';
-  TERMS.forEach(function(t) {
+  terms.forEach(function(t) {
     if (t.letter !== currentLetter) {
       currentLetter = t.letter;
       html += '<div class="letter-head" id="letter-' + t.letter + '">' + t.letter + '</div>';
@@ -2755,6 +2882,9 @@ function buildDict() {
     html += '<div class="term-header">';
     html += '<div class="term-name">' + t.name + '</div>';
     if (t.anchorWord) html += '<div class="term-anchor-word">' + t.anchorWord + '</div>';
+    // category badge
+    var cat = getCategory(t);
+    if (cat !== 'Other') html += '<div style="margin-top:.35rem"><span style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#0d2137;background:#c9a84c;padding:.1rem .45rem;border-radius:10px">' + cat + '</span></div>';
     html += '</div>';
     html += '<div class="term-body">';
     html += t.body;
@@ -2781,8 +2911,10 @@ function buildDict() {
   main.innerHTML = html;
 }
 
-buildAzBar();
-buildDict();
+// ── Init ──────────────────────────────────────────────────────────────────
+buildThemeBar();
+buildTermIndex();
+render();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
