@@ -22,7 +22,17 @@ nav button:disabled:hover{background:none;color:#c9a84c}
 
 /* ── Home screen ── */
 #home-screen{width:100%;padding:0}
-.testament-label{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;padding:.6rem 1.2rem .4rem;background:#0d2137;border-bottom:1px solid #2a4a6c}
+
+/* Collapsible section header */
+.section-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#1a3a5c;border-bottom:2px solid #c9a84c;cursor:pointer;user-select:none;touch-action:manipulation}
+.section-toggle:hover{background:#22487a}
+.section-toggle:active{background:#22487a}
+.section-title{color:#c9a84c;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
+.section-count{color:#7090b0;font-size:.72rem;letter-spacing:.06em}
+.section-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
+.section-chevron.open{transform:rotate(90deg)}
+.section-body{overflow:hidden;transition:max-height .25s ease}
+
 .book-row{display:flex;align-items:center;padding:.85rem 1.2rem;border-bottom:1px solid #1a3050;cursor:pointer;transition:background .12s}
 .book-row:hover{background:#1a3a5c}
 .book-row:active{background:#22487a}
@@ -190,41 +200,66 @@ function showHome() {
   window.scrollTo(0,0);
 }
 
+function section(id, title, contentHtml, startOpen) {
+  var open = startOpen ? ' open' : '';
+  var chevronOpen = startOpen ? ' open' : '';
+  var bodyStyle = startOpen ? '' : 'style="max-height:0"';
+  return '<div class="section-wrap" id="sec-' + id + '">'
+    + '<div class="section-toggle" onclick="toggleSection(\'' + id + '\')">'
+    + '<span class="section-title">' + title + '</span>'
+    + '<span class="section-chevron' + chevronOpen + '">&#8250;</span>'
+    + '</div>'
+    + '<div class="section-body" id="body-' + id + '" ' + bodyStyle + '>'
+    + contentHtml
+    + '</div>'
+    + '</div>';
+}
+
+function toggleSection(id) {
+  var body = document.getElementById('body-' + id);
+  var chevron = document.querySelector('#sec-' + id + ' .section-chevron');
+  var isOpen = chevron.classList.contains('open');
+  if (isOpen) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    requestAnimationFrame(function(){ body.style.maxHeight = '0'; });
+    chevron.classList.remove('open');
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    setTimeout(function(){ body.style.maxHeight = 'none'; }, 260);
+    chevron.classList.add('open');
+  }
+}
+
 function buildHome() {
   var ot = BOOKS.filter(b => b.testament === 'OT');
   var nt = BOOKS.filter(b => b.testament === 'NT');
   var sg = BOOKS.filter(b => b.testament === 'SG');
   var sl = BOOKS.filter(b => b.testament === 'SL');
-  var html = '';
-  html += '<div class="testament-label">Old Testament</div>';
-  html += ot.map(row).join('');
-  html += '<div class="testament-label">New Testament</div>';
-  html += nt.map(row).join('');
-  html += '<div class="testament-label">Christian Living Studies</div>';
-  html += sl.map(row).join('');
-  html += '<div class="testament-label">General Studies</div>';
-  html += sg.map(row).join('');
-  html += '<div class="testament-label">Reference</div>';
-  html += '<div class="book-row" onclick="window.location.href=\'dictionary.html\'">'
+
+  var refHtml = ''
+    + '<div class="book-row" onclick="window.location.href=\'dictionary.html\'">'
     + '<div class="row-name">Theological Dictionary</div>'
     + '<div class="row-sub">Key words of the faith — explained and felt</div>'
-    + '<div class="row-arrow">&#8250;</div>'
-    + '</div>';
-  html += '<div class="book-row" onclick="window.location.href=\'figures.html\'">'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'figures.html\'">'
     + '<div class="row-name">Theological Figures</div>'
     + '<div class="row-sub">Faithful voices across the centuries</div>'
-    + '<div class="row-arrow">&#8250;</div>'
-    + '</div>';
-  html += '<div class="book-row" onclick="window.location.href=\'philosophers.html\'">'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'philosophers.html\'">'
     + '<div class="row-name">Philosophers &amp; Christian Thought</div>'
     + '<div class="row-sub">Ideas that shaped — and challenged — the faith</div>'
-    + '<div class="row-arrow">&#8250;</div>'
-    + '</div>';
-  html += '<div class="book-row" onclick="window.location.href=\'heresies.html\'">'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'heresies.html\'">'
     + '<div class="row-name">Heresies &amp; the Church\'s Response</div>'
     + '<div class="row-sub">The faith contended for — and defended — across the centuries</div>'
-    + '<div class="row-arrow">&#8250;</div>'
-    + '</div>';
+    + '<div class="row-arrow">&#8250;</div></div>';
+
+  var html = '';
+  html += section('ot', 'Old Testament — ' + ot.length + ' books', ot.map(row).join(''), false);
+  html += section('nt', 'New Testament — ' + nt.length + ' books', nt.map(row).join(''), false);
+  html += section('sl', 'Christian Living Studies — ' + sl.length + ' studies', sl.map(row).join(''), true);
+  html += section('sg', 'General Studies — ' + sg.length + ' studies', sg.map(row).join(''), true);
+  html += section('ref', 'Reference', refHtml, true);
   html += '<div class="about-section">'
     + '<div class="about-title">About Soli Deo Gloria</div>'
     + '<div class="about-body">'
