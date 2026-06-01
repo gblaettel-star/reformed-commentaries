@@ -510,12 +510,7 @@ document.addEventListener('keydown', function(e) {
 // ── Init ─────────────────────────────────────────────────────────────────
 buildHome();
 
-var lastBook = localStorage.getItem('last-book');
-if (lastBook && BOOKS.find(b => b.id === lastBook)) {
-  openBook(lastBook);
-} else {
-  showHome();
-}
+showHome();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
