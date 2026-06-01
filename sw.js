@@ -1,8 +1,14 @@
-const CACHE = 'commentaries-v65';
-const SHELL = ['./index.html'];
+const CACHE = 'commentaries-v66';
+const PAGES = [
+  './index.html',
+  './dictionary.html',
+  './figures.html',
+  './philosophers.html',
+  './heresies.html',
+];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(PAGES)));
   self.skipWaiting();
 });
 
@@ -18,8 +24,8 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = e.request.url;
 
-  // Network-first for the app shell — always get the latest when online
-  if (url.endsWith('/') || url.includes('index.html')) {
+  // Network-first for all HTML pages — always get the latest when online
+  if (PAGES.some(p => url.includes(p.replace('./', ''))) || url.endsWith('/')) {
     e.respondWith(
       fetch(e.request)
         .then(res => {
@@ -42,6 +48,13 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Default: cache-first
-  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+  // Default: network-first
+  e.respondWith(
+    fetch(e.request)
+      .then(res => {
+        caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
+  );
 });

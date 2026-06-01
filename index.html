@@ -77,8 +77,13 @@ sup{font-size:.7em;vertical-align:super}
 .section-hd-overview p:last-child{margin-bottom:0}
 
 /* ── About (home screen) ── */
-.about-section{padding:1.5rem 1.2rem 2rem;border-top:2px solid #c9a84c;margin-top:.5rem}
-.about-title{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem}
+.about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;border-top:2px solid #c9a84c;cursor:pointer;user-select:none;touch-action:manipulation}
+.about-toggle:hover{background:#112840}
+.about-toggle-title{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
+.about-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
+.about-chevron.open{transform:rotate(90deg)}
+.about-body{overflow:hidden;max-height:0;transition:max-height .25s ease;background:#0a1e30;padding:0 1.2rem}
+.about-body.open{max-height:600px;padding:1rem 1.2rem 1.5rem}
 .about-body p{color:#7090b0;font-size:.82rem;line-height:1.75;margin-bottom:.8rem}
 .about-body p:last-child{margin-bottom:0}
 
@@ -203,7 +208,18 @@ function showHome() {
     if (body) body.style.maxHeight = '0';
     if (chevron) chevron.classList.remove('open');
   });
+  var ab = document.getElementById('about-body');
+  var ac = document.getElementById('about-chevron');
+  if (ab) ab.classList.remove('open');
+  if (ac) ac.classList.remove('open');
   window.scrollTo(0,0);
+}
+
+function toggleAbout() {
+  var body = document.getElementById('about-body');
+  var chevron = document.getElementById('about-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
 }
 
 function section(id, title, contentHtml, startOpen) {
@@ -266,13 +282,14 @@ function buildHome() {
   html += section('sl', 'Christian Living Studies — ' + sl.length + ' studies', sl.map(row).join(''), false);
   html += section('sg', 'General Studies — ' + sg.length + ' studies', sg.map(row).join(''), false);
   html += section('ref', 'Reference', refHtml, false);
-  html += '<div class="about-section">'
-    + '<div class="about-title">About Soli Deo Gloria</div>'
-    + '<div class="about-body">'
+  html += '<div class="about-toggle" onclick="toggleAbout()">'
+    + '<span class="about-toggle-title">About Soli Deo Gloria</span>'
+    + '<span class="about-chevron" id="about-chevron">&#8250;</span>'
+    + '</div>'
+    + '<div class="about-body" id="about-body">'
     + '<p>Soli Deo Gloria is a Reformed Bible commentary app designed to open the Scriptures with depth, warmth, and reverence. Each commentary draws on the work of faithful expositors including Timothy Keller, Alistair Begg, R.C. Sproul, Sinclair Ferguson, John MacArthur, John Stott, John Calvin, Derek Kidner, Bruce Waltke, Gordon Wenham, and D.A. Carson.</p>'
     + '<p>The aim is not merely to inform the mind but to stir the heart &mdash; to see Christ on every page, and to leave the reader with a deeper love for God and his Word.</p>'
     + '<p>Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</p>'
-    + '</div>'
     + '</div>';
   document.getElementById('book-list').innerHTML = html;
 }
