@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philosophers & Christian Thought — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;user-select:none}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Era filter bar */
+.era-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.era-btn{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.25rem .65rem;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s}
+.era-btn:hover{border-color:#c9a84c;color:#c9a84c}
+.era-btn.active{background:#c9a84c;border-color:#c9a84c;color:#0d2137;font-weight:bold}
+
+/* A-Z jump bar */
+.az-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.az-link{color:#c9a84c;font-size:.8rem;padding:.2rem .45rem;border:1px solid #2a4a6c;border-radius:4px;cursor:pointer;transition:all .12s}
+.az-link:hover{background:#1a3a5c;border-color:#c9a84c}
+.az-link.dim{color:#2a4a6c;border-color:#1a2a3c;pointer-events:none}
+
+/* Name index (collapsible) */
+.name-index-wrap{background:#0a1e30;border-bottom:2px solid #2a4a6c}
+.name-index-toggle{width:100%;background:none;border:none;color:#7090b0;padding:.5rem 1rem;font-size:.78rem;font-family:'Georgia',serif;cursor:pointer;text-align:left;letter-spacing:.08em}
+.name-index-toggle:hover{color:#c9a84c}
+.name-index-chips{display:none;flex-wrap:wrap;gap:.3rem;padding:.5rem 1rem .75rem}
+.name-index-chips.open{display:flex}
+.name-chip{background:none;border:1px solid #2a4a6c;color:#a09070;padding:.2rem .55rem;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Georgia',serif;white-space:nowrap}
+.name-chip:hover{border-color:#c9a84c;color:#c9a84c}
+
+/* No results */
+.no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
+
+main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
+
+/* Letter heading */
+.letter-head{color:#c9a84c;font-size:1.3rem;font-weight:bold;letter-spacing:.12em;border-bottom:2px solid #c9a84c;padding-bottom:.4rem;margin:2rem 0 1.2rem}
+.letter-head:first-child{margin-top:0}
+
+/* Philosopher card */
+.phil-card{margin-bottom:2rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+.phil-header{background:#1a3a5c;padding:.85rem 1.2rem}
+.phil-name{color:#c9a84c;font-size:1.2rem;font-weight:bold;letter-spacing:.04em}
+.phil-meta{color:#7090b0;font-size:.8rem;font-style:italic;margin-top:.25rem;display:flex;gap:1rem;flex-wrap:wrap}
+.era-tag{background:#0d2137;border:1px solid #2a4a6c;color:#7090b0;font-size:.7rem;padding:.15rem .5rem;border-radius:12px;font-style:normal;letter-spacing:.06em;white-space:nowrap}
+.phil-body{padding:1.2rem 1.4rem;line-height:1.85}
+.phil-body p{margin-bottom:.9rem}
+.phil-body p:last-child{margin-bottom:0}
+
+/* Influence block */
+.influence-wrap{margin-top:1.2rem;border-top:1px solid #2a4a6c;padding-top:1.1rem}
+.influence-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem}
+.influence-row{display:flex;gap:.75rem;margin-bottom:.75rem;align-items:flex-start}
+.influence-row:last-child{margin-bottom:0}
+.infl-icon{font-size:1rem;line-height:1.6;flex-shrink:0;width:1.2rem;text-align:center}
+.infl-text{line-height:1.75;font-size:.93rem;color:#d4c4a8}
+
+/* Reformed assessment */
+.reformed-box{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;margin-top:1.1rem;border-radius:0 4px 4px 0}
+.reformed-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.reformed-text{line-height:1.8;font-size:.93rem;color:#d4c4a8}
+
+/* Key work */
+.key-work{display:flex;gap:.6rem;align-items:baseline;margin-top:1rem;padding:.65rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px}
+.kw-label{color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.kw-text{color:#d4c4a8;font-size:.9rem;font-style:italic;line-height:1.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1>Philosophers &amp; Christian Thought</h1>
+  </div>
+  <h2>Ideas have consequences — and a history</h2>
+</header>
+
+<div class="era-bar" id="eraBar"></div>
+<div class="az-bar" id="azBar"></div>
+
+<div class="name-index-wrap">
+  <button class="name-index-toggle" onclick="toggleNameIndex()">&#9660; Browse all names</button>
+  <div class="name-index-chips" id="nameIndexChips"></div>
+</div>
+
+<main id="mainContent"></main>
+
+<script>
+// ── Data ────────────────────────────────────────────────────────────────────
+
+const ERAS = [
+  { id:'all',         label:'All' },
+  { id:'ancient',     label:'Ancient Greek' },
+  { id:'patristic',   label:'Patristic' },
+  { id:'medieval',    label:'Medieval' },
+  { id:'reformation', label:'Reformation' },
+  { id:'modern',      label:'Modern' },
+  { id:'contemporary',label:'Contemporary' },
+];
+
+const PHILOSOPHERS = [
+  {
+    name: 'Anselm of Canterbury',
+    dates: '1033–1109',
+    era: 'medieval',
+    bio: 'Archbishop of Canterbury and one of the towering intellects of the medieval church, Anselm sought to show that Christian faith is not blind but rationally defensible. His motto, <em>fides quaerens intellectum</em> — "faith seeking understanding" — defines his entire project. He believed reason could never replace faith but could illumine it.',
+    influence: [
+      { icon: '✦', text: 'Formulated the <em>ontological argument</em> for God\'s existence: God is "that than which nothing greater can be conceived," and a God who exists is greater than one who does not, therefore God exists.' },
+      { icon: '✦', text: 'His <em>Cur Deus Homo</em> ("Why God Became Man") gave the church its most influential account of the atonement — the satisfaction theory — which deeply shaped Reformed soteriology.' },
+      { icon: '✦', text: 'Demonstrated that rigorous philosophical thinking and orthodox faith are not enemies but allies, a conviction central to the Reformed tradition.' },
+    ],
+    reformed: 'Sproul regarded Anselm\'s satisfaction theory of atonement as foundational. Calvin built upon it; the Westminster Standards presuppose it. Anselm shows that the cross was not arbitrary — God\'s justice required satisfaction, and Christ alone could provide it.',
+    keyWork: 'Cur Deus Homo (1098)'
+  },
+  {
+    name: 'Aquinas, Thomas',
+    dates: '1225–1274',
+    era: 'medieval',
+    bio: 'The "Angelic Doctor" of the medieval church, Aquinas synthesized Aristotelian philosophy with Christian theology, producing the most comprehensive intellectual system of the Middle Ages. His <em>Summa Theologica</em> remains the towering achievement of scholastic theology. He believed reason and revelation occupy distinct but complementary domains.',
+    influence: [
+      { icon: '✦', text: 'His five cosmological arguments for God\'s existence — from motion, causation, contingency, degrees of perfection, and design — remain central to natural theology.' },
+      { icon: '△', text: 'His synthesis of Aristotle raised questions about the relationship between nature and grace that the Reformers would contest vigorously. Luther\'s protest was partly against Thomistic categories.' },
+      { icon: '✦', text: 'His concept of <em>analogia entis</em> (analogy of being) provided important vocabulary for how finite creatures can speak truly about an infinite God.' },
+    ],
+    reformed: 'Reformed thinkers are divided. Many, including Sproul, drew heavily on Aquinas\'s natural theology and arguments for God\'s existence. Others, following Van Til, resist the Thomistic nature/grace framework. All recognize him as an indispensable dialogue partner who cannot simply be dismissed.',
+    keyWork: 'Summa Theologica (1265–1274)'
+  },
+  {
+    name: 'Aristotle',
+    dates: '384–322 BC',
+    era: 'ancient',
+    bio: 'Student of Plato and tutor of Alexander the Great, Aristotle ranged across logic, biology, ethics, politics, and metaphysics with unmatched systematic power. Where Plato sought transcendent Forms, Aristotle studied the observable world, finding purpose and order embedded in matter itself. His is a universe of causes, ends, and natures.',
+    influence: [
+      { icon: '✦', text: 'His logic — especially the syllogism — became the intellectual backbone of medieval theology and remains the grammar of careful reasoning.' },
+      { icon: '✦', text: 'His concept of the <em>Unmoved Mover</em> — a first cause that initiates all motion without itself being moved — was baptized by Aquinas into the Christian doctrine of God.' },
+      { icon: '✦', text: 'His ethics of virtue and flourishing (<em>eudaimonia</em>) has been recovered by many Reformed thinkers as a complement to biblical ethics.' },
+    ],
+    reformed: 'Aristotle was the philosopher of the medieval synthesis and continues to underwrite much of Reformed philosophy via Aquinas. Sproul\'s classical apologetics owes much to Aristotle\'s logic and his cosmological arguments. Even those who critique Aquinas typically preserve Aristotelian logic as the tool of rational discourse.',
+    keyWork: 'Nicomachean Ethics; Metaphysics (c. 350 BC)'
+  },
+  {
+    name: 'Augustine of Hippo',
+    dates: '354–430',
+    era: 'patristic',
+    bio: 'Bishop of Hippo and the most influential theologian of the Western church after Paul, Augustine\'s journey from Manichaeism through Neo-Platonism to Christian faith shaped his towering synthesis of classical philosophy and biblical revelation. His <em>Confessions</em> remain the greatest spiritual autobiography ever written: "Our heart is restless, until it repose in Thee."',
+    influence: [
+      { icon: '✦', text: 'His doctrine of original sin — that Adam\'s fall corrupted the entire race, leaving the will in bondage — is the foundation of Reformed anthropology.' },
+      { icon: '✦', text: 'His doctrine of divine grace — that salvation is entirely God\'s sovereign gift, not human merit — is the bedrock of Reformed soteriology. Calvin called himself Augustinian.' },
+      { icon: '✦', text: 'His <em>City of God</em> established the two-kingdom framework that Reformed political theology has drawn on ever since.' },
+    ],
+    reformed: 'Calvin simply is an Augustinian. The five points of Calvinism are nothing more than an Augustinian account of grace rendered precise. Sproul, Ferguson, and Begg all trace the Reformed tradition directly to Augustine. To understand the Reformation is to understand that it was, at its core, a recovery of Augustine against medieval semi-Pelagianism.',
+    keyWork: 'Confessions (397–400); The City of God (413–426)'
+  },
+  {
+    name: 'Calvin, John',
+    dates: '1509–1564',
+    era: 'reformation',
+    bio: 'The great systematizer of the Reformation, Calvin\'s <em>Institutes of the Christian Religion</em> — revised and expanded across his lifetime — remains the most important work of Reformed theology ever written. A humanist scholar turned reformer, Calvin brought rigorous exegesis, systematic clarity, and pastoral warmth to every page. Geneva became under his influence the "Rome of Protestantism."',
+    influence: [
+      { icon: '✦', text: 'The <em>Institutes</em> gave the Reformed world its theological framework: the knowledge of God, Scripture\'s authority, sin and grace, the person and work of Christ, the church, and the sacraments — all treated with unmatched depth.' },
+      { icon: '✦', text: 'His commentaries on almost the entire Bible remain models of grammatical-historical exegesis combined with pastoral application.' },
+      { icon: '✦', text: 'His doctrine of double predestination — that God elects some to salvation and passes over others — became the defining and most contested doctrine of the Reformed tradition.' },
+    ],
+    reformed: 'Calvin is the fountainhead. Every major figure in this study — Sproul, Begg, Ferguson, Packer — drinks from this stream. To study Calvin is not merely history; it is to encounter a man so saturated in Scripture that his theology feels not like a system imposed on the Bible but drawn out of it.',
+    keyWork: 'Institutes of the Christian Religion (final ed. 1559)'
+  },
+  {
+    name: 'Darwin, Charles',
+    dates: '1809–1882',
+    era: 'modern',
+    bio: 'Though a naturalist rather than a philosopher, Darwin\'s <em>On the Origin of Species</em> (1859) triggered a philosophical earthquake whose tremors have never stopped. By proposing natural selection as the mechanism of biological diversity, Darwin offered a grand narrative of life without a Creator — purpose without a purposer, design without a designer.',
+    influence: [
+      { icon: '▲', text: 'Darwinism dismantled the teleological argument for God in the minds of many educated Westerners. If apparent design can be explained by blind selection, the watchmaker becomes unnecessary.' },
+      { icon: '▲', text: 'Applied to human beings, Darwinian evolution challenges the biblical doctrines of the image of God, the fall, and the uniqueness of humanity among creatures.' },
+      { icon: '▲', text: 'Social Darwinism — the illegitimate extension of natural selection to ethics and society — fueled racism, eugenics, and the moral brutalities of the 20th century.' },
+    ],
+    reformed: 'Sproul devoted significant attention to Darwinism in <em>Not a Chance</em> and other works, arguing that chance cannot explain the ordered complexity of creation. The Reformed tradition insists that evolution as a complete metaphysical account of origins is incompatible with Scripture. Christians may debate the age of the earth; they cannot concede that humanity is merely a contingent accident.',
+    keyWork: 'On the Origin of Species (1859); The Descent of Man (1871)'
+  },
+  {
+    name: 'Descartes, René',
+    dates: '1596–1650',
+    era: 'modern',
+    bio: 'The father of modern philosophy, Descartes set out to rebuild all knowledge on foundations that could not be doubted. His famous <em>cogito ergo sum</em> — "I think, therefore I am" — made the thinking self the starting point of all certainty. With this move, Descartes shifted the center of gravity in Western philosophy from God to the human mind.',
+    influence: [
+      { icon: '▲', text: 'By grounding certainty in the individual thinking self rather than in God or Scripture, Descartes inaugurated the Enlightenment turn toward autonomy that would eventually undermine faith.' },
+      { icon: '✦', text: 'He did argue for God\'s existence via a version of the ontological argument, and his rationalism left room for a Creator — but a God arrived at by unaided reason rather than received by faith.' },
+      { icon: '▲', text: 'His radical mind-body dualism — res cogitans vs. res extensa — created philosophical problems still felt in discussions of the soul, free will, and human nature.' },
+    ],
+    reformed: 'Van Til identified Descartes as a pivotal figure in the story of unbelieving thought: the move from "God is" to "I think" as the starting point is, theologically, the move from Creator to creature as the measure of all things. Reformed epistemology (Plantinga, Wolterstorff) is in part a sustained response to the Cartesian project.',
+    keyWork: 'Meditations on First Philosophy (1641)'
+  },
+  {
+    name: 'Dewey, John',
+    dates: '1859–1952',
+    era: 'contemporary',
+    bio: 'America\'s most influential philosopher of education, Dewey developed pragmatism into a comprehensive philosophy of experience and democracy. For Dewey, truth is not discovered but constructed — ideas are tools for solving problems, not windows onto transcendent reality. His educational philosophy, emphasizing child-centered learning and democratic community, reshaped Western schooling.',
+    influence: [
+      { icon: '▲', text: 'Dewey\'s pragmatism dismantles the concept of objective truth. If truth is merely what works, Scripture\'s claim to be the Word of God becomes simply one useful story among many.' },
+      { icon: '▲', text: 'His secular educational philosophy deliberately displaced religious and classical education, producing generations schooled to think without reference to God or transcendent moral standards.' },
+      { icon: '▲', text: 'His naturalism — the view that only the natural order exists and science is the only reliable guide — permeates modern Western culture and academia.' },
+    ],
+    reformed: 'Sproul and others saw Dewey as a primary architect of the secular, relativistic educational culture that Christians now must resist and counter. The recovery of classical Christian education — with its grammar, logic, rhetoric, and grounding in Scripture — is in part a direct rejection of Dewey\'s legacy.',
+    keyWork: 'Democracy and Education (1916); Experience and Nature (1925)'
+  },
+  {
+    name: 'Foucault, Michel',
+    dates: '1926–1984',
+    era: 'contemporary',
+    bio: 'French philosopher and historian of ideas, Foucault argued that knowledge is always entangled with power — that what a society calls "truth" reflects who controls discourse, not what is actually true. His genealogical method exposed how institutions (prisons, hospitals, schools, sexuality) construct and police "normal" behavior. He became the patron saint of postmodern critical theory.',
+    influence: [
+      { icon: '▲', text: 'Foucault\'s reduction of truth to power is a direct assault on the Christian claim that God has revealed objective truth in Scripture. If all truth claims are power plays, the Gospel becomes merely ideology.' },
+      { icon: '▲', text: 'His influence underlies the contemporary "hermeneutics of suspicion" — reading biblical texts not to understand them but to unmask the power interests they allegedly serve.' },
+      { icon: '▲', text: 'His deconstruction of stable identity and human nature removes the anthropological foundation for biblical ethics, especially regarding gender and sexuality.' },
+    ],
+    reformed: 'Foucault represents the logical endpoint of a trajectory Sproul traced through Kant and Hegel — the progressive dissolution of objective truth. The Reformed response is not to retreat from engagement but to press the antithesis: if all is power, then Foucault\'s own critique is merely his power play, a self-refuting position. Christ alone is Lord of truth.',
+    keyWork: 'Discipline and Punish (1975); The History of Sexuality (1976)'
+  },
+  {
+    name: 'Hegel, Georg Wilhelm Friedrich',
+    dates: '1770–1831',
+    era: 'modern',
+    bio: 'Perhaps the most ambitious philosopher in history, Hegel sought to show that all of reality is the self-unfolding of Absolute Spirit (Geist) through the dialectic of thesis, antithesis, and synthesis. History itself is the biography of God coming to self-consciousness through the human spirit. His philosophy dominated 19th-century European thought and spawned Marxism, existentialism, and liberal theology.',
+    influence: [
+      { icon: '▲', text: 'Hegel\'s God is not the personal Creator of Scripture but an impersonal Absolute that needs the world to become itself — a pantheism in disguise that liberal Protestant theology eagerly embraced.' },
+      { icon: '▲', text: 'His dialectical method — all truth emerges from conflict and synthesis — fueled both Marx\'s materialism and the liberal theology of Schleiermacher\'s successors, who dissolved doctrinal distinctions in the name of developmental progress.' },
+      { icon: '✦', text: 'His recovery of history as meaningful — against Enlightenment atomism — opened space for recognizing that God acts in history, a theme Reformed biblical theology has developed.' },
+    ],
+    reformed: 'Sproul identified Hegel\'s pantheism as one of the most dangerous currents in modern thought. Hegel\'s God is not the holy, personal, triune God of Scripture; He is the world-process itself. Liberal Protestantism\'s collapse in the 19th and 20th centuries was largely a story of Hegelian dissolution of orthodoxy.',
+    keyWork: 'Phenomenology of Spirit (1807); Philosophy of Right (1820)'
+  },
+  {
+    name: 'Hume, David',
+    dates: '1711–1776',
+    era: 'modern',
+    bio: 'Scotland\'s greatest philosopher and the most formidable skeptic of the modern era, Hume argued that all knowledge comes from sense experience, and that reason cannot establish causal connections, the existence of the self, or the reality of God. His critique of miracles — the probability of a miracle always being lower than the probability of witness error — became a standard objection to Christianity.',
+    influence: [
+      { icon: '▲', text: 'Hume\'s critique of causation undermined the cosmological argument: we cannot infer from observed regularities to a First Cause, he argued, because causation itself is merely a habit of mind.' },
+      { icon: '▲', text: 'His essay <em>Of Miracles</em> remains the most sophisticated secular argument against the historicity of the resurrection and biblical miracles generally.' },
+      { icon: '▲', text: 'Hume\'s skepticism woke Kant from his "dogmatic slumber" and set the terms for all subsequent epistemology — both secular and theological.' },
+    ],
+    reformed: 'Sproul met Hume\'s challenge head-on in <em>The Consequences of Ideas</em>, arguing that Hume\'s own skepticism is self-undermining. Reformed apologists note that Hume\'s denial of the miraculous begs the question: it assumes the very naturalism that needs to be proved. Miracles are only impossible if God does not exist — and Hume cannot prove that without circularity.',
+    keyWork: 'A Treatise of Human Nature (1739–1740); An Enquiry Concerning Human Understanding (1748)'
+  },
+  {
+    name: 'Kant, Immanuel',
+    dates: '1724–1804',
+    era: 'modern',
+    bio: 'Born and buried in Königsberg, Kant never traveled more than a hundred miles from his birthplace, yet his mind ranged across the entire landscape of human thought. His "Copernican revolution" in philosophy — the claim that the mind does not conform to objects but objects conform to the mind — reshaped every subsequent discipline. His <em>Critique of Pure Reason</em> is the most important single philosophical text of the modern era.',
+    influence: [
+      { icon: '▲', text: 'Kant declared that God, freedom, and immortality are beyond the reach of theoretical reason. We cannot know God as He is; we can only postulate Him as a moral necessity. This moved God from knowledge to faith — and to mere moral utility.' },
+      { icon: '▲', text: 'His radical separation of the phenomenal (knowable) and noumenal (unknowable) world created a barrier between science and faith that liberal theology exploited by confining religion to the inner life of morality.' },
+      { icon: '✦', text: 'His moral philosophy — the categorical imperative — preserved a universal moral law, which Reformed thinkers can engage as a point of contact with the image of God in moral reasoning.' },
+    ],
+    reformed: 'Sproul identified Kant as perhaps the single most consequential philosopher for Western Christianity\'s decline. By placing God behind an epistemological wall, Kant opened the door for Schleiermacher\'s subjectivism, Hegel\'s pantheism, and eventually the death of God. Reformed epistemology (Alvin Plantinga) is in large measure a sustained rebuttal of Kantian limits on theological knowledge.',
+    keyWork: 'Critique of Pure Reason (1781); Groundwork of the Metaphysics of Morals (1785)'
+  },
+  {
+    name: 'Kierkegaard, Søren',
+    dates: '1813–1855',
+    era: 'modern',
+    bio: 'The "melancholy Dane" and father of existentialism, Kierkegaard reacted against Hegel\'s rationalistic system with a passionate insistence on individual subjectivity and inwardness. He described three stages of existence — aesthetic, ethical, and religious — culminating in the "leap of faith" beyond reason. His writings are by turns brilliant, ironic, and agonized.',
+    influence: [
+      { icon: '✦', text: 'Kierkegaard\'s insistence that faith is personal, passionate, and existential — not a system — recovered something essential that dry rationalism had lost. Genuine faith involves the whole person before a living God.' },
+      { icon: '▲', text: 'His "leap of faith" — choosing to believe despite and even against reason — was misread by 20th-century neo-orthodoxy (Barth, Brunner) to separate faith from history and objective truth, with damaging results.' },
+      { icon: '✦', text: 'His ruthless attack on the cultural Christianity of his day — a comfortable, bourgeois, costless Christianity — remains a prophetic challenge to any comfortable church.' },
+    ],
+    reformed: 'Kierkegaard is a complex figure. Reformed thinkers appreciate his passion for genuine faith and his assault on empty formalism, but resist his anti-rational "leap." Faith, in the Reformed understanding, is not irrational but supra-rational — it rests on objective truth revealed in Scripture and confirmed by the Spirit. Sinclair Ferguson notes that genuine assurance requires objective grounds, not just existential intensity.',
+    keyWork: 'Either/Or (1843); Concluding Unscientific Postscript (1846)'
+  },
+  {
+    name: 'Locke, John',
+    dates: '1632–1704',
+    era: 'modern',
+    bio: 'The father of classical liberalism and the philosopher most responsible for the political ideas of the American founding, Locke grounded political authority in natural rights, consent of the governed, and the social contract. A Calvinist by background, he argued for religious toleration and the reasonableness of Christianity — but on terms that would eventually prove corrosive to orthodoxy.',
+    influence: [
+      { icon: '✦', text: 'His political philosophy of natural rights, limited government, and liberty directly shaped the American constitutional order — a framework within which Christianity has flourished and which Reformed thinkers have often endorsed.' },
+      { icon: '▲', text: 'His epistemology — all knowledge from sense experience — laid groundwork for later empiricism and the marginalization of revealed religion.' },
+      { icon: '▲', text: 'His <em>Reasonableness of Christianity</em> reduced the faith to a set of rationally demonstrable propositions, stripping it of mystery and preparing the ground for deism.' },
+    ],
+    reformed: 'Locke is a double-edged figure for Reformed Christians. His political legacy has provided the liberty within which the church has operated in the West. But his epistemology and his reductionist Christianity point in dangerous directions. The American founders who most honored him were often deists, not orthodox Christians — a fact that should give pause to uncritical Christian celebration of Lockean liberty.',
+    keyWork: 'Two Treatises of Government (1689); An Essay Concerning Human Understanding (1689)'
+  },
+  {
+    name: 'Luther, Martin',
+    dates: '1483–1546',
+    era: 'reformation',
+    bio: 'Augustinian monk, professor of biblical theology at Wittenberg, and the most consequential figure of the Reformation, Luther\'s rediscovery of the Pauline doctrine of justification by faith alone triggered the greatest upheaval in Western Christianity since the patristic era. His courage at Worms — "Here I stand; I can do no other" — remains the defining image of Christian conviction against institutional power.',
+    influence: [
+      { icon: '✦', text: 'Sola Fide — justification by faith alone, not by works — became the material principle of the Reformation and remains the watershed doctrine separating Protestantism from Rome.' },
+      { icon: '✦', text: 'Sola Scriptura — Scripture alone as the supreme authority — became the formal principle, establishing the Bible as the judge of all church tradition.' },
+      { icon: '✦', text: 'His German Bible translation not only gave Germany a common language but modeled the Reformers\' conviction that Scripture belongs to all God\'s people, not to a clerical elite.' },
+    ],
+    reformed: 'Every Reformed theologian — Calvin, Sproul, Begg, Ferguson — stands on Luther\'s shoulders at the central point: the gospel of free justification by grace through faith alone in Christ alone. Sproul called justification "the article by which the church stands or falls." To understand Luther is to understand why the Reformation was not merely a reform but a recovery — of the Gospel itself.',
+    keyWork: 'The Freedom of a Christian (1520); Commentary on Galatians (1535)'
+  },
+  {
+    name: 'Marx, Karl',
+    dates: '1818–1883',
+    era: 'modern',
+    bio: 'Co-author of the Communist Manifesto and architect of the most influential political philosophy of the 20th century, Marx saw all history as the story of class conflict driven by economic forces. His materialist inversion of Hegel — "it is not consciousness that determines life, but life that determines consciousness" — produced a secular eschatology promising liberation through revolution.',
+    influence: [
+      { icon: '▲', text: 'Marx\'s "opium of the people" quip crystallized the view that religion is a tool of the ruling class to pacify the oppressed — a charge that has driven anti-Christian ideology from Soviet Russia to modern Critical Theory.' },
+      { icon: '▲', text: 'His historical materialism removes God entirely from the explanation of human history, replacing Providence with impersonal economic forces.' },
+      { icon: '▲', text: 'Liberation theology\'s identification of the Gospel with class struggle and political revolution is explicitly Marxist — and a fundamental distortion of biblical redemption.' },
+    ],
+    reformed: 'Sproul treated Marxism as a Christian heresy — a counterfeit eschatology that promises a heaven on earth achieved by human revolution rather than divine grace. It has a doctrine of sin (class oppression), a doctrine of salvation (the revolution), and a doctrine of the new creation (the classless society). The Reformed response insists that the root of human misery is not economic but spiritual, and that no political program can achieve what only the Gospel can.',
+    keyWork: 'The Communist Manifesto (1848, with Engels); Das Kapital (1867)'
+  },
+  {
+    name: 'Nietzsche, Friedrich',
+    dates: '1844–1900',
+    era: 'modern',
+    bio: 'The most explosive and dangerous philosopher of the 19th century, Nietzsche announced the death of God — not as a metaphysical event but as a cultural one. Western civilization had killed God by making Him unnecessary, but had not yet realized it would also lose the moral foundations that only God could supply. His vision of the <em>Übermensch</em> (Superman) who creates his own values beyond good and evil was co-opted, grotesquely, by National Socialism.',
+    influence: [
+      { icon: '▲', text: '"God is dead, and we have killed Him." Nietzsche saw with devastating clarity that a secular culture cannot borrow the moral capital of Christianity indefinitely — once God goes, objective morality, human dignity, and meaning follow.' },
+      { icon: '▲', text: 'His "will to power" as the fundamental drive of life underlies much 20th-century thought, from existentialism to Foucault\'s analysis of power/knowledge.' },
+      { icon: '✦', text: 'Nietzsche\'s diagnosis is, paradoxically, one of the most powerful arguments for Christianity: if God is dead, the consequences are precisely as he described — nihilism, the collapse of meaning, the reign of the strongest. The Christian answer is that God is not dead; He is risen.' },
+    ],
+    reformed: 'Sproul engaged Nietzsche seriously, calling him a consistent atheist — far more honest than the secular humanists who deny God while clinging to His moral furniture. The Reformed apologist welcomes Nietzsche\'s challenge: yes, without God there is no objective morality, no human dignity, no hope. That is precisely why the Gospel is not optional. Christ is risen, and that changes everything.',
+    keyWork: 'Thus Spoke Zarathustra (1883–1885); Beyond Good and Evil (1886)'
+  },
+  {
+    name: 'Plato',
+    dates: '428–348 BC',
+    era: 'ancient',
+    bio: 'The philosopher of philosophers, Plato\'s dialogues range from the trial of Socrates to the nature of love, from political philosophy to the immortality of the soul. His theory of Forms — that the visible world is a shadow of an invisible realm of perfect, eternal realities — gave Western thought its first rigorous account of transcendence. Whitehead was only slightly exaggerating when he called all subsequent Western philosophy "footnotes to Plato."',
+    influence: [
+      { icon: '✦', text: 'Plato\'s world of transcendent Forms prepared the philosophical ground for Christian theology\'s account of God as eternal, immutable, and perfect — the source of all being, truth, and goodness.' },
+      { icon: '✦', text: 'Augustine\'s conversion was mediated through Neo-Platonism. Plato helped him see that reality is not merely material — that beauty, truth, and goodness point beyond themselves to their divine source.' },
+      { icon: '△', text: 'Plato\'s dualism — body as prison of the soul — sometimes led Christian thinkers toward a denigration of the material world and the body that is not fully biblical. The resurrection of the body is a Jewish and Christian correction to this.' },
+    ],
+    reformed: 'Plato is a preparation for the Gospel, not the Gospel itself. Sproul appreciated the way Platonic transcendence counters materialism and opens minds to the reality of the invisible. But the God of Scripture is personal, not a Form — He speaks, loves, acts, and saves. Reformed theology receives Plato\'s insights while insisting on the biblical correction: the Word became flesh.',
+    keyWork: 'The Republic (c. 375 BC); Phaedo; Timaeus'
+  },
+  {
+    name: 'Plotinus',
+    dates: '204–270',
+    era: 'patristic',
+    bio: 'The founder of Neo-Platonism, Plotinus elaborated Plato\'s vision of transcendence into a mystical system centered on the One — the ineffable, absolutely simple source of all being from which everything "emanates" like light from the sun. His <em>Enneads</em> profoundly shaped later mystical traditions in Judaism, Christianity, and Islam.',
+    influence: [
+      { icon: '✦', text: 'Neo-Platonism provided Augustine the conceptual vocabulary for speaking of a non-material God who is the source of all being, truth, and goodness — essential preparation for his conversion.' },
+      { icon: '△', text: 'The emanationist framework — reality flowing outward from the One and the soul\'s journey back to union with it — can blur the Creator-creature distinction that Scripture insists upon.' },
+      { icon: '✦', text: 'The apophatic tradition (speaking of God by negation — what He is not) owes much to Plotinus and preserves a healthy sense of divine mystery before which words fail.' },
+    ],
+    reformed: 'Plotinus illustrates how far sincere reason can reach toward transcendence — and where it inevitably falls short. Without special revelation, the best philosophy achieves a mystical One, not a personal Father. The Reformed tradition affirms that God has revealed Himself as He is, in Scripture and supremely in Christ, and that general revelation leaves humanity without excuse but not without need of the Gospel.',
+    keyWork: 'The Enneads (c. 253–270, compiled posthumously)'
+  },
+  {
+    name: 'Rousseau, Jean-Jacques',
+    dates: '1712–1778',
+    era: 'modern',
+    bio: 'The romantic rebel of the Enlightenment, Rousseau declared that man is born free but is everywhere in chains — civilization, property, and social institutions have corrupted an originally innocent human nature. His doctrine of the "noble savage" and the "general will" as the source of political legitimacy fueled the French Revolution and modern progressive politics.',
+    influence: [
+      { icon: '▲', text: 'Rousseau\'s doctrine of natural human goodness is a direct denial of original sin. If humanity is corrupted only by society, not by inherited guilt, then salvation is reform of social structures — not the cross.' },
+      { icon: '▲', text: 'His sentimental, feeling-centered religion — conscience and nature as the path to God, doctrine as optional — prepared the ground for liberal theology\'s marginalization of revealed truth.' },
+      { icon: '▲', text: 'The French Revolution, inspired by Rousseau, demonstrated what happens when the doctrine of sin is abandoned in politics: the Reign of Terror, not the Kingdom of God.' },
+    ],
+    reformed: 'Sproul contrasted Rousseau and Calvin sharply: where Calvin says man is radically corrupted by sin and can only be saved by grace, Rousseau says man is essentially good and corrupted by society. The 20th century — with its totalitarianisms, genocides, and moral collapse — is a laboratory test of both theories. The evidence overwhelmingly confirms Calvin and refutes Rousseau.',
+    keyWork: 'Discourse on the Origin of Inequality (1755); The Social Contract (1762)'
+  },
+  {
+    name: 'Sartre, Jean-Paul',
+    dates: '1905–1980',
+    era: 'contemporary',
+    bio: 'The most famous philosopher of the 20th century\'s mid-century, Sartre\'s atheistic existentialism began with a simple premise: if God does not exist, then "existence precedes essence" — human beings have no given nature or purpose but must create themselves through their choices. His café philosophy of radical freedom and bad faith captured the post-war West\'s mood of dislocation and self-invention.',
+    influence: [
+      { icon: '▲', text: 'Sartre\'s "existence precedes essence" is the philosophical charter for the contemporary conviction that identity is self-constructed rather than received — the root of the gender and sexuality revolution.' },
+      { icon: '▲', text: 'His radical freedom — we are "condemned to be free," with no God, no nature, and no given purpose — produces anxiety (his <em>nausea</em>) as the fundamental human experience.' },
+      { icon: '✦', text: 'Sartre\'s honest despair — the "useless passion" of a freedom that cannot ground itself — is an inadvertent apologetic. The Reformed answer is that freedom without God is not liberation but vertigo, and Christ alone is the ground of genuine human dignity.' },
+    ],
+    reformed: 'Sproul saw in Sartre the most honest working-out of atheistic premises: if God is absent, meaning is self-made, identity is fluid, and death is the final word. The Christian answer is not sentimentality but history — the empty tomb, the risen Christ, the assured hope of resurrection. Sartre\'s despair is the logical end of every worldview that begins without God.',
+    keyWork: 'Being and Nothingness (1943); Existentialism is a Humanism (1945)'
+  },
+  {
+    name: 'Schleiermacher, Friedrich',
+    dates: '1768–1834',
+    era: 'modern',
+    bio: 'The father of modern liberal theology, Schleiermacher sought to rescue Christianity from Enlightenment skepticism by relocating its essence in religious experience — the "feeling of absolute dependence" — rather than in doctrines or historical events. Raised in the Pietist tradition, he became the architect of a theology that traded the objective Gospel for the subjective inner life.',
+    influence: [
+      { icon: '▲', text: 'By grounding religion in feeling rather than revelation, Schleiermacher opened the door to a Christianity in which doctrine is secondary, the cross is a moral example, and the resurrection is optional.' },
+      { icon: '▲', text: 'Liberal Protestantism\'s progressive abandonment of orthodoxy in the 19th and 20th centuries flows directly from Schleiermacher\'s methodology: if experience is the judge of doctrine, no doctrine is safe.' },
+      { icon: '✦', text: 'Schleiermacher\'s instinct that Christianity must be <em>felt</em> and not merely argued — that the Gospel addresses the whole person, not just the intellect — contains a truth the Reformed tradition also holds, even if his solution was fatal.' },
+    ],
+    reformed: 'Sproul and Ferguson both identified Schleiermacher as the decisive wrong turn in modern Protestant theology. The Gospel is not primarily about religious experience; it is a declaration of what God has done in history — the incarnation, the atonement, the resurrection. Reformed preaching aims to produce genuine experience, but the experience is the fruit, not the foundation.',
+    keyWork: 'On Religion: Speeches to Its Cultured Despisers (1799); The Christian Faith (1821)'
+  },
+  {
+    name: 'Spinoza, Baruch',
+    dates: '1632–1677',
+    era: 'modern',
+    bio: 'Excommunicated from his Amsterdam Jewish community at age 23, Spinoza constructed one of the most rigorous philosophical systems of the modern era. His God is identical with Nature — <em>Deus sive Natura</em> — an infinite substance of which mind and matter are two attributes. His <em>Theological-Political Treatise</em> pioneered the historical-critical method of reading Scripture as a human document.',
+    influence: [
+      { icon: '▲', text: 'Spinoza\'s pantheism — God is everything and everything is God — directly contradicts the Creator-creature distinction at the heart of biblical theology.' },
+      { icon: '▲', text: 'His historical-critical reading of Scripture as a historically conditioned human text, subject to the same analysis as any ancient document, launched the project that would dominate liberal theology: treating the Bible as a product of human culture rather than divine inspiration.' },
+      { icon: '△', text: 'His determinism — all things follow necessarily from the nature of God — raises questions that Reformed thinkers engage seriously: how to affirm both divine sovereignty and genuine human responsibility.' },
+    ],
+    reformed: 'Spinoza illustrates the trajectory of reason unmoored from revelation. His God cannot hear prayer, cannot be angered by sin, and cannot save. Reformed theology insists on the hard distinction: God is not the world; He is its sovereign Creator, distinct from and above His creation, yet intimately present by His Spirit and grace.',
+    keyWork: 'Ethics (1677, posthumous); Theological-Political Treatise (1670)'
+  },
+  {
+    name: 'Zwingli, Ulrich',
+    dates: '1484–1531',
+    era: 'reformation',
+    bio: 'The Reformer of Zurich and the first of the major Reformed theologians, Zwingli brought the Reformation to German-speaking Switzerland with a humanist\'s love of Scripture and a pastor\'s concern for the people. Though he and Luther agreed on justification by faith, their famous clash at Marburg (1529) over the Lord\'s Supper exposed deep differences about the relationship between the spiritual and the material, the Word and the sacrament.',
+    influence: [
+      { icon: '✦', text: 'Zwingli\'s insistence on Scripture as the supreme authority for the church — preached through systematically through whole books — established the expository preaching tradition central to Reformed worship.' },
+      { icon: '△', text: 'His symbolic view of the Lord\'s Supper — "This is my body" means "This signifies my body" — divided the Reformation and remains a point of debate within the Reformed tradition itself.' },
+      { icon: '✦', text: 'His vision of the Reformation as encompassing civil as well as ecclesiastical life anticipated Calvin\'s Geneva and the broader Reformed understanding of the lordship of Christ over all of life.' },
+    ],
+    reformed: 'Zwingli is the often-overlooked founding father. Calvin\'s more nuanced sacramental theology — Christ is truly present spiritually in the Supper — corrects Zwingli\'s bare memorialism. But Zwingli\'s legacy of Scripture-saturated preaching, congregational participation in church governance, and the comprehensive reach of the Gospel over all of life remains a permanent contribution to the Reformed tradition.',
+    keyWork: 'Of the Clarity and Certainty of the Word of God (1522); On True and False Religion (1525)'
+  },
+];
+
+// ── State ───────────────────────────────────────────────────────────────────
+
+let activeEra = 'all';
+
+// ── Init ────────────────────────────────────────────────────────────────────
+
+function init() {
+  buildEraBar();
+  render();
+}
+
+// ── Era Bar ─────────────────────────────────────────────────────────────────
+
+function buildEraBar() {
+  const bar = document.getElementById('eraBar');
+  bar.innerHTML = ERAS.map(e =>
+    `<button class="era-btn${e.id===activeEra?' active':''}" onclick="selectEra('${e.id}')">${e.label}</button>`
+  ).join('');
+}
+
+function selectEra(id) {
+  activeEra = id;
+  buildEraBar();
+  render();
+}
+
+// ── Render ──────────────────────────────────────────────────────────────────
+
+function filtered() {
+  const list = activeEra === 'all' ? PHILOSOPHERS : PHILOSOPHERS.filter(p => p.era === activeEra);
+  return list.slice().sort((a,b) => sortKey(a).localeCompare(sortKey(b)));
+}
+
+function sortKey(p) {
+  // sort by last name (last word of name)
+  const parts = p.name.split(',');
+  if(parts.length > 1) return parts[0].trim().toLowerCase();
+  const words = p.name.trim().split(/\s+/);
+  return words[words.length-1].toLowerCase();
+}
+
+function firstLetter(p) {
+  const k = sortKey(p);
+  return k[0].toUpperCase();
+}
+
+function render() {
+  const list = filtered();
+  buildAZBar(list);
+  buildNameIndex(list);
+  if(!list.length) {
+    document.getElementById('mainContent').innerHTML = '<div class="no-results">No philosophers found for this era.</div>';
+    return;
+  }
+  // group by letter
+  const groups = {};
+  list.forEach(p => {
+    const l = firstLetter(p);
+    if(!groups[l]) groups[l] = [];
+    groups[l].push(p);
+  });
+  let html = '';
+  Object.keys(groups).sort().forEach(letter => {
+    html += `<div class="letter-head" id="letter-${letter}">${letter}</div>`;
+    groups[letter].forEach(p => { html += philCard(p); });
+  });
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function philCard(p) {
+  const eraLabel = ERAS.find(e => e.id === p.era)?.label || p.era;
+  const anchor = p.name.replace(/[^a-z]/gi,'_');
+  const influenceRows = p.influence.map(i =>
+    `<div class="influence-row"><div class="infl-icon">${i.icon}</div><div class="infl-text">${i.text}</div></div>`
+  ).join('');
+  return `
+<div class="phil-card" id="phil-${anchor}">
+  <div class="phil-header">
+    <div class="phil-name">${p.name}</div>
+    <div class="phil-meta"><span>${p.dates}</span><span class="era-tag">${eraLabel}</span></div>
+  </div>
+  <div class="phil-body">
+    <p>${p.bio}</p>
+    <div class="influence-wrap">
+      <div class="influence-label">Influence on Christian Thought</div>
+      ${influenceRows}
+    </div>
+    <div class="reformed-box">
+      <div class="reformed-label">Reformed Assessment</div>
+      <div class="reformed-text">${p.reformed}</div>
+    </div>
+    <div class="key-work">
+      <div class="kw-label">Key Work</div>
+      <div class="kw-text">${p.keyWork}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+// ── A-Z Bar ──────────────────────────────────────────────────────────────────
+
+function buildAZBar(list) {
+  const letters = new Set(list.map(p => firstLetter(p)));
+  const all = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const bar = document.getElementById('azBar');
+  bar.innerHTML = all.map(l =>
+    letters.has(l)
+      ? `<span class="az-link" onclick="jumpTo('${l}')">${l}</span>`
+      : `<span class="az-link dim">${l}</span>`
+  ).join('');
+}
+
+function jumpTo(letter) {
+  const el = document.getElementById('letter-' + letter);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── Name Index ───────────────────────────────────────────────────────────────
+
+function buildNameIndex(list) {
+  const chips = document.getElementById('nameIndexChips');
+  chips.innerHTML = list.map(p => {
+    const anchor = p.name.replace(/[^a-z]/gi,'_');
+    return `<span class="name-chip" onclick="jumpToPhil('${anchor}')">${p.name}</span>`;
+  }).join('');
+}
+
+function jumpToPhil(anchor) {
+  const el = document.getElementById('phil-' + anchor);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleNameIndex() {
+  const chips = document.getElementById('nameIndexChips');
+  const btn = document.querySelector('.name-index-toggle');
+  chips.classList.toggle('open');
+  btn.textContent = chips.classList.contains('open') ? '▲ Browse all names' : '▼ Browse all names';
+}
+
+// ── Icon legend ──────────────────────────────────────────────────────────────
+// ✦ = positive influence  △ = mixed/complex  ▲ = challenging/negative
+
+init();
+</script>
+</body>
+</html>
