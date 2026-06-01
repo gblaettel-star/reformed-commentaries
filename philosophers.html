@@ -72,7 +72,7 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
 /* Key work */
 .key-work{display:flex;gap:.6rem;align-items:baseline;margin-top:1rem;padding:.65rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px}
 .kw-label{color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
-.kw-text{color:#d4c4a8;font-size:.9rem;font-style:italic;line-height:1.5}
+.kw-text{color:#d4c4a8;font-size:.9rem;font-style:italic;line-height:1.5;min-width:0;word-wrap:break-word}
 </style>
 </head>
 <body>
@@ -407,6 +407,19 @@ const PHILOSOPHERS = [
     ],
     reformed: 'Spinoza illustrates the trajectory of reason unmoored from revelation. His God cannot hear prayer, cannot be angered by sin, and cannot save. Reformed theology insists on the hard distinction: God is not the world; He is its sovereign Creator, distinct from and above His creation, yet intimately present by His Spirit and grace.',
     keyWork: 'Ethics (1677, posthumous); Theological-Political Treatise (1670)'
+  },
+  {
+    name: 'Wittgenstein, Ludwig',
+    dates: '1889–1951',
+    era: 'contemporary',
+    bio: 'Born into one of Vienna\'s wealthiest families, Wittgenstein gave away his inheritance and lived with monastic austerity, convinced that philosophy was not a body of doctrine but a therapeutic activity — the dissolution of confusion caused by language. He produced two utterly different philosophies: the early <em>Tractatus</em>, which tried to show the logical structure underlying all meaningful speech, and the late <em>Philosophical Investigations</em>, which dismantled his own earlier work. Both have profoundly shaped how thinkers approach religious language.',
+    influence: [
+      { icon: '▲', text: 'His early <em>Tractatus</em> was seized upon by the Vienna Circle\'s logical positivists to argue that religious and ethical statements are literally meaningless — they neither picture facts nor are they logical tautologies. "Whereof one cannot speak, thereof one must be silent" became a weapon against theological language.' },
+      { icon: '✦', text: 'His late philosophy of "language games" — the meaning of words is their use within a form of life — opened space for <em>Wittgensteinian fideism</em> (D.Z. Phillips, Norman Malcolm): religious belief is its own legitimate language game, not subject to defeat by scientific or historical criteria.' },
+      { icon: '△', text: 'The fideist reading cuts both ways: it protects faith from positivist attack but makes Christianity a self-enclosed form of life with no claim on outsiders — no universal truth, no real resurrection, no Gospel for all nations. This is not orthodoxy.' },
+    ],
+    reformed: 'Wittgenstein is a lens, not a gospel. Reformed thinkers — particularly Alvin Plantinga — drew on his later work to argue that belief in God is a "properly basic" belief, not requiring external philosophical justification. But the Reformed tradition firmly resists the fideist conclusion: Christianity makes universal truth claims grounded in history (the empty tomb is either empty or it is not), not merely a language game for those already inside. Sproul insisted that faith seeks understanding — it does not retreat from it.',
+    keyWork: 'Tractatus Logico-Philosophicus (1921); Philosophical Investigations (1953, posthumous)'
   },
   {
     name: 'Zwingli, Ulrich',
