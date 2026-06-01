@@ -1,10 +1,12 @@
-const CACHE = 'commentaries-v66';
+const CACHE = 'commentaries-v67';
 const PAGES = [
   './index.html',
   './dictionary.html',
   './figures.html',
   './philosophers.html',
   './heresies.html',
+  './councils.html',
+  './creeds.html',
 ];
 
 self.addEventListener('install', e => {

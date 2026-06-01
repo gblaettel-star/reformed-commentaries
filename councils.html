@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Church Councils — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation}
+header h1:hover{opacity:.8}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Filter bar */
+.filter-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.filter-btn{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.25rem .65rem;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s;touch-action:manipulation}
+.filter-btn:hover{border-color:#c9a84c;color:#c9a84c}
+.filter-btn.active{background:#c9a84c;border-color:#c9a84c;color:#0d2137;font-weight:bold}
+
+/* Index */
+.index-wrap{background:#0a1e30;border-bottom:2px solid #2a4a6c}
+.index-toggle{width:100%;background:none;border:none;color:#7090b0;padding:.5rem 1rem;font-size:.78rem;font-family:'Georgia',serif;cursor:pointer;text-align:left;letter-spacing:.08em;touch-action:manipulation}
+.index-toggle:hover{color:#c9a84c}
+.index-chips{display:none;flex-wrap:wrap;gap:.3rem;padding:.5rem 1rem .75rem}
+.index-chips.open{display:flex}
+.index-chip{background:none;border:1px solid #2a4a6c;color:#a09070;padding:.2rem .55rem;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Georgia',serif;white-space:nowrap;touch-action:manipulation}
+.index-chip:hover{border-color:#c9a84c;color:#c9a84c}
+
+.no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
+main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
+
+/* Era heading */
+.era-head{color:#c9a84c;font-size:1.1rem;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid #c9a84c;padding-bottom:.4rem;margin:2rem 0 1.2rem}
+.era-head:first-child{margin-top:0}
+
+/* Council card */
+.council-card{margin-bottom:2rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+.council-header{background:#1a3a5c;padding:.85rem 1.2rem}
+.council-name{color:#c9a84c;font-size:1.2rem;font-weight:bold;letter-spacing:.04em}
+.council-meta{color:#7090b0;font-size:.8rem;font-style:italic;margin-top:.25rem;display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+.era-tag{background:#0d2137;border:1px solid #2a4a6c;color:#7090b0;font-size:.7rem;padding:.15rem .5rem;border-radius:12px;font-style:normal;letter-spacing:.06em;white-space:nowrap}
+.type-tag{font-size:.7rem;padding:.15rem .6rem;border-radius:12px;font-style:normal;letter-spacing:.06em;white-space:nowrap;font-weight:bold}
+.type-ecumenical{background:#0d2030;border:1px solid #3a5a8c;color:#80a8d0}
+.type-reformed{background:#0d2010;border:1px solid #3a6a30;color:#80b060}
+.type-counter{background:#2a1a00;border:1px solid #7a4a10;color:#c89050}
+.type-regional{background:#1a1030;border:1px solid #4a3a60;color:#9070b0}
+
+.council-body{padding:1.2rem 1.4rem;line-height:1.85}
+.council-body p{margin-bottom:.9rem}
+.council-body p:last-child{margin-bottom:0}
+
+/* At stake / decided */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.1rem}
+@media(max-width:520px){.two-col{grid-template-columns:1fr}}
+.col-box{background:#0d2137;border:1px solid #2a4a6c;border-radius:6px;padding:.85rem 1rem}
+.col-label{color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem;display:block}
+.col-text{color:#d4c4a8;font-size:.9rem;line-height:1.7}
+
+/* Key figures */
+.figures-wrap{margin-bottom:1.1rem}
+.figures-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.figure-chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.figure-chip{background:#0d2137;border:1px solid #2a4a6c;color:#a0c0d0;font-size:.78rem;padding:.2rem .6rem;border-radius:12px}
+
+/* Outcome rows */
+.outcome-wrap{margin-bottom:1.1rem}
+.outcome-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.7rem}
+.outcome-row{display:flex;gap:.75rem;margin-bottom:.65rem;align-items:flex-start}
+.outcome-row:last-child{margin-bottom:0}
+.out-icon{font-size:1rem;line-height:1.6;flex-shrink:0;width:1.2rem;text-align:center}
+.out-text{line-height:1.75;font-size:.93rem;color:#d4c4a8;min-width:0;word-wrap:break-word}
+
+/* Still matters */
+.still-matters{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;margin-bottom:1rem;border-radius:0 4px 4px 0}
+.still-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.still-text{line-height:1.8;font-size:.93rem;color:#d4c4a8}
+
+/* Key document */
+.key-doc{margin-top:.5rem;padding:.75rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px}
+.kd-label{display:block;color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.35rem}
+.kd-text{display:block;color:#d4c4a8;font-size:.95rem;font-style:italic;line-height:1.6;word-wrap:break-word}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1 onclick="resetPage()">Church Councils</h1>
+  </div>
+  <h2>Where the Church drew its lines</h2>
+</header>
+
+<div class="filter-bar" id="filterBar"></div>
+
+<div class="index-wrap">
+  <button class="index-toggle" onclick="toggleIndex()">&#9660; Browse all councils</button>
+  <div class="index-chips" id="indexChips"></div>
+</div>
+
+<main id="mainContent"></main>
+
+<script>
+const FILTERS = [
+  { id:'all',         label:'All' },
+  { id:'early',       label:'Early Church' },
+  { id:'ecumenical',  label:'Ecumenical' },
+  { id:'medieval',    label:'Medieval' },
+  { id:'reformation', label:'Reformation' },
+  { id:'modern',      label:'Modern' },
+];
+
+const COUNCILS = [
+  {
+    name: 'Council of Nicaea I',
+    year: 325,
+    era: 'ecumenical',
+    location: 'Nicaea, Bithynia',
+    type: 'ecumenical',
+    atStake: 'Whether the Son of God is truly and fully divine — co-equal and co-eternal with the Father — or a created being of lesser status, as Arius taught.',
+    decided: 'The Son is <em>homoousios</em> — of the same substance as the Father. Not similar (<em>homoiousios</em>), not created: the same. The Nicene Creed was produced and Arianism was condemned.',
+    figures: ['Constantine I', 'Athanasius of Alexandria', 'Alexander of Alexandria', 'Arius', 'Eusebius of Nicomedia'],
+    outcomes: [
+      { icon: '⚖', text: 'Produced the original Nicene Creed, affirming the Son as "God of God, Light of Light, very God of very God, begotten not made, of one substance with the Father."' },
+      { icon: '⚖', text: 'Formally condemned Arianism and anathematized its key propositions, including "there was a time when the Son was not."' },
+      { icon: '✦', text: 'Fixed the date of Easter by a common formula, unifying church practice across the empire.' },
+    ],
+    stillMatters: 'Nicaea is the bedrock of Christian orthodoxy. Without it, there is no Trinity, no incarnation in the full sense, and no atonement of infinite worth. Every time a Jehovah\'s Witness knocks on your door, Nicaea is what they are undoing. Athanasius\'s courage — exiled five times rather than sign a compromise — remains the model for every Christian who stands alone against institutional pressure for the sake of truth.',
+    keyDoc: 'Nicene Creed (325); Canons of Nicaea (325)'
+  },
+  {
+    name: 'Council of Constantinople I',
+    year: 381,
+    era: 'ecumenical',
+    location: 'Constantinople',
+    type: 'ecumenical',
+    atStake: 'The full deity of the Holy Spirit (denied by the Pneumatomachians/"Spirit-fighters") and the final defeat of Arianism, which had dominated the Eastern church for decades after Nicaea.',
+    decided: 'The Nicene Creed was expanded and finalized — the version recited in churches today. The Spirit was confessed as "the Lord and giver of life, who proceeds from the Father, who together with the Father and Son is worshipped and glorified." Arianism was definitively condemned.',
+    figures: ['Emperor Theodosius I', 'Gregory of Nazianzus', 'Gregory of Nyssa', 'Basil of Caesarea (recently deceased)', 'Macedonius'],
+    outcomes: [
+      { icon: '⚖', text: 'Produced the Niceno-Constantinopolitan Creed — the full Nicene Creed as used in Christian worship ever since.' },
+      { icon: '⚖', text: 'Condemned Macedonianism (Pneumatomachianism) — the denial of the full deity and personhood of the Holy Spirit.' },
+      { icon: '⚖', text: 'Condemned all remaining forms of Arianism and Semi-Arianism.' },
+    ],
+    stillMatters: 'This council completed the doctrine of the Trinity as the church confesses it. The Holy Spirit is not a force, an influence, or a lesser divine being — He is fully God, the third person of the Trinity, equally worthy of worship and glory. The Nicene Creed produced here is the most universally confessed statement of Christian faith in history, recited by Catholic, Orthodox, and Protestant churches every Sunday across the world.',
+    keyDoc: 'Niceno-Constantinopolitan Creed (381)'
+  },
+  {
+    name: 'Council of Ephesus',
+    year: 431,
+    era: 'ecumenical',
+    location: 'Ephesus, Asia Minor',
+    type: 'ecumenical',
+    atStake: 'The unity of Christ\'s person — whether the divine and human in Christ were so distinct as to constitute two separate persons (Nestorianism), and whether Mary could properly be called <em>Theotokos</em> (God-bearer).',
+    decided: 'Nestorianism was condemned. Mary is rightly called <em>Theotokos</em> — not because she is the mother of the divine nature as such, but because she bore the one person who is God incarnate. The communicatio idiomatum (exchange of attributes between natures in the one person) was affirmed.',
+    figures: ['Cyril of Alexandria', 'Nestorius of Constantinople', 'Celestine I of Rome', 'John of Antioch'],
+    outcomes: [
+      { icon: '⚖', text: 'Condemned Nestorianism and deposed Nestorius from his see.' },
+      { icon: '⚖', text: 'Affirmed <em>Theotokos</em> as the proper title for Mary — signifying the unity of Christ\'s person, not a theology of Mary herself.' },
+      { icon: '△', text: 'The council was turbulent and disputed — Cyril\'s faction condemned Nestorius before the Syrian delegation arrived; a counter-council briefly excommunicated Cyril. The controversy required further resolution at Chalcedon.' },
+    ],
+    stillMatters: 'The affirmation of <em>Theotokos</em> is about Christ, not Mary. It guards the conviction that the child born in Bethlehem is the eternal Son of God — that the one born of Mary and the one who is Lord of all are the same person. A Christ who is two loosely joined persons cannot be our mediator. The Nestorian Church of the East survived in Persia and spread along the Silk Road to China — a reminder that major theological controversies rarely disappear entirely.',
+    keyDoc: 'Canons of Ephesus (431); Cyril\'s Twelve Anathemas'
+  },
+  {
+    name: 'Council of Chalcedon',
+    year: 451,
+    era: 'ecumenical',
+    location: 'Chalcedon, Bithynia',
+    type: 'ecumenical',
+    atStake: 'The precise relationship of Christ\'s two natures — divine and human — in one person. Eutyches had swung from Nestorianism to the opposite extreme, teaching that after the Incarnation Christ had only one nature (Monophysitism), the human being absorbed into the divine.',
+    decided: 'The Chalcedonian Definition: Christ is truly God and truly man — one person in two natures, "without confusion, without change, without division, without separation." The four negative adverbs were surgical instruments, each excluding a specific heresy.',
+    figures: ['Emperor Marcian', 'Pope Leo I', 'Anatolius of Constantinople', 'Eutyches', 'Dioscorus of Alexandria'],
+    outcomes: [
+      { icon: '⚖', text: 'Produced the Chalcedonian Definition — still the standard Christological formula for Catholic, Orthodox, and Protestant churches.' },
+      { icon: '⚖', text: 'Condemned Eutychianism/Monophysitism. Eutyches was exiled; Dioscorus of Alexandria was deposed.' },
+      { icon: '⚖', text: 'Formally received Leo I\'s Tome as orthodox — prompting the bishops\' famous cry: "Peter has spoken through Leo!"' },
+      { icon: '△', text: 'Produced a lasting schism: Oriental Orthodox churches (Coptic, Ethiopian, Armenian, Syriac) rejected the "two natures" formula and remain separated from Catholic, Orthodox, and Protestant churches to this day.' },
+    ],
+    stillMatters: 'Chalcedon is the grammar of salvation. Two complete natures — fully divine, fully human — in one undivided person. Remove either nature and the Gospel collapses: without full humanity, Christ cannot represent us; without full divinity, His sacrifice carries no infinite weight. Every Christmas sermon and every Good Friday meditation stands on Chalcedonian ground, whether or not the preacher knows the word.',
+    keyDoc: 'Chalcedonian Definition (451); Leo I, Tome (449)'
+  },
+  {
+    name: 'Council of Constantinople II',
+    year: 553,
+    era: 'ecumenical',
+    location: 'Constantinople',
+    type: 'ecumenical',
+    atStake: 'A complex controversy over three theological figures (the "Three Chapters") whose writings were considered too sympathetic to Nestorianism. Also: the condemnation of Origenism and its speculative cosmology.',
+    decided: 'The Three Chapters were condemned posthumously. Fourteen anathemas against Origenism were issued, condemning the pre-existence of souls, the spiritual (non-bodily) resurrection, and apokatastasis (universal salvation).',
+    figures: ['Emperor Justinian I', 'Pope Vigilius (under enormous imperial pressure)', 'Theodore of Mopsuestia (posthumously condemned)'],
+    outcomes: [
+      { icon: '⚖', text: 'Formally condemned the theological writings of Theodore of Mopsuestia, Theodoret of Cyrrhus, and Ibas of Edessa — the "Three Chapters."' },
+      { icon: '⚖', text: 'Issued fourteen anathemas against Origenist doctrines, definitively excluding the pre-existence of souls and apokatastasis from orthodox teaching.' },
+    ],
+    stillMatters: 'The condemnation of apokatastasis (universal salvation) here is the conciliar answer to Origen\'s attractive but unbiblical conclusion. Hell is not remedial; the lost are lost eternally. The council also illustrates the danger of imperial theology — Justinian\'s relentless pressure on Pope Vigilius, who eventually capitulated, is a case study in what happens when the church allows the state to set its theological agenda.',
+    keyDoc: 'Canons of Constantinople II (553); Fourteen Anathemas against Origen'
+  },
+  {
+    name: 'Council of Orange II',
+    year: 529,
+    era: 'early',
+    location: 'Orange, Gaul',
+    type: 'regional',
+    atStake: 'Semi-Pelagianism — the teaching of the Gallic monks that the human will takes the first step toward God and grace assists the rest. The Augustinian account of grace vs. a softened, more palatable version.',
+    decided: 'Semi-Pelagianism was condemned. Even the first inclination toward faith is the gift of God\'s grace. The canons affirm original sin, the total incapacity of the will apart from grace, and the necessity of prevenient grace for any good spiritual movement. Endorsed by Pope Boniface II.',
+    figures: ['Caesarius of Arles', 'Pope Boniface II', 'John Cassian (condemned posthumously in tendency)', 'Faustus of Riez (condemned)'],
+    outcomes: [
+      { icon: '⚖', text: 'Twenty-five canons condemning Semi-Pelagian propositions one by one.' },
+      { icon: '⚖', text: 'Canon 5: "If anyone says that the increase of faith as well as the beginning of faith... is not through the gift of grace... such a person is opposed to the teaching of the Apostles."' },
+      { icon: '✦', text: 'Ratified by Pope Boniface II in 531, giving it universal authority in the Western church — the most Augustinian conciliar statement before the Reformation.' },
+    ],
+    stillMatters: 'Orange II is the Catholic church\'s own conciliar condemnation of Semi-Pelagianism — a fact often forgotten in Protestant-Catholic dialogue. The council\'s language is recognizably Augustinian and anticipates Reformation soteriology at several points. That the medieval church progressively retreated from Orange into the very Semi-Pelagianism it had condemned is one of the great ironies of church history — and one of the reasons the Reformation was necessary.',
+    keyDoc: 'Canons of the Council of Orange (529)'
+  },
+  {
+    name: 'Fourth Lateran Council',
+    year: 1215,
+    era: 'medieval',
+    location: 'Rome',
+    type: 'regional',
+    atStake: 'A sweeping program of church reform and doctrinal definition covering heresy (Albigensians, Waldensians), the Eucharist, clerical discipline, and crusade. One of the most consequential medieval councils.',
+    decided: 'Defined transubstantiation — the first conciliar use of the term. Mandated annual confession and communion for all Christians. Condemned various heresies. Ordered Jews and Muslims to wear distinctive clothing.',
+    figures: ['Pope Innocent III', 'Francis of Assisi (present)', 'Dominic Guzman (founder of Dominicans)'],
+    outcomes: [
+      { icon: '⚖', text: 'Canon 1 defined transubstantiation: the bread and wine are truly transformed into the body and blood of Christ, only the "accidents" (appearances) remaining.' },
+      { icon: '⚖', text: 'Mandated annual auricular confession to a priest — making private confession a universal obligation for all Christians.' },
+      { icon: '▲', text: 'Ordered Jews to wear identifying badges — a decision with a long and terrible history.' },
+    ],
+    stillMatters: 'The definition of transubstantiation is the doctrine that the Reformers directly attacked. Luther\'s <em>The Babylonian Captivity of the Church</em> (1520) was largely a sustained assault on Lateran IV\'s Eucharistic theology. The Council of Trent later reaffirmed it. For the Reformed tradition, transubstantiation confuses the sign with the thing signified and introduces a false sacrifice that obscures the once-for-all offering of Christ at Calvary.',
+    keyDoc: 'Canons of Lateran IV (1215), especially Canon 1'
+  },
+  {
+    name: 'Council of Constance',
+    year: 1414,
+    era: 'medieval',
+    location: 'Constance, Germany',
+    type: 'regional',
+    atStake: 'The Great Schism (three competing popes), the reform of the church, and the fate of Jan Hus and John Wycliffe — two proto-Reformers who had challenged papal authority and corruption.',
+    decided: 'All three popes were deposed or resigned; Martin V was elected as the sole pope, ending the Schism. Jan Hus was tried, condemned, and burned alive despite a letter of safe conduct — a martyrdom that lit the fuse of the Bohemian Reformation. Wycliffe was condemned posthumously.',
+    figures: ['Jan Hus', 'Pope John XXIII (antipope, deposed)', 'Emperor Sigismund', 'Cardinal d\'Ailly'],
+    outcomes: [
+      { icon: '⚖', text: 'Ended the Western Schism by deposing rival popes and electing Martin V.' },
+      { icon: '▲', text: 'Burned Jan Hus alive on July 6, 1415, despite an imperial safe conduct — an act of treachery that enraged Bohemia and triggered the Hussite Wars.' },
+      { icon: '⚖', text: 'Condemned the writings of John Wycliffe and ordered his remains exhumed and burned.' },
+      { icon: '✦', text: 'Hus\'s dying words: "You are now going to burn a goose [Hus = goose in Czech], but in a century you will have a swan whom you can neither roast nor boil." A century later: Martin Luther.' },
+    ],
+    stillMatters: 'Constance is the hinge between the medieval church and the Reformation. Hus\'s martyrdom proved that the church could not reform itself from within — that the institutional pressure was too great, the corruption too deep. Luther read Hus\'s treatises and wept that the church had burned a man who taught the Gospel. Every Reformation insight about Scripture\'s authority over councils was sharpened by what Constance did to Hus.',
+    keyDoc: 'Decrees of Constance (1414–1418); Jan Hus, On the Church (1413)'
+  },
+  {
+    name: 'Council of Trent',
+    year: 1545,
+    era: 'reformation',
+    location: 'Trent, Northern Italy',
+    type: 'counter',
+    atStake: 'The entire Protestant Reformation. Trent was convened to define Catholic doctrine in response to Luther, Calvin, and the spread of Protestantism across Europe. Every Reformation doctrine was directly addressed and rejected.',
+    decided: 'Scripture and Tradition are co-equal authorities (against Sola Scriptura). Justification involves both imputed and infused righteousness and can be increased by meritorious works (against Sola Fide). The Mass is a propitiatory sacrifice. Purgatory is affirmed. Seven sacraments. The Vulgate is the authoritative Bible text. Anathemas were pronounced against justification by faith alone.',
+    figures: ['Pope Paul III', 'Pope Julius III', 'Pope Pius IV', 'Cardinal Reginald Pole', 'Cardinal Caraffa (later Paul IV)'],
+    outcomes: [
+      { icon: '⚖', text: 'Session VI, Canon 9: "If anyone says that the sinner is justified by faith alone... let him be anathema." This anathema on the Reformation\'s central article has never been lifted.' },
+      { icon: '⚖', text: 'Affirmed seven sacraments as means of grace, transubstantiation, purgatory, and the Mass as a propitiatory sacrifice.' },
+      { icon: '⚖', text: 'Declared the Latin Vulgate the authoritative text of Scripture — rejecting the Reformers\' return to Hebrew and Greek originals.' },
+      { icon: '✦', text: 'Reformed the worst abuses of clerical life — education of clergy, residency requirements, end of the worst indulgence abuses. The Council of Trent was genuine reform — but reform without the Gospel.' },
+    ],
+    stillMatters: 'Trent is the reason the Reformation is not over. Its anathema on justification by faith alone stands as official Catholic teaching. The <em>Joint Declaration on the Doctrine of Justification</em> (1999) between Lutherans and Rome was welcomed as reconciliation — but Sproul, MacArthur, and others pointed out it achieved ambiguity, not agreement. The question Trent was convened to answer — how is a sinner made right with God? — has not been answered the same way by Rome and the Reformation. Until it is, the five Solas remain necessary.',
+    keyDoc: 'Decrees of Trent, Session VI (Justification, 1547); Session VII (Sacraments); Session XIII (Eucharist)'
+  },
+  {
+    name: 'Synod of Dort',
+    year: 1618,
+    era: 'reformation',
+    location: 'Dordrecht, Netherlands',
+    type: 'reformed',
+    atStake: 'The five points of Arminianism (the Remonstrance of 1610): conditional election, unlimited atonement, resistible grace, and the possibility of falling from grace. The entire Reformed doctrine of salvation by sovereign grace was under challenge.',
+    decided: 'The five Arminian articles were rejected one by one and the five points of Calvinism (TULIP) were defined: Total depravity, Unconditional election, Limited atonement, Irresistible grace, Perseverance of the saints. The Canons of Dort became a confessional standard for Reformed churches worldwide.',
+    figures: ['Johannes Bogerman (president)', 'Francis Gomarus', 'Johannes Maccovius', 'Simon Episcopius (Arminian spokesman)', 'Delegates from Britain, Germany, Switzerland, France'],
+    outcomes: [
+      { icon: '⚖', text: 'Produced the Canons of Dort — one of the Three Forms of Unity for Reformed churches, alongside the Heidelberg Catechism and Belgic Confession.' },
+      { icon: '⚖', text: 'Rejected all five Arminian articles and affirmed sovereign grace in election, particular redemption, effectual calling, and perseverance.' },
+      { icon: '⚖', text: 'Dismissed and condemned the Remonstrant (Arminian) delegates; Arminianism was banned in the Netherlands (temporarily).' },
+      { icon: '✦', text: 'An international Reformed council — delegates came from Britain, Germany, Switzerland, France, and the Palatinate — making Dort the most ecumenical Reformed confession ever produced.' },
+    ],
+    stillMatters: 'TULIP is not a curiosity of 17th-century Dutch theology — it is a precise, scripturally grounded account of how sinners are saved. The question Dort addressed is the question every Christian must answer: does salvation ultimately depend on God\'s sovereign choice or on the sinner\'s free decision? Dort says: God. This is not cold scholasticism but the sweetest pastoral comfort: my salvation rests not on the weakness of my faith but on the invincibility of God\'s grace. Sproul called Dort the most important Reformed council after the Reformation itself.',
+    keyDoc: 'Canons of Dort (1619); Remonstrance of 1610'
+  },
+  {
+    name: 'Westminster Assembly',
+    year: 1643,
+    era: 'reformation',
+    location: 'Westminster, London',
+    type: 'reformed',
+    atStake: 'The reformation of the Church of England — its doctrine, worship, and government — by the English Parliament during the Civil War. The Assembly was tasked with producing standards for a truly Reformed church.',
+    decided: 'The Westminster Confession of Faith, the Westminster Larger Catechism, the Westminster Shorter Catechism, and the Directory for Public Worship — the most comprehensive Reformed standards ever produced, still the confessional basis of Presbyterian churches worldwide.',
+    figures: ['William Twisse (prolocutor)', 'Samuel Rutherford', 'Thomas Goodwin', 'John Owen (not a formal member but influential)', 'Scottish commissioners Alexander Henderson and George Gillespie'],
+    outcomes: [
+      { icon: '⚖', text: 'Westminster Confession of Faith — 33 chapters covering every major doctrine from Scripture to the last judgment. The most carefully worded Protestant confession in existence.' },
+      { icon: '⚖', text: 'Westminster Shorter Catechism — 107 questions and answers, beginning with the most famous sentence in Reformed theology: "Man\'s chief end is to glorify God, and to enjoy him forever."' },
+      { icon: '⚖', text: 'Westminster Larger Catechism — 196 questions for more advanced instruction, with particularly rich treatments of the Ten Commandments and the Lord\'s Prayer.' },
+      { icon: '✦', text: 'Though Parliament never implemented the Westminster standards for England, they were adopted by the Church of Scotland in 1647 and have shaped Presbyterian and Reformed churches globally ever since.' },
+    ],
+    stillMatters: 'Westminster is the summit of Reformed confessional theology. Its precision on justification, the covenant of grace, the perseverance of the saints, and the authority of Scripture represents 150 years of Reformation thought carefully distilled. Sproul, Ferguson, Begg, and MacArthur all stand in its tradition. The Shorter Catechism alone — memorized by generations of children — may have done more for Reformed discipleship than any other document outside Scripture.',
+    keyDoc: 'Westminster Confession of Faith (1646); Westminster Shorter Catechism (1647)'
+  },
+  {
+    name: 'Vatican Council I',
+    year: 1869,
+    era: 'modern',
+    location: 'Rome',
+    type: 'counter',
+    atStake: 'The authority and nature of the papacy in an age of revolutionary liberalism and the loss of the Papal States. Could the church survive the collapse of its political power? On what basis did it claim authority?',
+    decided: 'Papal infallibility: when the Pope speaks ex cathedra (from the chair) on matters of faith and morals, defining doctrine for the whole church, he speaks infallibly — his definitions are irreformable of themselves, not from the consent of the church. Also defined: papal primacy of jurisdiction over the whole church.',
+    figures: ['Pope Pius IX', 'Cardinal Manning (strong infallibilist)', 'Bishop Dupanloup (opposing)', 'Lord Acton (Catholic historian, strongly opposed)'],
+    outcomes: [
+      { icon: '⚖', text: 'Defined papal infallibility in the constitution <em>Pastor Aeternus</em> (July 18, 1870). The very next day, France declared war on Prussia, the French garrison protecting Rome was withdrawn, and Italian troops seized the city.' },
+      { icon: '⚖', text: 'Defined the pope\'s immediate, ordinary, and universal jurisdiction over every diocese and bishop in the Catholic Church.' },
+      { icon: '△', text: 'The "Old Catholic" schism — a group of Catholics, particularly in Germany and Switzerland, rejected the infallibility definition and formed a separate church.' },
+    ],
+    stillMatters: 'Papal infallibility is the sharpest institutional expression of the conflict between Sola Scriptura and the Roman system. The Reformed tradition\'s answer is straightforward: no human being speaks infallibly; only God\'s Word is without error. The Westminster Confession (XXV.6) declares the Pope to be "that Antichrist, that man of sin, and son of perdition" — strong language, but rooted in the conviction that claiming infallible authority over the church is precisely the usurpation of Christ\'s headship that Scripture warns against.',
+    keyDoc: 'Pastor Aeternus (1870); Vatican I Decrees on Faith and Church'
+  },
+  {
+    name: 'Vatican Council II',
+    year: 1962,
+    era: 'modern',
+    location: 'Rome',
+    type: 'counter',
+    atStake: 'The relationship of the Catholic Church to the modern world, to other Christian denominations, and to non-Christian religions. Was the church to engage modernity or resist it? Were Protestants brothers or heretics?',
+    decided: 'A comprehensive renewal of Catholic life and worship: Mass in vernacular languages, greater role for the laity, dialogue with other Christians ("separated brethren") and non-Christian religions, a positive engagement with the modern world (<em>aggiornamento</em> — "updating"). Doctrine was not formally changed but was significantly reframed.',
+    figures: ['Pope John XXIII (convened)', 'Pope Paul VI (concluded)', 'Karl Rahner', 'Hans Küng', 'Joseph Ratzinger (later Benedict XVI)', 'Yves Congar'],
+    outcomes: [
+      { icon: '✦', text: '<em>Dei Verbum</em> (Word of God) — affirmed Scripture\'s central role while maintaining Tradition as a co-equal source. Did not adopt inerrancy in the Protestant sense.' },
+      { icon: '✦', text: '<em>Lumen Gentium</em> (Light of Nations) — the Church of Christ "subsists in" the Catholic Church, but elements of salvation exist in other Christian bodies.' },
+      { icon: '✦', text: '<em>Nostra Aetate</em> — historic statement on Jews and non-Christian religions, repudiating the charge that Jews as a people bear collective guilt for Christ\'s death.' },
+      { icon: '△', text: 'Sparked the traditionalist Catholic reaction (SSPX, sedevacantism) and was embraced by liberals as opening doctrinal change — a document interpreted in opposite directions simultaneously.' },
+    ],
+    stillMatters: 'Vatican II changed the tone but not the substance of the Reformation divide. The Tridentine anathema on justification by faith alone was not lifted. The Mass is still a propitiatory sacrifice. The Pope is still infallible ex cathedra. What changed was the atmosphere — from siege mentality to dialogue. For the Reformed tradition, warm dialogue is welcome; but warmth cannot substitute for the truth of the Gospel. The question is still: how is a sinner justified before God?',
+    keyDoc: 'Dei Verbum; Lumen Gentium; Gaudium et Spes (1965)'
+  },
+];
+
+// ── State ───────────────────────────────────────────────────────────────────
+let activeFilter = 'all';
+
+function init() { buildFilterBar(); render(); }
+
+function buildFilterBar() {
+  document.getElementById('filterBar').innerHTML = FILTERS.map(f =>
+    `<button class="filter-btn${f.id===activeFilter?' active':''}" onclick="selectFilter('${f.id}')">${f.label}</button>`
+  ).join('');
+}
+
+function selectFilter(id) { activeFilter = id; buildFilterBar(); render(); }
+
+function resetPage() { activeFilter = 'all'; buildFilterBar(); render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+function filtered() {
+  return activeFilter === 'all' ? COUNCILS.slice() : COUNCILS.filter(c => c.era === activeFilter);
+}
+
+function eraLabel(id) { return FILTERS.find(f=>f.id===id)?.label || id; }
+
+function typeTag(type) {
+  const map = {
+    ecumenical: ['type-ecumenical','Ecumenical'],
+    reformed:   ['type-reformed','Reformed'],
+    counter:    ['type-counter','Counter-Reformation'],
+    regional:   ['type-regional','Regional / Provincial'],
+  };
+  const [cls,label] = map[type] || ['type-regional', type];
+  return `<span class="type-tag ${cls}">${label}</span>`;
+}
+
+function render() {
+  const list = filtered();
+  buildIndex(list);
+  if(!list.length){ document.getElementById('mainContent').innerHTML='<div class="no-results">No councils found for this filter.</div>'; return; }
+  // group by era
+  const eraOrder = ['early','ecumenical','medieval','reformation','modern'];
+  const groups = {};
+  list.forEach(c => { if(!groups[c.era]) groups[c.era]=[]; groups[c.era].push(c); });
+  let html = '';
+  eraOrder.filter(e => groups[e]).forEach(e => {
+    html += `<div class="era-head">${eraLabel(e)}</div>`;
+    groups[e].sort((a,b)=>a.year-b.year).forEach(c => { html += councilCard(c); });
+  });
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function councilCard(c) {
+  const anchor = c.name.replace(/[^a-z]/gi,'_');
+  const figChips = c.figures.map(f=>`<span class="figure-chip">${f}</span>`).join('');
+  const outcomeRows = c.outcomes.map(o=>`<div class="outcome-row"><div class="out-icon">${o.icon}</div><div class="out-text">${o.text}</div></div>`).join('');
+  return `
+<div class="council-card" id="council-${anchor}">
+  <div class="council-header">
+    <div class="council-name">${c.name}</div>
+    <div class="council-meta"><span>${c.year} AD &nbsp;·&nbsp; ${c.location}</span>${typeTag(c.type)}</div>
+  </div>
+  <div class="council-body">
+    <div class="two-col">
+      <div class="col-box"><span class="col-label">At Stake</span><div class="col-text">${c.atStake}</div></div>
+      <div class="col-box"><span class="col-label">What Was Decided</span><div class="col-text">${c.decided}</div></div>
+    </div>
+    <div class="figures-wrap">
+      <div class="figures-label">Key Figures</div>
+      <div class="figure-chips">${figChips}</div>
+    </div>
+    <div class="outcome-wrap">
+      <div class="outcome-label">Outcomes</div>
+      ${outcomeRows}
+    </div>
+    <div class="still-matters">
+      <div class="still-label">Why It Still Matters</div>
+      <div class="still-text">${c.stillMatters}</div>
+    </div>
+    <div class="key-doc">
+      <span class="kd-label">Key Document</span>
+      <span class="kd-text">${c.keyDoc}</span>
+    </div>
+  </div>
+</div>`;
+}
+
+function buildIndex(list) {
+  document.getElementById('indexChips').innerHTML = list.sort((a,b)=>a.year-b.year).map(c => {
+    const anchor = c.name.replace(/[^a-z]/gi,'_');
+    return `<span class="index-chip" onclick="jumpTo('council-${anchor}')">${c.name} (${c.year})</span>`;
+  }).join('');
+}
+
+function jumpTo(id) { const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+function toggleIndex() {
+  const chips = document.getElementById('indexChips');
+  const btn = document.querySelector('.index-toggle');
+  chips.classList.toggle('open');
+  btn.textContent = chips.classList.contains('open') ? '▲ Browse all councils' : '▼ Browse all councils';
+}
+
+init();
+</script>
+</body>
+</html>

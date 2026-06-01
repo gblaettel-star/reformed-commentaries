@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creeds &amp; Confessions — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation}
+header h1:hover{opacity:.8}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Filter bar */
+.filter-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.filter-btn{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.25rem .65rem;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s;touch-action:manipulation}
+.filter-btn:hover{border-color:#c9a84c;color:#c9a84c}
+.filter-btn.active{background:#c9a84c;border-color:#c9a84c;color:#0d2137;font-weight:bold}
+
+/* Index */
+.index-wrap{background:#0a1e30;border-bottom:2px solid #2a4a6c}
+.index-toggle{width:100%;background:none;border:none;color:#7090b0;padding:.5rem 1rem;font-size:.78rem;font-family:'Georgia',serif;cursor:pointer;text-align:left;letter-spacing:.08em;touch-action:manipulation}
+.index-toggle:hover{color:#c9a84c}
+.index-chips{display:none;flex-wrap:wrap;gap:.3rem;padding:.5rem 1rem .75rem}
+.index-chips.open{display:flex}
+.index-chip{background:none;border:1px solid #2a4a6c;color:#a09070;padding:.2rem .55rem;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Georgia',serif;white-space:nowrap;touch-action:manipulation}
+.index-chip:hover{border-color:#c9a84c;color:#c9a84c}
+
+.no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
+main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
+
+/* Era heading */
+.era-head{color:#c9a84c;font-size:1.1rem;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid #c9a84c;padding-bottom:.4rem;margin:2rem 0 1.2rem}
+.era-head:first-child{margin-top:0}
+
+/* Creed card */
+.creed-card{margin-bottom:2rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+.creed-header{background:#1a3a5c;padding:.85rem 1.2rem}
+.creed-name{color:#c9a84c;font-size:1.2rem;font-weight:bold;letter-spacing:.04em}
+.creed-meta{color:#7090b0;font-size:.8rem;font-style:italic;margin-top:.25rem;display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+.trad-tag{font-size:.7rem;padding:.15rem .6rem;border-radius:12px;font-style:normal;letter-spacing:.06em;white-space:nowrap;font-weight:bold}
+.trad-ecumenical{background:#0d2030;border:1px solid #3a5a8c;color:#80a8d0}
+.trad-reformed{background:#0d2010;border:1px solid #3a6a30;color:#80b060}
+.trad-lutheran{background:#1a1800;border:1px solid #6a5a10;color:#c0a840}
+.trad-baptist{background:#1a0d10;border:1px solid #6a2a30;color:#c07080}
+
+.creed-body{padding:1.2rem 1.4rem;line-height:1.85}
+
+/* The text block */
+.text-block{background:#071520;border:1px solid #2a4a6c;border-radius:6px;padding:1.1rem 1.3rem;margin-bottom:1.2rem}
+.text-label{color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem;display:block}
+.creed-text{color:#e8dcc8;font-size:.97rem;line-height:2;font-style:italic}
+.creed-text p{margin-bottom:.6rem}
+.creed-text p:last-child{margin-bottom:0}
+
+/* Article rows */
+.articles-wrap{margin-bottom:1.2rem}
+.articles-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem}
+.article-row{display:flex;gap:.75rem;margin-bottom:.8rem;align-items:flex-start}
+.article-row:last-child{margin-bottom:0}
+.art-icon{font-size:1rem;line-height:1.6;flex-shrink:0;width:1.2rem;text-align:center}
+.art-text{line-height:1.75;font-size:.93rem;color:#d4c4a8;min-width:0;word-wrap:break-word}
+
+/* Guards against */
+.guards-wrap{margin-bottom:1.2rem}
+.guards-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.guard-chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.guard-chip{background:#1a0d1a;border:1px solid #4a2a4a;color:#c090c0;font-size:.78rem;padding:.2rem .6rem;border-radius:12px}
+
+/* Still matters */
+.still-matters{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;margin-bottom:1rem;border-radius:0 4px 4px 0}
+.still-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.still-text{line-height:1.8;font-size:.93rem;color:#d4c4a8}
+
+/* How to use */
+.use-box{padding:.75rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px;margin-top:.5rem}
+.use-label{display:block;color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.35rem}
+.use-text{display:block;color:#d4c4a8;font-size:.95rem;line-height:1.6;word-wrap:break-word}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1 onclick="resetPage()">Creeds &amp; Confessions</h1>
+  </div>
+  <h2>The faith once delivered — precisely stated</h2>
+</header>
+
+<div class="filter-bar" id="filterBar"></div>
+
+<div class="index-wrap">
+  <button class="index-toggle" onclick="toggleIndex()">&#9660; Browse all creeds</button>
+  <div class="index-chips" id="indexChips"></div>
+</div>
+
+<main id="mainContent"></main>
+
+<script>
+const FILTERS = [
+  { id:'all',        label:'All' },
+  { id:'ecumenical', label:'Ecumenical' },
+  { id:'reformed',   label:'Reformed' },
+  { id:'lutheran',   label:'Lutheran' },
+  { id:'baptist',    label:'Baptist' },
+];
+
+const CREEDS = [
+  {
+    name: "Apostles' Creed",
+    year: 'c. 2nd–7th century',
+    yearSort: 200,
+    tradition: 'ecumenical',
+    origin: 'Developed gradually in the Western church; reached its present form by the 7th century. Rooted in baptismal interrogations used in Rome from the 2nd century.',
+    text: [
+      'I believe in God, the Father Almighty, Creator of heaven and earth.',
+      'And in Jesus Christ, His only Son, our Lord; who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died, and was buried; He descended into hell; on the third day He rose again from the dead; He ascended into heaven, and sits at the right hand of God the Father Almighty; from thence He shall come to judge the living and the dead.',
+      'I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Creator/creation</strong> — "Father Almighty, Creator of heaven and earth" guards the goodness of the material world against Gnostic contempt.' },
+      { icon: '✦', text: '<strong>The historical anchoring</strong> — "suffered under Pontius Pilate" — names a Roman governor and a specific moment in history. The Gospel is not myth; it happened.' },
+      { icon: '✦', text: '<strong>The resurrection of the body</strong> — not the immortality of the soul, but the resurrection of the body. The Greek philosophical escape from matter is refused.' },
+    ],
+    guards: ['Gnosticism','Docetism','Marcionism','Universalism'],
+    stillMatters: 'The Apostles\' Creed is the church\'s simplest summary of the Gospel — twelve articles covering creation, incarnation, atonement, resurrection, and consummation. Every word was chosen. "Suffered under Pontius Pilate" grounds the faith in history; "resurrection of the body" insists that salvation redeems matter, not just souls. Used in baptismal instruction since the 2nd century, it remains the first confession of faith for new believers in many traditions.',
+    howToUse: 'Recite it slowly, article by article, as a prayer. Ask: what would I lose if this article were false? The creed is not a formal recitation — it is a map of the Gospel.'
+  },
+  {
+    name: 'Nicene Creed',
+    year: '325 / 381 AD',
+    yearSort: 381,
+    tradition: 'ecumenical',
+    origin: 'Produced at the Council of Nicaea (325) to counter Arianism; expanded at the Council of Constantinople (381) to affirm the full deity of the Holy Spirit. The version used in churches today is the Niceno-Constantinopolitan Creed of 381.',
+    text: [
+      'I believe in one God, the Father Almighty, Maker of heaven and earth, and of all things visible and invisible.',
+      'And in one Lord Jesus Christ, the only-begotten Son of God, begotten of the Father before all worlds; God of God, Light of Light, very God of very God; begotten, not made, being of one substance with the Father, by whom all things were made.',
+      'Who, for us men and for our salvation, came down from heaven, and was incarnate by the Holy Spirit of the Virgin Mary, and was made man; and was crucified also for us under Pontius Pilate; He suffered and was buried; and the third day He rose again, according to the Scriptures; and ascended into heaven, and sits on the right hand of the Father; and He shall come again, with glory, to judge the living and the dead; whose kingdom shall have no end.',
+      'And I believe in the Holy Spirit, the Lord and giver of life; who proceeds from the Father [and the Son]; who with the Father and the Son together is worshipped and glorified; who spoke by the prophets.',
+      'And I believe in one holy catholic and apostolic Church. I acknowledge one baptism for the remission of sins; and I look for the resurrection of the dead, and the life of the world to come. Amen.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>"Very God of very God, begotten not made, of one substance with the Father"</strong> — every phrase is anti-Arian. The Son is not a created demigod; He is fully, co-eternally God.' },
+      { icon: '✦', text: '<strong>"For us men and for our salvation, came down from heaven"</strong> — the Incarnation is purposive. He did not come to teach or inspire; He came to save.' },
+      { icon: '✦', text: '<strong>"The Holy Spirit... who with the Father and the Son together is worshipped and glorified"</strong> — full Trinitarian co-equality, added at Constantinople against the Spirit-fighters.' },
+    ],
+    guards: ['Arianism','Modalism','Pneumatomachianism','Docetism'],
+    stillMatters: 'The Nicene Creed is the most universally confessed statement of Christian faith in history — recited by Roman Catholic, Eastern Orthodox, Anglican, Lutheran, Reformed, and many Baptist and evangelical churches. It is the definition of Christian orthodoxy: to deny any article is to step outside the faith once delivered. Sproul called it the fence around the garden of Christianity.',
+    howToUse: 'Stand and recite it in corporate worship as the church has done for 1,600 years. Teach each phrase to children with the question: "What heresy does this sentence exclude?" The creed is a battle-tested map of orthodoxy.'
+  },
+  {
+    name: 'Athanasian Creed',
+    year: 'c. 5th century',
+    yearSort: 450,
+    tradition: 'ecumenical',
+    origin: 'Not written by Athanasius (who died in 373) but likely composed in Gaul in the late 5th century. Its Latin name is <em>Quicunque vult</em> ("Whoever wishes [to be saved]"). It is the most detailed and precise of the three ecumenical creeds.',
+    text: [
+      'Whoever wishes to be saved must, above all, hold the catholic faith. Whoever does not keep it whole and undefiled will without doubt perish eternally.',
+      'Now this is the catholic faith: We worship one God in trinity and the Trinity in unity, neither confusing the persons nor dividing the divine being.',
+      'For the Father is one person, the Son is another, and the Holy Spirit is still another. But the deity of the Father, Son, and Holy Spirit is one, equal in glory, co-eternal in majesty.',
+      '...Such as the Father is, such is the Son, and such is the Holy Spirit. The Father is uncreated, the Son is uncreated, the Holy Spirit is uncreated...',
+      'Furthermore, it is necessary to everlasting salvation that one also believe faithfully in the incarnation of our Lord Jesus Christ... He is God, begotten from the substance of the Father before all ages; and he is man, born from the substance of his mother in this age: perfect God, and perfect man...',
+      'This is the catholic faith: one cannot be saved without believing this firmly and faithfully.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Trinitarian precision</strong> — "neither confusing the persons nor dividing the divine being" in a single sentence excludes both Modalism (confusing persons) and Arianism/Tritheism (dividing the being).' },
+      { icon: '✦', text: '<strong>Christological precision</strong> — "perfect God and perfect man... not by mixture of substance, but by unity of person" anticipates Chalcedon\'s language and excludes Apollinarianism and Monophysitism.' },
+      { icon: '△', text: '<strong>The damnatory clauses</strong> — "Whoever does not keep it whole and undefiled will without doubt perish eternally" — controversial and striking. Luther loved it; some find the opening harsh. It simply states what is always at stake in doctrine.' },
+    ],
+    guards: ['Arianism','Modalism','Apollinarianism','Monophysitism','Nestorianism'],
+    stillMatters: 'The Athanasian Creed is the most precise Trinitarian and Christological statement in the church\'s arsenal. Where the Apostles\' Creed gives the outline and the Nicene Creed fills in the main structure, the Athanasian Creed does the finish work — specifying exactly what is and is not meant by every major claim. Its damnatory clauses are not cruelty but clarity: these doctrines are not theological options. Luther called it "the most important and glorious product of the church since the days of the apostles."',
+    howToUse: 'Read it systematically in a theology class or adult Sunday school. Take each clause and identify: (a) what heresy it excludes, (b) what Scripture teaches it. The creed becomes a guided tour through the history of Christological controversy.'
+  },
+  {
+    name: 'Chalcedonian Definition',
+    year: '451 AD',
+    yearSort: 451,
+    tradition: 'ecumenical',
+    origin: 'Produced at the Council of Chalcedon (451) to resolve the Christological controversies between Nestorianism (too divided) and Monophysitism (too merged). Pope Leo I\'s Tome was incorporated into its theology.',
+    text: [
+      'Following the holy Fathers, we all with one accord teach men to acknowledge one and the same Son, our Lord Jesus Christ, at once complete in Godhead and complete in manhood, truly God and truly man...',
+      '...recognized in two natures, without confusion, without change, without division, without separation; the distinction of natures being in no way annulled by the union, but rather the characteristics of each nature being preserved and coming together to form one person and subsistence...',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>"Without confusion, without change"</strong> — against Monophysitism: the natures are not merged or transformed into each other.' },
+      { icon: '✦', text: '<strong>"Without division, without separation"</strong> — against Nestorianism: the person is not split into two persons loosely associated.' },
+      { icon: '✦', text: '<strong>"One person and one subsistence"</strong> — the <em>hypostatic union</em>: one person (Greek: <em>hypostasis</em>), two natures. The grammar of salvation.' },
+    ],
+    guards: ['Nestorianism','Monophysitism','Apollinarianism','Docetism'],
+    stillMatters: 'Every Christmas sermon, every Good Friday meditation, every Easter proclamation stands on Chalcedonian ground. The child in the manger is fully God; the man on the cross is fully man. The four negative adverbs — without confusion, without change, without division, without separation — do not describe a philosophical abstraction. They describe the person who bore our sins: truly and completely God, so the atonement carries infinite weight; truly and completely man, so He truly represents us.',
+    howToUse: 'Memorize the four adverbs. When a Christological question arises — "Was Jesus limited in his knowledge?" "Did Jesus have two wills?" — run it through the Chalcedonian grid first. It will orient you every time.'
+  },
+  {
+    name: 'Heidelberg Catechism',
+    year: '1563',
+    yearSort: 1563,
+    tradition: 'reformed',
+    origin: 'Written at the request of Elector Frederick III of the Palatinate, chiefly by Zacharias Ursinus and Caspar Olevianus. Adopted by the Synod of Dort (1619) as one of the Three Forms of Unity. Famous for its warmth and pastoral tone — often called the most beloved catechism in the Reformed tradition.',
+    text: [
+      'Q. 1. What is your only comfort in life and in death?',
+      'A. That I, with body and soul, both in life and in death, am not my own, but belong to my faithful Savior Jesus Christ, who with His precious blood has fully satisfied for all my sins, and redeemed me from all the power of the devil; and so preserves me that without the will of my heavenly Father not a hair can fall from my head; yea, that all things must work together for my salvation. Wherefore, by His Holy Spirit, He also assures me of eternal life, and makes me heartily willing and ready henceforth to live unto Him.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Q. 1</strong> — "What is your only comfort in life and in death?" The entire catechism flows from this opening: belonging to Christ. Sproul called it the most beautiful single sentence in all confessional literature.' },
+      { icon: '✦', text: '<strong>Q. 26–28</strong> — the doctrine of providence expressed with unrivalled pastoral warmth: "What do you mean by the providence of God? — The almighty and everywhere present power of God whereby, as it were by His hand, He upholds heaven and earth... so that herbs and grass, rain and drought, fruitful and barren years, meat and drink... come not by chance, but by His fatherly hand."' },
+      { icon: '✦', text: '<strong>Q. 60</strong> — "How are you righteous before God? — Only by true faith in Jesus Christ; that is, although my conscience accuse me that I have grievously sinned... yet God, without any merit of mine, of mere grace, grants and imputes to me the perfect satisfaction, righteousness, and holiness of Christ."' },
+    ],
+    guards: ['Pelagianism','Semi-Pelagianism','Roman Catholic meritism','Socinianism'],
+    stillMatters: 'The Heidelberg Catechism is not primarily a polemical document — it is a pastoral one. Its 129 questions are organized around three headings drawn from Romans 7: misery, deliverance, and gratitude. The whole Christian life is contained in that structure: we must know how lost we are before we can know how fully we are saved, and how saved we are before we can give genuine thanks. Alistair Begg, Sinclair Ferguson, and R.C. Sproul all commend it as perhaps the finest tool for Christian formation ever produced.',
+    howToUse: 'The catechism is divided into 52 Lord\'s Days — one per week. Read one Lord\'s Day in family worship each week and discuss with children. Q. 1 alone, memorized and meditated upon, will carry a soul through any affliction.'
+  },
+  {
+    name: 'Belgic Confession',
+    year: '1561',
+    yearSort: 1561,
+    tradition: 'reformed',
+    origin: 'Written by Guido de Brès, a Reformed pastor in the Spanish Netherlands, partly to demonstrate to King Philip II that the Reformed believers were not revolutionaries but orthodox Christians. De Brès was hanged in 1567. The Confession was adopted at the Synod of Dort (1619) alongside the Heidelberg Catechism and Canons of Dort — the Three Forms of Unity.',
+    text: [
+      'Article 2: We know Him by two means: First, by the creation, preservation, and government of the universe; which is before our eyes as a most elegant book, wherein all creatures, great and small, are as so many characters leading us to contemplate the invisible things of God...',
+      'Secondly, He makes Himself more clearly and fully known to us by His holy and divine Word, that is to say, as far as is necessary for us to know in this life, to His glory and our salvation.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Article 2</strong> — the two books of revelation (creation and Scripture) — gives the Reformed tradition its account of general and special revelation: God speaks in creation and supremely in Scripture.' },
+      { icon: '✦', text: '<strong>Articles 3–7</strong> — one of the most careful treatments of Scripture\'s inspiration, authority, and canon in any confession. Article 5: we receive the canonical books "not so much because the Church receives and approves them as such, but more especially because the Holy Spirit witnesses in our hearts that they are from God."' },
+      { icon: '✦', text: '<strong>Article 22</strong> — faith as the instrument of justification: "We believe that for us to acquire the true knowledge of this great mystery, the Holy Spirit kindles in our hearts a true faith, which embraces Jesus Christ with all His merits..."' },
+    ],
+    guards: ['Roman Catholic tradition over Scripture','Anabaptist rejection of OT','Arminianism','Socinianism'],
+    stillMatters: 'The Belgic Confession was written by a man who would be hanged for his faith — a document whose every article carries the weight of costly conviction. Its beautiful second article — creation as "a most elegant book" — is the origin of the Reformed concept of the two books of revelation. Its treatment of Scripture (Articles 3–7) remains one of the most careful and pastorally warm accounts of biblical authority in any Reformed document.',
+    howToUse: 'Read Article 2 in a creation or apologetics context. Use Articles 3–7 to teach the doctrine of Scripture. Article 36 on civil government is a starting point for Reformed political theology.'
+  },
+  {
+    name: 'Canons of Dort',
+    year: '1619',
+    yearSort: 1619,
+    tradition: 'reformed',
+    origin: 'Produced at the international Synod of Dort (1618–1619) in direct response to the Arminian Remonstrance of 1610. The five heads of doctrine correspond to the five Arminian articles rejected, and form the doctrinal content of what is known as TULIP. Together with the Heidelberg Catechism and Belgic Confession, they form the Three Forms of Unity.',
+    text: [
+      'First Head, Article 7: Election is the unchangeable purpose of God, whereby, before the foundation of the world, He has, out of mere grace, according to the sovereign good pleasure of His own will, chosen, from the whole human race... a certain number of persons to redemption in Christ...',
+      'Second Head, Article 8: For this was the sovereign counsel, and most gracious will and purpose of God the Father, that the quickening and saving efficacy of the most precious death of His Son should extend to all the elect...',
+      'Third and Fourth Head, Article 12: ...God, who is rich in mercy, according to His unchangeable purpose of election, does not wholly withdraw the Holy Spirit from His own people even in their grievous falls...',
+      'Fifth Head, Article 8: Thus, it is not in consequence of their own merits or strength, but of God\'s free mercy, that they neither totally fall from faith and grace nor continue and perish finally in their backslidings...',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Unconditional Election</strong> — chosen according to God\'s sovereign good pleasure, not foreseen faith. This is not arbitrary; it is an act of pure grace.' },
+      { icon: '✦', text: '<strong>Particular Redemption</strong> — "the saving efficacy of the most precious death of His Son should extend to all the elect." Christ\'s death actually saves; it is not merely an offer that may be refused.' },
+      { icon: '✦', text: '<strong>Perseverance of the Saints</strong> — "they... neither totally fall from faith and grace nor continue and perish finally." God preserves His own — not because they are strong, but because He is faithful.' },
+    ],
+    guards: ['Arminianism','Semi-Pelagianism','Universalism'],
+    stillMatters: 'TULIP is not five abstract propositions — it is a five-pointed account of why sinners like us are saved at all. It answers: who chose first? (God, unconditionally). For whom did Christ die effectively? (The elect). Can grace be ultimately resisted? (No — or we would all resist it). Can the saved be finally lost? (No — or none would arrive). The comfort is immense: salvation rests entirely on God\'s sovereign grace, not on the fragility of human decision.',
+    howToUse: 'Teach TULIP not as polemic but as pastoral medicine. Start with Total Depravity — "can you understand why you needed God to choose you?" — and each subsequent point flows naturally. End with Perseverance: "your salvation is as secure as God\'s faithfulness."'
+  },
+  {
+    name: 'Westminster Confession of Faith',
+    year: '1646',
+    yearSort: 1646,
+    tradition: 'reformed',
+    origin: 'Produced by the Westminster Assembly (1643–1649), an assembly of 121 Reformed ministers and 30 lay commissioners convened by the English Parliament. The most comprehensive Reformed confession ever written — 33 chapters covering every major area of Christian doctrine. The confessional standard of Presbyterian churches worldwide.',
+    text: [
+      'Ch. I: Although the light of nature, and the works of creation and providence do so far manifest the goodness, wisdom, and power of God, as to leave men inexcusable; yet they are not sufficient to give that knowledge of God and of His will which is necessary unto salvation. Therefore it pleased the Lord, at sundry times, and in divers manners, to reveal Himself, and to declare that His will unto His Church; and afterwards... to commit the same wholly unto writing...',
+      'Ch. XI: Those whom God effectually calleth, He also freely justifieth: not by infusing righteousness into them, but by pardoning their sins, and by accounting and accepting their persons as righteous; not for anything wrought in them, or done by them, but for Christ\'s sake alone...',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Chapter I (Scripture)</strong> — the most thorough treatment of Scripture\'s authority, sufficiency, and perspicuity in any Reformed confession. "The infallible rule of interpretation of Scripture is the Scripture itself."' },
+      { icon: '✦', text: '<strong>Chapter III (Decree of God)</strong> — God, "from all eternity, did, by the most wise and holy counsel of His own will, freely, and unchangeably ordain whatsoever comes to pass." Stated with precision; guarded on both sides against fatalism and against making God the author of sin.' },
+      { icon: '✦', text: '<strong>Chapter XI (Justification)</strong> — "not by infusing righteousness into them, but by pardoning their sins, and by accounting and accepting their persons as righteous... by imputing the obedience and satisfaction of Christ unto them." The forensic, imputed nature of justification stated with surgical precision against Rome.' },
+    ],
+    guards: ['Roman Catholicism','Arminianism','Antinomianism','Socinianism','Open Theism'],
+    stillMatters: 'The Westminster Confession is the summit of Reformed confessional theology — 150 years of Reformation thinking carefully distilled into 33 chapters. Its chapter on justification alone (XI) is worth more than a shelf of theology books. Sproul, Ferguson, MacArthur, and Begg all stand in its tradition. For any pastor or serious student of Reformed theology, the Confession should be read alongside Scripture and the catechisms as a constant companion.',
+    howToUse: 'Read one chapter per week with proof texts. When a theological question arises in preaching preparation, consult the relevant chapter before any other secondary source. The Westminster Confession has almost certainly already answered your question — and answered it well.'
+  },
+  {
+    name: 'Westminster Shorter Catechism',
+    year: '1647',
+    yearSort: 1647,
+    tradition: 'reformed',
+    origin: 'Produced by the Westminster Assembly alongside the larger Confession, designed for the instruction of children and new believers. 107 questions and answers. Generations of Scottish and American Presbyterian children memorized it in its entirety.',
+    text: [
+      'Q. 1. What is the chief end of man?',
+      'A. Man\'s chief end is to glorify God, and to enjoy him for ever.',
+      'Q. 2. What rule hath God given to direct us how we may glorify and enjoy him?',
+      'A. The Word of God, which is contained in the Scriptures of the Old and New Testaments, is the only rule to direct us how we may glorify and enjoy him.',
+      'Q. 21. Who is the Redeemer of God\'s elect?',
+      'A. The only Redeemer of God\'s elect is the Lord Jesus Christ, who, being the eternal Son of God, became man, and so was, and continueth to be, God and man in two distinct natures, and one person, for ever.',
+      'Q. 33. What is justification?',
+      'A. Justification is an act of God\'s free grace, wherein he pardoneth all our sins, and accepteth us as righteous in his sight, only for the righteousness of Christ imputed to us, and received by faith alone.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Q. 1</strong> — "To glorify God and enjoy him forever" — the most famous sentence in Reformed theology. Not to be moral; not to go to heaven; to glorify and enjoy God. These two verbs belong together.' },
+      { icon: '✦', text: '<strong>Q. 33 (Justification)</strong> — "only for the righteousness of Christ imputed to us, and received by faith alone" — the entire Reformation in one answer.' },
+      { icon: '✦', text: '<strong>Q. 4 (God)</strong> — "God is a Spirit, infinite, eternal, and unchangeable, in his being, wisdom, power, holiness, justice, goodness, and truth." Sproul called this definition of God one of the finest single sentences ever written.' },
+    ],
+    guards: ['Pelagianism','Arminianism','Roman Catholic meritism','Moralism'],
+    stillMatters: 'The Shorter Catechism is the greatest discipleship tool the Reformed tradition ever produced. Memorized by children, it stores the whole architecture of the Gospel in the mind before the world fills that space with competing narratives. John Paton, missionary to the New Hebrides, said he would rather lose his right hand than give up what the Shorter Catechism had given him. It belongs in every Reformed home, memorized by every child.',
+    howToUse: 'Memorize Q. 1–20 with children as a family. Set a question a week with its answer. Review daily at the dinner table. The investment pays compound interest for a lifetime.'
+  },
+  {
+    name: 'London Baptist Confession',
+    year: '1689',
+    yearSort: 1689,
+    tradition: 'baptist',
+    origin: 'Written by English Particular Baptists, closely modeled on the Westminster Confession of Faith (1646) with modifications for Baptist convictions: believer\'s baptism by immersion and congregational church government. Also called the Second London Baptist Confession or the 1689 Baptist Confession. Still the confessional standard for Reformed Baptist churches worldwide.',
+    text: [
+      'Ch. 7, Para. 3: This covenant [of grace] is revealed in the gospel; first of all to Adam in the promise of salvation by the seed of the woman, and afterwards by farther steps, until the full discovery thereof was completed in the New Testament; and it is founded in that eternal covenant transaction that was between the Father and the Son about the redemption of the elect...',
+      'Ch. 29, Para. 2: Baptism is an ordinance of the New Testament, ordained by Jesus Christ, to be unto the party baptized, a sign of his fellowship with him, in his death and resurrection; of his being engrafted into him; of remission of sins; and of giving up into God, through Jesus Christ, to live and walk in newness of life. Those who do actually profess repentance towards God, faith in, and obedience to, our Lord Jesus Christ, are the only proper subjects of this ordinance.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Covenant theology</strong> — follows Westminster\'s covenantal structure almost verbatim. Reformed Baptists are covenantal in theology, distinguishing them sharply from dispensationalist Baptists.' },
+      { icon: '✦', text: '<strong>Believer\'s baptism</strong> — Ch. 29 specifies that only those who "actually profess repentance and faith" are proper subjects of baptism — the key departure from the Westminster standards.' },
+      { icon: '✦', text: '<strong>Church government</strong> — congregational, with each local church self-governing under Christ — departing from Westminster\'s presbyterianism while sharing its doctrine.' },
+    ],
+    guards: ['Arminianism','Pelagianism','Antinomianism','Socinianism'],
+    stillMatters: 'The 1689 Confession proves that Reformed theology and Baptist ecclesiology are not contradictions. John Bunyan, Charles Spurgeon, and in our day John Piper and John MacArthur stand in this stream: fully Calvinistic in soteriology, covenantal in hermeneutics, baptistic in ecclesiology. The Confession provides Reformed Baptist churches with the same confessional stability that Westminster provides Presbyterian churches — a standing answer to "what does this church believe?"',
+    howToUse: 'Compare it chapter by chapter with the Westminster Confession to understand where Reformed Baptists agree with Presbyterians (almost everywhere) and where they differ (baptism, church government). The differences are real but they sit on top of a vast shared foundation.'
+  },
+  {
+    name: "Luther's Small Catechism",
+    year: '1529',
+    yearSort: 1529,
+    tradition: 'lutheran',
+    origin: 'Written by Martin Luther after a visitation of parishes revealed shocking biblical ignorance among common people and even clergy. Designed for household use — parents teaching children. Along with the Large Catechism (also 1529), it became the foundational catechetical document of Lutheranism, included in the Book of Concord (1580).',
+    text: [
+      'The Second Article [of the Apostles\' Creed]: And in Jesus Christ, His only Son, our Lord, who was conceived by the Holy Ghost, born of the Virgin Mary; suffered under Pontius Pilate, was crucified, dead and buried; He descended into hell; the third day He rose again from the dead...',
+      'What does this mean? — I believe that Jesus Christ, true God, begotten of the Father from eternity, and also true man, born of the Virgin Mary, is my Lord, who has redeemed me, a lost and condemned person, purchased and won me from all sins, from death, and from the power of the devil; not with gold or silver, but with His holy, precious blood and with His innocent suffering and death...',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>The explanations of the Creed</strong> — Luther\'s "what does this mean?" for each article is perhaps the greatest piece of catechetical writing ever produced. The Second Article explanation — "redeemed me, a lost and condemned person" — is pure Gospel.' },
+      { icon: '✦', text: '<strong>The Ten Commandments</strong> — structured around "we should fear and love God so that we..." — every commandment is internalized, not merely external.' },
+      { icon: '✦', text: '<strong>The Lord\'s Prayer explanations</strong> — "Thy kingdom come: What is meant by this? — God\'s kingdom comes indeed without our prayer, of itself; but we pray in this petition that it may come unto us also." A theology of prayer in a sentence.' },
+    ],
+    guards: ['Pelagianism','Moralism','Sacramentalism (Roman)'],
+    stillMatters: 'Luther\'s Small Catechism is arguably the most influential document for ordinary Christian discipleship ever produced outside Scripture. Its structure — Ten Commandments, Creed, Lord\'s Prayer, Baptism, Lord\'s Supper — has shaped Lutheran piety for five centuries. Its genius is simplicity without shallowness: every answer is memorable, every answer is true, every answer leads to Christ. Reformed and Baptist readers will find much to treasure here, with minor points of divergence on the sacraments.',
+    howToUse: 'Use Luther\'s explanations alongside your own tradition\'s catechism. His Second Article explanation alone — read and re-read — can become a daily anchor for the assurance of salvation.'
+  },
+  {
+    name: 'Augsburg Confession',
+    year: '1530',
+    yearSort: 1530,
+    tradition: 'lutheran',
+    origin: 'Presented to Emperor Charles V at the Diet of Augsburg by Philip Melanchthon (with Luther\'s approval) as the definitive statement of Lutheran belief — the first Protestant confession presented to a secular ruler. Its purpose was to show that Lutherans had not departed from the catholic faith but had corrected genuine abuses. The foundational document of Lutheranism.',
+    text: [
+      'Article IV (Justification): Also they teach that men cannot be justified before God by their own strength, merits, or works, but are freely justified for Christ\'s sake, through faith, when they believe that they are received into favor, and that their sins are forgiven for Christ\'s sake, who, by His death, has made satisfaction for our sins. This faith God imputes for righteousness in His sight. Romans 3 and 4.',
+      'Article VII (The Church): Also they teach that one holy Church is to continue forever. The Church is the congregation of saints, in which the Gospel is rightly taught and the Sacraments are rightly administered.',
+    ],
+    articles: [
+      { icon: '✦', text: '<strong>Article IV (Justification)</strong> — the first formal Protestant confessional statement of justification by faith alone. "Freely justified for Christ\'s sake, through faith." Every word carries Reformation weight.' },
+      { icon: '✦', text: '<strong>Article VII (Church)</strong> — the marks of the true church: "where the Gospel is rightly taught and the Sacraments are rightly administered." Reformed churches adopted this definition entirely.' },
+      { icon: '✦', text: '<strong>Articles XXII–XXVIII (Abuses Corrected)</strong> — communion in both kinds, clerical marriage, the Mass, confession, traditions, vows, church power — each article shows what the Reformation was actually correcting and why.' },
+    ],
+    guards: ['Roman Catholic meritism','Pelagianism','Anabaptist separatism'],
+    stillMatters: 'The Augsburg Confession is the founding document of Protestant Christianity as a confessional movement. Its Article IV on justification is the shared ground of Lutheran and Reformed Christianity — the Reformation\'s central discovery stated clearly for the first time in confessional form. Reformed readers will find themselves in full agreement with much of it, with differences mainly on the sacraments (Lutheran consubstantiation vs. Reformed spiritual presence). It is the Protestant document most sympathetic to Rome — and yet the line it draws at Article IV cannot be crossed.',
+    howToUse: 'Read the first 21 articles as a summary of what Lutherans and Reformed Christians share. Then read Articles XXII–XXVIII to understand exactly what the Reformation was reacting against in concrete practice.'
+  },
+];
+
+// ── State ───────────────────────────────────────────────────────────────────
+let activeFilter = 'all';
+
+function init() { buildFilterBar(); render(); }
+
+function buildFilterBar() {
+  document.getElementById('filterBar').innerHTML = FILTERS.map(f =>
+    `<button class="filter-btn${f.id===activeFilter?' active':''}" onclick="selectFilter('${f.id}')">${f.label}</button>`
+  ).join('');
+}
+
+function selectFilter(id) { activeFilter = id; buildFilterBar(); render(); }
+
+function resetPage() { activeFilter = 'all'; buildFilterBar(); render(); window.scrollTo({top:0,behavior:'smooth'}); }
+
+function filtered() {
+  return activeFilter === 'all' ? CREEDS.slice() : CREEDS.filter(c => c.tradition === activeFilter);
+}
+
+function tradTag(t) {
+  const map = {
+    ecumenical: ['trad-ecumenical','Ecumenical'],
+    reformed:   ['trad-reformed','Reformed'],
+    lutheran:   ['trad-lutheran','Lutheran'],
+    baptist:    ['trad-baptist','Baptist'],
+  };
+  const [cls,label] = map[t] || ['trad-reformed',t];
+  return `<span class="trad-tag ${cls}">${label}</span>`;
+}
+
+function render() {
+  const list = filtered().slice().sort((a,b)=>a.yearSort-b.yearSort);
+  buildIndex(list);
+  if(!list.length){ document.getElementById('mainContent').innerHTML='<div class="no-results">No creeds found for this filter.</div>'; return; }
+  // group by tradition category
+  const groups = { ecumenical:[], reformed:[], lutheran:[], baptist:[] };
+  list.forEach(c => { if(groups[c.tradition]) groups[c.tradition].push(c); });
+  const labels = { ecumenical:'Ecumenical Creeds', reformed:'Reformed Confessions', lutheran:'Lutheran Confessions', baptist:'Baptist Confessions' };
+  let html = '';
+  ['ecumenical','reformed','lutheran','baptist'].forEach(t => {
+    if(!groups[t].length) return;
+    if(activeFilter !== 'all') {
+      groups[t].forEach(c => { html += creedCard(c); });
+    } else {
+      html += `<div class="era-head">${labels[t]}</div>`;
+      groups[t].forEach(c => { html += creedCard(c); });
+    }
+  });
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function creedCard(c) {
+  const anchor = c.name.replace(/[^a-z]/gi,'_');
+  const textParas = c.text.map(t=>`<p>${t}</p>`).join('');
+  const artRows = c.articles.map(a=>`<div class="article-row"><div class="art-icon">${a.icon}</div><div class="art-text">${a.text}</div></div>`).join('');
+  const guardChips = c.guards.map(g=>`<span class="guard-chip">${g}</span>`).join('');
+  return `
+<div class="creed-card" id="creed-${anchor}">
+  <div class="creed-header">
+    <div class="creed-name">${c.name}</div>
+    <div class="creed-meta"><span>${c.year}</span>${tradTag(c.tradition)}</div>
+  </div>
+  <div class="creed-body">
+    <p style="margin-bottom:1rem;color:#a0b8c8;font-size:.9rem;line-height:1.7">${c.origin}</p>
+    <div class="text-block">
+      <span class="text-label">Selected Text</span>
+      <div class="creed-text">${textParas}</div>
+    </div>
+    <div class="articles-wrap">
+      <div class="articles-label">Key Articles &amp; What They Teach</div>
+      ${artRows}
+    </div>
+    <div class="guards-wrap">
+      <div class="guards-label">Guards Against</div>
+      <div class="guard-chips">${guardChips}</div>
+    </div>
+    <div class="still-matters">
+      <div class="still-label">Why It Still Matters</div>
+      <div class="still-text">${c.stillMatters}</div>
+    </div>
+    <div class="use-box">
+      <span class="use-label">How to Use It</span>
+      <span class="use-text">${c.howToUse}</span>
+    </div>
+  </div>
+</div>`;
+}
+
+function buildIndex(list) {
+  document.getElementById('indexChips').innerHTML = list.map(c => {
+    const anchor = c.name.replace(/[^a-z]/gi,'_');
+    return `<span class="index-chip" onclick="jumpTo('creed-${anchor}')">${c.name} (${c.year})</span>`;
+  }).join('');
+}
+
+function jumpTo(id) { const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+function toggleIndex() {
+  const chips = document.getElementById('indexChips');
+  const btn = document.querySelector('.index-toggle');
+  chips.classList.toggle('open');
+  btn.textContent = chips.classList.contains('open') ? '▲ Browse all creeds' : '▼ Browse all creeds';
+}
+
+init();
+</script>
+</body>
+</html>
