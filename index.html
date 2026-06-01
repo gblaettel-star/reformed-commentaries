@@ -257,9 +257,9 @@ function buildHome() {
   var html = '';
   html += section('ot', 'Old Testament — ' + ot.length + ' books', ot.map(row).join(''), false);
   html += section('nt', 'New Testament — ' + nt.length + ' books', nt.map(row).join(''), false);
-  html += section('sl', 'Christian Living Studies — ' + sl.length + ' studies', sl.map(row).join(''), true);
-  html += section('sg', 'General Studies — ' + sg.length + ' studies', sg.map(row).join(''), true);
-  html += section('ref', 'Reference', refHtml, true);
+  html += section('sl', 'Christian Living Studies — ' + sl.length + ' studies', sl.map(row).join(''), false);
+  html += section('sg', 'General Studies — ' + sg.length + ' studies', sg.map(row).join(''), false);
+  html += section('ref', 'Reference', refHtml, false);
   html += '<div class="about-section">'
     + '<div class="about-title">About Soli Deo Gloria</div>'
     + '<div class="about-body">'
