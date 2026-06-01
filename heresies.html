@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heresies & the Church's Response — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;user-select:none}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Era filter bar */
+.era-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.era-btn{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.25rem .65rem;border-radius:20px;cursor:pointer;font-size:.78rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s}
+.era-btn:hover{border-color:#c9a84c;color:#c9a84c}
+.era-btn.active{background:#c9a84c;border-color:#c9a84c;color:#0d2137;font-weight:bold}
+
+/* A-Z jump bar */
+.az-bar{display:flex;flex-wrap:wrap;gap:.3rem;padding:.55rem 1rem;background:#0a1e30;border-bottom:1px solid #2a4a6c}
+.az-link{color:#c9a84c;font-size:.8rem;padding:.2rem .45rem;border:1px solid #2a4a6c;border-radius:4px;cursor:pointer;transition:all .12s}
+.az-link:hover{background:#1a3a5c;border-color:#c9a84c}
+.az-link.dim{color:#2a4a6c;border-color:#1a2a3c;pointer-events:none}
+
+/* Name index (collapsible) */
+.name-index-wrap{background:#0a1e30;border-bottom:2px solid #2a4a6c}
+.name-index-toggle{width:100%;background:none;border:none;color:#7090b0;padding:.5rem 1rem;font-size:.78rem;font-family:'Georgia',serif;cursor:pointer;text-align:left;letter-spacing:.08em}
+.name-index-toggle:hover{color:#c9a84c}
+.name-index-chips{display:none;flex-wrap:wrap;gap:.3rem;padding:.5rem 1rem .75rem}
+.name-index-chips.open{display:flex}
+.name-chip{background:none;border:1px solid #2a4a6c;color:#a09070;padding:.2rem .55rem;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Georgia',serif;white-space:nowrap}
+.name-chip:hover{border-color:#c9a84c;color:#c9a84c}
+
+/* No results */
+.no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
+
+main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
+
+/* Letter heading */
+.letter-head{color:#c9a84c;font-size:1.3rem;font-weight:bold;letter-spacing:.12em;border-bottom:2px solid #c9a84c;padding-bottom:.4rem;margin:2rem 0 1.2rem}
+.letter-head:first-child{margin-top:0}
+
+/* Heresy card */
+.heresy-card{margin-bottom:2rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+.heresy-header{background:#1a3a5c;padding:.85rem 1.2rem}
+.heresy-name{color:#c9a84c;font-size:1.2rem;font-weight:bold;letter-spacing:.04em}
+.heresy-meta{color:#7090b0;font-size:.8rem;font-style:italic;margin-top:.25rem;display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.era-tag{background:#0d2137;border:1px solid #2a4a6c;color:#7090b0;font-size:.7rem;padding:.15rem .5rem;border-radius:12px;font-style:normal;letter-spacing:.06em;white-space:nowrap}
+.verdict-tag{font-size:.7rem;padding:.15rem .6rem;border-radius:12px;font-style:normal;letter-spacing:.06em;white-space:nowrap;font-weight:bold}
+.verdict-condemned{background:#3a1020;border:1px solid #8a2040;color:#e07090}
+.verdict-ongoing{background:#1a2a10;border:1px solid #4a7030;color:#90c060}
+
+.heresy-body{padding:1.2rem 1.4rem;line-height:1.85}
+.heresy-body p{margin-bottom:.9rem}
+.heresy-body p:last-child{margin-bottom:0}
+
+/* The Error */
+.error-box{background:#1a0d1a;border:1px solid #4a2a4a;border-radius:6px;padding:1rem 1.2rem;margin-bottom:1.1rem}
+.error-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.error-text{color:#e8dcc8;line-height:1.8;font-size:.95rem}
+.error-quote{font-style:italic;color:#d4b8d4;border-left:2px solid #4a2a4a;padding-left:.8rem;margin-top:.6rem;font-size:.92rem;line-height:1.75}
+
+/* Proponents */
+.proponents-wrap{margin-bottom:1.1rem}
+.proponents-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.55rem}
+.proponent-chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.proponent-chip{background:#0d2137;border:1px solid #3a2a4a;color:#c0a0c0;font-size:.78rem;padding:.2rem .6rem;border-radius:12px}
+
+/* Response */
+.response-wrap{margin-bottom:1.1rem}
+.response-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.7rem}
+.response-row{display:flex;gap:.75rem;margin-bottom:.75rem;align-items:flex-start}
+.response-row:last-child{margin-bottom:0}
+.resp-icon{font-size:1rem;line-height:1.6;flex-shrink:0;width:1.2rem;text-align:center}
+.resp-text{line-height:1.75;font-size:.93rem;color:#d4c4a8;min-width:0;word-wrap:break-word}
+
+/* Still matters */
+.still-matters{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;margin-top:.5rem;border-radius:0 4px 4px 0}
+.still-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.still-text{line-height:1.8;font-size:.93rem;color:#d4c4a8}
+
+/* Key text */
+.key-text-box{display:flex;gap:.6rem;align-items:baseline;margin-top:1rem;padding:.65rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px}
+.kt-label{color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+.kt-text{color:#d4c4a8;font-size:.9rem;font-style:italic;line-height:1.5;min-width:0;word-wrap:break-word}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1>Heresies &amp; the Church's Response</h1>
+  </div>
+  <h2>The faith once for all delivered to the saints — contended for</h2>
+</header>
+
+<div class="era-bar" id="eraBar"></div>
+<div class="az-bar" id="azBar"></div>
+
+<div class="name-index-wrap">
+  <button class="name-index-toggle" onclick="toggleNameIndex()">&#9660; Browse all heresies</button>
+  <div class="name-index-chips" id="nameIndexChips"></div>
+</div>
+
+<main id="mainContent"></main>
+
+<script>
+// ── Data ────────────────────────────────────────────────────────────────────
+
+const ERAS = [
+  { id:'all',         label:'All' },
+  { id:'early',       label:'Early Church' },
+  { id:'conciliar',   label:'Conciliar' },
+  { id:'medieval',    label:'Medieval' },
+  { id:'reformation', label:'Reformation' },
+  { id:'modern',      label:'Modern' },
+  { id:'contemporary',label:'Contemporary' },
+];
+
+// verdict: 'condemned' = formally condemned by council/confession | 'ongoing' = still active threat
+const HERESIES = [
+  {
+    name: 'Arianism',
+    era: 'conciliar',
+    dates: '4th century',
+    verdict: 'condemned',
+    tagline: 'Jesus is not fully God — a created being',
+    error: 'Arius of Alexandria taught that the Son of God was a created being — the first and greatest creature, exalted above all others, but not co-equal and co-eternal with the Father. His slogan became infamous: <em>"There was a time when the Son was not."</em> God could have no equal, Arius argued, and sharing His divine essence with another would compromise His absolute uniqueness. The Son was therefore a demigod — neither truly God nor truly man.',
+    errorQuote: '"There was a time when the Son was not." — Arius',
+    proponents: ['Arius of Alexandria', 'Eusebius of Nicomedia', 'Emperor Constantius II'],
+    response: [
+      { icon: '⚖', text: '<strong>Council of Nicaea (325 AD)</strong> — convened by Constantine, the Council declared that the Son is <em>homoousios</em> (of the same substance) as the Father. Arianism was formally condemned.' },
+      { icon: '✦', text: '<strong>Athanasius of Alexandria</strong> — "Athanasius contra mundum" (Athanasius against the world). Exiled five times for refusing to compromise, he alone seemed to hold the line. History vindicated him entirely.' },
+      { icon: '⚖', text: '<strong>Council of Constantinople (381 AD)</strong> — reaffirmed Nicaea and extended the homoousios to the Holy Spirit, producing the Niceno-Constantinopolitan Creed still confessed in churches worldwide.' },
+      { icon: '✦', text: '<strong>The Nicene Creed</strong> — "God of God, Light of Light, very God of very God, begotten not made, of one substance with the Father." Every word was chosen to exclude Arianism.' },
+    ],
+    stillMatters: 'Arianism never died — it only changed clothes. Jehovah\'s Witnesses teach classic Arianism: Jesus is a created being, "a god" but not the Almighty. Mormonism similarly denies the eternal co-equality of the Son. When a cult says "Jesus is not Jehovah," Athanasius has already answered them. The stakes are as high as ever: a Jesus who is merely the greatest creature cannot bear the infinite weight of our sin, and a Jesus who is not fully God cannot bring us to God.',
+    keyText: 'Nicene Creed (325/381); Athanasius, On the Incarnation (c. 318)'
+  },
+  {
+    name: 'Docetism',
+    era: 'early',
+    dates: '1st–2nd century',
+    verdict: 'condemned',
+    tagline: 'Jesus only appeared to be human — the flesh is beneath God',
+    error: 'From the Greek <em>dokein</em> — "to seem" — Docetism taught that Christ did not truly take on human flesh but only appeared to do so. Influenced by Greek dualism\'s contempt for matter, Docetists could not accept that the divine Son would defile Himself with a real body. He walked on earth like a phantom: apparently hungry, apparently tired, apparently suffering — but not truly. The cross, on this view, was a divine illusion.',
+    errorQuote: '"He suffered in appearance only, not in reality." — Docetist teaching as described by Ignatius',
+    proponents: ['Cerinthus', 'Marcion (partially)', 'Various Gnostic teachers'],
+    response: [
+      { icon: '✦', text: '<strong>Ignatius of Antioch (d. c. 108)</strong> — writing en route to his martyrdom, Ignatius hammered the physical reality of Christ\'s birth, suffering, and resurrection in every letter. "If, as some say, He suffered in appearance only... then why am I in bonds?"' },
+      { icon: '✦', text: '<strong>1 John 4:2</strong> — "By this you know the Spirit of God: every spirit that confesses that Jesus Christ has come in the flesh is from God." John wrote this test of orthodoxy precisely to expose Docetism.' },
+      { icon: '⚖', text: '<strong>Council of Chalcedon (451 AD)</strong> — defined Christ as truly God and truly man, with two complete natures, human and divine, united in one person without confusion or mixture.' },
+    ],
+    stillMatters: 'Docetism reappears wherever the physical reality of Christ\'s humanity is minimized. Some popular spirituality treats Jesus as a heavenly visitor who didn\'t really enter fully into human suffering, hunger, grief, and death. But the Gospel requires a fully human Savior — He had to be made like us "in every respect" (Heb. 2:17) to be our high priest. A phantom Christ cannot bear real sin, cannot truly die, and cannot truly rise. The resurrection is a bodily resurrection — or it is nothing.',
+    keyText: 'Ignatius of Antioch, Letters (c. 107–108); 1 John 4:1–3'
+  },
+  {
+    name: 'Gnosticism',
+    era: 'early',
+    dates: '2nd–3rd century',
+    verdict: 'condemned',
+    tagline: 'Secret knowledge saves; the material world is evil; the Creator is not the true God',
+    error: 'Gnosticism was less a single movement than a family of heresies united by several convictions: that the material world is evil, created not by the supreme God but by a lower, ignorant or malevolent Demiurge (often identified with the God of the Old Testament); that a divine spark is imprisoned in human bodies; and that salvation comes through <em>gnosis</em> — secret spiritual knowledge available only to the enlightened. Christ, on this view, came to whisper the secret that releases souls from the prison of matter.',
+    errorQuote: '"The creator of this world is a foolish god." — Valentinian Gnostic teaching',
+    proponents: ['Valentinus', 'Basilides', 'Marcion', 'Carpocrates'],
+    response: [
+      { icon: '✦', text: '<strong>Irenaeus of Lyon, Against Heresies (c. 180)</strong> — the most comprehensive refutation of Gnosticism ever written. Irenaeus systematically exposed every major Gnostic system and defended the unity of Scripture, the goodness of creation, and the physical resurrection.' },
+      { icon: '✦', text: '<strong>Tertullian</strong> — "What has Athens to do with Jerusalem?" He argued that Gnosticism was Greek philosophy smuggled into the church under Christian names.' },
+      { icon: '✦', text: '<strong>The Rule of Faith</strong> — the early church\'s summary of orthodox belief (ancestor of the Apostles\' Creed) insisted on one God who is both Creator and Redeemer — directly countering Gnostic dualism.' },
+      { icon: '✦', text: '<strong>The biblical canon</strong> — Irenaeus\'s defense of the four Gospels (against Gnostic secret gospels) was a crucial step in the church\'s recognition of the New Testament canon.' },
+    ],
+    stillMatters: 'Gnosticism is the most durable heresy in Western culture. The Da Vinci Code, the Gospel of Judas media frenzy, and the entire New Age movement are Gnosticism in modern dress. The contempt for the body behind much sexual confusion ("I am a soul trapped in the wrong body"), the suspicion of the Old Testament God, and the cult of private spiritual experience over public doctrine — all are Gnostic instincts. Sproul noted that Gnosticism\'s deepest appeal is pride: salvation by elite secret knowledge flatters the intellect and bypasses the humiliation of the cross.',
+    keyText: 'Irenaeus, Against Heresies (c. 180); Tertullian, Against Marcion (c. 208)'
+  },
+  {
+    name: 'Health and Wealth Gospel',
+    era: 'contemporary',
+    dates: '20th–21st century',
+    verdict: 'ongoing',
+    tagline: 'God guarantees physical health and financial prosperity to faithful believers',
+    error: 'The Prosperity Gospel — also called the Word of Faith movement or health-and-wealth gospel — teaches that God\'s will for every Christian is physical health and financial abundance, and that sickness or poverty are signs of weak faith or unconfessed sin. Faith is reframed as a spiritual force that, when exercised correctly (through positive confession and giving to the ministry), releases divine blessing. The atonement, on this view, purchased not just forgiveness but also healing and wealth.',
+    errorQuote: '"God wants you well. God wants you rich. Name it and claim it." — common Word of Faith formula',
+    proponents: ['Kenneth Hagin', 'Kenneth Copeland', 'Joel Osteen', 'Benny Hinn', 'Creflo Dollar'],
+    response: [
+      { icon: '✦', text: '<strong>John MacArthur</strong> — has been perhaps the most consistent and courageous public critic of the Prosperity Gospel for decades. His books <em>Charismatic Chaos</em> and <em>Strange Fire</em> document the theological and pastoral devastation caused by these teachings.' },
+      { icon: '✦', text: '<strong>R.C. Sproul</strong> — identified the Prosperity Gospel as a fundamental distortion of the Gospel itself: it turns faith into a technique, God into a cosmic vending machine, and the cross into a transaction for earthly comfort rather than eternal redemption.' },
+      { icon: '✦', text: '<strong>John Piper</strong> — his <em>Let the Nations Be Glad</em> and the Desiring God framework offer a sustained biblical alternative: God is most glorified in us when we are most satisfied in Him — not in His material gifts.' },
+      { icon: '✦', text: '<strong>The Bible itself</strong> — Job suffered righteously. Paul had a thorn he could not remove (2 Cor. 12). Christ was a man of sorrows. The apostles were beaten, imprisoned, and killed. The Prosperity Gospel cannot survive contact with the actual text of Scripture.' },
+    ],
+    stillMatters: 'The Prosperity Gospel is the fastest-growing form of Christianity in the developing world, and it is leaving a trail of shattered faith in its wake. When the promised healing does not come — when the faithful believer dies of cancer, when the generous giver remains poor — the victim is told their faith was insufficient. The cruelty is staggering. The true Gospel offers something infinitely better than health and wealth: union with Christ, the forgiveness of sins, and an inheritance that moth and rust cannot destroy.',
+    keyText: 'John MacArthur, Charismatic Chaos (1992); Strange Fire (2013); D.A. Carson, How Long, O Lord? (1990)'
+  },
+  {
+    name: 'Liberal Theology & Higher Criticism',
+    era: 'modern',
+    dates: '18th century–present',
+    verdict: 'ongoing',
+    tagline: 'Scripture is a fallible human document — historically unreliable, culturally conditioned',
+    error: 'Arising from Enlightenment rationalism and developed through the 19th century German academy, liberal theology applied the historical-critical method to Scripture as it would to any ancient text — seeking to peel away layers of myth, legend, and editorial redaction to find a supposedly more primitive, authentic core. The supernatural was systematically removed: miracles became myths, the resurrection became a spiritual experience of the disciples, and Jesus became a moral teacher whose divine claims were later inventions of the church.',
+    errorQuote: '"The Bible is the Word of God in the words of men — and the words of men err." — Liberal theological axiom',
+    proponents: ['Friedrich Schleiermacher', 'Julius Wellhausen', 'Adolf von Harnack', 'Rudolf Bultmann', 'John Shelby Spong'],
+    response: [
+      { icon: '⚖', text: '<strong>The Chicago Statement on Biblical Inerrancy (1978)</strong> — signed by nearly 300 evangelical scholars including Sproul, Packer, and MacArthur, the Chicago Statement gave the church a precise, carefully worded affirmation of Scripture\'s complete truthfulness in all that it affirms. Article XII: "We deny that Biblical infallibility and inerrancy are limited to spiritual, religious, or redemptive themes." Every word was chosen to foreclose liberal evasions.' },
+      { icon: '✦', text: '<strong>R.C. Sproul</strong> — his <em>Explaining Inerrancy</em> and sustained defense of the Chicago Statement made him perhaps the foremost popular advocate for biblical inerrancy in the late 20th century. He argued that inerrancy is not a peripheral issue: if the Bible errs in any affirmation, the believer has no assured ground for trusting any of it.' },
+      { icon: '✦', text: '<strong>B.B. Warfield</strong> — his <em>The Inspiration and Authority of the Bible</em> (1927) remains the most thorough scholarly defense of plenary verbal inspiration and inerrancy ever written.' },
+      { icon: '✦', text: '<strong>J. Gresham Machen</strong> — his <em>Christianity and Liberalism</em> (1923) made the decisive argument: liberal theology is not a revised Christianity but a different religion entirely. It retains Christian vocabulary while evacuating Christian content.' },
+    ],
+    stillMatters: 'Liberal theology has effectively destroyed mainline Protestantism. Every denomination that embraced it in the 20th century — Presbyterian Church USA, United Methodist Church, Episcopal Church — has seen decades of collapse, membership freefall, and the progressive abandonment of every distinctively Christian moral teaching. The pattern is invariable: first the Bible is no longer fully trusted, then the cross is reinterpreted, then the resurrection becomes metaphor, then sexual ethics are revised, then the Gospel itself evaporates. Machen saw it coming in 1923. The Chicago Declaration was the line in the sand.',
+    keyText: 'Chicago Statement on Biblical Inerrancy (1978); J. Gresham Machen, Christianity and Liberalism (1923); B.B. Warfield, The Inspiration and Authority of the Bible (1927)'
+  },
+  {
+    name: 'Modalism',
+    era: 'early',
+    dates: '2nd–3rd century',
+    verdict: 'condemned',
+    tagline: 'Father, Son, and Spirit are not three persons but one God wearing three masks',
+    error: 'Modalism (also called Sabellianism or Patripassianism) sought to protect monotheism by denying any real distinction between Father, Son, and Spirit. God is one person who appears in three successive modes or masks (<em>personae</em>): as Father in creation, as Son in the incarnation, and as Spirit in the church age. The attraction was obvious — this seemed to avoid both the charge of tritheism and the subordinationism of Arianism. But it destroyed the inner life of the Trinity and made the cross a monstrosity: who was the Father to whom Jesus prayed?',
+    errorQuote: '"The Father himself was born, suffered, and died." — Patripassian formula',
+    proponents: ['Noetus of Smyrna', 'Praxeas', 'Sabellius'],
+    response: [
+      { icon: '✦', text: '<strong>Tertullian</strong> — coined the term <em>trinitas</em> and gave the church its essential formula: one <em>substantia</em> (substance), three <em>personae</em> (persons). His <em>Against Praxeas</em> is the first sustained Trinitarian theology.' },
+      { icon: '✦', text: '<strong>The Nicene Creed (325/381)</strong> — its careful language about the Son being "begotten of the Father before all worlds" and the Spirit "proceeding from the Father" preserves real personal distinctions within the one God.' },
+      { icon: '✦', text: '<strong>The Athanasian Creed</strong> — "We worship one God in Trinity, and Trinity in Unity; neither confounding the persons nor dividing the substance." Its precision was developed directly to exclude both Arianism and Modalism.' },
+    ],
+    stillMatters: 'Modalism is the official theology of "Oneness Pentecostalism" (United Pentecostal Church), which baptizes only "in Jesus\' name" and denies the Trinity. But softer modalism pervades evangelical worship: songs and sermons that treat Father, Son, and Spirit as interchangeable names for one undifferentiated God, or that speak of "the Father dying on the cross." The eternal, loving communion of three distinct persons is not a theological technicality — it is the heartbeat of the Gospel. The cross is the act of the eternal Son bearing the Father\'s just wrath, in the Spirit\'s power. Flatten the Trinity and the atonement collapses.',
+    keyText: 'Tertullian, Against Praxeas (c. 213); Athanasian Creed (c. 5th century)'
+  },
+  {
+    name: 'Monophysitism',
+    era: 'conciliar',
+    dates: '5th century',
+    verdict: 'condemned',
+    tagline: 'Christ has only one nature — the human was absorbed into the divine',
+    error: 'Eutyches of Constantinople, seeking to counter Nestorianism, swung to the opposite extreme: he taught that after the incarnation, Christ had only one nature — the human nature was absorbed into and overwhelmed by the divine, like a drop of honey in the ocean. The result was neither truly God nor truly man but a tertium quid — a third thing. The name "Monophysitism" comes from the Greek: <em>mono</em> (one) + <em>physis</em> (nature).',
+    errorQuote: '"I confess that our Lord was of two natures before the union, but after the union, one nature." — Eutyches',
+    proponents: ['Eutyches of Constantinople', 'Dioscorus of Alexandria'],
+    response: [
+      { icon: '⚖', text: '<strong>Council of Chalcedon (451 AD)</strong> — the most precise Christological statement in church history. Christ is "truly God and truly man... in two natures, without confusion, without change, without division, without separation." The four negative adverbs were surgical instruments designed to exclude both Nestorianism and Monophysitism simultaneously.' },
+      { icon: '✦', text: '<strong>Pope Leo I\'s Tome</strong> — read aloud at Chalcedon, it prompted the bishops to cry: "Peter has spoken through Leo!" It articulated how the two natures operate: each nature acts in communion with the other according to its own properties.' },
+    ],
+    stillMatters: 'Chalcedon\'s "two natures" formula is not ecclesiastical hair-splitting — it is the grammar of salvation. A Christ with only one nature cannot be our mediator. The mediator between God and man must be both God and man — fully, not partially. He must be fully man to represent us, fully God to save us. The Coptic and Ethiopian Orthodox churches retain a form of Monophysitism to this day, producing ongoing ecumenical dialogue about this fifth-century fault line.',
+    keyText: 'Definition of Chalcedon (451); Leo I, Tome (449)'
+  },
+  {
+    name: 'Moralistic Therapeutic Deism',
+    era: 'contemporary',
+    dates: '21st century',
+    verdict: 'ongoing',
+    tagline: 'God wants you to be nice, feel good, and stay out of the way',
+    error: 'Named and diagnosed by sociologists Christian Smith and Melinda Lundquist Denton in their 2005 study of American teenage religion, Moralistic Therapeutic Deism (MTD) is not a formal movement but the actual functional religion of millions of churchgoing Americans. Its five tenets: (1) A God exists who created the world and set up a moral order. (2) God wants people to be nice and fair to each other. (3) The central goal of life is to be happy and feel good about yourself. (4) God does not need to be involved in your life unless you have a problem. (5) Good people go to heaven when they die. No sin, no cross, no resurrection, no repentance, no discipleship.',
+    errorQuote: '"God is something like a combination Divine Butler and Cosmic Therapist." — Christian Smith & Melinda Lundquist Denton',
+    proponents: ['No formal founders — the ambient theology of therapeutic culture absorbed into the church'],
+    response: [
+      { icon: '✦', text: '<strong>R.C. Sproul</strong> — his entire ministry was an assault on MTD before the term existed. The holiness of God, the bondage of the will, the necessity of justification by faith alone — all are direct antidotes to MTD\'s self-satisfied moralism.' },
+      { icon: '✦', text: '<strong>John MacArthur, The Gospel According to Jesus (1988)</strong> — challenged the "easy believism" that produces MTD-style converts: people who have prayed a prayer but show no marks of regeneration, no love of Scripture, no cross-bearing discipleship.' },
+      { icon: '✦', text: '<strong>Paul Washer</strong> — his confrontational 2002 "Shocking Youth Message" went viral precisely because it named the MTD reality most youth ministries had been producing and called it what it is: a false conversion.' },
+      { icon: '✦', text: '<strong>The Reformation catechisms</strong> — Westminster Shorter Catechism Q1: "What is the chief end of man? To glorify God and enjoy Him forever." Not to be happy. Not to feel good. To glorify God. The catechism is the curriculum MTD forgot.' },
+    ],
+    stillMatters: 'MTD is the water most Western churchgoers swim in. It explains why self-identified Christians in surveys hold views indistinguishable from their secular neighbors on every moral question, why church attendance has collapsed even among those who claim to believe, and why preaching that costs nothing produces converts who are worth nothing. The antidote is not harsher religion but the actual Gospel: a holy God, a real sin, an atoning cross, an empty tomb, a risen Lord, a coming judgment, and a grace so great it transforms everything it touches.',
+    keyText: 'Christian Smith & Melinda Denton, Soul Searching (2005); Westminster Shorter Catechism (1647)'
+  },
+  {
+    name: 'Nestorianism',
+    era: 'conciliar',
+    dates: '5th century',
+    verdict: 'condemned',
+    tagline: 'Christ is two separate persons — divine and human — loosely joined',
+    error: 'Nestorius, Archbishop of Constantinople, objected to calling Mary <em>Theotokos</em> ("God-bearer" or "Mother of God"), preferring <em>Christotokos</em> ("Christ-bearer"). Behind this terminological dispute lay a deeper theological problem: Nestorius seemed to teach that the divine and human in Christ were so distinct as to constitute two separate persons — a divine Christ and a human Jesus joined in a kind of moral or sympathetic union. The unity of Christ\'s person was dissolved.',
+    errorQuote: '"I cannot call a two- or three-month-old infant God." — Nestorius, objecting to Theotokos',
+    proponents: ['Nestorius of Constantinople', 'Theodore of Mopsuestia'],
+    response: [
+      { icon: '✦', text: '<strong>Cyril of Alexandria</strong> — insisted on the communicatio idiomatum (communication of attributes): what is true of either nature can be attributed to the one person of Christ. Therefore Mary truly bore God incarnate — the eternal Son took her flesh.' },
+      { icon: '⚖', text: '<strong>Council of Ephesus (431 AD)</strong> — condemned Nestorianism and affirmed Theotokos. Nestorius was deposed and exiled. The Nestorian church survived in Persia and spread as far as China, where it is attested in the 7th-century Xi\'an Stele.' },
+      { icon: '⚖', text: '<strong>Council of Chalcedon (451 AD)</strong> — gave the definitive formula: one person (hypostasis), two natures. The person is undivided even as the natures are unmixed.' },
+    ],
+    stillMatters: 'Nestorianism\'s practical consequence is a Christ who cannot save: if the divine and human are merely morally united in one body, then the suffering on the cross belongs to the human Jesus alone and cannot carry infinite weight. The infinite dignity of the atonement requires that it is the eternal Son of God who suffers — not a human being with whom the Son happens to be associated. One person suffered. One person rose. One person sits at the Father\'s right hand interceding for us.',
+    keyText: 'Cyril of Alexandria, On the Unity of Christ (c. 437); Definition of Chalcedon (451)'
+  },
+  {
+    name: 'Open Theism',
+    era: 'contemporary',
+    dates: 'Late 20th century–present',
+    verdict: 'ongoing',
+    tagline: 'God does not know the future — He learns and adjusts as history unfolds',
+    error: 'Open Theism, developed within evangelical Christianity in the 1990s, teaches that God does not have exhaustive foreknowledge of future free human choices. To preserve genuine human freedom, God limits His knowledge of the future — the future is "open" even to Him. He makes His best plans, takes risks, and responds in real time to the choices of His creatures. Proponents argued this makes God more relational and prayer more meaningful.',
+    errorQuote: '"The future is not yet real, and God\'s knowledge of it is therefore not yet determined." — Gregory Boyd',
+    proponents: ['Clark Pinnock', 'Gregory Boyd', 'John Sanders', 'Richard Rice'],
+    response: [
+      { icon: '✦', text: '<strong>R.C. Sproul</strong> — called Open Theism "a watershed issue" and argued that a God who does not know the future is not God at all. The God of Scripture declares "the end from the beginning" (Isa. 46:10). A God who takes risks is a God who might lose.' },
+      { icon: '✦', text: '<strong>John Piper</strong> — his <em>Beyond the Bounds</em> (edited with Justin Taylor) gathered Reformed scholars to respond comprehensively to Open Theism\'s biblical and philosophical claims.' },
+      { icon: '✦', text: '<strong>John Frame, No Other God (2001)</strong> — the most thorough philosophical and biblical refutation of Open Theism, showing that the God of Scripture is immutable, omniscient, and sovereign over all events including free human choices.' },
+      { icon: '⚖', text: '<strong>Evangelical Theological Society (2000)</strong> — passed a motion clarifying that belief in God\'s complete foreknowledge is required for ETS membership, effectively censuring Open Theism as outside evangelical boundaries.' },
+    ],
+    stillMatters: 'Open Theism seems to make God more relatable — a companion on a shared journey into an unknown future. But the comfort it offers is fraudulent. A God who does not know whether the cancer will be cured, whether the prodigal will return, whether history will reach its appointed end, cannot give genuine assurance to a dying saint. The God of Scripture does not take risks. He ordains the end from the beginning, and nothing — not the fall of a sparrow, not the fall of a kingdom — falls outside His sovereign knowledge and will. That God alone is worth trusting.',
+    keyText: 'John Frame, No Other God (2001); John Piper & Justin Taylor, eds., Beyond the Bounds (2003)'
+  },
+  {
+    name: 'Pelagianism',
+    era: 'conciliar',
+    dates: '5th century',
+    verdict: 'condemned',
+    tagline: 'Man can achieve salvation by his own free will — grace is helpful but not necessary',
+    error: 'Pelagius, a British monk who arrived in Rome around 380 AD, was scandalized by what he saw as moral laxity among Christians who blamed their sin on human weakness. He taught that Adam\'s sin affected only Adam — not the human race. Human nature is not fallen or corrupted; every person is born with the same capacity for righteousness that Adam possessed. Grace is helpful — God\'s teaching, example, and forgiveness — but it is not the necessary cause of any good deed. A person can, in principle, achieve holiness by free moral effort.',
+    errorQuote: '"If I ought, I can." — The Pelagian principle',
+    proponents: ['Pelagius', 'Caelestius', 'Julian of Eclanum'],
+    response: [
+      { icon: '✦', text: '<strong>Augustine of Hippo</strong> — the greatest theological battle of his career was against Pelagianism. Augustine\'s doctrines of original sin, total depravity, irresistible grace, and sovereign election were hammered out on the anvil of the Pelagian controversy.' },
+      { icon: '⚖', text: '<strong>Council of Carthage (418 AD)</strong> — condemned Pelagianism in sixteen canons, affirming original sin, the inheritance of spiritual death from Adam, and the necessity of God\'s grace for every good work.' },
+      { icon: '⚖', text: '<strong>Council of Orange (529 AD)</strong> — further refined the church\'s anti-Pelagian consensus, affirming that even the will to believe is a gift of God\'s grace.' },
+    ],
+    stillMatters: 'Pelagianism is the natural religion of the human heart. Every instinct of fallen humanity wants to contribute something to salvation — to be the hero of its own redemption story. It reappears in every era: the medieval doctrine of merit, Arminian synergism, modern self-help Christianity, the prosperity gospel\'s "your faith releases God\'s blessing." The Reformation\'s <em>sola gratia</em> is a direct, thundering refusal of Pelagian logic. Salvation is of the Lord — entirely, root and branch, from first to last.',
+    keyText: 'Augustine, On the Grace of Christ and Original Sin (418); Canons of the Council of Orange (529)'
+  },
+  {
+    name: 'Roman Catholic System',
+    era: 'reformation',
+    dates: '16th century controversy (system developed medievally)',
+    verdict: 'ongoing',
+    tagline: 'Works, tradition, and sacraments co-operate with grace for salvation; the Pope speaks infallibly',
+    error: 'The Reformers\' quarrel with Rome was not over peripheral matters but over the Gospel itself. The Roman system, as defined at the Council of Trent (1545–1563), taught that justification is not the imputation of Christ\'s righteousness but an interior transformation that makes the sinner progressively righteous; that this righteousness can be augmented by meritorious works; that those who die in venial sin must pass through purgatory; that the Mass is a propitiatory sacrifice re-presenting Christ\'s offering; and that the Pope, when speaking ex cathedra on faith and morals, is infallible. Scripture and Church Tradition are co-equal sources of authority.',
+    errorQuote: '"If anyone says that the sinner is justified by faith alone... let him be anathema." — Council of Trent, Canon 9 on Justification',
+    proponents: ['Council of Trent (1545–1563)', 'Vatican I (1870, papal infallibility)', 'Vatican II (1962–65)'],
+    response: [
+      { icon: '✦', text: '<strong>Martin Luther</strong> — his <em>Ninety-Five Theses</em> (1517) attacked indulgences as a symptom of a system that had commercialized grace. His deeper discovery — that justification is by faith alone, through Christ\'s imputed righteousness — was the theological earthquake of the millennium.' },
+      { icon: '✦', text: '<strong>John Calvin</strong> — his <em>Institutes</em> gave the Reformed world its systematic alternative to Rome on every contested point: Scripture alone, faith alone, grace alone, Christ alone, glory to God alone.' },
+      { icon: '⚖', text: '<strong>Westminster Confession of Faith (1646)</strong> — Chapter XI defines justification with precision forged in controversy: God imputes Christ\'s obedience and satisfaction to the sinner, received by faith alone, not from anything wrought in or done by them.' },
+      { icon: '✦', text: '<strong>R.C. Sproul</strong> — his book <em>Faith Alone</em> and his response to the "Evangelicals and Catholics Together" document (1994) kept the Reformation\'s central issue on the evangelical agenda when many were ready to set it aside.' },
+    ],
+    stillMatters: 'The Reformation is not over. The Council of Trent\'s anathemas on justification by faith alone have never been lifted. Rome\'s official theology still teaches that the righteousness by which we stand before God is partly our own transformed character — not solely the alien righteousness of Christ imputed. For Sproul, this was not a secondary disagreement between brothers but a question of whether sinners are told the truth about how to be right with God. The five <em>Solas</em> are not museum pieces; they are life and death.',
+    keyText: 'Luther, Freedom of a Christian (1520); Westminster Confession Ch. XI; Sproul, Faith Alone (1995)'
+  },
+  {
+    name: 'Semi-Pelagianism',
+    era: 'medieval',
+    dates: '5th century–present',
+    verdict: 'condemned',
+    tagline: 'Man takes the first step toward God; grace assists the rest',
+    error: 'Semi-Pelagianism was a mediating position developed by monks in southern Gaul who found Augustine\'s sovereignty of grace too severe. They accepted original sin and the need for grace but insisted that the human will takes the first step — the initial movement toward faith — and God then cooperates with and strengthens that decision. Salvation begins with man\'s unaided desire for God; grace follows and completes it. This preserved human initiative and softened the sharp edges of Augustinian predestination.',
+    errorQuote: '"The beginning of faith and the good will are from ourselves; the completion is from God." — Semi-Pelagian position as condemned at Orange',
+    proponents: ['John Cassian', 'Faustus of Riez', 'Vincent of Lérins'],
+    response: [
+      { icon: '⚖', text: '<strong>Council of Orange (529 AD)</strong> — condemned Semi-Pelagianism explicitly, declaring that even the first inclination toward faith is the gift of God\'s grace, not a human achievement.' },
+      { icon: '✦', text: '<strong>Augustine</strong> — anticipated the debate by insisting that even the will to seek God is a divine gift. <em>Our heart is restless until it rests in Thee</em> — and even that restlessness is grace-given.' },
+      { icon: '✦', text: '<strong>The Reformation\'s doctrine of Total Depravity</strong> — the "T" in TULIP is the Reformed answer to Semi-Pelagianism. The unregenerate will is in bondage; it does not and cannot take a first step toward God apart from prevenient and effectual grace.' },
+    ],
+    stillMatters: 'Semi-Pelagianism is the default theology of most contemporary evangelicalism, even where it is not consciously held. Every altar call that says "God has done His part — now it\'s up to you" is Semi-Pelagian. Every theology that makes election dependent on God\'s foresight of human faith is Semi-Pelagian. It is more comfortable than Calvinism, more orthodox than Pelagianism, and more wrong than either: it gives man the first and decisive word in his own salvation, which is precisely the ground the Reformation refused to concede.',
+    keyText: 'Canons of Orange (529); Augustine, On the Predestination of the Saints (429)'
+  },
+  {
+    name: 'Socinianism',
+    era: 'reformation',
+    dates: '16th–17th century',
+    verdict: 'condemned',
+    tagline: 'Denial of the Trinity, the pre-existence of Christ, and penal substitution',
+    error: 'Developed by Fausto Sozzini (Socinus) in 16th-century Poland, Socinianism was a radical rationalist theology that rejected every doctrine it found philosophically incoherent: the Trinity (one God in three persons is logically contradictory), the pre-existence of Christ (He was a uniquely inspired human teacher, not the eternal Son), and penal substitutionary atonement (it is unjust for an innocent party to bear another\'s guilt). Salvation is moral influence and example — Christ shows us how to live, not how to be forgiven.',
+    errorQuote: '"The doctrine of the Trinity cannot be found in Scripture and is repugnant to reason." — Socinian Racovian Catechism (1605)',
+    proponents: ['Lelio Sozzini', 'Fausto Sozzini (Socinus)', 'The Polish Brethren', 'Racovian Catechism'],
+    response: [
+      { icon: '✦', text: '<strong>John Owen, A Dissertation on Divine Justice (1653)</strong> — the most thorough Reformed response to the Socinian rejection of penal substitution, demonstrating from Scripture and natural theology that God\'s justice necessarily demands satisfaction for sin.' },
+      { icon: '✦', text: '<strong>Francis Turretin</strong> — his <em>Institutes of Elenctic Theology</em> engaged every Socinian argument systematically, producing what many regard as the finest scholastic Reformed theology ever written.' },
+      { icon: '⚖', text: '<strong>Reformed confessions broadly</strong> — the Westminster Confession, the Heidelberg Catechism, and the Belgic Confession all affirm the Trinity, the eternal Sonship, and penal substitution in direct opposition to Socinian denials.' },
+    ],
+    stillMatters: 'Socinianism is the ancestor of modern Unitarianism, theological liberalism\'s rejection of substitutionary atonement, and much of contemporary "progressive Christianity." When a pastor says "I don\'t believe in a God who requires a blood sacrifice" or "Jesus died as a moral example, not to absorb divine wrath," they are teaching Socinianism — usually without knowing its name. The answer is John Owen: the God who is perfectly just cannot simply overlook sin. The cross is not primitive barbarity but the only place in the universe where justice and mercy truly kiss.',
+    keyText: 'John Owen, A Dissertation on Divine Justice (1653); Heidelberg Catechism Q. 40 (1563)'
+  },
+];
+
+// ── State ───────────────────────────────────────────────────────────────────
+
+let activeEra = 'all';
+
+// ── Init ────────────────────────────────────────────────────────────────────
+
+function init() {
+  buildEraBar();
+  render();
+}
+
+// ── Era Bar ─────────────────────────────────────────────────────────────────
+
+function buildEraBar() {
+  const bar = document.getElementById('eraBar');
+  bar.innerHTML = ERAS.map(e =>
+    `<button class="era-btn${e.id===activeEra?' active':''}" onclick="selectEra('${e.id}')">${e.label}</button>`
+  ).join('');
+}
+
+function selectEra(id) {
+  activeEra = id;
+  buildEraBar();
+  render();
+}
+
+// ── Render ──────────────────────────────────────────────────────────────────
+
+function filtered() {
+  const list = activeEra === 'all' ? HERESIES : HERESIES.filter(h => h.era === activeEra);
+  return list.slice().sort((a,b) => sortKey(a).localeCompare(sortKey(b)));
+}
+
+function sortKey(h) {
+  const words = h.name.trim().split(/\s+/);
+  // ignore leading "The "
+  const first = words[0].toLowerCase() === 'the' ? words[1] : words[0];
+  return first.toLowerCase();
+}
+
+function firstLetter(h) {
+  return sortKey(h)[0].toUpperCase();
+}
+
+function render() {
+  const list = filtered();
+  buildAZBar(list);
+  buildNameIndex(list);
+  if(!list.length) {
+    document.getElementById('mainContent').innerHTML = '<div class="no-results">No heresies found for this era.</div>';
+    return;
+  }
+  const groups = {};
+  list.forEach(h => {
+    const l = firstLetter(h);
+    if(!groups[l]) groups[l] = [];
+    groups[l].push(h);
+  });
+  let html = '';
+  Object.keys(groups).sort().forEach(letter => {
+    html += `<div class="letter-head" id="letter-${letter}">${letter}</div>`;
+    groups[letter].forEach(h => { html += heresyCard(h); });
+  });
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function heresyCard(h) {
+  const eraLabel = ERAS.find(e => e.id === h.era)?.label || h.era;
+  const anchor = h.name.replace(/[^a-z]/gi,'_');
+  const verdictClass = h.verdict === 'condemned' ? 'verdict-condemned' : 'verdict-ongoing';
+  const verdictText = h.verdict === 'condemned' ? '⚔ Formally Condemned' : '⚠ Ongoing Threat';
+
+  const responseRows = h.response.map(r =>
+    `<div class="response-row"><div class="resp-icon">${r.icon}</div><div class="resp-text">${r.text}</div></div>`
+  ).join('');
+
+  const proponentChips = h.proponents.map(p =>
+    `<span class="proponent-chip">${p}</span>`
+  ).join('');
+
+  return `
+<div class="heresy-card" id="heresy-${anchor}">
+  <div class="heresy-header">
+    <div class="heresy-name">${h.name}</div>
+    <div class="heresy-meta">
+      <span>${h.dates}</span>
+      <span class="era-tag">${eraLabel}</span>
+      <span class="verdict-tag ${verdictClass}">${verdictText}</span>
+    </div>
+  </div>
+  <div class="heresy-body">
+    <div class="error-box">
+      <div class="error-label">The Error</div>
+      <div class="error-text">${h.error}</div>
+      ${h.errorQuote ? `<div class="error-quote">${h.errorQuote}</div>` : ''}
+    </div>
+    <div class="proponents-wrap">
+      <div class="proponents-label">Key Proponents</div>
+      <div class="proponent-chips">${proponentChips}</div>
+    </div>
+    <div class="response-wrap">
+      <div class="response-label">How the Church Responded</div>
+      ${responseRows}
+    </div>
+    <div class="still-matters">
+      <div class="still-label">Why It Still Matters</div>
+      <div class="still-text">${h.stillMatters}</div>
+    </div>
+    <div class="key-text-box">
+      <div class="kt-label">Key Text</div>
+      <div class="kt-text">${h.keyText}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+// ── A-Z Bar ──────────────────────────────────────────────────────────────────
+
+function buildAZBar(list) {
+  const letters = new Set(list.map(h => firstLetter(h)));
+  const all = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const bar = document.getElementById('azBar');
+  bar.innerHTML = all.map(l =>
+    letters.has(l)
+      ? `<span class="az-link" onclick="jumpTo('${l}')">${l}</span>`
+      : `<span class="az-link dim">${l}</span>`
+  ).join('');
+}
+
+function jumpTo(letter) {
+  const el = document.getElementById('letter-' + letter);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── Name Index ───────────────────────────────────────────────────────────────
+
+function buildNameIndex(list) {
+  const chips = document.getElementById('nameIndexChips');
+  chips.innerHTML = list.map(h => {
+    const anchor = h.name.replace(/[^a-z]/gi,'_');
+    return `<span class="name-chip" onclick="jumpToHeresy('${anchor}')">${h.name}</span>`;
+  }).join('');
+}
+
+function jumpToHeresy(anchor) {
+  const el = document.getElementById('heresy-' + anchor);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function toggleNameIndex() {
+  const chips = document.getElementById('nameIndexChips');
+  const btn = document.querySelector('.name-index-toggle');
+  chips.classList.toggle('open');
+  btn.textContent = chips.classList.contains('open') ? '▲ Browse all heresies' : '▼ Browse all heresies';
+}
+
+init();
+</script>
+</body>
+</html>
