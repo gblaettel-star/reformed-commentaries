@@ -197,6 +197,12 @@ function showHome() {
   document.getElementById('reader-screen').style.display = 'none';
   document.getElementById('reader-nav').style.display = 'none';
   document.title = 'Soli Deo Gloria';
+  ['ot','nt','sl','sg','ref'].forEach(function(id) {
+    var body = document.getElementById('body-' + id);
+    var chevron = document.querySelector('#sec-' + id + ' .section-chevron');
+    if (body) body.style.maxHeight = '0';
+    if (chevron) chevron.classList.remove('open');
+  });
   window.scrollTo(0,0);
 }
 
