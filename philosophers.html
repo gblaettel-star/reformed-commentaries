@@ -80,7 +80,7 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
 <header>
   <div class="header-top">
     <a class="home-link" href="index.html">&#8592; Home</a>
-    <h1 onclick="window.location.href='index.html'" style="cursor:pointer">Philosophers &amp; Christian Thought</h1>
+    <h1 onclick="resetPage()" style="cursor:pointer">Philosophers &amp; Christian Thought</h1>
   </div>
   <h2>Ideas have consequences — and a history</h2>
 </header>
@@ -579,6 +579,13 @@ function toggleNameIndex() {
 // ✦ = positive influence  △ = mixed/complex  ▲ = challenging/negative
 
 init();
+
+function resetPage() {
+  activeEra = 'all';
+  buildEraBar();
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 </script>
 </body>
 </html>
