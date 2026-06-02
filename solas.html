@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Five Solas — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation}
+header h1:hover{opacity:.8}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Nav chips */
+.sola-nav{display:flex;flex-wrap:wrap;gap:.4rem;padding:.65rem 1rem;background:#0a1e30;border-bottom:2px solid #2a4a6c;justify-content:center}
+.sola-chip{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.3rem .8rem;border-radius:20px;cursor:pointer;font-size:.8rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s;touch-action:manipulation}
+.sola-chip:hover{border-color:#c9a84c;color:#c9a84c}
+
+/* Intro banner */
+.intro-banner{background:#0a1e30;border-bottom:1px solid #2a4a6c;padding:1.1rem 1.5rem;text-align:center}
+.intro-text{color:#a0b8c0;font-size:.9rem;line-height:1.8;max-width:640px;margin:0 auto}
+
+main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
+
+/* Sola card */
+.sola-card{margin-bottom:2.5rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+
+/* Card header with number badge */
+.sola-header{background:linear-gradient(135deg,#1a3a5c 0%,#0f2540 100%);padding:1.2rem 1.4rem;border-bottom:2px solid #c9a84c;position:relative}
+.sola-number{position:absolute;top:1rem;right:1.2rem;color:#2a4a6c;font-size:3.5rem;font-weight:bold;letter-spacing:-.05em;line-height:1;user-select:none}
+.sola-latin{color:#c9a84c;font-size:1.6rem;font-weight:bold;letter-spacing:.04em;margin-bottom:.3rem}
+.sola-english{color:#e8dcc8;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem}
+.sola-tagline{color:#7090b0;font-size:.88rem;font-style:italic;line-height:1.6}
+
+.sola-body{padding:1.3rem 1.4rem}
+
+/* Origin */
+.origin-box{background:#071520;border:1px solid #1a3a5c;border-radius:6px;padding:.9rem 1.1rem;margin-bottom:1.2rem}
+.origin-label{display:block;color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.4rem}
+.origin-text{color:#a0b8c8;font-size:.9rem;line-height:1.75}
+
+/* Meaning */
+.meaning-text{color:#e8dcc8;font-size:.97rem;line-height:1.9;margin-bottom:1.2rem}
+.meaning-text p{margin-bottom:.9rem}
+.meaning-text p:last-child{margin-bottom:0}
+
+/* Scripture */
+.scripture-block{background:#071a10;border-left:3px solid #4a9a60;border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.scripture-label{display:block;color:#4a9a60;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.scripture-ref{color:#80c090;font-weight:bold;font-size:.9rem;margin-bottom:.35rem}
+.scripture-text{color:#d4e8d4;font-style:italic;font-size:.97rem;line-height:1.8;margin-bottom:.5rem}
+.scripture-comment{color:#d4c4a8;font-size:.92rem;line-height:1.75}
+
+/* Guards against */
+.guards-wrap{margin-bottom:1.2rem}
+.guards-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.guard-chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.guard-chip{background:#1a0d1a;border:1px solid #4a2a4a;color:#c090c0;font-size:.78rem;padding:.2rem .6rem;border-radius:12px}
+
+/* Voices */
+.voices-wrap{margin-bottom:1.2rem}
+.voices-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem}
+.voice-entry{margin-bottom:1rem;padding:.85rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px}
+.voice-entry:last-child{margin-bottom:0}
+.voice-quote{color:#d4c4a8;font-style:italic;font-size:.95rem;line-height:1.8;margin-bottom:.4rem}
+.voice-attr{color:#7090b0;font-size:.78rem}
+
+/* Still matters */
+.still-matters{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;border-radius:0 4px 4px 0}
+.still-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.still-text{line-height:1.8;font-size:.93rem;color:#d4c4a8}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1 onclick="window.scrollTo({top:0,behavior:'smooth'})">The Five Solas</h1>
+  </div>
+  <h2>The battle cries of the Reformation</h2>
+</header>
+
+<div class="sola-nav">
+  <button class="sola-chip" onclick="jumpTo('sola-1')">Sola Scriptura</button>
+  <button class="sola-chip" onclick="jumpTo('sola-2')">Sola Gratia</button>
+  <button class="sola-chip" onclick="jumpTo('sola-3')">Sola Fide</button>
+  <button class="sola-chip" onclick="jumpTo('sola-4')">Solus Christus</button>
+  <button class="sola-chip" onclick="jumpTo('sola-5')">Soli Deo Gloria</button>
+</div>
+
+<div class="intro-banner">
+  <p class="intro-text">The Five Solas were not invented by the Reformers as a marketing slogan. They were hammered out on the anvil of controversy — each one a precise answer to a specific distortion of the Gospel. Together they constitute the Reformation's account of how a guilty sinner stands before a holy God: by Scripture alone, by grace alone, through faith alone, in Christ alone, to the glory of God alone.</p>
+</div>
+
+<main id="mainContent"></main>
+
+<script>
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+const SOLAS = [
+  {
+    id: 'sola-1',
+    number: 'I',
+    latin: 'Sola Scriptura',
+    english: 'Scripture Alone',
+    tagline: 'The written Word of God is the supreme, final, and sufficient authority for all matters of faith and life — above tradition, reason, experience, and church councils.',
+    origin: 'Luther\'s stand at the Diet of Worms (1521) is the defining moment: "Unless I am convinced by the testimony of the Scriptures or by clear reason — for I do not trust either in the pope or in councils alone, since it is well known that they have often erred and contradicted themselves — I am bound by the Scriptures I have quoted and my conscience is captive to the Word of God." The phrase <em>sola scriptura</em> was crystallized by the Reformers but the conviction is as old as the prophets.',
+    meaning: '<p>Sola Scriptura does not mean that Scripture is the only authority — it means Scripture is the supreme authority, the norm that norms all other norms (<em>norma normans non normata</em>). Tradition, reason, experience, and church councils all have their proper place; but when they conflict with Scripture, Scripture wins. Always.</p><p>It also does not mean that every Christian reads the Bible alone in isolation, as if 2,000 years of careful interpretation count for nothing. The creeds, confessions, and faithful expositors of the church are gifts of God — but they are servants of Scripture, not its masters. The Bereans were commended for testing even Paul\'s preaching against the Word (Acts 17:11).</p><p>The practical implication is enormous: no pope, no council, no tradition, no experience, no prophet — however impressive — may add to or override what Scripture has said. The canon is closed. The Word is sufficient. God has spoken, and spoken clearly enough to be understood by ordinary believers reading in faith.</p>',
+    scripture: {
+      ref: '2 Timothy 3:16–17',
+      text: '"All Scripture is breathed out by God and profitable for teaching, for reproof, for correction, and for training in righteousness, that the man of God may be complete, equipped for every good work." (ESV)',
+      comment: 'The word <em>theopneustos</em> — God-breathed — is not passive (God breathed into it) but active (God breathed it out). Scripture is God\'s own speech in written form. And its sufficiency is total: "equipped for <em>every</em> good work." Not some good works — every good work. The man of God who is saturated in Scripture lacks nothing necessary for his calling. Sproul called this verse the charter of Sola Scriptura.'
+    },
+    guards: ['Roman Catholic Tradition co-equal with Scripture', 'Liberal Higher Criticism', 'New Apostolic Reformation (new prophecy)', 'Mormonism (additional scriptures)', 'Mysticism (private experience above the Word)'],
+    voices: [
+      { quote: 'The Bible is the cradle wherein Christ is laid.', attr: 'Martin Luther' },
+      { quote: 'Scripture is the school of the Holy Spirit, in which, as nothing is omitted that is both necessary and useful to know, so nothing is taught but what is expedient to know.', attr: 'John Calvin, Institutes I.xiv.4' },
+      { quote: 'The Scripture is not a dead letter, but the living Word of God, sufficient to make the man of God complete and thoroughly equipped for every good work.', attr: 'R.C. Sproul' },
+    ],
+    stillMatters: 'Every generation faces the temptation to add to Scripture — tradition, experience, new prophecy, cultural consensus. The Roman Catholic Church adds Tradition. Charismatics add continuing prophecy. Liberals subtract the parts that offend. Mormons add the Book of Mormon. Each addition or subtraction is, at its root, a denial that God has spoken sufficiently in the sixty-six books. Sola Scriptura is not a Protestant hobby-horse; it is the irreplaceable foundation of every other Sola. If Scripture is not the final authority, then who is? The answer has always been: whoever holds institutional power. Luther\'s stand at Worms was a stand for every ordinary believer who has ever opened the Bible and found God speaking directly to their soul.'
+  },
+  {
+    id: 'sola-2',
+    number: 'II',
+    latin: 'Sola Gratia',
+    english: 'Grace Alone',
+    tagline: 'Salvation from its first impulse to its final completion is entirely the work of God\'s undeserved favour — not initiated, merited, or completed by any act or quality of the sinner.',
+    origin: 'The Pelagian controversy of the 5th century forced Augustine to articulate what Scripture had always taught: the human will is in bondage, and the first movement toward God is not from us but from Him. The Reformers recovered this Augustinian account of grace against the medieval semi-Pelagian system of merits, indulgences, and purgatorial satisfaction. Luther\'s <em>Bondage of the Will</em> (1525) — his response to Erasmus — is its definitive modern statement.',
+    meaning: '<p>Sola Gratia is the most radical and the most offensive of the Solas — offensive, that is, to human pride. It means that in salvation, God does not help those who help themselves. He saves those who cannot help themselves. The dead are not assisted in rising; they are raised. The blind are not given better glasses; they are given sight. The enslaved will is not freed by its own effort; it is liberated by irresistible grace.</p><p>This is not a statement about God\'s arbitrariness — it is a statement about the depth of human sin and the magnificence of divine love. We were not partially sick; we were dead (Eph. 2:1). We were not slightly lost; we were enemies (Rom. 5:10). Grace is not a supplement to human effort — it is a resurrection of the humanly impossible.</p><p>The logical consequence is that no human being can boast in the presence of God (1 Cor. 1:29). If grace is truly grace — unmerited, unearned, unsolicited — then the saved person has nothing to contribute to their salvation except the sin that made it necessary. This is simultaneously humiliating and liberating: humiliating to the ego, liberating to the soul.</p>',
+    scripture: {
+      ref: 'Ephesians 2:4–9',
+      text: '"But God, being rich in mercy, because of the great love with which he loved us, even when we were dead in our trespasses, made us alive together with Christ — by grace you have been saved — and raised us up with him... For by grace you have been saved through faith. And this is not your own doing; it is the gift of God, not a result of works, so that no one may boast." (ESV)',
+      comment: 'Paul\'s repeated insistence — "by grace," "not your own doing," "gift of God," "not a result of works" — is not rhetorical padding. He is blocking every possible entrance for human boasting. Notice the order: we were dead, God made us alive. The initiative is entirely His. The words "But God" in verse 4 are two of the most glorious words in Scripture — they mark the turning point from total ruin to total rescue. Sinclair Ferguson calls them the hinge of the entire universe.'
+    },
+    guards: ['Pelagianism', 'Semi-Pelagianism', 'Arminian synergism', 'Roman Catholic meritism', 'Prosperity Gospel', 'Moralistic Therapeutic Deism'],
+    voices: [
+      { quote: 'Grace is not simply leniency when we have sinned. Grace is the enabling gift of God not to sin. Grace is power, not just pardon.', attr: 'John Piper' },
+      { quote: 'The doctrines of grace humble a man without degrading him, and exalt a man without inflating him.', attr: 'Charles Spurgeon' },
+      { quote: 'If you do not feel the weight of your sin you will never feel the wonder of His grace.', attr: 'R.C. Sproul' },
+    ],
+    stillMatters: 'Sola Gratia is the permanent protest against every version of Christianity that makes God\'s saving action dependent on human response, decision, or effort. Every altar call that says "God has done His part — now it\'s your turn" has, in principle, qualified grace. Every theology that makes election contingent on foreseen faith has made grace conditional. Every prosperity gospel that says "your faith releases God\'s blessing" has made grace earnable. The stakes are not merely theoretical: a grace that can be earned is not grace, and a salvation that depends on the sinner\'s effort provides no assurance to the sinner who knows his own heart. Only a grace that is entirely God\'s own doing — from election to glorification — can anchor a trembling soul.'
+  },
+  {
+    id: 'sola-3',
+    number: 'III',
+    latin: 'Sola Fide',
+    english: 'Faith Alone',
+    tagline: 'Justification — the declaration that the sinner is righteous before God — is received through faith alone, not through faith plus works, sacraments, or moral transformation.',
+    origin: 'Luther called Sola Fide "the article by which the church stands or falls." His discovery — reading Romans 1:17 in his tower at Wittenberg — that "the righteousness of God" is not the righteousness God demands from us but the righteousness He gives to us through faith in Christ was the Reformation\'s igniting spark. The Council of Trent\'s Canon 9 — "If anyone says that the sinner is justified by faith alone... let him be anathema" — shows that Rome understood precisely what was at stake.',
+    meaning: '<p>Sola Fide does not mean faith is a work we perform to earn salvation — as if believing hard enough is the price of justification. Faith is the instrument, not the ground. The ground of justification is always and only Christ\'s righteousness — His perfect obedience and His atoning death. Faith is the empty hand that receives this gift. Calvin\'s analogy: the moon has no light of its own; it reflects the sun. Faith has no merit of its own; it reflects Christ.</p><p>Crucially: we are justified by faith alone, but not by a faith that is alone. Genuine saving faith always produces works (James 2:17). The works do not contribute to justification — they evidence it. A tree is known by its fruit; but the fruit does not make the tree. The justified person does good works out of gratitude, not as payment. This is the difference between the Reformers and antinomians on one side, and Rome and moralists on the other.</p><p>The word "alone" is the sharp edge. Not faith plus baptism (Rome). Not faith plus circumcision (the Judaizers Paul refuted). Not faith plus ongoing sacramental penance (Trent). Faith — empty-handed, Christ-directed, Spirit-given faith — alone, and that faith resting entirely on Christ alone.</p>',
+    scripture: {
+      ref: 'Romans 3:21–22, 28',
+      text: '"But now the righteousness of God has been manifested apart from the law, although the Law and the Prophets bear witness to it — the righteousness of God through faith in Jesus Christ for all who believe... For we hold that one is justified by faith apart from works of the law." (ESV)',
+      comment: 'Paul\'s "apart from the law... apart from works of the law" is the linguistic equivalent of the word "alone." He is not merely saying faith is important — he is saying that in justification, works are not in the equation. Anywhere. At all. Luther\'s translation added the word "alone" (<em>allein</em>) after "faith" in verse 28 — not to change the meaning, as his critics charged, but to make explicit what the Greek "apart from" already implies. The righteousness of God is not our achieved righteousness; it is His alien righteousness, imputed to our account, received through faith.'
+    },
+    guards: ['Roman Catholic works-righteousness', 'Pelagianism', 'Arminian conditional justification', 'Antinomianism (faith without fruit)', 'Moralism'],
+    voices: [
+      { quote: 'This one and firm rock, which we call the doctrine of justification, is the chief article of the whole Christian doctrine, which comprehends the understanding of all godliness.', attr: 'Martin Luther' },
+      { quote: 'A man is justified by faith alone, but justifying faith is never alone.', attr: 'J. Gresham Machen' },
+      { quote: 'To abandon the doctrine of justification by faith alone is to abandon Christianity itself.', attr: 'R.C. Sproul' },
+    ],
+    stillMatters: 'Sola Fide is the article by which every generation\'s church stands or falls. The Reformation happened not because of church politics or cultural change but because this truth had been buried — and when Luther found it in Romans, he knew that everything depended on it. It still does. When a church teaches that the Eucharist contributes to justification — Sola Fide is at stake. When a prosperity preacher implies that your generous giving releases God\'s blessing — Sola Fide is at stake. When a therapist-pastor assures people that God accepts them just as they are with no need of repentance — Sola Fide is at stake, from the other direction. The article by which the church stands or falls is the article by which every soul stands or falls — not before a human tribunal but before the holy God.'
+  },
+  {
+    id: 'sola-4',
+    number: 'IV',
+    latin: 'Solus Christus',
+    english: 'Christ Alone',
+    tagline: 'Jesus Christ — His person, His obedience, His atonement, His intercession — is the sole mediator between God and man, and the sole ground of the sinner\'s acceptance before God.',
+    origin: 'The Reformation\'s assault on the medieval system of saints, indulgences, masses, and priestly mediation was always, at its core, a defense of Christ\'s sole and sufficient mediatorial office. The question was not whether Christ saves — everyone agreed He saves. The question was whether He saves completely, finally, and without supplementation from Mary, the saints, the sacramental system, or human merit. The Reformers said yes. Rome said no.',
+    meaning: '<p>Solus Christus is the answer to the question: who stands between guilty sinners and the holy God? One person. One mediator. "For there is one God, and there is one mediator between God and men, the man Christ Jesus, who gave himself as a ransom for all" (1 Tim. 2:5–6). Not Christ and Mary. Not Christ and the saints. Not Christ and the pope. Not Christ and the sacramental priesthood. Christ. Alone.</p><p>His mediation has three dimensions: prophetic (He reveals God to us), priestly (He represents us before God and intercedes for us), and kingly (He rules and protects His people). At the Reformation, the priestly office was the contested ground. Rome had constructed an elaborate system in which the Mass re-presented Christ\'s sacrifice, priests offered it daily, indulgences applied its merits, and the Pope held the keys to its distribution. The Reformers replied: the sacrifice of Christ was offered once, for all, and is complete. "It is finished" means it is finished — not to be repeated, supplemented, or distributed by human officials.</p><p>The devotional consequence is immense: the Christian comes directly to God through Christ, and through Christ alone. No saints need be invoked. No priest need mediate. No supplementary merit need be acquired. The veil was torn from top to bottom — and no ecclesiastical hand may mend it.</p>',
+    scripture: {
+      ref: 'Hebrews 7:25',
+      text: '"Consequently, he is able to save to the uttermost those who draw near to God through him, since he always lives to make intercession for them." (ESV)',
+      comment: '"To the uttermost" — the Greek <em>panteles</em> means completely, perfectly, finally, at every point. Christ does not save partially, leaving the rest to human cooperation. He saves to the uttermost. And He does so continuously — "he always lives to make intercession." The ascended Christ is not retired; He is actively interceding for every one of His people at this moment, at the right hand of the Father. This is the verse that puts the entire medieval intercessory system out of business: we have an advocate who never sleeps, never fails, and never needs supplementation. To add any other mediator is not to honour Christ — it is to insult Him.'
+    },
+    guards: ['Marian co-redemption (Rome)', 'Invocation of saints', 'Priestly mediation', 'Prosperity Gospel (your faith as co-cause of salvation)', 'Religious pluralism (many paths to God)'],
+    voices: [
+      { quote: 'There is no worse screen to block out the Spirit than confidence in our own intelligence.', attr: 'John Calvin (on any self-sufficiency before God)' },
+      { quote: 'Christ is not valued at all unless he is valued above all.', attr: 'Augustine of Hippo' },
+      { quote: 'Christ alone is the Lamb of God who takes away the sin of the world. To add anything to His perfect work is to insult it.', attr: 'R.C. Sproul' },
+    ],
+    stillMatters: 'Solus Christus confronts two opposite errors in our time. From the Catholic and Anglo-Catholic side, it protests the multiplication of mediators — Mary, saints, priests, sacraments — that obscures the one sufficient Mediator. From the pluralist side, it protests the reduction of Christ to one path among many — a helpful spiritual teacher for some, but not the exclusive Saviour of all. Both errors end in the same place: a Christ who is not quite enough. The Gospel insists: He is enough. He is more than enough. He is the only one who is enough. "And there is salvation in no one else, for there is no other name under heaven given among men by which we must be saved" (Acts 4:12).'
+  },
+  {
+    id: 'sola-5',
+    number: 'V',
+    latin: 'Soli Deo Gloria',
+    english: 'To God Alone Be Glory',
+    tagline: 'The ultimate purpose of all creation, redemption, and history is the glory of God alone — not the glory of the church, its institutions, its leaders, or its members.',
+    origin: 'The final Sola is both the summary and the goal of the other four. If salvation is by Scripture alone, grace alone, faith alone, through Christ alone — then the glory belongs to God alone, with no share for human merit, achievement, or institution. Bach signed his manuscripts <em>Soli Deo Gloria</em>. The Westminster Shorter Catechism\'s opening answer — "Man\'s chief end is to glorify God and to enjoy him forever" — is Soli Deo Gloria rendered as a life-purpose. The entire Reformation, at its heart, was a reclamation of this: returning to God the glory that a human institution had appropriated.',
+    meaning: '<p>Soli Deo Gloria does not mean God is a narcissist who demands praise for its own sake. It means that God is the source of all being, truth, goodness, and beauty — and that to give the glory to any created thing, including the church, is to worship the creature rather than the Creator. The glory of God is not arbitrary; it is the recognition of what is actually and infinitely true about Him.</p><p>For the Reformation, this Sola had immediate institutional consequences. The pope claimed to act in the name of God and glory fell to the papacy. The priest claimed to offer Christ in the Mass and glory fell to the priesthood. The saint was invoked as if they shared in God\'s mediatorial glory. The indulgence seller implied that human payment could acquire divine favour. Each of these was not merely a theological error — it was a theft of glory that belongs to God alone.</p><p>Practically: Soli Deo Gloria is the most comprehensive Sola. It reaches into worship (we give God glory, not entertain ourselves), ministry (the preacher\'s aim is God\'s glory, not his reputation), vocation (the plumber\'s work glorifies God as much as the pastor\'s), suffering (even in pain, God is being glorified — Rom. 8:28), and death (to die is gain, because the dying person is about to see the One for whose glory they have lived).</p>',
+    scripture: {
+      ref: '1 Corinthians 10:31',
+      text: '"So, whether you eat or drink, or whatever you do, do all to the glory of God." (ESV)',
+      comment: '"Whatever you do" — there is no secular remainder. No department of life is exempt from the claim of God\'s glory. The meal, the conversation, the business transaction, the suffering, the recreation, the art, the science — all of it, <em>all</em> of it, is to be done to the glory of God. This is the Reformed vision of the Christian life: not a sacred/secular divide in which God gets Sunday and the world gets Monday through Saturday, but a comprehensive consecration in which every moment, every vocation, every relationship is brought under the lordship of Christ and directed toward the glory of God. Kuyper\'s famous declaration — "There is not a square inch in the whole domain of our human existence over which Christ, who is Sovereign over all, does not cry: \'Mine!\'" — is 1 Corinthians 10:31 in a sentence.'
+    },
+    guards: ['Human-centred worship', 'Clericalism (glory to the institution)', 'Celebrity pastor culture', 'Prosperity Gospel (my blessing, my success)', 'Sacred/secular divide'],
+    voices: [
+      { quote: 'There is not a square inch in the whole domain of our human existence over which Christ, who is Sovereign over all, does not cry: Mine!', attr: 'Abraham Kuyper' },
+      { quote: 'God is most glorified in us when we are most satisfied in him.', attr: 'John Piper' },
+      { quote: 'The chief end of man is to glorify God and to enjoy him forever. These are not two ends but one. To enjoy him is to glorify him; to glorify him is to enjoy him.', attr: 'R.C. Sproul' },
+    ],
+    stillMatters: 'Soli Deo Gloria is the final answer to every form of idolatry — including the subtle idolatry of self-improvement Christianity, celebrity pastor culture, and the therapeutic gospel that makes God the servant of human flourishing. The universe is not man-centred. History is not man-centred. Salvation is not man-centred. The church is not man-centred. Everything — creation, fall, redemption, consummation — is God-centred, because God is infinite and we are finite, because He is the Creator and we are creatures, because He gave His Son and we gave nothing. The last word of the Reformation is the first word of eternity: Gloria in excelsis Deo — glory to God in the highest. And all of it, all of it, belongs to Him alone.'
+  },
+];
+
+// ── Render ───────────────────────────────────────────────────────────────────
+
+function render() {
+  document.getElementById('mainContent').innerHTML = SOLAS.map(solaCard).join('');
+}
+
+function solaCard(s) {
+  const guardChips = s.guards.map(g=>`<span class="guard-chip">${g}</span>`).join('');
+  const voiceEntries = s.voices.map(v=>`
+    <div class="voice-entry">
+      <div class="voice-quote">"${v.quote}"</div>
+      <div class="voice-attr">— ${v.attr}</div>
+    </div>`).join('');
+  const meaningParas = s.meaning.replace(/<p>/g,'<p>');
+  return `
+<div class="sola-card" id="${s.id}">
+  <div class="sola-header">
+    <div class="sola-number">${s.number}</div>
+    <div class="sola-latin">${s.latin}</div>
+    <div class="sola-english">${s.english}</div>
+    <div class="sola-tagline">${s.tagline}</div>
+  </div>
+  <div class="sola-body">
+    <div class="origin-box">
+      <span class="origin-label">Historical Origin</span>
+      <div class="origin-text">${s.origin}</div>
+    </div>
+    <div class="meaning-text">${s.meaning}</div>
+    <div class="scripture-block">
+      <span class="scripture-label">Key Scripture</span>
+      <div class="scripture-ref">${s.scripture.ref}</div>
+      <div class="scripture-text">${s.scripture.text}</div>
+      <div class="scripture-comment">${s.scripture.comment}</div>
+    </div>
+    <div class="guards-wrap">
+      <div class="guards-label">Guards Against</div>
+      <div class="guard-chips">${guardChips}</div>
+    </div>
+    <div class="voices-wrap">
+      <div class="voices-label">Voices of the Tradition</div>
+      ${voiceEntries}
+    </div>
+    <div class="still-matters">
+      <div class="still-label">Why It Still Matters</div>
+      <div class="still-text">${s.stillMatters}</div>
+    </div>
+  </div>
+</div>`;
+}
+
+render();
+</script>
+</body>
+</html>
