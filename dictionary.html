@@ -101,10 +101,9 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
 </header>
 
 <div class="search-wrap">
-  <input class="search-input" id="search-input" type="text" placeholder="&#128269; Search 85 terms…" oninput="onSearch(this.value)" autocomplete="off" spellcheck="false">
+  <input class="search-input" id="search-input" type="text" placeholder="&#128269; Search terms…" oninput="onSearch(this.value)" autocomplete="off" spellcheck="false">
 </div>
 <div class="theme-bar" id="theme-bar"></div>
-<div class="az-bar" id="az-bar"></div>
 <div class="term-index-wrap">
   <button class="term-index-toggle" id="term-index-toggle" onclick="toggleTermIndex()">&#9656; Browse all terms</button>
   <div class="term-index-chips" id="term-index-chips"></div>
@@ -6478,6 +6477,11 @@ function filtered() {
 // ── Search ────────────────────────────────────────────────────────────────
 function onSearch(val) {
   currentSearch = val.trim();
+  if (currentSearch && termIndexOpen) {
+    termIndexOpen = false;
+    document.getElementById('term-index-chips').classList.remove('open');
+    document.getElementById('term-index-toggle').textContent = '▶ Browse all ' + TERMS.length + ' terms';
+  }
   render();
 }
 
