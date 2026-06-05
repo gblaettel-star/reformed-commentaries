@@ -6506,7 +6506,7 @@ function buildThemeBar() {
 // ── A-Z bar ───────────────────────────────────────────────────────────────
 function refreshAzBar() {
   var bar = document.getElementById('az-bar');
-  bar.innerHTML = '';
+  if (!bar) return;
   var letters = [];
   filtered().forEach(function(t) { if (letters.indexOf(t.letter) === -1) letters.push(t.letter); });
   letters.sort().forEach(function(l) {
