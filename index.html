@@ -301,6 +301,11 @@ function buildHome() {
   html += section('sl', 'Christian Living Studies — ' + sl.length + ' studies', sl.map(row).join(''), false);
   html += section('sg', 'General Studies — ' + sg.length + ' studies', sg.map(row).join(''), false);
   html += section('ref', 'Reference', refHtml, false);
+  var prayerHtml = '<div class="book-row" onclick="window.location.href=\'prayer.html\'">'
+    + '<div class="row-name">Monthly Prayer</div>'
+    + '<div class="row-sub">A prayer for every month — shaped by the Lord\'s Prayer, offered for your family and congregation</div>'
+    + '<div class="row-arrow">&#8250;</div></div>';
+  html += section('prayer', 'Monthly Prayer', prayerHtml, false);
   html += '<div class="about-toggle" onclick="toggleAbout()">'
     + '<span class="about-toggle-title">About Soli Deo Gloria</span>'
     + '<span class="about-chevron" id="about-chevron">&#8250;</span>'

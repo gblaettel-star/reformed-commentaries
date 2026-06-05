@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monthly Prayer — Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+.month-nav{display:flex;flex-wrap:wrap;gap:.4rem;padding:.65rem 1rem;background:#0a1e30;border-bottom:2px solid #2a4a6c;justify-content:center}
+.month-chip{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.3rem .8rem;border-radius:20px;cursor:pointer;font-size:.8rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s;touch-action:manipulation}
+.month-chip:hover,.month-chip.active{border-color:#c9a84c;color:#c9a84c;background:#112840}
+
+.intro-banner{background:#0a1e30;border-bottom:1px solid #2a4a6c;padding:1rem 1.5rem;text-align:center}
+.intro-text{color:#a0b8c0;font-size:.88rem;line-height:1.8;max-width:640px;margin:0 auto;font-style:italic}
+
+main{padding:1.5rem 1.5rem 3rem;max-width:700px;margin:0 auto}
+
+.prayer-card{border:1px solid #2a4a6c;border-radius:8px;overflow:hidden;display:none}
+.prayer-card.visible{display:block}
+
+.prayer-header{background:linear-gradient(135deg,#1a3a5c 0%,#0f2540 100%);padding:1.4rem 1.5rem;border-bottom:2px solid #c9a84c;position:relative}
+.prayer-month-label{color:#7090b0;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.3rem}
+.prayer-month-name{color:#c9a84c;font-size:1.7rem;font-weight:bold;letter-spacing:.04em;margin-bottom:.3rem}
+.prayer-theme{color:#a0b8c8;font-size:.9rem;font-style:italic;line-height:1.6}
+
+.prayer-body{padding:1.5rem}
+
+.prayer-section{margin-bottom:1.4rem}
+.prayer-section:last-child{margin-bottom:0}
+.section-label{color:#c9a84c;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.55rem;display:block}
+
+.prayer-text{color:#e8dcc8;font-size:1rem;line-height:2;font-style:italic}
+.prayer-text p{margin-bottom:.85rem}
+.prayer-text p:last-child{margin-bottom:0}
+
+.amen{color:#c9a84c;font-size:1.05rem;font-weight:bold;letter-spacing:.1em;text-align:right;padding-top:.5rem;font-style:normal}
+
+.scripture-prompt{background:#071a10;border-left:3px solid #4a9a60;border-radius:0 6px 6px 0;padding:.85rem 1.1rem;margin-top:1.5rem}
+.scripture-prompt-label{display:block;color:#4a9a60;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
+.scripture-prompt-ref{color:#80c090;font-size:.88rem;font-weight:bold;margin-bottom:.3rem}
+.scripture-prompt-text{color:#d4e8d4;font-style:italic;font-size:.93rem;line-height:1.8}
+
+.footer-note{text-align:center;color:#3a5a7c;font-size:.78rem;margin-top:2.5rem;line-height:1.7}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1>Monthly Prayer</h1>
+  </div>
+  <h2>A Prayer for Every Month of the Year</h2>
+</header>
+
+<div class="month-nav" id="month-nav"></div>
+
+<div class="intro-banner">
+  <div class="intro-text">Each prayer follows the shape of the Lord's Prayer — adoration, confession, petition, forgiveness, and deliverance — and closes with supplication for the day ahead, your family, and your congregation. Read slowly. Pray each line.</div>
+</div>
+
+<main id="main"></main>
+
+<script>
+var MONTHS = [
+  {
+    name: 'January', theme: 'New beginnings under the sovereignty of God',
+    verse_ref: 'Lamentations 3:22–23',
+    verse: 'The steadfast love of the Lord never ceases; his mercies never come to an end; they are new every morning; great is your faithfulness.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the everlasting God, the Creator of the ends of the earth, who does not faint or grow weary. Before the mountains were brought forth, or you had formed the earth and the world, from everlasting to everlasting you are God. We bow before you at the threshold of a new year, not trusting in our own resolve, but anchored in your unchanging character. You are the same yesterday, today, and forever — and that is our confidence.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us, Lord, for the sins of the year now past — for the pride we nursed, the kindness we withheld, the worship we offered halfheartedly. We have fallen short of your glory. But your mercies are new every morning, and we come to the cross where our debt was fully paid. Wash us, and we shall be whiter than snow.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come, your will be done, on earth as it is in heaven. Make this year one of advance for the gospel. Open doors that no one can shut. Call sinners to yourself. Conform your church to the image of Christ, and let your name be exalted in every nation.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Provide what we need — not what we covet — and teach us to hold loosely the gifts of this world. Let contentment be our great gain.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts as we forgive our debtors. Root out bitterness wherever it has taken hold. Lead us not into temptation, but deliver us from the evil one who prowls about seeking to devour. Greater are you who are in us than he who is in the world.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom for this day — to number our hours and present them to you as a living sacrifice. Give us diligence in our work, that we may serve as unto the Lord and not unto men. Guard our tongues, steady our hearts, and keep our eyes fixed on what is true and good and beautiful.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We lift our families before you — cover them in grace, bind them in love, and draw each heart to yourself. We pray for our congregation: sustain our pastor, unite our body, and let the word dwell richly among us. For thine is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'February', theme: 'The love of God poured into our hearts',
+    verse_ref: 'Romans 5:8',
+    verse: 'God shows his love for us in that while we were still sinners, Christ died for us.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are love — not a sentiment, but a holy, self-giving, covenant love that moved you to send your only Son into our darkness. Before we ever sought you, you sought us. Before we ever loved you, you loved us. We stand in wonder before a love that passes knowledge and yet can be known. Blessed be your name.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Lord, we confess that we have loved the world more than we have loved you. We have sought the approval of man over the smile of God. We have been slow to forgive those who have wronged us, though we ourselves have been forgiven a debt beyond all counting. Forgive us, and by your Spirit, set our affections on things above.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come. Let the love of Christ be the mark by which the world knows your people. Break down walls of division in your church. Send your gospel where love is unknown — into broken homes, hardened hearts, and distant nations.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Provide for every need, and remind us that every good gift comes from your hand. Teach us generosity toward those in want.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our trespasses as we forgive those who trespass against us. Deliver us from the coldness of heart that refuses mercy. Deliver us from the evil one, who would use our wounds to make us bitter. Lead us in the paths of righteousness for your name\'s sake.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Give us wisdom to love well today — in small acts and patient words. Make us diligent in the things you have placed before us, not restless for what we do not have. Let our work be an offering, and our relationships a reflection of your grace.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray for our families — that the love of God would be the atmosphere of our homes. We pray for our congregation — that we would be known not for our programs or our buildings, but for our love for one another. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'March', theme: 'Suffering, perseverance, and the hope of glory',
+    verse_ref: 'Romans 8:18',
+    verse: 'I consider that the sufferings of this present time are not worth comparing with the glory that is to be revealed to us.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the God of all comfort, the Father of mercies, who does not waste a single tear or a single trial. You work all things together for good for those who love you and are called according to your purpose. Even in the valley of the shadow, you are there. Your rod and your staff — they comfort us. Blessed be your name.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us, Lord, for grumbling against your providence. We have questioned your goodness when the road grew hard. We have trusted our own understanding rather than leaning on you. Pardon our unbelief, and renew within us a faith that holds fast even when it cannot see.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come. Strengthen your church in places of persecution. Sustain the suffering saints who hold the name of Christ at great cost. Let their endurance be a testimony to the watching world of a hope that does not disappoint.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Where there is sickness, bring healing in your time. Where there is grief, bring the comfort of your presence. Provide what only you can provide — the peace that surpasses understanding.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts, as we also forgive our debtors. Deliver us from bitterness toward those who have caused us pain. Lead us not into the temptation of despair, but remind us that our light and momentary troubles are achieving for us an eternal weight of glory beyond all comparison.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom to persevere in what lies before us today. Give us diligence when the work is hard and the results are unseen. Let us run with endurance the race set before us, fixing our eyes on Jesus, the founder and perfecter of our faith.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray for members of our family who are suffering — in body, in mind, in spirit. Draw near to them. We pray for our congregation — for those who are weary, for those who are doubting. Be their shepherd and their strength. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'April', theme: 'The resurrection and the life',
+    verse_ref: 'John 11:25',
+    verse: 'Jesus said to her, "I am the resurrection and the life. Whoever believes in me, though he die, yet shall he live."',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the God who raises the dead. In the resurrection of your Son, you declared with unmistakable power that death is not the last word — that the grave could not hold him, that sin has been conquered, and that all who are in Christ will rise. Hallelujah — what a Savior! We worship you, risen Lord, seated at the right hand of Majesty on high.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us for living as practical unbelievers — for fearing what we should not fear, and clinging to what we should release. We have forgotten that we are resurrection people, that the power that raised Christ from the dead now lives in us. Forgive our smallness of faith, and grant us courage befitting children of the living God.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come. Let the message of the resurrection go forth with power. Raise up preachers who will proclaim Christ crucified and risen. Call the dead in trespasses and sins to life — for you are the resurrection and the life.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Let the living bread — Christ himself — be the sustenance our souls most crave. Feed us from your word, and let it be sweeter than honey.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our trespasses — they were nailed to the cross, and the stone is rolled away. Deliver us from the fear of death, which the enemy uses to hold us in bondage all our lives. We are more than conquerors through him who loved us.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Give us wisdom to live this day in the light of eternity. Make us diligent, not anxious — knowing that our labor in the Lord is not in vain. Let the joy of the resurrection be the spring of our energy today.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray for family members who do not yet know the risen Christ — have mercy on them. We pray for our congregation, that we would be a resurrection community, where death is not feared and hope overflows. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'May', theme: 'The word of God and the life of faith',
+    verse_ref: 'Psalm 119:105',
+    verse: 'Your word is a lamp to my feet and a light to my path.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the God who speaks — who did not leave us in darkness but shone the light of your word upon our path. Every word of yours is flawless, a shield to those who take refuge in you. Your word is truth, and it endures forever. We worship you, the God who has not been silent, who has spoken and acted in Christ, the Word made flesh.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Lord, we confess that we have neglected your word. We have read it carelessly or set it aside for lesser things. We have known what you require and gone our own way regardless. Forgive our hardness of heart. Restore to us a hunger for your word that no earthly appetite can satisfy.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come through the preaching of your word. Give boldness to those who proclaim it. Protect the church from false teaching and the winds of doctrine that would carry her off course. Let the word of Christ dwell richly in your people.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Let your word be that bread — nourishing us, correcting us, training us in righteousness, equipping us for every good work. Man does not live by bread alone, but by every word that comes from the mouth of God.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts. Cleanse us by the washing of water with the word. Lead us not into temptation, but let the sword of the Spirit drive back every lie of the enemy. Deliver us from the one who would twist your word as he twisted it in Eden.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom drawn from your word for every decision we face today. Give us diligence to meditate on it — in the morning, in the midst of the day\'s demands, in the quiet of the evening. Let it shape our words, our work, and our relationships.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray that your word would be honored in our homes — read aloud, discussed, and lived. We pray for our congregation, that the preaching of your word would be central, clear, and transforming. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'June', theme: 'The Holy Spirit and the life of the church',
+    verse_ref: 'Acts 1:8',
+    verse: 'You will receive power when the Holy Spirit has come upon you, and you will be my witnesses in Jerusalem and in all Judea and Samaria, and to the end of the earth.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are Father, Son, and Holy Spirit — the eternal communion of love and life. You did not leave your people as orphans but sent the Spirit of your Son into our hearts, crying, "Abba! Father!" You are the God who dwells within us, who intercedes for us with groanings too deep for words. We stand in awe of such condescension — that the Spirit of the living God would make his home in mortal clay. Holy, holy, holy is the Lord God Almighty.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us for grieving your Holy Spirit — for quenching his fire with our indifference and resisting his voice with our stubbornness. We have walked by sight when we should have walked by the Spirit. Renew a right spirit within us, and do not take your Holy Spirit from us.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come. Pour out your Spirit afresh on your church. Revive us — not for our comfort, but for the spread of your glory. Give the Spirit of wisdom and revelation to your people, that we may know Christ more fully and make him known more boldly.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Let the fruit of the Spirit — love, joy, peace, patience, kindness — be our daily provision, overflowing to those around us.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our trespasses. Lead us not into temptation — and when we are tempted, let the Spirit be our strength to flee. Deliver us from every work of the flesh, and produce in us what only you can produce.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom that the Spirit alone can give — discernment to know the right, courage to do it, and humility to receive correction. Give us diligence in our callings, and let the Spirit direct our steps.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray for our families — let the Spirit bring unity and peace where there is tension, and love where there is distance. We pray for our congregation — fill us with the Spirit and send us out. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'July', theme: 'The sovereignty of God over all of life',
+    verse_ref: 'Proverbs 19:21',
+    verse: 'Many are the plans in the mind of a man, but it is the purpose of the Lord that will stand.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the Most High, who does all that he pleases in heaven and earth and sea. Not a sparrow falls to the ground apart from your will, and even the hairs of our heads are all numbered. You hold the king\'s heart in your hand and turn it like a watercourse wherever you will. We worship you, sovereign Lord, who works all things according to the counsel of your will. In you we live and move and have our being.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us, Lord, for anxious striving — for acting as though your throne were empty or your attention elsewhere. We have worried about what we cannot control and neglected what you have placed in our hands. Forgive our unbelief, and grant us the restful confidence of children who know their Father reigns.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come, your will be done. Overrule our plans where they fall short of your purposes. Use even our failures and the schemes of our enemies to advance your glory. Let every nation, tribe, and tongue bow before the name that is above every name.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Teach us to receive each day from your hand — the good days and the hard ones alike — with thankfulness and trust. You know what we need before we ask.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts. Deliver us from the illusion of self-sufficiency — the pride that says, "By my own hand I have done this." Lead us not into the temptation of control, but into the freedom of trust.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Give us wisdom to plan faithfully and hold our plans loosely. Make us diligent to work hard, and humble enough to know the outcome belongs to you. Let us not be idle in what is ours to do, nor anxious about what is yours alone to accomplish.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We commit our families into your sovereign care — guard them, guide them, and bring your purposes to pass in each life. We pray for our congregation — that we would trust your hand over our church\'s future. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'August', theme: 'Wisdom, work, and the calling of God',
+    verse_ref: 'Colossians 3:23',
+    verse: 'Whatever you do, work heartily, as for the Lord and not for men.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the Creator who worked and called his work good — who blessed the seventh day, who built rest and labor into the very rhythm of creation. All wisdom belongs to you; all skill flows from your hand. You are the Lord who calls his people into fruitful labor and promises that their work in you will not be in vain. We worship you, the wise and generous God.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us for laziness and for misplaced diligence — for working to build our own kingdom rather than yours, and for neglecting the work you have actually set before us. We confess the pride that refuses help and the sloth that avoids responsibility. Grant us a right understanding of work as worship.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come in the marketplace, in the classroom, in the home, and in the field. Let your people be the hardest workers and the most honest dealers in every place they are planted, so that the world may see their good works and glorify their Father in heaven.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread — the fruit of honest labor and your generous provision. Where work is scarce, open doors. Where the work is hard, grant strength. Teach us to eat our bread with gratitude and to share it with gladness.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts — the corners we have cut, the shortcuts we have taken, the credit we have claimed that belonged to another. Lead us not into the temptation of idleness or ambition, but deliver us from both extremes to the grace of faithful, quiet diligence.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom for every task and decision before us today. Make us diligent and focused, not scattered and distracted. Let our work be excellent — done as unto you — and let us be content to leave the results in your hands.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray for our families in their varied callings — bless their work and guard them from weariness. We pray for our congregation — help us serve one another with the gifts you have given, building up the body in love. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'September', theme: 'Repentance, renewal, and the grace of God',
+    verse_ref: 'Psalm 51:10',
+    verse: 'Create in me a clean heart, O God, and renew a right spirit within me.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the God of infinite patience who does not deal with us as our sins deserve or repay us according to our iniquities. As far as the east is from the west, so far have you removed our transgressions from us. You delight in mercy. Your name is Gracious and Compassionate — slow to anger, abounding in steadfast love. We worship you for the grace that reaches to the uttermost.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Lord, we come before you with unclean hands and divided hearts. Create in us a clean heart, O God — purge us with hyssop, wash us thoroughly from our iniquity. We do not hide our transgression from you; we confess our iniquity, we are sorry for our sin. Restore to us the joy of your salvation.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come — beginning with the renewal of your people. Revive your church with the spirit of true repentance and genuine faith. May we be known for our integrity and our humility before a watching world.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. Nourish us on the bread of repentance and the wine of your renewed covenant. Let us never take for granted the grace that has forgiven so much.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts, as we forgive those who have sinned against us. Deliver us from the hardness of heart that refuses to extend to others the grace that has been lavished on us. Lead us not into temptation, but make us quick to repent when we fall.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom to walk in integrity today — in our words, in our dealings, in our private moments. Make us diligent in the good and swift to turn from the evil. Let every hour be lived in the awareness of your presence and the freedom of your forgiveness.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray for our families — that grace and forgiveness would mark our homes, not score-keeping. We pray for our congregation — that we would be a repentant, humble, joyful people. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'October', theme: 'The fear of the Lord and the life of wisdom',
+    verse_ref: 'Proverbs 9:10',
+    verse: 'The fear of the Lord is the beginning of wisdom, and knowledge of the Holy One is understanding.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. You are the Holy One — transcendent, glorious, set apart from all corruption. Isaiah saw your glory and was undone; Job met you in the whirlwind and had no more argument. Your holiness is not a cold perfection but a blazing, loving, consuming fire that purifies what it touches. To know you as you truly are is the beginning of all wisdom. We bow before you in reverence and in awe.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us, Lord, for the casual irreverence with which we sometimes approach you — treating grace as familiarity and mercy as license. We have forgotten the weight of your glory. Restore in us the holy fear that is the beginning of wisdom, so that we handle your name, your word, and your presence with the reverence they deserve.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come, your will be done. Give wisdom to those who lead your church and govern our nations. Let the fear of the Lord govern our courts, our homes, and our hearts. May those who have never trembled before you be brought to that holy fear and to the saving knowledge of Christ.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread — and the wisdom to use what you give for your glory. Let every good gift remind us of the Giver, and let gratitude flow from a heart that fears and loves you.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our trespasses. We marvel that the holy God has made a way for sinners to draw near. Lead us not into presumptuous sins but into humble obedience. Deliver us from the evil one, and protect us from the foolishness that does not fear you.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom today — the wisdom that comes from above, which is first pure, then peaceable, gentle, open to reason, full of mercy. Make us diligent to seek it in your word and in prayer before we act. Let the fear of the Lord be the compass by which we navigate this day.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray that our homes would be governed by the fear of the Lord — that our children would learn to reverence you. We pray for our congregation — for wisdom in leadership and humility in the pew. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'November', theme: 'Gratitude, abundance, and the generosity of God',
+    verse_ref: '1 Thessalonians 5:18',
+    verse: 'Give thanks in all circumstances; for this is the will of God in Christ Jesus for you.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. Every good and perfect gift is from above, coming down from you, the Father of lights, with whom there is no variation or shadow due to change. You have been lavish in your giving — from the first morning of creation to the unspeakable gift of your Son. You clothe the lilies and feed the ravens, and how much more do you care for us. We worship you, the generous God, with full and grateful hearts.</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us, Lord, for ingratitude — for counting our troubles and forgetting your mercies. We have grumbled in the wilderness when you were providing manna. We have wanted more when we were surrounded by grace. Forgive the unthankfulness that blinds us to your goodness, and open our eyes to see how richly we have been blessed.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come. Let gratitude fuel generosity in your church. Break the power of materialism over your people, and raise up a community of cheerful givers who hold loosely the things of this world and invest freely in the things of eternity.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread — and let us receive it with thanksgiving. Teach us to say grace not only at the table but at every moment of the day, recognizing that we live and breathe by your sustaining hand.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts. Deliver us from the love of money and the anxiety that says our security rests in what we possess. Lead us not into the temptation of hoarding, but into the freedom of open-handed giving.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom to steward this day\'s gifts well — time, energy, resources, relationships. Make us diligent in our callings and generous in our dealings. Let thankfulness be the posture of our hearts from morning to evening.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We thank you for our families — their laughter, their love, their presence in our lives. We thank you for our congregation — for every brother and sister who runs the race alongside us. Protect them, provide for them, and let gratitude overflow in our common life. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  },
+  {
+    name: 'December', theme: 'The Incarnation — the Word made flesh',
+    verse_ref: 'John 1:14',
+    verse: 'And the Word became flesh and dwelt among us, and we have seen his glory, glory as of the only Son from the Father, full of grace and truth.',
+    prayer: [
+      {
+        label: 'Adoration',
+        text: '<p>Our Father in heaven, hallowed be your name. In the fullness of time, you sent your Son, born of a woman, born under the law, to redeem those who were under the law. The eternal Word took on flesh and pitched his tent among us — and we beheld his glory. Heaven stooped to earth in a stable, and angels announced to shepherds the news that could not be contained: a Savior has been born, who is Christ the Lord. Glory to God in the highest, and on earth peace among those with whom he is pleased!</p>'
+      },
+      {
+        label: 'Confession',
+        text: '<p>Forgive us, Lord, for the ways we have crowded out the Christ of Christmas — filling this season with noise and busyness rather than wonder and worship. We have let the gifts distract us from the Gift. Forgive our small delight in so great a salvation, and restore to us the breathless joy of those who see in a manger the hope of all the world.</p>'
+      },
+      {
+        label: 'Your Kingdom Come',
+        text: '<p>Your kingdom come — the kingdom announced by the angels, inaugurated in Bethlehem, sealed at the cross and empty tomb, and one day consummated when the King returns in glory. Let Advent hope stir your church to pray: Come, Lord Jesus, come.</p>'
+      },
+      {
+        label: 'Daily Bread',
+        text: '<p>Give us this day our daily bread. In a season of abundance, guard us from excess. Let us give freely to those who have little, honoring the One who, though he was rich, became poor so that by his poverty we might become rich.</p>'
+      },
+      {
+        label: 'Forgiveness &amp; Deliverance',
+        text: '<p>Forgive us our debts — and remind us that the debt was paid at Calvary by the One whose birth we celebrate. Deliver us from the sentimentality that loves a baby Jesus but resists the reigning Christ. Lead us in the way of true Advent: expecting his return, and living accordingly.</p>'
+      },
+      {
+        label: 'For the Day Ahead',
+        text: '<p>Grant us wisdom in this season — for generous giving, patient waiting, and unhurried worship. Make us diligent in the things that matter and free from the tyranny of what does not. Let the peace of the Christ child rule our hearts in the midst of every December demand.</p>'
+      },
+      {
+        label: 'For Family &amp; Congregation',
+        text: '<p>We pray for our families — that in all the gatherings of this season, Christ would be at the center of every table. We pray for our congregation — that our Christmas services would be moments of true encounter with the living God. For yours is the kingdom, the power, and the glory, forever and ever.</p>'
+      }
+    ]
+  }
+];
+
+var currentMonth = new Date().getMonth(); // 0-based
+
+function buildNav() {
+  var nav = document.getElementById('month-nav');
+  var html = '';
+  MONTHS.forEach(function(m, i) {
+    html += '<button class="month-chip' + (i === currentMonth ? ' active' : '') + '" onclick="showMonth(' + i + ')">' + m.name + '</button>';
+  });
+  nav.innerHTML = html;
+}
+
+function showMonth(idx) {
+  currentMonth = idx;
+  document.querySelectorAll('.month-chip').forEach(function(c, i) {
+    c.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.prayer-card').forEach(function(c) {
+    c.classList.remove('visible');
+  });
+  var card = document.getElementById('card-' + idx);
+  if (card) {
+    card.classList.add('visible');
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function buildCards() {
+  var main = document.getElementById('main');
+  var html = '';
+  MONTHS.forEach(function(m, i) {
+    var sectionsHtml = '';
+    m.prayer.forEach(function(s) {
+      sectionsHtml += '<div class="prayer-section">'
+        + '<span class="section-label">' + s.label + '</span>'
+        + '<div class="prayer-text">' + s.text + '</div>'
+        + '</div>';
+    });
+    html += '<div class="prayer-card' + (i === currentMonth ? ' visible' : '') + '" id="card-' + i + '">'
+      + '<div class="prayer-header">'
+      + '<div class="prayer-month-label">Monthly Prayer</div>'
+      + '<div class="prayer-month-name">' + m.name + '</div>'
+      + '<div class="prayer-theme">' + m.theme + '</div>'
+      + '</div>'
+      + '<div class="prayer-body">'
+      + sectionsHtml
+      + '<div class="amen">Amen.</div>'
+      + '<div class="scripture-prompt">'
+      + '<span class="scripture-prompt-label">A Word to Carry Into the Day</span>'
+      + '<div class="scripture-prompt-ref">' + m.verse_ref + '</div>'
+      + '<div class="scripture-prompt-text">&ldquo;' + m.verse + '&rdquo;</div>'
+      + '</div>'
+      + '</div>'
+      + '</div>';
+  });
+  html += '<div class="footer-note">Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;),<br>copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers.<br>Used by permission. All rights reserved.</div>';
+  main.innerHTML = html;
+}
+
+buildNav();
+buildCards();
+</script>
+</body>
+</html>
