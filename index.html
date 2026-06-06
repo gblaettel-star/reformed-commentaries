@@ -455,9 +455,15 @@ function render(idx) {
 
   // Sections (Isaiah style — handled for prototype)
   if (ch.sections && ch.sections.length > 0) {
+    // Section chips for direct navigation
+    html += '<div class="chip-bar">';
+    ch.sections.forEach((sec, i) => {
+      html += '<a class="verse-chip" href="#sec' + i + '">' + (sec.ref || sec.title) + '</a>';
+    });
+    html += '</div>';
     html += '<details open><summary>Commentary</summary>';
-    ch.sections.forEach(sec => {
-      html += '<div class="vbv-entry">';
+    ch.sections.forEach((sec, i) => {
+      html += '<div class="vbv-entry" id="sec' + i + '">';
       html += '<div class="vbv-ref">' + sec.title + (sec.ref ? ' <span style="color:#a09070;font-weight:normal;font-size:.85rem">— ' + sec.ref + '</span>' : '') + '</div>';
       if (sec.commentary) html += '<div class="vbv-commentary">' + sec.commentary + '</div>';
       html += '</div>';
