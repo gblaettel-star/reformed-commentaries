@@ -205,6 +205,18 @@ var currentBook = null;
 var currentData = null;
 var currentKeys = [];
 var currentIdx  = 0;
+var pendingScrollRestore = null;
+
+// Remember scroll position within the current chapter (throttled), so a refresh lands in place.
+var scrollSaveTimer = null;
+window.addEventListener('scroll', function() {
+  if (!currentBook || document.getElementById('reader-screen').style.display === 'none') return;
+  if (scrollSaveTimer) return;
+  scrollSaveTimer = setTimeout(function() {
+    scrollSaveTimer = null;
+    localStorage.setItem(currentBook.id + '-' + currentKeys[currentIdx] + '-scroll', window.scrollY);
+  }, 250);
+});
 
 // ── Home ─────────────────────────────────────────────────────────────────
 
@@ -511,7 +523,12 @@ function render(idx) {
       + 'Continue to ' + nb.title + ' &#8594;</button></div>');
   }
 
-  window.scrollTo(0,0);
+  if (pendingScrollRestore !== null) {
+    var y = pendingScrollRestore; pendingScrollRestore = null;
+    requestAnimationFrame(function() { window.scrollTo(0, y); });
+  } else {
+    window.scrollTo(0,0);
+  }
 }
 
 function prevBook() {
@@ -561,7 +578,21 @@ document.addEventListener('keydown', function(e) {
 // ── Init ─────────────────────────────────────────────────────────────────
 buildHome();
 
-showHome();
+// On load, return to where the reader left off; fall back to the home screen.
+(function restoreLast() {
+  var lastBook = localStorage.getItem('last-book');
+  if (lastBook && BOOKS.find(function(b) { return b.id === lastBook; })) {
+    var savedChapter = localStorage.getItem(lastBook + '-pos');
+    if (savedChapter !== null) {
+      var y = localStorage.getItem(lastBook + '-' + savedChapter + '-scroll');
+      pendingScrollRestore = y !== null ? parseInt(y, 10) : null;
+    }
+    showHome();        // prime home behind the reader so the back-button works
+    openBook(lastBook);
+  } else {
+    showHome();
+  }
+})();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
