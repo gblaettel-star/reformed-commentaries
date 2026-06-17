@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v158';
+const CACHE = 'commentaries-v159';
 const PAGES = [
   './index.html',
   './dictionary.html',
