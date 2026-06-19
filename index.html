@@ -76,6 +76,20 @@ sup{font-size:.7em;vertical-align:super}
 .section-hd-overview p{margin-bottom:.85rem}
 .section-hd-overview p:last-child{margin-bottom:0}
 
+/* ── Copy-to-share button ── */
+.copy-btn{position:absolute;background:none;border:none;margin:0;padding:.3rem;cursor:pointer;color:#c9a84c;opacity:.4;line-height:0;border-radius:5px;z-index:2;-webkit-tap-highlight-color:transparent;transition:opacity .15s,background .15s,color .15s}
+.copy-btn:hover{opacity:1;background:rgba(201,168,76,.14)}
+.copy-btn:active{opacity:1}
+.copy-btn.copied{opacity:1;color:#7bbf6a;background:rgba(123,191,106,.14)}
+.copy-btn svg{display:block}
+summary{position:relative}
+summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
+.section-hd{position:relative}
+.section-hd .copy-btn{right:.6rem;top:.6rem}
+.vbv-entry{position:relative}
+.vbv-entry .copy-btn{right:.5rem;top:.5rem}
+.vbv-ref{padding-right:2rem}
+
 /* ── About (home screen) ── */
 .about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;border-top:2px solid #c9a84c;cursor:pointer;user-select:none;touch-action:manipulation}
 .about-toggle:hover{background:#112840}
@@ -206,6 +220,98 @@ var currentData = null;
 var currentKeys = [];
 var currentIdx  = 0;
 var pendingScrollRestore = null;
+
+// ── Copy-to-share ──────────────────────────────────────────────
+var COPY_ICON  = '<button class="copy-btn" type="button" aria-label="Copy to share" title="Copy to share"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>';
+var CHECK_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+var ESV_CITATION = 'Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved. The ESV text may not be quoted in any publication made available to the public by a Creative Commons license. The ESV may not be translated in whole or in part into any other language.';
+
+// Convert an innerHTML fragment to clean shareable plain text (works even when collapsed/hidden).
+function htmlToText(html) {
+  if (!html) return '';
+  var s = html
+    .replace(/<\s*br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|li|h[1-6])\s*>/gi, '\n\n')
+    .replace(/<[^>]+>/g, '');
+  var t = document.createElement('textarea'); t.innerHTML = s; s = t.value;
+  return s.replace(/ /g, ' ').replace(/[ \t]+/g, ' ').replace(/\n[ \t]+/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function shareHeader(ref) {
+  var book = currentBook ? currentBook.title : '';
+  var refEl = document.querySelector('#content .ref');
+  var chap = refEl ? refEl.textContent.trim() : '';
+  var top = book;
+  if (chap) top += (top ? ' — ' : '') + chap;
+  return ref ? (top ? top + '\n' + ref : ref) : top;
+}
+
+function buildShareText(btn) {
+  var lines = [], hasScripture = false;
+  var entry = btn.closest('.vbv-entry');
+  var sec   = btn.closest('.section-hd');
+  var det   = btn.closest('details');
+  if (entry) {
+    var r = entry.querySelector('.vbv-ref'), q = entry.querySelector('.vbv-quote'), cm = entry.querySelector('.vbv-commentary');
+    lines.push(shareHeader(r ? htmlToText(r.innerHTML) : ''));
+    if (q)  { hasScripture = true; lines.push('', htmlToText(q.innerHTML)); }
+    if (cm) { lines.push('', htmlToText(cm.innerHTML)); }
+  } else if (sec) {
+    var sr = sec.querySelector('.section-hd-ref'), so = sec.querySelector('.section-hd-overview');
+    lines.push(shareHeader(sr ? htmlToText(sr.innerHTML) : ''));
+    if (so) lines.push('', htmlToText(so.innerHTML));
+  } else if (det) {
+    var sm = det.querySelector(':scope > summary'), label = '';
+    if (sm) { var smc = sm.cloneNode(true); smc.querySelectorAll('.copy-btn').forEach(function(b){ b.remove(); }); label = smc.textContent.trim(); }
+    if (det.querySelector('.passage-text') || det.querySelector('.vbv-quote')) hasScripture = true;
+    var dc = det.cloneNode(true);
+    dc.querySelectorAll('summary,.copy-btn').forEach(function(b){ b.remove(); });
+    lines.push(shareHeader(label), '', htmlToText(dc.innerHTML));
+  } else {
+    return '';
+  }
+  lines.push('', '— Reformed Commentaries · Soli Deo Gloria');
+  if (hasScripture) lines.push('', ESV_CITATION);
+  return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function flashCopied(btn) {
+  if (btn._orig === undefined) btn._orig = btn.innerHTML;
+  btn.innerHTML = CHECK_ICON; btn.classList.add('copied');
+  clearTimeout(btn._t);
+  btn._t = setTimeout(function(){ btn.innerHTML = btn._orig; btn.classList.remove('copied'); }, 1500);
+}
+
+function copyShareText(text, btn) {
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ flashCopied(btn); }).catch(function(){ fallback(); flashCopied(btn); });
+  } else {
+    fallback(); flashCopied(btn);
+  }
+}
+
+// Drop a copy button into every shareable block after each render.
+function addCopyButtons() {
+  var c = document.getElementById('content');
+  c.querySelectorAll('details > summary').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('beforeend', COPY_ICON); });
+  c.querySelectorAll('.section-hd').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
+  c.querySelectorAll('.vbv-entry').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
+}
+
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest && e.target.closest('.copy-btn');
+  if (!btn) return;
+  e.preventDefault(); e.stopPropagation();
+  var text = buildShareText(btn);
+  if (text) copyShareText(text, btn);
+});
 
 // Remember scroll position within the current chapter (throttled), so a refresh lands in place.
 var scrollSaveTimer = null;
@@ -508,6 +614,7 @@ function render(idx) {
   }
 
   document.getElementById('content').innerHTML = html;
+  addCopyButtons();
 
   // Prev/next button state
   document.getElementById('prev-btn').disabled = (idx === 0 && !prevBook());
