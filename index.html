@@ -234,7 +234,9 @@ function htmlToText(html) {
     .replace(/<\/(p|div|li|h[1-6])\s*>/gi, '\n\n')
     .replace(/<[^>]+>/g, '');
   var t = document.createElement('textarea'); t.innerHTML = s; s = t.value;
-  return s.replace(/ /g, ' ').replace(/[ \t]+/g, ' ').replace(/\n[ \t]+/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  return s.replace(/ /g, ' ').replace(/[ \t]+/g, ' ').replace(/\n[ \t]+/g, '\n')
+    .replace(/\n([•▸▶‣∙▪◦·])[ \t]*\n+[ \t]*/g, '\n• ')
+    .replace(/\n{3,}/g, '\n\n').trim();
 }
 
 function shareHeader(ref) {
