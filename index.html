@@ -55,6 +55,8 @@ summary:hover{background:#22487a}
 .passage-text{padding:1rem;line-height:1.8;color:#d4c4a8;font-style:italic;border-top:1px solid #2a4a6c}
 .vbv-entry{padding:1rem;border-top:1px solid #2a4a6c}
 .vbv-entry:first-child{border-top:none}
+/* Anchor jumps (verse chips) must clear the sticky header. --hdr is set in JS. */
+.vbv-entry,.section-hd{scroll-margin-top:var(--hdr,6.5rem)}
 .vbv-ref{color:#c9a84c;font-weight:bold;margin-bottom:.3rem;font-size:.95rem}
 .vbv-quote{font-style:italic;color:#d4c4a8;margin-bottom:.6rem;line-height:1.7}
 .vbv-commentary{line-height:1.8}
@@ -89,6 +91,29 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .vbv-entry{position:relative}
 .vbv-entry .copy-btn{right:.5rem;top:.5rem}
 .vbv-ref{padding-right:2rem}
+
+/* ── Verse jump (floating pill + sheet) ── */
+#vjump-pill{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom));z-index:90;display:none;align-items:center;gap:.45rem;background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;font-family:'Georgia',serif;font-size:.85rem;padding:.5rem .85rem;border-radius:22px;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.45);opacity:.55;transition:opacity .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;max-width:60vw}
+#vjump-pill.awake{opacity:1}
+#vjump-pill:hover{opacity:1}
+#vjump-pill .vjump-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#vjump-pill .vjump-caret{font-size:.65rem;flex-shrink:0;opacity:.8}
+
+#vjump-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
+#vjump-backdrop.open{opacity:1;pointer-events:auto}
+
+#vjump-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:1rem 1.1rem calc(1.3rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .24s ease;max-height:70vh;overflow-y:auto}
+#vjump-sheet.open{transform:translateY(0)}
+.vjump-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+.vjump-title{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase}
+.vjump-close{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-size:1rem;line-height:1;padding:.35rem .6rem;cursor:pointer;touch-action:manipulation}
+.vjump-close:hover{background:#1a3a5c}
+.vjump-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(2.9rem,1fr));gap:.45rem}
+.vjump-num{background:#112840;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.95rem;padding:.6rem .2rem;border-radius:6px;cursor:pointer;text-align:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.vjump-num:hover{background:#1a3a5c;border-color:#c9a84c}
+.vjump-num.current{background:#c9a84c;color:#0d2137;border-color:#c9a84c;font-weight:bold}
+.vjump-top{margin-top:.9rem;width:100%;background:#1a3a5c;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.85rem;padding:.6rem;border-radius:6px;cursor:pointer;touch-action:manipulation}
+.vjump-top:hover{border-color:#c9a84c}
 
 /* ── About (home screen) ── */
 .about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;border-top:2px solid #c9a84c;cursor:pointer;user-select:none;touch-action:manipulation}
@@ -137,6 +162,21 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 <div id="reader-screen">
   <main id="content"></main>
   <footer>Soli Deo Gloria &mdash; To God Alone Be Glory</footer>
+</div>
+
+<button id="vjump-pill" onclick="openVerseJump()" aria-label="Jump to verse">
+  <span class="vjump-label" id="vjump-label"></span>
+  <span class="vjump-caret">&#9650;</span>
+</button>
+
+<div id="vjump-backdrop" onclick="closeVerseJump()"></div>
+<div id="vjump-sheet" role="dialog" aria-label="Jump to verse">
+  <div class="vjump-head">
+    <span class="vjump-title" id="vjump-sheet-title">Jump to Verse</span>
+    <button class="vjump-close" onclick="closeVerseJump()" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="vjump-grid" id="vjump-grid"></div>
+  <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
 <script>
@@ -315,10 +355,137 @@ document.addEventListener('click', function(e) {
   if (text) copyShareText(text, btn);
 });
 
+// ── Verse jump ─────────────────────────────────────────────────
+// Lets the reader return from their Bible at, say, verse 18 and land on the
+// entry covering verse 18 — without scrolling back to the chip bar at the top.
+var verseEntries = [];   // [{ id, start, end, ref }] — non-section entries only
+var verseToEntry = [];   // verse number -> entry index (gaps forward-filled)
+var verseMax = 0;
+var vjumpCurrent = -1;
+
+// "v. 3" / "vv. 16–17" → [3,3] / [16,17].  Anything else (e.g. "Matt. 6:9–10") → null.
+function parseVerseRef(ref) {
+  var m = String(ref).match(/^v{1,2}\.\s*(\d+)(?:\s*[–—-]\s*(\d+))?/);
+  if (!m) return null;
+  var a = +m[1], b = m[2] ? +m[2] : a;
+  return b >= a ? [a, b] : null;
+}
+
+function buildVerseIndex(ch) {
+  verseEntries = []; verseToEntry = []; verseMax = 0; vjumpCurrent = -1;
+  var vbv = ch && ch.verseByVerse;
+  if (!vbv || !vbv.length) return;
+  vbv.forEach(function(v, i) {
+    if (v.sectionBreak) return;              // section headers span whole blocks — skip
+    var r = parseVerseRef(v.ref);
+    if (!r) return;
+    verseEntries.push({ id: 'vs' + i, start: r[0], end: r[1], ref: v.ref });
+    if (r[1] > verseMax) verseMax = r[1];
+  });
+  if (!verseEntries.length) { verseMax = 0; return; }
+  verseEntries.forEach(function(e, ei) {
+    for (var v = e.start; v <= e.end; v++) verseToEntry[v] = ei;
+  });
+  for (var v = 1; v <= verseMax; v++) {                     // forward-fill any gaps
+    if (verseToEntry[v] === undefined) verseToEntry[v] = (v > 1 ? verseToEntry[v-1] : 0);
+  }
+}
+
+function headerOffset() {
+  var h = document.querySelector('header');
+  return (h ? h.offsetHeight : 0) + 10;
+}
+
+// Keep the CSS anchor offset in sync with the header's actual height,
+// which grows with the reader's font size.
+function syncHeaderOffset() {
+  document.documentElement.style.setProperty('--hdr', headerOffset() + 'px');
+}
+window.addEventListener('resize', syncHeaderOffset);
+
+// Which entry is currently at the top of the viewport?
+function currentEntryIndex() {
+  var cutoff = headerOffset() + 4, found = -1;
+  for (var i = 0; i < verseEntries.length; i++) {
+    var el = document.getElementById(verseEntries[i].id);
+    if (!el) continue;
+    if (el.getBoundingClientRect().top <= cutoff) found = i; else break;
+  }
+  return found < 0 ? 0 : found;
+}
+
+function refreshVersePill() {
+  var pill = document.getElementById('vjump-pill');
+  if (!verseEntries.length || document.getElementById('reader-screen').style.display === 'none') {
+    pill.style.display = 'none';
+    return;
+  }
+  pill.style.display = 'flex';
+  var ei = currentEntryIndex();
+  if (ei !== vjumpCurrent) {
+    vjumpCurrent = ei;
+    document.getElementById('vjump-label').textContent = verseEntries[ei].ref;
+  }
+}
+
+// Wake the pill to full opacity while scrolling, then let it fade back.
+var vjumpWakeTimer = null;
+function wakeVersePill() {
+  var pill = document.getElementById('vjump-pill');
+  pill.classList.add('awake');
+  clearTimeout(vjumpWakeTimer);
+  vjumpWakeTimer = setTimeout(function(){ pill.classList.remove('awake'); }, 1400);
+}
+
+// Instant, not smooth: jumps can span thousands of pixels, and a long
+// animated scroll reads as a blur rather than a jump.
+function scrollToEl(el) {
+  if (!el) return;
+  var y = window.scrollY + el.getBoundingClientRect().top - headerOffset();
+  window.scrollTo(0, Math.max(0, y));
+}
+
+function openVerseJump() {
+  if (!verseEntries.length) return;
+  var cur = verseEntries[currentEntryIndex()];
+  var grid = document.getElementById('vjump-grid'), html = '';
+  for (var v = 1; v <= verseMax; v++) {
+    var isCur = v >= cur.start && v <= cur.end;
+    html += '<button class="vjump-num' + (isCur ? ' current' : '') + '" onclick="jumpToVerse(' + v + ')">' + v + '</button>';
+  }
+  grid.innerHTML = html;
+  var refEl = document.querySelector('#content .ref');
+  document.getElementById('vjump-sheet-title').textContent =
+    refEl ? 'Jump to Verse — ' + refEl.textContent.trim() : 'Jump to Verse';
+  document.getElementById('vjump-backdrop').classList.add('open');
+  document.getElementById('vjump-sheet').classList.add('open');
+}
+
+function closeVerseJump() {
+  document.getElementById('vjump-backdrop').classList.remove('open');
+  document.getElementById('vjump-sheet').classList.remove('open');
+}
+
+function jumpToVerse(v) {
+  var ei = verseToEntry[v];
+  closeVerseJump();
+  if (ei === undefined) return;
+  scrollToEl(document.getElementById(verseEntries[ei].id));
+}
+
+function jumpToTop() { closeVerseJump(); window.scrollTo(0, 0); }
+
+function verseJumpOpen() { return document.getElementById('vjump-sheet').classList.contains('open'); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeVerseJump();
+});
+
 // Remember scroll position within the current chapter (throttled), so a refresh lands in place.
 var scrollSaveTimer = null;
 window.addEventListener('scroll', function() {
   if (!currentBook || document.getElementById('reader-screen').style.display === 'none') return;
+  if (verseEntries.length) { refreshVersePill(); wakeVersePill(); }
   if (scrollSaveTimer) return;
   scrollSaveTimer = setTimeout(function() {
     scrollSaveTimer = null;
@@ -332,6 +499,8 @@ function showHome() {
   document.getElementById('home-screen').style.display = '';
   document.getElementById('reader-screen').style.display = 'none';
   document.getElementById('reader-nav').style.display = 'none';
+  document.getElementById('vjump-pill').style.display = 'none';
+  closeVerseJump();
   document.title = 'Soli Deo Gloria';
   ['ot','nt','sl','sg','ref'].forEach(function(id) {
     var body = document.getElementById('body-' + id);
@@ -617,6 +786,10 @@ function render(idx) {
 
   document.getElementById('content').innerHTML = html;
   addCopyButtons();
+  buildVerseIndex(ch);
+  closeVerseJump();
+  syncHeaderOffset();
+  refreshVersePill();
 
   // Prev/next button state
   document.getElementById('prev-btn').disabled = (idx === 0 && !prevBook());
@@ -634,7 +807,7 @@ function render(idx) {
 
   if (pendingScrollRestore !== null) {
     var y = pendingScrollRestore; pendingScrollRestore = null;
-    requestAnimationFrame(function() { window.scrollTo(0, y); });
+    requestAnimationFrame(function() { window.scrollTo(0, y); refreshVersePill(); });
   } else {
     window.scrollTo(0,0);
   }
@@ -661,7 +834,7 @@ function navigate(dir) {
 
 // ── Keyboard navigation ───────────────────────────────────────────────────
 document.addEventListener('keydown', function(e) {
-  if (!currentBook) return;
+  if (!currentBook || verseJumpOpen()) return;
   if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(-1); }
   if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
@@ -675,7 +848,7 @@ document.addEventListener('keydown', function(e) {
     startY = e.touches[0].clientY;
   }, { passive: true });
   document.addEventListener('touchend', function(e) {
-    if (!currentBook) return;
+    if (!currentBook || verseJumpOpen()) return;
     var dx = e.changedTouches[0].clientX - startX;
     var dy = e.changedTouches[0].clientY - startY;
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
