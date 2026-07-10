@@ -93,12 +93,13 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .vbv-ref{padding-right:2rem}
 
 /* ── Verse jump (floating pill + sheet) ── */
-/* A tab hugging the left bezel, vertically centred — the left thumb's resting arc.
-   Flush to the edge and 2rem wide so it clears the text column entirely. */
-#vjump-pill{position:fixed;left:env(safe-area-inset-left,0);top:50%;transform:translateY(-50%);z-index:90;display:none;align-items:center;justify-content:center;width:2rem;height:3.4rem;background:#1a3a5c;border:1px solid #c9a84c;border-left:none;color:#c9a84c;padding:0;border-radius:0 18px 18px 0;cursor:pointer;box-shadow:2px 0 10px rgba(0,0,0,.4);opacity:.5;transition:opacity .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-#vjump-pill.awake{opacity:1}
+/* A slim tab hugging the left bezel, vertically centred — the left thumb's resting arc.
+   Deliberately small and faint; ::after widens the hit area well past the visible tab. */
+#vjump-pill{position:fixed;left:env(safe-area-inset-left,0);top:50%;transform:translateY(-50%);z-index:90;display:none;align-items:center;justify-content:center;width:1.35rem;height:2.5rem;background:#16324f;border:1px solid rgba(201,168,76,.5);border-left:none;color:#c9a84c;padding:0;border-radius:0 14px 14px 0;cursor:pointer;box-shadow:1px 0 6px rgba(0,0,0,.3);opacity:.32;transition:opacity .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#vjump-pill::after{content:'';position:absolute;top:-11px;bottom:-11px;left:0;right:-16px}
+#vjump-pill.awake{opacity:.85}
 #vjump-pill:hover{opacity:1}
-#vjump-pill:active{background:#c9a84c;color:#0d2137}
+#vjump-pill:active{background:#c9a84c;color:#0d2137;opacity:1}
 #vjump-pill svg{display:block}
 
 #vjump-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -167,7 +168,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 </div>
 
 <button id="vjump-pill" onclick="openVerseJump()" aria-label="Jump to verse" title="Jump to verse">
-  <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">
     <rect x="3"  y="3"  width="5" height="5" rx="1"/><rect x="9.5" y="3"  width="5" height="5" rx="1"/><rect x="16" y="3"  width="5" height="5" rx="1"/>
     <rect x="3"  y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="16" y="9.5" width="5" height="5" rx="1"/>
     <rect x="3"  y="16" width="5" height="5" rx="1"/><rect x="9.5" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>
