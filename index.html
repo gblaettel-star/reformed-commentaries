@@ -9,22 +9,28 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
 
-/* ── Header ── */
-header{background:#1a3a5c;padding:.5rem 1rem .5rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
-header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;text-align:center;cursor:pointer;padding:.3rem 0;touch-action:manipulation;user-select:none}
-header h1:hover{opacity:.8}
-nav{display:flex;align-items:stretch;gap:.4rem}
-nav button{background:none;border:1px solid #c9a84c;color:#c9a84c;padding:.4rem .9rem;border-radius:6px;cursor:pointer;font-size:1.1rem;flex-shrink:0;min-height:2.75rem;min-width:3rem;touch-action:manipulation}
-nav button:hover{background:#c9a84c;color:#0d2137}
-nav button:disabled{opacity:.3;cursor:default}
-nav button:disabled:hover{background:none;color:#c9a84c}
-#unit-select{background:#0d2137;color:#c9a84c;border:1px solid #c9a84c;padding:.4rem .6rem;border-radius:6px;font-size:.95rem;flex:1;min-width:0;min-height:2.75rem}
+/* ── Header ──
+   Gold is an accent, not a default: outlines stay muted and the metal only
+   comes up on hover/press. Mirrors the restraint of the verse sheet below. */
+header{background:linear-gradient(180deg,#1c3d61 0%,#183350 100%);padding:.5rem 1rem .55rem;display:flex;flex-direction:column;gap:.45rem;border-bottom:1px solid rgba(201,168,76,.28);box-shadow:0 8px 20px -16px rgba(0,0,0,.95);position:sticky;top:0;z-index:100}
+header h1{font-size:1.18rem;font-weight:400;color:#c9a84c;letter-spacing:.17em;text-align:center;cursor:pointer;padding:.3rem 0 .35rem;touch-action:manipulation;user-select:none;transition:opacity .15s}
+header h1:hover{opacity:.75}
+nav{display:flex;align-items:stretch;gap:.45rem}
+nav button{background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.3);color:#c9a84c;padding:.4rem .9rem;border-radius:8px;cursor:pointer;font-size:1rem;flex-shrink:0;min-height:2.75rem;min-width:3rem;touch-action:manipulation;transition:background .15s,border-color .15s,color .15s}
+nav button:hover{background:rgba(201,168,76,.13);border-color:rgba(201,168,76,.75)}
+nav button:active{background:#c9a84c;color:#0d2137;border-color:#c9a84c}
+nav button:disabled{opacity:.22;cursor:default}
+nav button:disabled:hover{background:rgba(255,255,255,.025);border-color:rgba(201,168,76,.3);color:#c9a84c}
+/* appearance:none drops the OS chevron so we can draw a thinner one to match */
+#unit-select{appearance:none;-webkit-appearance:none;color:#c9a84c;border:1px solid rgba(201,168,76,.3);padding:.4rem 2.1rem .4rem .75rem;border-radius:8px;font-size:.95rem;font-family:'Georgia',serif;flex:1;min-width:0;min-height:2.75rem;cursor:pointer;transition:border-color .15s;background:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25 11 1.75' fill='none' stroke='%23c9a84c' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right .8rem center/11px 8px,#12293f}
+#unit-select:hover{border-color:rgba(201,168,76,.65)}
+#unit-select:focus{outline:none;border-color:rgba(201,168,76,.8)}
 
 /* ── Home screen ── */
 #home-screen{width:100%;padding:0}
 
 /* Collapsible section header */
-.section-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#1a3a5c;border-bottom:2px solid #c9a84c;cursor:pointer;user-select:none;touch-action:manipulation}
+.section-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#1a3a5c;border-bottom:1px solid rgba(201,168,76,.28);cursor:pointer;user-select:none;touch-action:manipulation}
 .section-toggle:hover{background:#22487a}
 .section-toggle:active{background:#22487a}
 .section-title{color:#c9a84c;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
@@ -119,7 +125,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .vjump-top:hover{border-color:#c9a84c}
 
 /* ── About (home screen) ── */
-.about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;border-top:2px solid #c9a84c;cursor:pointer;user-select:none;touch-action:manipulation}
+.about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;cursor:pointer;user-select:none;touch-action:manipulation}
 .about-toggle:hover{background:#112840}
 .about-toggle-title{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
 .about-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
