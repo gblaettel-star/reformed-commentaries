@@ -101,11 +101,12 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 /* ── Verse jump (floating pill + sheet) ── */
 /* A slim tab hugging the left bezel, vertically centred — the left thumb's resting arc.
    Deliberately small and faint; ::after widens the hit area well past the visible tab. */
-#vjump-pill{position:fixed;left:env(safe-area-inset-left,0);top:50%;transform:translateY(-50%);z-index:90;display:none;align-items:center;justify-content:center;width:1.35rem;height:2.5rem;background:#16324f;border:1px solid rgba(201,168,76,.5);border-left:none;color:#c9a84c;padding:0;border-radius:0 14px 14px 0;cursor:pointer;box-shadow:1px 0 6px rgba(0,0,0,.3);opacity:.32;transition:opacity .2s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#vjump-pill{position:fixed;left:env(safe-area-inset-left,0);top:50%;transform:translateY(-50%);z-index:90;display:none;align-items:center;justify-content:center;width:1.15rem;height:2.1rem;background:#16324f;border:1px solid rgba(201,168,76,.5);border-left:none;color:#c9a84c;padding:0;border-radius:0 13px 13px 0;cursor:pointer;box-shadow:1px 0 6px rgba(0,0,0,.3);opacity:.32;transition:opacity .15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #vjump-pill::after{content:'';position:absolute;top:-11px;bottom:-11px;left:0;right:-16px}
-#vjump-pill.awake{opacity:.85}
-#vjump-pill:hover{opacity:1}
-#vjump-pill:active{background:#c9a84c;color:#0d2137;opacity:1}
+/* Deliberately stays faint at all times — never brightens on scroll, never
+   inverts to solid gold on press. A gentle opacity nudge is the only feedback. */
+#vjump-pill:hover{opacity:.5}
+#vjump-pill:active{opacity:.6}
 #vjump-pill svg{display:block}
 
 #vjump-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -174,7 +175,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 </div>
 
 <button id="vjump-pill" onclick="openVerseJump()" aria-label="Jump to verse" title="Jump to verse">
-  <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">
+  <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true">
     <rect x="3"  y="3"  width="5" height="5" rx="1"/><rect x="9.5" y="3"  width="5" height="5" rx="1"/><rect x="16" y="3"  width="5" height="5" rx="1"/>
     <rect x="3"  y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="16" y="9.5" width="5" height="5" rx="1"/>
     <rect x="3"  y="16" width="5" height="5" rx="1"/><rect x="9.5" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>
@@ -431,15 +432,6 @@ function refreshVersePill() {
   pill.style.display = (verseEntries.length && inReader) ? 'flex' : 'none';
 }
 
-// Wake the pill to full opacity while scrolling, then let it fade back.
-var vjumpWakeTimer = null;
-function wakeVersePill() {
-  var pill = document.getElementById('vjump-pill');
-  pill.classList.add('awake');
-  clearTimeout(vjumpWakeTimer);
-  vjumpWakeTimer = setTimeout(function(){ pill.classList.remove('awake'); }, 1400);
-}
-
 // Instant, not smooth: jumps can span thousands of pixels, and a long
 // animated scroll reads as a blur rather than a jump.
 function scrollToEl(el) {
@@ -488,7 +480,6 @@ document.addEventListener('keydown', function(e) {
 var scrollSaveTimer = null;
 window.addEventListener('scroll', function() {
   if (!currentBook || document.getElementById('reader-screen').style.display === 'none') return;
-  if (verseEntries.length) wakeVersePill();
   if (scrollSaveTimer) return;
   scrollSaveTimer = setTimeout(function() {
     scrollSaveTimer = null;
