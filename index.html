@@ -758,7 +758,7 @@ function linkifyScripture(root, curBook, curChapter){
         activeBook = curBook;
       } else if (m[3]){                            // Full "Book ch:v"
         canon = ESV_BOOKS[m[3].toLowerCase().replace(/[.\s ]/g, '')];
-        if (!canon) continue;                      // unknown "word N" -> leave as text
+        if (!canon){ re.lastIndex = start + m[3].length; continue; } // unknown word ("cf.", "see"): rewind so a trailing "1 Cor" isn't eaten
         cv = m[4];
         activeBook = canon;
       } else if (m[5]){                            // bare "ch:v"
