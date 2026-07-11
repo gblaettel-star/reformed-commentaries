@@ -68,6 +68,8 @@ summary:hover{background:#22487a}
 .vbv-commentary{line-height:1.8}
 .vbv-commentary p{margin-bottom:.7rem}
 .vbv-commentary p:last-child{margin-bottom:0}
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:#c9a84c;text-decoration-style:dotted;text-underline-offset:2px}
+.scripture-link:hover{color:#c9a84c}
 .accent-box{background:#112840;border-left:3px solid #c9a84c;padding:1rem 1.2rem;line-height:1.8}
 .accent-box p{margin-bottom:.7rem}
 .accent-box p:last-child{margin-bottom:0}
@@ -667,6 +669,83 @@ function openBook(id) {
     });
 }
 
+// Bible book name/abbreviation -> canonical ESV.org name.
+var ESV_BOOKS = (function(){
+  var defs = [
+    ['Genesis','genesis gen ge gn'],['Exodus','exodus exod exo ex'],
+    ['Leviticus','leviticus lev lv'],['Numbers','numbers num nm nu'],
+    ['Deuteronomy','deuteronomy deut deu dt'],['Joshua','joshua josh jos'],
+    ['Judges','judges judg jdg jgs'],['Ruth','ruth rth ru'],
+    ['1 Samuel','1samuel 1sam 1sa 1sm'],['2 Samuel','2samuel 2sam 2sa 2sm'],
+    ['1 Kings','1kings 1kgs 1kin 1ki'],['2 Kings','2kings 2kgs 2kin 2ki'],
+    ['1 Chronicles','1chronicles 1chron 1chr 1ch'],['2 Chronicles','2chronicles 2chron 2chr 2ch'],
+    ['Ezra','ezra ezr'],['Nehemiah','nehemiah neh'],['Esther','esther esth est'],
+    ['Job','job jb'],['Psalms','psalms psalm psa pss ps'],
+    ['Proverbs','proverbs prov prv pro pr'],['Ecclesiastes','ecclesiastes eccles eccl ecc'],
+    ['Song of Solomon','songofsolomon songofsongs song sos ss'],['Isaiah','isaiah isa is'],
+    ['Jeremiah','jeremiah jer'],['Lamentations','lamentations lam'],
+    ['Ezekiel','ezekiel ezek eze ezk'],['Daniel','daniel dan dn'],
+    ['Hosea','hosea hos'],['Joel','joel joe jl'],['Amos','amos amo'],
+    ['Obadiah','obadiah obad oba ob'],['Jonah','jonah jon jnh'],['Micah','micah mic'],
+    ['Nahum','nahum nah'],['Habakkuk','habakkuk hab'],['Zephaniah','zephaniah zeph zep'],
+    ['Haggai','haggai hag'],['Zechariah','zechariah zech zec'],['Malachi','malachi mal'],
+    ['Matthew','matthew matt mat mt'],['Mark','mark mrk mar mk'],['Luke','luke luk lk'],
+    ['John','john jhn joh jn'],['Acts','acts act'],['Romans','romans rom rm ro'],
+    ['1 Corinthians','1corinthians 1cor 1co'],['2 Corinthians','2corinthians 2cor 2co'],
+    ['Galatians','galatians gal'],['Ephesians','ephesians eph'],
+    ['Philippians','philippians phil php pp'],['Colossians','colossians col'],
+    ['1 Thessalonians','1thessalonians 1thess 1thes 1th'],['2 Thessalonians','2thessalonians 2thess 2thes 2th'],
+    ['1 Timothy','1timothy 1tim 1ti 1tm'],['2 Timothy','2timothy 2tim 2ti 2tm'],
+    ['Titus','titus tit'],['Philemon','philemon philem phlm phm'],
+    ['Hebrews','hebrews heb'],['James','james jas jm'],
+    ['1 Peter','1peter 1pet 1pe 1pt'],['2 Peter','2peter 2pet 2pe 2pt'],
+    ['1 John','1john 1jn 1jhn 1jo'],['2 John','2john 2jn 2jhn 2jo'],['3 John','3john 3jn 3jhn 3jo'],
+    ['Jude','jude jud jde'],['Revelation','revelation rev rv re']
+  ];
+  var map = {};
+  defs.forEach(function(d){ d[1].split(' ').forEach(function(a){ map[a] = d[0]; }); });
+  return map;
+})();
+
+// Scan rendered text for references like "Isa 43:25", "Rom. 8:23-25", "1 Cor. 15:3"
+// and wrap them as links to the full chapter on ESV.org (opens in a new tab).
+function linkifyScripture(root){
+  if (!root || !document.createTreeWalker) return;
+  var re = /([1-3]?[\s ]?[A-Za-z][A-Za-z.]{1,})[\s ]+(\d+(?:[:.]\d+(?:[-–,][\s ]?\d+)*)?)/g;
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(n){
+      if (!/\d/.test(n.nodeValue || '')) return NodeFilter.FILTER_REJECT;
+      for (var p = n.parentNode; p && p !== root; p = p.parentNode){
+        if (p.nodeName === 'A') return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  var nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(function(node){
+    var text = node.nodeValue, m, last = 0, frag = null;
+    re.lastIndex = 0;
+    while ((m = re.exec(text))){
+      var key = m[1].toLowerCase().replace(/[.\s ]/g, '');
+      var canon = ESV_BOOKS[key];
+      if (!canon) continue;
+      if (!frag) frag = document.createDocumentFragment();
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      var cv = m[2].replace(/\./g, ':').replace(/–/g, '-').replace(/[\s ]/g, '');
+      var a = document.createElement('a');
+      a.href = 'https://www.esv.org/' + canon.replace(/ /g, '+') + '+' + cv + '/';
+      a.target = '_blank'; a.rel = 'noopener'; a.className = 'scripture-link';
+      a.textContent = m[0];
+      frag.appendChild(a);
+      last = m.index + m[0].length;
+    }
+    if (frag){
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    }
+  });
+}
+
 function render(idx) {
   if (!currentData || idx < 0 || idx >= currentKeys.length) return;
   currentIdx = idx;
@@ -779,6 +858,7 @@ function render(idx) {
   }
 
   document.getElementById('content').innerHTML = html;
+  linkifyScripture(document.getElementById('content'));
   addCopyButtons();
   buildVerseIndex(ch);
   closeVerseJump();
