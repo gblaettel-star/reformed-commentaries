@@ -707,11 +707,23 @@ var ESV_BOOKS = (function(){
   return map;
 })();
 
-// Scan rendered text for references like "Isa 43:25", "Rom. 8:23-25", "1 Cor. 15:3"
-// and wrap them as links to the full chapter on ESV.org (opens in a new tab).
-function linkifyScripture(root){
+// Scan rendered text and wrap Scripture references as links to the full chapter
+// on ESV.org (new tab). Handles four forms:
+//   1) Full:         "Isa 43:25", "Rom. 8:23-25", "1 Cor. 15:3"
+//   2) Series/cont.: "Acts 6:7; 12:24; 19:20"  (later refs inherit the book)
+//   3) Bare ch:v:    "1:15"                     (resolved to the book in view)
+//   4) Verse words:  "v. 15", "vv. 15-17"       (resolved to book + current chapter)
+// curBook = canonical ESV name of the book in view (or null on non-Bible entries);
+// curChapter = current chapter number as a string (or null when not a single chapter).
+function linkifyScripture(root, curBook, curChapter){
   if (!root || !document.createTreeWalker) return;
-  var re = /([1-3]?[\s ]?[A-Za-z][A-Za-z.]{1,})[\s ]+(\d+(?:[:.]\d+(?:[-–,][\s ]?\d+)*)?)/g;
+  var SP = '[\\s\\u00A0]';
+  var re = new RegExp(
+    '\\b([1-3]?' + SP + '?[A-Za-z][A-Za-z.]{1,})' + SP + '+(\\d+(?:[:.]\\d+(?:[-–,]' + SP + '?\\d+)*)?)' +
+    '|\\b(vv?\\.|verses?)' + SP + '*(\\d+(?:[-–,]' + SP + '?\\d+)*)' +
+    '|(\\d{1,3}:\\d{1,3}(?:[-–,]' + SP + '?\\d+)*)',
+    'g');
+  var sepOnly = /^[\s ;,–—-]*$/;
   var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: function(n){
       if (!/\d/.test(n.nodeValue || '')) return NodeFilter.FILTER_REJECT;
@@ -722,22 +734,47 @@ function linkifyScripture(root){
     }
   });
   var nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  function mkLink(label, canon, cv){
+    cv = cv.replace(/\./g, ':').replace(/–/g, '-').replace(/[\s ]/g, '');
+    var a = document.createElement('a');
+    a.href = 'https://www.esv.org/' + canon.replace(/ /g, '+') + '+' + cv + '/';
+    a.target = '_blank'; a.rel = 'noopener'; a.className = 'scripture-link';
+    a.textContent = label;
+    return a;
+  }
+
   nodes.forEach(function(node){
     var text = node.nodeValue, m, last = 0, frag = null;
+    var activeBook = null, prevEnd = -1;   // per-node citation-series state
     re.lastIndex = 0;
     while ((m = re.exec(text))){
-      var key = m[1].toLowerCase().replace(/[.\s ]/g, '');
-      var canon = ESV_BOOKS[key];
-      if (!canon) continue;
+      var start = m.index, end = start + m[0].length;
+      var canon = null, cv = null;
+      if (m[1]){                                   // Full "Book ch:v"
+        canon = ESV_BOOKS[m[1].toLowerCase().replace(/[.\s ]/g, '')];
+        if (!canon) continue;                      // unknown "word N" -> leave as text
+        cv = m[2];
+        activeBook = canon;
+      } else if (m[3]){                            // "v./vv./verse(s) N" -> book + chapter
+        if (!curBook || !curChapter) continue;
+        canon = curBook; cv = curChapter + ':' + m[4];
+        activeBook = curBook;
+      } else if (m[5]){                            // bare "ch:v"
+        var before = start > 0 ? text.charAt(start - 1) : '';
+        if (/[\d:]/.test(before)) continue;        // part of a larger number
+        if (/^[\s ]?[ap]\.?m\b/i.test(text.slice(end, end + 5))) continue; // clock time
+        var inSeries = prevEnd >= 0 && activeBook && sepOnly.test(text.slice(prevEnd, start));
+        canon = inSeries ? activeBook : curBook;
+        if (!canon) continue;
+        cv = m[5];
+        if (!inSeries) activeBook = curBook;
+      } else continue;
+
       if (!frag) frag = document.createDocumentFragment();
-      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
-      var cv = m[2].replace(/\./g, ':').replace(/–/g, '-').replace(/[\s ]/g, '');
-      var a = document.createElement('a');
-      a.href = 'https://www.esv.org/' + canon.replace(/ /g, '+') + '+' + cv + '/';
-      a.target = '_blank'; a.rel = 'noopener'; a.className = 'scripture-link';
-      a.textContent = m[0];
-      frag.appendChild(a);
-      last = m.index + m[0].length;
+      if (start > last) frag.appendChild(document.createTextNode(text.slice(last, start)));
+      frag.appendChild(mkLink(m[0], canon, cv));
+      last = end; prevEnd = end;
     }
     if (frag){
       if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
@@ -858,7 +895,9 @@ function render(idx) {
   }
 
   document.getElementById('content').innerHTML = html;
-  linkifyScripture(document.getElementById('content'));
+  var curCanon = (currentBook && ESV_BOOKS[currentBook.title.toLowerCase().replace(/[.\s ]/g, '')]) || null;
+  var chMatch = /(?:chapter|psalm)\s+(\d+)\s*$/i.exec(ref || '');
+  linkifyScripture(document.getElementById('content'), curCanon, chMatch ? chMatch[1] : null);
   addCopyButtons();
   buildVerseIndex(ch);
   closeVerseJump();
