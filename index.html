@@ -713,15 +713,16 @@ var ESV_BOOKS = (function(){
 //   2) Series/cont.: "Acts 6:7; 12:24; 19:20"  (later refs inherit the book)
 //   3) Bare ch:v:    "1:15"                     (resolved to the book in view)
 //   4) Verse words:  "v. 15", "vv. 15-17"       (resolved to book + current chapter)
-// curBook = canonical ESV name of the book in view (or null on non-Bible entries);
-// curChapter = current chapter number as a string (or null when not a single chapter).
+// Verse-word form is matched BEFORE the book form so "v. 3" (with a space) is not
+// mistaken for a book named "v".  curBook = canonical ESV name of the book in view
+// (or null on non-Bible entries); curChapter = current chapter as a string (or null).
 function linkifyScripture(root, curBook, curChapter){
   if (!root || !document.createTreeWalker) return;
   var SP = '[\\s\\u00A0]';
   var re = new RegExp(
-    '\\b([1-3]?' + SP + '?[A-Za-z][A-Za-z.]{1,})' + SP + '+(\\d+(?:[:.]\\d+(?:[-–,]' + SP + '?\\d+)*)?)' +
-    '|\\b(vv?\\.|verses?)' + SP + '*(\\d+(?:[-–,]' + SP + '?\\d+)*)' +
-    '|(\\d{1,3}:\\d{1,3}(?:[-–,]' + SP + '?\\d+)*)',
+    '\\b(vv?\\.|verses?)' + SP + '*(\\d+(?:[-–,]' + SP + '?\\d+)*)' +                                     // 1,2: verse words
+    '|\\b([1-3]?' + SP + '?[A-Za-z][A-Za-z.]{1,})' + SP + '+(\\d+(?:[:.]\\d+(?:[-–,]' + SP + '?\\d+)*)?)' + // 3,4: Book ch(:v)
+    '|(\\d{1,3}:\\d{1,3}(?:[-–,]' + SP + '?\\d+)*)',                                                       // 5: bare ch:v
     'g');
   var sepOnly = /^[\s ;,–—-]*$/;
   var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -751,15 +752,15 @@ function linkifyScripture(root, curBook, curChapter){
     while ((m = re.exec(text))){
       var start = m.index, end = start + m[0].length;
       var canon = null, cv = null;
-      if (m[1]){                                   // Full "Book ch:v"
-        canon = ESV_BOOKS[m[1].toLowerCase().replace(/[.\s ]/g, '')];
-        if (!canon) continue;                      // unknown "word N" -> leave as text
-        cv = m[2];
-        activeBook = canon;
-      } else if (m[3]){                            // "v./vv./verse(s) N" -> book + chapter
+      if (m[1]){                                   // "v./vv./verse(s) N" -> book + chapter
         if (!curBook || !curChapter) continue;
-        canon = curBook; cv = curChapter + ':' + m[4];
+        canon = curBook; cv = curChapter + ':' + m[2];
         activeBook = curBook;
+      } else if (m[3]){                            // Full "Book ch:v"
+        canon = ESV_BOOKS[m[3].toLowerCase().replace(/[.\s ]/g, '')];
+        if (!canon) continue;                      // unknown "word N" -> leave as text
+        cv = m[4];
+        activeBook = canon;
       } else if (m[5]){                            // bare "ch:v"
         var before = start > 0 ? text.charAt(start - 1) : '';
         if (/[\d:]/.test(before)) continue;        // part of a larger number
