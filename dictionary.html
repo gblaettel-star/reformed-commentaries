@@ -43,6 +43,16 @@ header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppe
 .term-chip-idx{background:none;border:1px solid #2a4a6c;color:#a09070;padding:.2rem .55rem;border-radius:20px;cursor:pointer;font-size:.75rem;font-family:'Georgia',serif;white-space:nowrap;text-decoration:none}
 .term-chip-idx:hover{border-color:#c9a84c;color:#c9a84c}
 
+/* Search results summary */
+.search-summary{margin:0 0 1.6rem;padding:.65rem .9rem;background:rgba(201,168,76,.07);border:1px solid #2a4a6c;border-radius:8px}
+.search-summary-count{color:#c9a84c;font-size:.85rem;font-weight:bold;letter-spacing:.04em}
+.search-summary-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+
+/* Update banner */
+.update-banner{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:9999;background:#0d2137;border:1px solid #c9a84c;border-radius:10px;padding:.55rem .75rem;display:flex;align-items:center;gap:.7rem;box-shadow:0 6px 24px rgba(0,0,0,.5);font-size:.85rem;color:#e8e0cc;max-width:92vw}
+.update-banner button{background:#c9a84c;color:#0d2137;border:none;border-radius:6px;padding:.35rem .75rem;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;white-space:nowrap}
+.update-banner button:hover{background:#e0c266}
+
 /* No results */
 .no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
 
@@ -6664,6 +6674,16 @@ function render() {
     return;
   }
   var html = '';
+  if (currentSearch) {
+    var label = terms.length + (terms.length === 1 ? ' result' : ' results') + ' for &ldquo;' + currentSearch.replace(/</g, '&lt;') + '&rdquo;';
+    html += '<div class="search-summary"><div class="search-summary-count">' + label + '</div>';
+    if (terms.length > 1) {
+      html += '<div class="search-summary-chips">';
+      terms.forEach(function (t) { html += '<a class="term-chip-idx" href="#term-' + t.anchor + '">' + t.name + '</a>'; });
+      html += '</div>';
+    }
+    html += '</div>';
+  }
   var currentLetter = '';
   terms.forEach(function(t) {
     if (t.letter !== currentLetter) {
@@ -6719,8 +6739,38 @@ buildThemeBar();
 buildTermIndex();
 render();
 
+// ── Service worker + "new version available" prompt ───────────────────────
+var swInitialController = ('serviceWorker' in navigator) ? navigator.serviceWorker.controller : null;
+var swReloading = false;
+
+function showUpdateBanner() {
+  if (document.getElementById('update-banner')) return;
+  var b = document.createElement('div');
+  b.id = 'update-banner';
+  b.className = 'update-banner';
+  b.innerHTML = '<span>A new version is available.</span>';
+  var btn = document.createElement('button');
+  btn.textContent = 'Tap to update';
+  btn.onclick = function () {
+    if (swReloading) return;
+    swReloading = true;
+    btn.textContent = 'Updating…';
+    location.reload();
+  };
+  b.appendChild(btn);
+  document.body.appendChild(b);
+}
+
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
+  // A controllerchange means a new worker has taken over. If one was already
+  // in charge when the page loaded, it is an update (not a first install),
+  // so offer it rather than switching silently.
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (swInitialController) showUpdateBanner();
+  });
+  navigator.serviceWorker.register('sw.js').then(function (reg) {
+    if (reg && reg.update) { try { reg.update(); } catch (e) {} }
+  });
 }
 </script>
 <script src="share.js" data-card-selector=".term-card" data-scripture-selector=".verse-text"></script>
