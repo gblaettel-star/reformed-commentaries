@@ -51,6 +51,10 @@ main{padding:1.5rem 1.5rem 3rem;max-width:700px;margin:0 auto}
 .scripture-prompt-text{color:#d4e8d4;font-style:italic;font-size:.93rem;line-height:1.8}
 
 .footer-note{text-align:center;color:#3a5a7c;font-size:.78rem;margin-top:2.5rem;line-height:1.7}
+
+/* Scripture -> ESV links (matches the commentary) */
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
 </style>
 </head>
 <body>
@@ -70,6 +74,7 @@ main{padding:1.5rem 1.5rem 3rem;max-width:700px;margin:0 auto}
 
 <main id="main"></main>
 
+<script src="scripture-links.js"></script>
 <script>
 var MONTHS = [
   {
@@ -550,6 +555,7 @@ function buildCards() {
   });
   html += '<div class="footer-note">Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;),<br>copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers.<br>Used by permission. All rights reserved.</div>';
   main.innerHTML = html;
+  if (typeof linkifyScripture === 'function') linkifyScripture(main, null, null);
 }
 
 buildNav();

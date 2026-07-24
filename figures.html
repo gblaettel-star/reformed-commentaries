@@ -71,6 +71,10 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
   .fig-body{padding:1rem}
   .fig-header{padding:.75rem 1rem}
 }
+
+/* Scripture -> ESV links (matches the commentary) */
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
 </style>
 </head>
 <body>
@@ -96,6 +100,7 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
 
 <footer>Soli Deo Gloria &mdash; To God alone be the glory</footer>
 
+<script src="scripture-links.js"></script>
 <script>
 const FIGURES = [
 
@@ -761,6 +766,7 @@ function renderFigures() {
   });
 
   main.innerHTML = html;
+  if (typeof linkifyScripture === 'function') linkifyScripture(main, null, null);
   updateToggleLabel();
 }
 

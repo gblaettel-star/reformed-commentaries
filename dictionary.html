@@ -53,6 +53,10 @@ header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppe
 .update-banner button{background:#c9a84c;color:#0d2137;border:none;border-radius:6px;padding:.35rem .75rem;font-weight:bold;cursor:pointer;font-family:'Georgia',serif;white-space:nowrap}
 .update-banner button:hover{background:#e0c266}
 
+/* Scripture -> ESV links (matches the commentary) */
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
+
 /* No results */
 .no-results{padding:3rem 1rem;text-align:center;color:#4a6a8c;font-style:italic}
 
@@ -127,6 +131,7 @@ footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-to
 <span style="font-size:.78rem">Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</span>
 </footer>
 
+<script src="scripture-links.js"></script>
 <script>
 const TERMS = [
 
@@ -6735,6 +6740,8 @@ function render() {
     html += '</div></div>';
   });
   main.innerHTML = html;
+  // Turn Scripture references into ESV.org links, exactly as the commentary does.
+  if (typeof linkifyScripture === 'function') linkifyScripture(main, null, null);
 }
 
 // ── Reset (title click) ───────────────────────────────────────────────────

@@ -73,6 +73,10 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
 .key-work{margin-top:1rem;padding:.75rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px;width:100%}
 .kw-label{color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.4rem;display:block;width:100%}
 .kw-text{color:#d4c4a8;font-size:.95rem;font-style:italic;line-height:1.7;display:block;width:100%;overflow-wrap:break-word;word-wrap:break-word;white-space:normal}
+
+/* Scripture -> ESV links (matches the commentary) */
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
 </style>
 </head>
 <body>
@@ -95,6 +99,7 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
 
 <main id="mainContent"></main>
 
+<script src="scripture-links.js"></script>
 <script>
 // ── Data ────────────────────────────────────────────────────────────────────
 
@@ -685,6 +690,7 @@ function render() {
     groups[letter].forEach(p => { html += philCard(p); });
   });
   document.getElementById('mainContent').innerHTML = html;
+  if (typeof linkifyScripture === 'function') linkifyScripture(document.getElementById('mainContent'), null, null);
 }
 
 function philCard(p) {
