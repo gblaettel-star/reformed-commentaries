@@ -6769,7 +6769,16 @@ if ('serviceWorker' in navigator) {
     if (swInitialController) showUpdateBanner();
   });
   navigator.serviceWorker.register('sw.js').then(function (reg) {
-    if (reg && reg.update) { try { reg.update(); } catch (e) {} }
+    if (!reg) return;
+    function checkForUpdate() { if (reg.update) { try { reg.update(); } catch (e) {} } }
+    checkForUpdate();
+    // iOS home-screen (standalone) apps rarely re-check the service worker on
+    // their own. Force a check every time the app returns to the foreground,
+    // so a newly published version is noticed and the update banner can appear.
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') checkForUpdate();
+    });
+    window.addEventListener('focus', checkForUpdate);
   });
 }
 </script>
