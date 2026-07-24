@@ -6570,7 +6570,7 @@ function filtered() {
   var s = currentSearch.toLowerCase();
   return TERMS.filter(function(t) {
     var matchCat  = currentCategory === 'All' || getCategory(t) === currentCategory;
-    var matchSearch = !s || t.name.toLowerCase().indexOf(s) !== -1 || (t.anchorWord && t.anchorWord.toLowerCase().indexOf(s) !== -1);
+    var matchSearch = !s || t.name.toLowerCase().indexOf(s) !== -1;
     return matchCat && matchSearch;
   });
 }
