@@ -1,7 +1,8 @@
-const CACHE = 'commentaries-v603';
+const CACHE = 'commentaries-v604';
 const PAGES = [
   './index.html',
   './share.js',
+  './esv-links.js',
   './prayer.html',
   './dictionary.html',
   './figures.html',
