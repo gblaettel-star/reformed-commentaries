@@ -74,6 +74,8 @@ main{padding:1.5rem 2rem;max-width:760px;margin:0 auto}
 .key-verses-label{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;margin:1.2rem 0 .6rem;border-top:1px solid #2a4a6c;padding-top:1rem}
 .verse-entry{margin-bottom:1rem}
 .verse-ref{color:#c9a84c;font-weight:bold;font-size:.9rem;margin-bottom:.25rem}
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
 .verse-text{font-style:italic;color:#d4c4a8;line-height:1.75;margin-bottom:.35rem}
 .verse-note{color:#e8dcc8;line-height:1.75;font-size:.92rem}
 
@@ -6576,6 +6578,17 @@ var currentCategory = 'All';
 var currentSearch   = '';
 var termIndexOpen   = false;
 
+// Build an ESV.org link from a reference like "1 Corinthians 15:10" or
+// "Romans 8:15–16" — same URL format the commentary uses. Returns null if the
+// ref does not parse to Book chapter:verse (then we render plain text).
+function esvHref(ref) {
+  var m = /^(.*?)[\s ]+(\d+(?:[:.]\d+)?(?:[–—,\-][\s ]?\d+)*)$/.exec((ref || '').trim());
+  if (!m) return null;
+  var canon = m[1].trim().replace(/\s+/g, '+');
+  var cv = m[2].replace(/\./g, ':').replace(/[–—]/g, '-').replace(/[\s ]/g, '');
+  return 'https://www.esv.org/' + canon + '+' + cv + '/';
+}
+
 function filtered() {
   var s = currentSearch.toLowerCase();
   return TERMS.filter(function(t) {
@@ -6703,7 +6716,8 @@ function render() {
     html += '<div class="key-verses-label">Key Verses</div>';
     t.verses.forEach(function(v) {
       html += '<div class="verse-entry">';
-      html += '<div class="verse-ref">' + v.ref + '</div>';
+      var _esv = esvHref(v.ref);
+      html += '<div class="verse-ref">' + (_esv ? '<a class="scripture-link" href="' + _esv + '" target="_blank" rel="noopener">' + v.ref + '</a>' : v.ref) + '</div>';
       html += '<div class="verse-text">&ldquo;' + v.text + '&rdquo;</div>';
       if (v.note) html += '<div class="verse-note">' + v.note + '</div>';
       html += '</div>';
