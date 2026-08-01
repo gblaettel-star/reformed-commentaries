@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v873';
+const CACHE = 'commentaries-v874';
 const PAGES = [
   './index.html',
   './share.js',
