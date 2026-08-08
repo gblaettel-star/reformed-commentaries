@@ -68,12 +68,6 @@ summary:hover{background:#22487a}
 .vbv-commentary{line-height:1.8}
 .vbv-commentary p{margin-bottom:.7rem}
 .vbv-commentary p:last-child{margin-bottom:0}
-/* The point: one sentence naming what the text is actually saying. */
-.vbv-point{color:#e8dcc0;font-size:1.02rem;line-height:1.6;border-left:3px solid #c9a84c;padding-left:.8rem;margin-bottom:.8rem}
-.points-only .vbv-commentary,.points-only .vbv-quote{display:none}
-.points-only .vbv-point{margin-bottom:0}
-.points-toggle{background:#112840;border:1px solid #c9a84c;color:#c9a84c;font-size:.8rem;padding:.3rem .8rem;border-radius:20px;cursor:pointer;margin-bottom:1.2rem;font-family:inherit}
-.points-toggle.on{background:#c9a84c;color:#0a1a2a}
 .scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
 .scripture-link:hover{text-decoration-color:#c9a84c}
 .accent-box{background:#112840;border-left:3px solid #c9a84c;padding:1rem 1.2rem;line-height:1.8}
@@ -791,13 +785,6 @@ function linkifyScripture(root, curBook, curChapter){
   });
 }
 
-function togglePoints(btn) {
-  var c = document.getElementById('content');
-  var on = c.classList.toggle('points-only');
-  btn.classList.toggle('on', on);
-  btn.textContent = on ? 'Show full commentary' : 'Points only';
-}
-
 function render(idx) {
   if (!currentData || idx < 0 || idx >= currentKeys.length) return;
   currentIdx = idx;
@@ -833,10 +820,6 @@ function render(idx) {
       html += '<a class="' + (v.sectionBreak ? 'section-chip' : 'verse-chip') + '" href="#vs' + i + '">' + v.ref + '</a>';
     });
     html += '</div>';
-    // "Points only" collapses the chapter to one sentence per entry (~90 seconds).
-    if (ch.verseByVerse.some(function(v){ return v.point; })) {
-      html += '<button class="points-toggle" onclick="togglePoints(this)">Points only</button>';
-    }
     // Section headers render outside <details> so they're always visible.
     // Verse entries are buffered and flushed into a <details> per section.
     var vbvLabel = currentBook.testament === 'ST' ? 'Details' : 'Verse by Verse';
@@ -863,7 +846,6 @@ function render(idx) {
         var entry = '<div class="vbv-entry" id="vs' + i + '">';
         entry += '<div class="vbv-ref">' + v.ref + '</div>';
         if (v.quote) { var q = v.quote.replace(/^[“”"]+/, '').replace(/^(&ldquo;|&rdquo;)+/, '').replace(/[“”"]+$/, '').replace(/(&ldquo;|&rdquo;)+$/, ''); entry += '<div class="vbv-quote">&ldquo;' + q + '&rdquo;</div>'; }
-        if (v.point) entry += '<div class="vbv-point">' + v.point + '</div>';
         if (v.commentary) entry += '<div class="vbv-commentary">' + v.commentary + '</div>';
         entry += '</div>';
         verseBuffer.push(entry);
