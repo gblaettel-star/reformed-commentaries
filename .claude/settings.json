@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "permissions": {
+    "allow": [
+      "Read(**)",
+      "Edit(**)",
+      "Write(**)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git push origin main)",
+      "Bash(git pull)",
+      "Bash(git pull origin main)",
+      "Bash(git fetch:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(/Users/garryblattel/Documents/commentaries/unified/publish.sh:*)"
+    ],
+    "ask": [
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git push --force-with-lease:*)",
+      "Bash(git push --delete:*)",
+      "Bash(git push --mirror:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git rebase:*)",
+      "Bash(git filter-branch:*)",
+      "Bash(git branch -D:*)",
+      "Bash(git clean:*)",
+      "Bash(rm:*)",
+      "Bash(rmdir:*)",
+      "Bash(trash:*)",
+      "Bash(mv:*)",
+      "Bash(find:* -delete)",
+      "Bash(find:* -exec rm:*)"
+    ],
+    "deny": [
+      "Read(//Users/garryblattel/.ssh/**)",
+      "Edit(//Users/garryblattel/.ssh/**)",
+      "Write(//Users/garryblattel/.ssh/**)",
+      "Read(//Users/garryblattel/.aws/**)",
+      "Read(//Users/garryblattel/.gnupg/**)",
+      "Read(//Users/garryblattel/.config/gh/**)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
+      "Read(**/id_rsa)",
+      "Read(**/id_ed25519)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)"
+    ]
+  }
+}
