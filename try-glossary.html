@@ -156,8 +156,12 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 }
 
 /* ── Glossary term (demo) ── */
-.gl{border-bottom:1px dotted rgba(201,168,76,.75);cursor:pointer;color:inherit}
-.gl:active{background:rgba(201,168,76,.14)}
+.gl{color:#e0c068;border-bottom:1px dashed rgba(224,192,104,.85);cursor:pointer;
+ text-underline-offset:2px;padding-bottom:1px}
+.gl::after{content:'\00b0';font-size:.7em;vertical-align:super;opacity:.85;margin-left:1px}
+.gl:active{background:rgba(201,168,76,.22)}
+@keyframes glpulse{0%,100%{background:transparent}50%{background:rgba(224,192,104,.42)}}
+.gl.flash{animation:glpulse .7s ease-in-out 2}
 #gl-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:119;opacity:0;pointer-events:none;transition:opacity .2s}
 #gl-backdrop.open{opacity:1;pointer-events:auto}
 #gl-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;
@@ -181,7 +185,7 @@ body{padding-top:1.55rem}
 </style>
 </head>
 <body>
-<div id="demo-flag">Glossary demo &mdash; tap a dotted word<a href="index.html">back to the app</a></div>
+<div id="demo-flag"><span id="gl-count">Glossary demo</span><a href="#" onclick="glFlash();return false;">show me</a><a href="index.html">back to the app</a></div>
 
 <header>
   <h1 onclick="showHome()">Soli Deo Gloria</h1>
@@ -954,7 +958,7 @@ function render(idx) {
       + 'Continue to ' + nb.title + ' &#8594;</button></div>');
   }
 
-  glDecorate();
+  glDecorate(); glCount();
     if (pendingScrollRestore !== null) {
     var y = pendingScrollRestore; pendingScrollRestore = null;
     requestAnimationFrame(function() { window.scrollTo(0, y); });
@@ -1039,7 +1043,7 @@ var GLOSS = null, GLOSS_BY = {};
 fetch('data/glossary.json').then(function(r){return r.json();}).then(function(j){
   GLOSS = j;
   j.forEach(function(t){ t.m.forEach(function(m){ GLOSS_BY[m] = t; }); });
-  if (document.getElementById('content').innerHTML) glDecorate();
+  if (document.getElementById('content').innerHTML) { glDecorate(); glCount(); }
 });
 function glDecorate(){
   if (!GLOSS) return;
@@ -1071,20 +1075,29 @@ function glDecorate(){
   var nodes = [], n;
   while ((n = walker.nextNode())) nodes.push(n);
   nodes.forEach(function(node){
-    var m = rx.exec(node.nodeValue);
-    if (!m) return;
-    var key = m[1].toLowerCase();
-    var term = GLOSS_BY[key];
-    if (!term || seen[term.a]) return;
-    seen[term.a] = 1;
-    var after = node.splitText(m.index);
-    after.nodeValue = after.nodeValue.slice(m[1].length);
-    var span = document.createElement('span');
-    span.className = 'gl';
-    span.textContent = m[1];
-    span.setAttribute('data-a', term.a);
-    span.onclick = function(){ glOpen(term.a); };
-    node.parentNode.insertBefore(span, after);
+    /* Walk EVERY match in the node, not just the first. Taking only the first
+       meant a paragraph whose opening hit was an already-used term was skipped
+       entirely, losing the unused terms later in the same paragraph. */
+    var cur = node;
+    for (var guard = 0; guard < 12; guard++) {
+      var m = rx.exec(cur.nodeValue);
+      if (!m) return;
+      var term = GLOSS_BY[m[1].toLowerCase()];
+      if (!term || seen[term.a]) {
+        cur = cur.splitText(m.index + m[1].length);   // step past it and keep looking
+        continue;
+      }
+      seen[term.a] = 1;
+      var after = cur.splitText(m.index);
+      after.nodeValue = after.nodeValue.slice(m[1].length);
+      var span = document.createElement('span');
+      span.className = 'gl';
+      span.textContent = m[1];
+      span.setAttribute('data-a', term.a);
+      span.onclick = function(a){ return function(){ glOpen(a); }; }(term.a);
+      cur.parentNode.insertBefore(span, after);
+      cur = after;
+    }
   });
 }
 function glOpen(a){
@@ -1096,6 +1109,21 @@ function glOpen(a){
   document.getElementById('gl-full').href = 'dictionary.html#term-' + t.a;
   document.getElementById('gl-sheet').classList.add('open');
   document.getElementById('gl-backdrop').classList.add('open');
+}
+function glFlash(){
+  var m = document.querySelectorAll('#content .gl');
+  if (!m.length) return;
+  m.forEach(function(e){
+    var p = e; while (p && p.id !== 'content') { if (p.nodeName === 'DETAILS') p.open = true; p = p.parentNode; }
+    e.classList.remove('flash'); void e.offsetWidth; e.classList.add('flash');
+  });
+  var r = m[0].getBoundingClientRect();
+  window.scrollTo(0, window.scrollY + r.top - 150);
+}
+function glCount(){
+  var n = document.querySelectorAll('#content .gl').length;
+  var el = document.getElementById('gl-count');
+  if (el) el.textContent = n ? (n + ' term' + (n>1?'s':'') + ' on this page') : 'Glossary demo';
 }
 function glClose(){
   document.getElementById('gl-sheet').classList.remove('open');
