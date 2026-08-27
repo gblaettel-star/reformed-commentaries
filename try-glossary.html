@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soli Deo Gloria</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+/* ── Header ──
+   Gold is an accent, not a default: outlines stay muted and the metal only
+   comes up on hover/press. Mirrors the restraint of the verse sheet below. */
+header{background:linear-gradient(180deg,#1c3d61 0%,#183350 100%);padding:.5rem 1rem .55rem;display:flex;flex-direction:column;gap:.45rem;border-bottom:1px solid rgba(201,168,76,.28);box-shadow:0 8px 20px -16px rgba(0,0,0,.95);position:sticky;top:0;z-index:100}
+header h1{font-size:1.18rem;font-weight:400;color:#c9a84c;letter-spacing:.17em;text-align:center;cursor:pointer;padding:.3rem 0 .35rem;touch-action:manipulation;user-select:none;transition:opacity .15s}
+header h1:hover{opacity:.75}
+nav{display:flex;align-items:stretch;gap:.45rem}
+nav button{background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.3);color:#c9a84c;padding:.4rem .9rem;border-radius:8px;cursor:pointer;font-size:1rem;flex-shrink:0;min-height:2.75rem;min-width:3rem;touch-action:manipulation;transition:background .15s,border-color .15s,color .15s}
+nav button:hover{background:rgba(201,168,76,.13);border-color:rgba(201,168,76,.75)}
+nav button:active{background:#c9a84c;color:#0d2137;border-color:#c9a84c}
+nav button:disabled{opacity:.22;cursor:default}
+nav button:disabled:hover{background:rgba(255,255,255,.025);border-color:rgba(201,168,76,.3);color:#c9a84c}
+/* appearance:none drops the OS chevron so we can draw a thinner one to match */
+#unit-select{appearance:none;-webkit-appearance:none;color:#c9a84c;border:1px solid rgba(201,168,76,.3);padding:.4rem 2.1rem .4rem .75rem;border-radius:8px;font-size:.95rem;font-family:'Georgia',serif;flex:1;min-width:0;min-height:2.75rem;cursor:pointer;transition:border-color .15s;background:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25 11 1.75' fill='none' stroke='%23c9a84c' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right .8rem center/11px 8px,#12293f}
+#unit-select:hover{border-color:rgba(201,168,76,.65)}
+#unit-select:focus{outline:none;border-color:rgba(201,168,76,.8)}
+
+/* ── Home screen ── */
+#home-screen{width:100%;padding:0}
+
+/* Collapsible section header */
+.section-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#1a3a5c;border-bottom:1px solid rgba(201,168,76,.28);cursor:pointer;user-select:none;touch-action:manipulation}
+.section-toggle:hover{background:#22487a}
+.section-toggle:active{background:#22487a}
+.section-title{color:#c9a84c;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
+.section-count{color:#7090b0;font-size:.72rem;letter-spacing:.06em}
+.section-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
+.section-chevron.open{transform:rotate(90deg)}
+.section-body{overflow:hidden;transition:max-height .25s ease}
+
+.book-row{display:flex;align-items:center;padding:.85rem 1.2rem;border-bottom:1px solid #1a3050;cursor:pointer;transition:background .12s}
+.book-row:hover{background:#1a3a5c}
+.book-row:active{background:#22487a}
+.row-name{color:#c9a84c;font-size:1rem;font-weight:bold;min-width:110px}
+.row-sub{color:#7090b0;font-size:.82rem;flex:1}
+.row-arrow{color:#3a5a7c;font-size:1rem;margin-left:.5rem}
+
+/* ── Reader ── */
+#reader-screen{display:none}
+main{width:100%;padding:1.5rem 2rem;overflow-wrap:break-word;word-break:break-word}
+h2{color:#c9a84c;font-size:1.4rem;margin-bottom:.3rem}
+.ref{color:#a09070;font-size:.95rem;margin-bottom:1.2rem}
+details{margin-bottom:.8rem;border:1px solid #2a4a6c;border-radius:6px;overflow:hidden}
+summary{background:#1a3a5c;padding:.7rem 1rem;cursor:pointer;color:#c9a84c;font-weight:bold;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:hover{background:#22487a}
+.detail-body{padding:1rem;line-height:1.8}
+.detail-body p{margin-bottom:.9rem}
+.detail-body p:last-child{margin-bottom:0}
+.passage-text{padding:1rem;line-height:1.8;color:#d4c4a8;font-style:italic;border-top:1px solid #2a4a6c}
+.vbv-entry{padding:1rem;border-top:1px solid #2a4a6c}
+.vbv-entry:first-child{border-top:none}
+/* Anchor jumps (verse chips) must clear the sticky header. --hdr is set in JS. */
+.vbv-entry,.section-hd{scroll-margin-top:var(--hdr,6.5rem)}
+.vbv-ref{color:#c9a84c;font-weight:bold;margin-bottom:.3rem;font-size:.95rem}
+.vbv-quote{font-style:italic;color:#d4c4a8;margin-bottom:.6rem;line-height:1.7}
+.vbv-commentary{line-height:1.8}
+.vbv-commentary p{margin-bottom:.7rem}
+.vbv-commentary p:last-child{margin-bottom:0}
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
+.accent-box{background:#112840;border-left:3px solid #c9a84c;padding:1rem 1.2rem;line-height:1.8}
+.accent-box p{margin-bottom:.7rem}
+.accent-box p:last-child{margin-bottom:0}
+footer{text-align:center;padding:1.5rem;color:#a09070;font-size:.85rem;border-top:1px solid #2a4a6c;margin-top:2rem}
+sup{font-size:.7em;vertical-align:super}
+.verse-map{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
+.verse-chip{background:#112840;border:1px solid #2a4a6c;color:#c9a84c;font-size:.8rem;padding:.25rem .6rem;border-radius:20px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.verse-chip:hover{background:#1a3a5c;border-color:#c9a84c}
+.section-chip{background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;font-size:.8rem;padding:.25rem .7rem;border-radius:4px;cursor:pointer;text-decoration:none;font-weight:bold;white-space:normal;word-break:break-word}
+.section-chip:hover{background:#c9a84c;color:#0d2137}
+.section-hd{background:#0a1e30;border-top:2px solid #c9a84c;padding:1rem 1.2rem}
+.section-hd-ref{color:#c9a84c;font-weight:bold;font-size:.95rem;letter-spacing:.04em;margin-bottom:.8rem}
+.section-hd-overview{color:#e8dcc8;line-height:1.85}
+.section-hd-overview p{margin-bottom:.85rem}
+.section-hd-overview p:last-child{margin-bottom:0}
+
+/* ── Copy-to-share button ── */
+.copy-btn{position:absolute;background:none;border:none;margin:0;padding:.3rem;cursor:pointer;color:#c9a84c;opacity:.4;line-height:0;border-radius:5px;z-index:2;-webkit-tap-highlight-color:transparent;transition:opacity .15s,background .15s,color .15s}
+.copy-btn:hover{opacity:1;background:rgba(201,168,76,.14)}
+.copy-btn:active{opacity:1}
+.copy-btn.copied{opacity:1;color:#7bbf6a;background:rgba(123,191,106,.14)}
+.copy-btn svg{display:block}
+summary{position:relative}
+summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
+.section-hd{position:relative}
+.section-hd .copy-btn{right:.6rem;top:.6rem}
+.vbv-entry{position:relative}
+.vbv-entry .copy-btn{right:.5rem;top:.5rem}
+.vbv-ref{padding-right:2rem}
+
+/* ── Verse jump (floating pill + sheet) ── */
+/* A slim tab hugging the left bezel, vertically centred — the left thumb's resting arc.
+   Deliberately small and faint; ::after widens the hit area well past the visible tab. */
+#vjump-pill{position:fixed;left:env(safe-area-inset-left,0);top:50%;transform:translateY(-50%);z-index:90;display:none;align-items:center;justify-content:center;width:1.15rem;height:2.1rem;background:#16324f;border:1px solid rgba(201,168,76,.5);border-left:none;color:#c9a84c;padding:0;border-radius:0 13px 13px 0;cursor:pointer;box-shadow:1px 0 6px rgba(0,0,0,.3);opacity:.32;transition:opacity .15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#vjump-pill::after{content:'';position:absolute;top:-11px;bottom:-11px;left:0;right:-16px}
+/* Deliberately stays faint at all times — never brightens on scroll, never
+   inverts to solid gold on press. A gentle opacity nudge is the only feedback. */
+#vjump-pill:hover{opacity:.5}
+#vjump-pill:active{opacity:.6}
+#vjump-pill svg{display:block}
+
+#vjump-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
+#vjump-backdrop.open{opacity:1;pointer-events:auto}
+
+#vjump-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:1rem 1.1rem calc(1.3rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .24s ease;max-height:70vh;overflow-y:auto}
+#vjump-sheet.open{transform:translateY(0)}
+.vjump-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+.vjump-title{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase}
+.vjump-close{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-size:1rem;line-height:1;padding:.35rem .6rem;cursor:pointer;touch-action:manipulation}
+.vjump-close:hover{background:#1a3a5c}
+.vjump-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(2.9rem,1fr));gap:.45rem}
+.vjump-num{background:#112840;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.95rem;padding:.6rem .2rem;border-radius:6px;cursor:pointer;text-align:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.vjump-num:hover{background:#1a3a5c;border-color:#c9a84c}
+.vjump-num.current{background:#c9a84c;color:#0d2137;border-color:#c9a84c;font-weight:bold}
+.vjump-top{margin-top:.9rem;width:100%;background:#1a3a5c;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.85rem;padding:.6rem;border-radius:6px;cursor:pointer;touch-action:manipulation}
+.vjump-top:hover{border-color:#c9a84c}
+
+/* ── About (home screen) ── */
+.about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;cursor:pointer;user-select:none;touch-action:manipulation}
+.about-toggle:hover{background:#112840}
+.about-toggle-title{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
+.about-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
+.about-chevron.open{transform:rotate(90deg)}
+.about-body{overflow:hidden;max-height:0;transition:max-height .25s ease;background:#0a1e30;padding:0 1.2rem}
+.about-body.open{max-height:600px;padding:1rem 1.2rem 1.5rem}
+.about-body p{color:#7090b0;font-size:.82rem;line-height:1.75;margin-bottom:.8rem}
+.about-body p:last-child{margin-bottom:0}
+
+/* ── Mobile ── */
+@media(max-width:640px){
+  header{padding:.4rem .75rem .4rem}
+  nav button{min-width:2.75rem;padding:.4rem .7rem}
+  #unit-select{font-size:.85rem}
+  .row-sub{display:none}
+  .book-row{padding:.9rem 1rem}
+  .row-name{font-size:.95rem}
+  main{padding:1rem}
+}
+/* Tiny phones / very large zoom */
+@media(max-width:380px){
+  header h1{font-size:1rem}
+  nav button{min-width:2.5rem;padding:.4rem .5rem;font-size:1rem}
+  #unit-select{font-size:.8rem}
+}
+
+/* ── Glossary term (demo) ── */
+.gl{border-bottom:1px dotted rgba(201,168,76,.75);cursor:pointer;color:inherit}
+.gl:active{background:rgba(201,168,76,.14)}
+#gl-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:119;opacity:0;pointer-events:none;transition:opacity .2s}
+#gl-backdrop.open{opacity:1;pointer-events:auto}
+#gl-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;
+ background:#16304e;border-top:1px solid #c9a84c;border-radius:12px 12px 0 0;
+ padding:1rem 1.1rem 1.4rem;transform:translateY(102%);transition:transform .24s ease;
+ box-shadow:0 -8px 30px rgba(0,0,0,.45);max-height:72vh;overflow-y:auto}
+#gl-sheet.open{transform:translateY(0)}
+.gl-head{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;margin-bottom:.15rem}
+.gl-name{color:#c9a84c;font-weight:600;font-size:1.12rem}
+.gl-close{background:none;border:none;color:#8fa9c4;font-size:1.15rem;cursor:pointer;padding:.1rem .3rem}
+.gl-word{color:#7090b0;font-size:.79rem;font-style:italic;margin:0 0 .7rem}
+.gl-body{color:#dbe6f0;font-size:.94rem;line-height:1.62;margin:0 0 1rem}
+.gl-full{display:inline-block;background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;
+ padding:.5rem 1rem;border-radius:4px;font-size:.87rem;text-decoration:none}
+
+
+#demo-flag{position:fixed;left:0;right:0;top:0;z-index:200;background:#c9a84c;color:#12294a;
+ font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;text-align:center;padding:.3rem .5rem;font-weight:600}
+#demo-flag a{color:#12294a;text-decoration:underline;margin-left:.5rem}
+body{padding-top:1.55rem}
+</style>
+</head>
+<body>
+<div id="demo-flag">Glossary demo &mdash; tap a dotted word<a href="index.html">back to the app</a></div>
+
+<header>
+  <h1 onclick="showHome()">Soli Deo Gloria</h1>
+  <nav id="reader-nav" style="display:none">
+    <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
+    <select id="unit-select" onchange="goTo(+this.value)"></select>
+    <button id="next-btn" onclick="navigate(1)">&#8594;</button>
+  </nav>
+</header>
+
+<div id="home-screen">
+  <div id="book-list"></div>
+</div>
+
+<div id="reader-screen">
+  <main id="content"></main>
+  <footer>Soli Deo Gloria &mdash; To God Alone Be Glory</footer>
+</div>
+
+<button id="vjump-pill" onclick="openVerseJump()" aria-label="Jump to verse" title="Jump to verse">
+  <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true">
+    <rect x="3"  y="3"  width="5" height="5" rx="1"/><rect x="9.5" y="3"  width="5" height="5" rx="1"/><rect x="16" y="3"  width="5" height="5" rx="1"/>
+    <rect x="3"  y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="16" y="9.5" width="5" height="5" rx="1"/>
+    <rect x="3"  y="16" width="5" height="5" rx="1"/><rect x="9.5" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>
+  </svg>
+</button>
+
+
+<div id="gl-backdrop" onclick="glClose()"></div>
+<div id="gl-sheet" role="dialog" aria-label="Glossary term">
+  <div class="gl-head"><span class="gl-name" id="gl-name"></span>
+    <button class="gl-close" onclick="glClose()" aria-label="Close">&#10005;</button></div>
+  <p class="gl-word" id="gl-word"></p>
+  <p class="gl-body" id="gl-body"></p>
+  <a class="gl-full" id="gl-full" href="#">Read the full entry &#8594;</a>
+</div>
+<div id="vjump-backdrop" onclick="closeVerseJump()"></div>
+<div id="vjump-sheet" role="dialog" aria-label="Jump to verse">
+  <div class="vjump-head">
+    <span class="vjump-title" id="vjump-sheet-title">Jump to Verse</span>
+    <button class="vjump-close" onclick="closeVerseJump()" aria-label="Close">&#10005;</button>
+  </div>
+  <div class="vjump-grid" id="vjump-grid"></div>
+  <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
+</div>
+
+<script>
+const BOOKS = [
+  // Old Testament
+  { id:'genesis',     title:'Genesis',     subtitle:'The Book of Origins',              testament:'OT', chapters:50 },
+  { id:'exodus',      title:'Exodus',      subtitle:'The God Who Redeems',              testament:'OT', chapters:40 },
+  { id:'leviticus',   title:'Leviticus',   subtitle:'Holy, Holy, Holy',                 testament:'OT', chapters:27 },
+  { id:'numbers',     title:'Numbers',     subtitle:'Through the Wilderness',           testament:'OT', chapters:36 },
+  { id:'deuteronomy', title:'Deuteronomy', subtitle:'Remember and Obey',                testament:'OT', chapters:34 },
+  { id:'joshua',      title:'Joshua',      subtitle:'The LORD Fights for His People',   testament:'OT', chapters:24 },
+  { id:'judges',      title:'Judges',      subtitle:'Everyone Did What Was Right in His Own Eyes', testament:'OT', chapters:21 },
+  { id:'ruth',        title:'Ruth',        subtitle:'The Kinsman-Redeemer',                testament:'OT', chapters:4  },
+  { id:'1samuel',     title:'1 Samuel',    subtitle:'Give Us a King',                      testament:'OT', chapters:31 },
+  { id:'2samuel',     title:'2 Samuel',    subtitle:'The Throne of Grace',                 testament:'OT', chapters:24 },
+  { id:'1chronicles', title:'1 Chronicles', subtitle:'Seek His Face',                       testament:'OT', chapters:29 },
+  { id:'2chronicles', title:'2 Chronicles', subtitle:'If My People',                        testament:'OT', chapters:36 },
+  { id:'ezra',        title:'Ezra',        subtitle:'The God Who Rebuilds',                testament:'OT', chapters:10 },
+  { id:'nehemiah',    title:'Nehemiah',    subtitle:'The God Who Fortifies',               testament:'OT', chapters:13 },
+  { id:'esther',      title:'Esther',      subtitle:'The Hidden Hand',                     testament:'OT', chapters:10 },
+  { id:'job',         title:'Job',         subtitle:'Where Were You?',                      testament:'OT', chapters:42 },
+  { id:'psalms',      title:'Psalms',      subtitle:'The Prayers of the Kingdom',          testament:'OT', chapters:150 },
+  { id:'proverbs',    title:'Proverbs',    subtitle:'Wisdom and the Fear of the LORD',   testament:'OT', chapters:31 },
+  { id:'ecclesiastes',title:'Ecclesiastes',subtitle:'Vanity and the Fear of God',        testament:'OT', chapters:12 },
+  { id:'isaiah',      title:'Isaiah',      subtitle:'The Evangelical Prophet',           testament:'OT', chapters:66 },
+  // New Testament
+  { id:'matthew',      title:'Matthew',      subtitle:'The King Has Come',                   testament:'NT', chapters:28 },
+  { id:'mark',         title:'Mark',         subtitle:'The Son of God on the Move',          testament:'NT', chapters:16 },
+  { id:'luke',         title:'Luke',         subtitle:'The Saviour of the World',            testament:'NT', chapters:24 },
+  { id:'john',         title:'John',         subtitle:'The Word Made Flesh',                 testament:'NT', chapters:21 },
+  { id:'acts',         title:'Acts',         subtitle:'The Unhindered Word',                 testament:'NT', chapters:28 },
+  { id:'romans',       title:'Romans',       subtitle:'The Righteousness of God',            testament:'NT', chapters:16 },
+  { id:'1corinthians', title:'1 Corinthians',subtitle:'The Cross at the Centre',             testament:'NT', chapters:16 },
+  { id:'2corinthians', title:'2 Corinthians',subtitle:'Strength in Weakness',                testament:'NT', chapters:13 },
+  { id:'galatians',    title:'Galatians',    subtitle:'The Magna Carta of Christian Liberty', testament:'NT', chapters:6  },
+  { id:'ephesians',    title:'Ephesians',    subtitle:'Every Spiritual Blessing',             testament:'NT', chapters:6  },
+  { id:'philippians',  title:'Philippians',  subtitle:'To Live Is Christ',                   testament:'NT', chapters:4  },
+  { id:'colossians',      title:'Colossians',      subtitle:'Christ Is All',                       testament:'NT', chapters:4  },
+  { id:'1thessalonians', title:'1 Thessalonians', subtitle:'Waiting for His Son from Heaven',      testament:'NT', chapters:5  },
+  { id:'2thessalonians', title:'2 Thessalonians', subtitle:'Do Not Be Shaken',                     testament:'NT', chapters:3  },
+  { id:'1timothy',       title:'1 Timothy',       subtitle:'How to Behave in the Household of God', testament:'NT', chapters:6  },
+  { id:'2timothy',       title:'2 Timothy',       subtitle:'Last Words from a Dying Apostle',       testament:'NT', chapters:4  },
+  { id:'titus',          title:'Titus',           subtitle:'Sound Doctrine, Adorned Lives',          testament:'NT', chapters:3  },
+  { id:'philemon',       title:'Philemon',        subtitle:'The Gospel and the Slave',               testament:'NT', chapters:1  },
+  { id:'1peter',         title:'1 Peter',         subtitle:'Holy Exiles: Living the Gospel Under Pressure', testament:'NT', chapters:5  },
+  { id:'2peter',         title:'2 Peter',         subtitle:'Hold Fast: Truth, Godliness, and the Coming Day', testament:'NT', chapters:3  },
+  { id:'hebrews',      title:'Hebrews',      subtitle:'Jesus Is Better',                     testament:'NT', chapters:13 },
+  { id:'james',        title:'James',        subtitle:'Faith That Works',                    testament:'NT', chapters:5  },
+  { id:'1john',        title:'1 John',       subtitle:'That You May Know',                   testament:'NT', chapters:5  },
+  { id:'2john',        title:'2 John',        subtitle:'Truth and Love Are Not Opposites',    testament:'NT', chapters:1  },
+  { id:'3john',        title:'3 John',        subtitle:'Walking in Truth, Tested by Character', testament:'NT', chapters:1  },
+  { id:'jude',         title:'Jude',         subtitle:'Contend for the Faith',               testament:'NT', chapters:1  },
+  { id:'revelation',   title:'Revelation',   subtitle:'The Lamb Who Conquers',               testament:'NT', chapters:22 },
+  // Christian Living Studies
+  { id:'more-than-imagined',    title:'More Than You Imagined', subtitle:'The Full Meaning of the Christian Life',             testament:'SL', chapters:7 },
+  { id:'spiritual-disciplines', title:'Spiritual Disciplines', subtitle:'The Means of Grace and the Growth of the Soul',      testament:'SL', chapters:6 },
+  { id:'prayer',                title:'Prayer',                subtitle:'Talking with the Living God',                         testament:'SL', chapters:6 },
+  { id:'money-stewardship',     title:'Money & Stewardship',   subtitle:'Wealth, Generosity, and the Kingdom of God',         testament:'SL', chapters:6 },
+  { id:'assurance',             title:'Assurance of Salvation',subtitle:'Knowing That You Are His',                            testament:'SL', chapters:6 },
+  { id:'christian-work',        title:'Christian at Work',     subtitle:'Vocation, Calling, and the Glory of God',             testament:'SL', chapters:6 },
+  { id:'christian-marriage',    title:'Christian Marriage',    subtitle:'Covenant Love and the Gospel',                        testament:'SL', chapters:6 },
+  { id:'christian-parenting',   title:'Christian Parenting',   subtitle:'Training Up Children in the Fear of the Lord',        testament:'SL', chapters:6 },
+  { id:'christian-suffering',   title:'Christian Suffering',   subtitle:'Held Fast Through the Fire',                         testament:'SL', chapters:6 },
+  { id:'biblical-counseling',   title:'Biblical Counseling',   subtitle:'Caring for Souls with the Word of God',              testament:'SL', chapters:20 },
+  { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',        testament:'SL', chapters:6 },
+  { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', chapters:6 },
+  // General Studies
+  { id:'how-we-got-our-bible',  title:'How We Got Our Bible',  subtitle:'Inspiration, Canon, Transmission, and Translation',   testament:'SG', chapters:7 },
+  { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',      testament:'SG', chapters:6 },
+  { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                         testament:'SG', chapters:8 },
+  { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',           testament:'SG', chapters:8 },
+  { id:'covenant-theology',     title:'Covenant Theology',     subtitle:'The Backbone of Reformed Biblical Theology',          testament:'SG', chapters:6 },
+  { id:'end-times',             title:'End Times Models',      subtitle:'Amillennialism, Premillennialism, Postmillennialism',  testament:'SG', chapters:5 },
+  { id:'dispensational-distinctives', title:'Dispensational Distinctives', subtitle:'A Biblical Guide to the Dispensational Framework', testament:'SG', chapters:6 },
+  { id:'denominations',         title:'Denominations',         subtitle:'The Major Christian Traditions and Their Distinctives',testament:'SG', chapters:13 },
+  { id:'kingdom-of-god',        title:'The Kingdom of God',    subtitle:'The Reign of God and the Hope of the World',          testament:'SG', chapters:6 },
+  { id:'jesus-and-apostles',    title:'Jesus & the Apostles',  subtitle:'One Gospel, Two Moments — Did They Preach the Same Message?', testament:'SG', chapters:6 },
+];
+
+var currentBook = null;
+var currentData = null;
+var currentKeys = [];
+var currentIdx  = 0;
+var pendingScrollRestore = null;
+
+// ── Copy-to-share ──────────────────────────────────────────────
+var COPY_ICON  = '<button class="copy-btn" type="button" aria-label="Copy to share" title="Copy to share"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>';
+var CHECK_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+var ESV_CITATION = 'Scripture quotations are from the ESV® Bible (The Holy Bible, English Standard Version®), © 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved. The ESV text may not be quoted in any publication made available to the public by a Creative Commons license. The ESV may not be translated in whole or in part into any other language.';
+
+// Convert an innerHTML fragment to clean shareable plain text (works even when collapsed/hidden).
+function htmlToText(html) {
+  if (!html) return '';
+  var s = html
+    .replace(/<\s*br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|li|h[1-6])\s*>/gi, '\n\n')
+    .replace(/<[^>]+>/g, '');
+  var t = document.createElement('textarea'); t.innerHTML = s; s = t.value;
+  return s.replace(/ /g, ' ').replace(/[ \t]+/g, ' ').replace(/\n[ \t]+/g, '\n')
+    .replace(/\n([•▸▶‣∙▪◦·])[ \t]*\n+[ \t]*/g, '\n• ')
+    .replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function shareHeader(ref) {
+  var book = currentBook ? currentBook.title : '';
+  var refEl = document.querySelector('#content .ref');
+  var chap = refEl ? refEl.textContent.trim() : '';
+  var top = book;
+  if (chap) top += (top ? ' — ' : '') + chap;
+  return ref ? (top ? top + '\n' + ref : ref) : top;
+}
+
+function buildShareText(btn) {
+  var lines = [], hasScripture = false;
+  var entry = btn.closest('.vbv-entry');
+  var sec   = btn.closest('.section-hd');
+  var det   = btn.closest('details');
+  if (entry) {
+    var r = entry.querySelector('.vbv-ref'), q = entry.querySelector('.vbv-quote'), cm = entry.querySelector('.vbv-commentary');
+    lines.push(shareHeader(r ? htmlToText(r.innerHTML) : ''));
+    if (q)  { hasScripture = true; lines.push('', htmlToText(q.innerHTML)); }
+    if (cm) { lines.push('', htmlToText(cm.innerHTML)); }
+  } else if (sec) {
+    var sr = sec.querySelector('.section-hd-ref'), so = sec.querySelector('.section-hd-overview');
+    lines.push(shareHeader(sr ? htmlToText(sr.innerHTML) : ''));
+    if (so) lines.push('', htmlToText(so.innerHTML));
+  } else if (det) {
+    var sm = det.querySelector(':scope > summary'), label = '';
+    if (sm) { var smc = sm.cloneNode(true); smc.querySelectorAll('.copy-btn').forEach(function(b){ b.remove(); }); label = smc.textContent.trim(); }
+    if (det.querySelector('.passage-text') || det.querySelector('.vbv-quote')) hasScripture = true;
+    var dc = det.cloneNode(true);
+    dc.querySelectorAll('summary,.copy-btn').forEach(function(b){ b.remove(); });
+    lines.push(shareHeader(label), '', htmlToText(dc.innerHTML));
+  } else {
+    return '';
+  }
+  lines.push('', '— Reformed Commentaries · Soli Deo Gloria');
+  if (hasScripture) lines.push('', ESV_CITATION);
+  return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function flashCopied(btn) {
+  if (btn._orig === undefined) btn._orig = btn.innerHTML;
+  btn.innerHTML = CHECK_ICON; btn.classList.add('copied');
+  clearTimeout(btn._t);
+  btn._t = setTimeout(function(){ btn.innerHTML = btn._orig; btn.classList.remove('copied'); }, 1500);
+}
+
+function copyShareText(text, btn) {
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ flashCopied(btn); }).catch(function(){ fallback(); flashCopied(btn); });
+  } else {
+    fallback(); flashCopied(btn);
+  }
+}
+
+// Drop a copy button into every shareable block after each render.
+function addCopyButtons() {
+  var c = document.getElementById('content');
+  c.querySelectorAll('details > summary').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('beforeend', COPY_ICON); });
+  c.querySelectorAll('.section-hd').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
+  c.querySelectorAll('.vbv-entry').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
+}
+
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest && e.target.closest('.copy-btn');
+  if (!btn) return;
+  e.preventDefault(); e.stopPropagation();
+  var text = buildShareText(btn);
+  if (text) copyShareText(text, btn);
+});
+
+// ── Verse jump ─────────────────────────────────────────────────
+// Lets the reader return from their Bible at, say, verse 18 and land on the
+// entry covering verse 18 — without scrolling back to the chip bar at the top.
+var verseEntries = [];   // [{ id, start, end, ref }] — non-section entries only
+var verseToEntry = [];   // verse number -> entry index (gaps forward-filled)
+var verseMax = 0;
+
+// "v. 3" / "vv. 16–17" → [3,3] / [16,17].  Anything else (e.g. "Matt. 6:9–10") → null.
+function parseVerseRef(ref) {
+  var m = String(ref).match(/^v{1,2}\.\s*(\d+)(?:\s*[–—-]\s*(\d+))?/);
+  if (!m) return null;
+  var a = +m[1], b = m[2] ? +m[2] : a;
+  return b >= a ? [a, b] : null;
+}
+
+function buildVerseIndex(ch) {
+  verseEntries = []; verseToEntry = []; verseMax = 0;
+  var vbv = ch && ch.verseByVerse;
+  if (!vbv || !vbv.length) return;
+  vbv.forEach(function(v, i) {
+    if (v.sectionBreak) return;              // section headers span whole blocks — skip
+    var r = parseVerseRef(v.ref);
+    if (!r) return;
+    verseEntries.push({ id: 'vs' + i, start: r[0], end: r[1], ref: v.ref });
+    if (r[1] > verseMax) verseMax = r[1];
+  });
+  if (!verseEntries.length) { verseMax = 0; return; }
+  verseEntries.forEach(function(e, ei) {
+    for (var v = e.start; v <= e.end; v++) verseToEntry[v] = ei;
+  });
+  for (var v = 1; v <= verseMax; v++) {                     // forward-fill any gaps
+    if (verseToEntry[v] === undefined) verseToEntry[v] = (v > 1 ? verseToEntry[v-1] : 0);
+  }
+}
+
+function headerOffset() {
+  var h = document.querySelector('header');
+  return (h ? h.offsetHeight : 0) + 10;
+}
+
+// Keep the CSS anchor offset in sync with the header's actual height,
+// which grows with the reader's font size.
+function syncHeaderOffset() {
+  document.documentElement.style.setProperty('--hdr', headerOffset() + 'px');
+}
+window.addEventListener('resize', syncHeaderOffset);
+
+// Which entry is currently at the top of the viewport?
+function currentEntryIndex() {
+  var cutoff = headerOffset() + 4, found = -1;
+  for (var i = 0; i < verseEntries.length; i++) {
+    var el = document.getElementById(verseEntries[i].id);
+    if (!el) continue;
+    if (el.getBoundingClientRect().top <= cutoff) found = i; else break;
+  }
+  return found < 0 ? 0 : found;
+}
+
+function refreshVersePill() {
+  var pill = document.getElementById('vjump-pill');
+  var inReader = document.getElementById('reader-screen').style.display !== 'none';
+  pill.style.display = (verseEntries.length && inReader) ? 'flex' : 'none';
+}
+
+// Instant, not smooth: jumps can span thousands of pixels, and a long
+// animated scroll reads as a blur rather than a jump.
+function scrollToEl(el) {
+  if (!el) return;
+  var y = window.scrollY + el.getBoundingClientRect().top - headerOffset();
+  window.scrollTo(0, Math.max(0, y));
+}
+
+function openVerseJump() {
+  if (!verseEntries.length) return;
+  var cur = verseEntries[currentEntryIndex()];
+  var grid = document.getElementById('vjump-grid'), html = '';
+  for (var v = 1; v <= verseMax; v++) {
+    var isCur = v >= cur.start && v <= cur.end;
+    html += '<button class="vjump-num' + (isCur ? ' current' : '') + '" onclick="jumpToVerse(' + v + ')">' + v + '</button>';
+  }
+  grid.innerHTML = html;
+  var refEl = document.querySelector('#content .ref');
+  document.getElementById('vjump-sheet-title').textContent =
+    refEl ? 'Jump to Verse — ' + refEl.textContent.trim() : 'Jump to Verse';
+  document.getElementById('vjump-backdrop').classList.add('open');
+  document.getElementById('vjump-sheet').classList.add('open');
+}
+
+function closeVerseJump() {
+  document.getElementById('vjump-backdrop').classList.remove('open');
+  document.getElementById('vjump-sheet').classList.remove('open');
+}
+
+function jumpToVerse(v) {
+  var ei = verseToEntry[v];
+  closeVerseJump();
+  if (ei === undefined) return;
+  scrollToEl(document.getElementById(verseEntries[ei].id));
+}
+
+function jumpToTop() { closeVerseJump(); window.scrollTo(0, 0); }
+
+function verseJumpOpen() { return document.getElementById('vjump-sheet').classList.contains('open'); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeVerseJump();
+});
+
+// Remember scroll position within the current chapter (throttled), so a refresh lands in place.
+var scrollSaveTimer = null;
+window.addEventListener('scroll', function() {
+  if (!currentBook || document.getElementById('reader-screen').style.display === 'none') return;
+  if (scrollSaveTimer) return;
+  scrollSaveTimer = setTimeout(function() {
+    scrollSaveTimer = null;
+    localStorage.setItem(currentBook.id + '-' + currentKeys[currentIdx] + '-scroll', window.scrollY);
+  }, 250);
+});
+
+// ── Home ─────────────────────────────────────────────────────────────────
+
+function showHome() {
+  document.getElementById('home-screen').style.display = '';
+  document.getElementById('reader-screen').style.display = 'none';
+  document.getElementById('reader-nav').style.display = 'none';
+  document.getElementById('vjump-pill').style.display = 'none';
+  closeVerseJump();
+  document.title = 'Soli Deo Gloria';
+  ['ot','nt','sl','sg','ref'].forEach(function(id) {
+    var body = document.getElementById('body-' + id);
+    var chevron = document.querySelector('#sec-' + id + ' .section-chevron');
+    if (body) body.style.maxHeight = '0';
+    if (chevron) chevron.classList.remove('open');
+  });
+  var ab = document.getElementById('about-body');
+  var ac = document.getElementById('about-chevron');
+  if (ab) ab.classList.remove('open');
+  if (ac) ac.classList.remove('open');
+  window.scrollTo(0,0);
+}
+
+function toggleAbout() {
+  var body = document.getElementById('about-body');
+  var chevron = document.getElementById('about-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+function section(id, title, contentHtml, startOpen) {
+  var open = startOpen ? ' open' : '';
+  var chevronOpen = startOpen ? ' open' : '';
+  var bodyStyle = startOpen ? '' : 'style="max-height:0"';
+  return '<div class="section-wrap" id="sec-' + id + '">'
+    + '<div class="section-toggle" onclick="toggleSection(\'' + id + '\')">'
+    + '<span class="section-title">' + title + '</span>'
+    + '<span class="section-chevron' + chevronOpen + '">&#8250;</span>'
+    + '</div>'
+    + '<div class="section-body" id="body-' + id + '" ' + bodyStyle + '>'
+    + contentHtml
+    + '</div>'
+    + '</div>';
+}
+
+function toggleSection(id) {
+  var body = document.getElementById('body-' + id);
+  var chevron = document.querySelector('#sec-' + id + ' .section-chevron');
+  var isOpen = chevron.classList.contains('open');
+  if (isOpen) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    requestAnimationFrame(function(){ body.style.maxHeight = '0'; });
+    chevron.classList.remove('open');
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    setTimeout(function(){ body.style.maxHeight = 'none'; }, 260);
+    chevron.classList.add('open');
+  }
+}
+
+function buildHome() {
+  var ot = BOOKS.filter(b => b.testament === 'OT');
+  var nt = BOOKS.filter(b => b.testament === 'NT');
+  var sg = BOOKS.filter(b => b.testament === 'SG');
+  var sl = BOOKS.filter(b => b.testament === 'SL');
+
+  var refHtml = ''
+    + '<div class="book-row" onclick="window.location.href=\'dictionary.html\'">'
+    + '<div class="row-name">Theological Dictionary</div>'
+    + '<div class="row-sub">Key words of the faith — explained and felt</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'figures.html\'">'
+    + '<div class="row-name">Theological Figures</div>'
+    + '<div class="row-sub">Faithful voices across the centuries</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'philosophers.html\'">'
+    + '<div class="row-name">Philosophers &amp; Christian Thought</div>'
+    + '<div class="row-sub">Ideas that shaped — and challenged — the faith</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'heresies.html\'">'
+    + '<div class="row-name">Heresies &amp; the Church\'s Response</div>'
+    + '<div class="row-sub">The faith contended for — and defended — across the centuries</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'councils.html\'">'
+    + '<div class="row-name">Church Councils</div>'
+    + '<div class="row-sub">Where the Church drew its lines — from Nicaea to Vatican II</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'creeds.html\'">'
+    + '<div class="row-name">Creeds &amp; Confessions</div>'
+    + '<div class="row-sub">The faith once delivered — precisely stated</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'solas.html\'">'
+    + '<div class="row-name">The Five Solas</div>'
+    + '<div class="row-sub">The battle cries of the Reformation — Scripture, Grace, Faith, Christ, Glory</div>'
+    + '<div class="row-arrow">&#8250;</div></div>';
+
+  var html = '';
+  html += section('ot', 'Old Testament — ' + ot.length + ' books', ot.map(row).join(''), false);
+  html += section('nt', 'New Testament — ' + nt.length + ' books', nt.map(row).join(''), false);
+  html += section('sl', 'Christian Living Studies — ' + sl.length + ' studies', sl.map(row).join(''), false);
+  html += section('sg', 'General Studies — ' + sg.length + ' studies', sg.map(row).join(''), false);
+  html += section('ref', 'Reference', refHtml, false);
+  var prayerHtml = '<div class="book-row" onclick="window.location.href=\'prayer.html\'">'
+    + '<div class="row-name">Monthly Prayer</div>'
+    + '<div class="row-sub">A prayer for every month — shaped by the Lord\'s Prayer, offered for your family and congregation</div>'
+    + '<div class="row-arrow">&#8250;</div></div>';
+  html += section('prayer', 'Monthly Prayer', prayerHtml, false);
+  html += '<div class="about-toggle" onclick="toggleAbout()">'
+    + '<span class="about-toggle-title">About Soli Deo Gloria</span>'
+    + '<span class="about-chevron" id="about-chevron">&#8250;</span>'
+    + '</div>'
+    + '<div class="about-body" id="about-body">'
+    + '<p>Soli Deo Gloria is a Reformed Bible commentary app designed to open the Scriptures with depth, warmth, and reverence. Each commentary draws on the work of faithful expositors including Timothy Keller, Alistair Begg, R.C. Sproul, Sinclair Ferguson, John MacArthur, John Stott, John Calvin, Derek Kidner, Bruce Waltke, Gordon Wenham, and D.A. Carson.</p>'
+    + '<p>The aim is not merely to inform the mind but to stir the heart &mdash; to see Christ on every page, and to leave the reader with a deeper love for God and his Word.</p>'
+    + '<p>Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</p>'
+    + '</div>';
+  document.getElementById('book-list').innerHTML = html;
+}
+
+function row(b) {
+  return '<div class="book-row" onclick="openBook(\'' + b.id + '\')">'
+    + '<div class="row-name">' + b.title + '</div>'
+    + '<div class="row-sub">' + b.subtitle + '</div>'
+    + '<div class="row-arrow">&#8250;</div>'
+    + '</div>';
+}
+
+// ── Reader ───────────────────────────────────────────────────────────────
+
+function openBook(id) {
+  currentBook = BOOKS.find(b => b.id === id);
+  localStorage.setItem('last-book', id);
+  document.getElementById('home-screen').style.display = 'none';
+  document.getElementById('reader-screen').style.display = 'block';
+  document.getElementById('reader-nav').style.display = 'flex';
+  document.title = currentBook.title;
+  document.getElementById('content').innerHTML = '<p style="padding:2rem;color:#a09070;text-align:center">Loading&hellip;</p>';
+
+  fetch('data/' + id + '.json')
+    .then(r => r.json())
+    .then(data => {
+      currentData = data;
+      currentKeys = Object.keys(data).map(Number).sort((a,b) => a-b);
+      var sel = document.getElementById('unit-select');
+      sel.innerHTML = '';
+      currentKeys.forEach(k => {
+        var o = document.createElement('option');
+        o.value = k;
+        var ref = data[k].ref || String(k);
+        var chTitle = data[k].title || data[k].subtitle || '';
+        var label;
+        if (currentBook.testament === 'ST') {
+          var title = data[k].title || '';
+          var rangeMatch = title.match(/(\d{2,4})[–—\-](\d{2,4})/);
+          if (rangeMatch) {
+            label = rangeMatch[1] + '–' + rangeMatch[2];
+          } else {
+            var yearMatch = title.match(/\d{3,4}/);
+            label = yearMatch ? yearMatch[0] : (ref.match(/\d+/) ? ref.match(/\d+/)[0] : ref.substring(0, 5));
+          }
+        } else {
+          var num = ref.match(/\d+/);
+          label = num ? num[0] : (k === 0 ? 'Intro' : ref.substring(0, 5));
+        }
+        if (chTitle) {
+          var decoded = chTitle.replace(/&rsquo;/g,"'").replace(/&lsquo;/g,"'").replace(/&ldquo;/g,'"').replace(/&rdquo;/g,'"').replace(/&ndash;/g,'–').replace(/&mdash;/g,'—').replace(/&amp;/g,'&');
+          var short = decoded.length > 30 ? decoded.substring(0, 28) + '…' : decoded;
+          label = label + ' · ' + short;
+        }
+        o.textContent = label;
+        sel.appendChild(o);
+      });
+      var saved = localStorage.getItem(id + '-pos');
+      var start = (saved !== null && data[+saved] !== undefined) ? +saved : currentKeys[0];
+      render(currentKeys.indexOf(start));
+    })
+    .catch(() => {
+      document.getElementById('content').innerHTML = '<p style="padding:2rem;color:#c9a84c">Could not load ' + currentBook.title + '.</p>';
+    });
+}
+
+// Bible book name/abbreviation -> canonical ESV.org name.
+var ESV_BOOKS = (function(){
+  var defs = [
+    ['Genesis','genesis gen ge gn'],['Exodus','exodus exod exo ex'],
+    ['Leviticus','leviticus lev lv'],['Numbers','numbers num nm nu'],
+    ['Deuteronomy','deuteronomy deut deu dt'],['Joshua','joshua josh jos'],
+    ['Judges','judges judg jdg jgs'],['Ruth','ruth rth ru'],
+    ['1 Samuel','1samuel 1sam 1sa 1sm'],['2 Samuel','2samuel 2sam 2sa 2sm'],
+    ['1 Kings','1kings 1kgs 1kin 1ki'],['2 Kings','2kings 2kgs 2kin 2ki'],
+    ['1 Chronicles','1chronicles 1chron 1chr 1ch'],['2 Chronicles','2chronicles 2chron 2chr 2ch'],
+    ['Ezra','ezra ezr'],['Nehemiah','nehemiah neh'],['Esther','esther esth est'],
+    ['Job','job jb'],['Psalms','psalms psalm psa pss ps'],
+    ['Proverbs','proverbs prov prv pro pr'],['Ecclesiastes','ecclesiastes eccles eccl ecc'],
+    ['Song of Solomon','songofsolomon songofsongs song sos ss'],['Isaiah','isaiah isa is'],
+    ['Jeremiah','jeremiah jer'],['Lamentations','lamentations lam'],
+    ['Ezekiel','ezekiel ezek eze ezk'],['Daniel','daniel dan dn'],
+    ['Hosea','hosea hos'],['Joel','joel joe jl'],['Amos','amos amo'],
+    ['Obadiah','obadiah obad oba ob'],['Jonah','jonah jon jnh'],['Micah','micah mic'],
+    ['Nahum','nahum nah'],['Habakkuk','habakkuk hab'],['Zephaniah','zephaniah zeph zep'],
+    ['Haggai','haggai hag'],['Zechariah','zechariah zech zec'],['Malachi','malachi mal'],
+    ['Matthew','matthew matt mat mt'],['Mark','mark mrk mar mk'],['Luke','luke luk lk'],
+    ['John','john jhn joh jn'],['Acts','acts act'],['Romans','romans rom rm ro'],
+    ['1 Corinthians','1corinthians 1cor 1co'],['2 Corinthians','2corinthians 2cor 2co'],
+    ['Galatians','galatians gal'],['Ephesians','ephesians eph'],
+    ['Philippians','philippians phil php pp'],['Colossians','colossians col'],
+    ['1 Thessalonians','1thessalonians 1thess 1thes 1th'],['2 Thessalonians','2thessalonians 2thess 2thes 2th'],
+    ['1 Timothy','1timothy 1tim 1ti 1tm'],['2 Timothy','2timothy 2tim 2ti 2tm'],
+    ['Titus','titus tit'],['Philemon','philemon philem phlm phm'],
+    ['Hebrews','hebrews heb'],['James','james jas jm'],
+    ['1 Peter','1peter 1pet 1pe 1pt'],['2 Peter','2peter 2pet 2pe 2pt'],
+    ['1 John','1john 1jn 1jhn 1jo'],['2 John','2john 2jn 2jhn 2jo'],['3 John','3john 3jn 3jhn 3jo'],
+    ['Jude','jude jud jde'],['Revelation','revelation rev rv re']
+  ];
+  var map = {};
+  defs.forEach(function(d){ d[1].split(' ').forEach(function(a){ map[a] = d[0]; }); });
+  return map;
+})();
+
+// Scan rendered text and wrap Scripture references as links to the full chapter
+// on ESV.org (new tab). Handles four forms:
+//   1) Full:         "Isa 43:25", "Rom. 8:23-25", "1 Cor. 15:3"
+//   2) Series/cont.: "Acts 6:7; 12:24; 19:20"  (later refs inherit the book)
+//   3) Bare ch:v:    "1:15"                     (resolved to the book in view)
+//   4) Verse words:  "v. 15", "vv. 15-17"       (resolved to book + current chapter)
+// Verse-word form is matched BEFORE the book form so "v. 3" (with a space) is not
+// mistaken for a book named "v".  curBook = canonical ESV name of the book in view
+// (or null on non-Bible entries); curChapter = current chapter as a string (or null).
+function linkifyScripture(root, curBook, curChapter){
+  if (!root || !document.createTreeWalker) return;
+  var SP = '[\\s\\u00A0]';
+  var re = new RegExp(
+    '\\b(vv?\\.|verses?)' + SP + '*(\\d+(?:[-–,]' + SP + '?\\d+)*)' +                                     // 1,2: verse words
+    '|\\b([1-3]?' + SP + '?[A-Za-z][A-Za-z.]{1,})' + SP + '+(\\d+(?:[:.]\\d+(?:[-–,]' + SP + '?\\d+)*)?)' + // 3,4: Book ch(:v)
+    '|(\\d{1,3}:\\d{1,3}(?:[-–,]' + SP + '?\\d+)*)',                                                       // 5: bare ch:v
+    'g');
+  var sepOnly = /^[\s ;,–—-]*$/;
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(n){
+      if (!/\d/.test(n.nodeValue || '')) return NodeFilter.FILTER_REJECT;
+      for (var p = n.parentNode; p && p !== root; p = p.parentNode){
+        if (p.nodeName === 'A') return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  var nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  function mkLink(label, canon, cv){
+    cv = cv.replace(/\./g, ':').replace(/–/g, '-').replace(/[\s ]/g, '');
+    var a = document.createElement('a');
+    a.href = 'https://www.esv.org/' + canon.replace(/ /g, '+') + '+' + cv + '/';
+    a.target = '_blank'; a.rel = 'noopener'; a.className = 'scripture-link';
+    a.textContent = label;
+    return a;
+  }
+
+  nodes.forEach(function(node){
+    var text = node.nodeValue, m, last = 0, frag = null;
+    var activeBook = null, prevEnd = -1;   // per-node citation-series state
+    re.lastIndex = 0;
+    while ((m = re.exec(text))){
+      var start = m.index, end = start + m[0].length;
+      var canon = null, cv = null;
+      if (m[1]){                                   // "v./vv./verse(s) N" -> book + chapter
+        if (!curBook || !curChapter) continue;
+        canon = curBook; cv = curChapter + ':' + m[2];
+        activeBook = curBook;
+      } else if (m[3]){                            // Full "Book ch:v"
+        canon = ESV_BOOKS[m[3].toLowerCase().replace(/[.\s ]/g, '')];
+        if (!canon){ re.lastIndex = start + m[3].length; continue; } // unknown word ("cf.", "see"): rewind so a trailing "1 Cor" isn't eaten
+        cv = m[4];
+        activeBook = canon;
+      } else if (m[5]){                            // bare "ch:v"
+        var before = start > 0 ? text.charAt(start - 1) : '';
+        if (/[\d:]/.test(before)) continue;        // part of a larger number
+        if (/^[\s ]?[ap]\.?m\b/i.test(text.slice(end, end + 5))) continue; // clock time
+        var inSeries = prevEnd >= 0 && activeBook && sepOnly.test(text.slice(prevEnd, start));
+        canon = inSeries ? activeBook : curBook;
+        if (!canon) continue;
+        cv = m[5];
+        if (!inSeries) activeBook = curBook;
+      } else continue;
+
+      if (!frag) frag = document.createDocumentFragment();
+      if (start > last) frag.appendChild(document.createTextNode(text.slice(last, start)));
+      frag.appendChild(mkLink(m[0], canon, cv));
+      last = end; prevEnd = end;
+    }
+    if (frag){
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    }
+  });
+}
+
+function render(idx) {
+  if (!currentData || idx < 0 || idx >= currentKeys.length) return;
+  currentIdx = idx;
+  var k = currentKeys[idx];
+  var ch = currentData[k];
+  document.getElementById('unit-select').value = k;
+  localStorage.setItem(currentBook.id + '-pos', k);
+
+  var html = '';
+
+  // Title block
+  var title = ch.title || ch.subtitle || '';
+  var ref   = ch.ref   || (k === 0 ? 'Introduction' : k === currentKeys[currentKeys.length-1] ? 'About' : '');
+  if (title) html += '<h2>' + title + '</h2>';
+  if (ref)   html += '<div class="ref">' + ref + '</div>';
+
+  // ESV text
+  if (ch.text) {
+    html += '<details><summary>ESV Text</summary><div class="passage-text">' + ch.text + '</div></details>';
+  }
+
+  // Overview / intro
+  var intro = ch.overview || ch.intro || '';
+  if (intro) {
+    html += '<details><summary>Overview</summary><div class="detail-body">' + intro + '</div></details>';
+  }
+
+  // Verse by verse
+  if (ch.verseByVerse && ch.verseByVerse.length > 0) {
+    // Chip map
+    html += '<div class="verse-map">';
+    ch.verseByVerse.forEach((v, i) => {
+      html += '<a class="' + (v.sectionBreak ? 'section-chip' : 'verse-chip') + '" href="#vs' + i + '">' + v.ref + '</a>';
+    });
+    html += '</div>';
+    // Section headers render outside <details> so they're always visible.
+    // Verse entries are buffered and flushed into a <details> per section.
+    var vbvLabel = currentBook.testament === 'ST' ? 'Details' : 'Verse by Verse';
+    var verseBuffer = [];
+    var curTheology = '';
+    var curExamples = '';
+    function flushVerses() {
+      if (!verseBuffer.length) return;
+      html += '<details open><summary>' + vbvLabel + '</summary>' + verseBuffer.join('') + '</details>';
+      verseBuffer = [];
+      if (curTheology) { html += '<details><summary>Theology</summary><div class="accent-box">' + curTheology + '</div></details>'; curTheology = ''; }
+      if (curExamples) { html += '<details><summary>Then &amp; Now</summary><div class="accent-box">' + curExamples + '</div></details>'; curExamples = ''; }
+    }
+    ch.verseByVerse.forEach((v, i) => {
+      if (v.sectionBreak) {
+        flushVerses();
+        html += '<div class="section-hd" id="vs' + i + '">';
+        html += '<div class="section-hd-ref">' + v.ref + '</div>';
+        if (v.sectionOverview) html += '<div class="section-hd-overview">' + v.sectionOverview + '</div>';
+        html += '</div>';
+        curTheology = v.theology || '';
+        curExamples = v.examples || '';
+      } else {
+        var entry = '<div class="vbv-entry" id="vs' + i + '">';
+        entry += '<div class="vbv-ref">' + v.ref + '</div>';
+        if (v.quote) { var q = v.quote.replace(/^[“”"]+/, '').replace(/^(&ldquo;|&rdquo;)+/, '').replace(/[“”"]+$/, '').replace(/(&ldquo;|&rdquo;)+$/, ''); entry += '<div class="vbv-quote">&ldquo;' + q + '&rdquo;</div>'; }
+        if (v.commentary) entry += '<div class="vbv-commentary">' + v.commentary + '</div>';
+        entry += '</div>';
+        verseBuffer.push(entry);
+      }
+    });
+    flushVerses();
+  }
+
+  // Sections (Isaiah style — handled for prototype)
+  if (ch.sections && ch.sections.length > 0) {
+    // Section chips for direct navigation
+    html += '<div class="chip-bar">';
+    ch.sections.forEach((sec, i) => {
+      html += '<a class="verse-chip" href="#sec' + i + '">' + (sec.ref || sec.title) + '</a>';
+    });
+    html += '</div>';
+    html += '<details open><summary>Commentary</summary>';
+    ch.sections.forEach((sec, i) => {
+      html += '<div class="vbv-entry" id="sec' + i + '">';
+      html += '<div class="vbv-ref">' + sec.title + (sec.ref ? ' <span style="color:#a09070;font-weight:normal;font-size:.85rem">— ' + sec.ref + '</span>' : '') + '</div>';
+      if (sec.commentary) html += '<div class="vbv-commentary">' + sec.commentary + '</div>';
+      html += '</div>';
+    });
+    html += '</details>';
+  }
+
+  // Theology
+  if (ch.theology) {
+    html += '<details><summary>Theology</summary><div class="accent-box">' + ch.theology + '</div></details>';
+  }
+
+  // Key verse (Isaiah)
+  if (ch.keyVerse) {
+    html += '<details><summary>Key Verse</summary><div class="accent-box">'
+      + '<div class="vbv-ref">' + ch.keyVerse.ref + '</div>'
+      + '<div class="vbv-quote">&ldquo;' + ch.keyVerse.quote.replace(/^["""]+/, '').replace(/^(&ldquo;|&rdquo;)+/, '').replace(/["""]+$/, '').replace(/(&ldquo;|&rdquo;)+$/, '') + '&rdquo;</div>'
+      + (ch.keyVerse.note ? '<div class="vbv-commentary">' + ch.keyVerse.note + '</div>' : '')
+      + '</div></details>';
+  }
+
+  // Then & Now
+  if (ch.examples) {
+    html += '<details><summary>Then &amp; Now</summary><div class="accent-box">' + ch.examples + '</div></details>';
+  }
+
+  // Reflection (Isaiah)
+  if (ch.reflection) {
+    html += '<details><summary>For Reflection</summary><div class="accent-box"><p>' + ch.reflection + '</p></div></details>';
+  }
+
+  document.getElementById('content').innerHTML = html;
+  var curCanon = (currentBook && ESV_BOOKS[currentBook.title.toLowerCase().replace(/[.\s ]/g, '')]) || null;
+  var chMatch = /(?:chapter|psalm)\s+(\d+)\s*$/i.exec(ref || '');
+  linkifyScripture(document.getElementById('content'), curCanon, chMatch ? chMatch[1] : null);
+  addCopyButtons();
+  buildVerseIndex(ch);
+  closeVerseJump();
+  syncHeaderOffset();
+  refreshVersePill();
+
+  // Prev/next button state
+  document.getElementById('prev-btn').disabled = (idx === 0 && !prevBook());
+  document.getElementById('next-btn').disabled = (idx === currentKeys.length - 1 && !nextBook());
+
+  // Cross-book nav: "Continue to" at end only
+  var atEnd = idx === currentKeys.length - 1;
+  var nb = nextBook();
+  if (atEnd && nb) {
+    document.getElementById('content').insertAdjacentHTML('beforeend',
+      '<div style="text-align:center;padding:2rem 0">'
+      + '<button onclick="openBook(\'' + nb.id + '\')" style="background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;padding:.6rem 1.4rem;border-radius:4px;cursor:pointer;font-size:.95rem">'
+      + 'Continue to ' + nb.title + ' &#8594;</button></div>');
+  }
+
+  glDecorate();
+    if (pendingScrollRestore !== null) {
+    var y = pendingScrollRestore; pendingScrollRestore = null;
+    requestAnimationFrame(function() { window.scrollTo(0, y); });
+  } else {
+    window.scrollTo(0,0);
+  }
+}
+
+function prevBook() {
+  if (!currentBook) return null;
+  var idx = BOOKS.indexOf(currentBook);
+  return idx > 0 ? BOOKS[idx - 1] : null;
+}
+function nextBook() {
+  if (!currentBook) return null;
+  var idx = BOOKS.indexOf(currentBook);
+  return idx < BOOKS.length - 1 ? BOOKS[idx + 1] : null;
+}
+
+function goTo(k)         { render(currentKeys.indexOf(+k)); }
+function navigate(dir) {
+  var newIdx = currentIdx + dir;
+  if (newIdx < 0) { var pb = prevBook(); if (pb) openBook(pb.id); return; }
+  if (newIdx >= currentKeys.length) { var nb = nextBook(); if (nb) openBook(nb.id); return; }
+  render(newIdx);
+}
+
+// ── Keyboard navigation ───────────────────────────────────────────────────
+document.addEventListener('keydown', function(e) {
+  if (!currentBook || verseJumpOpen()) return;
+  if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(-1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
+});
+
+// ── Swipe navigation ──────────────────────────────────────────────────────
+(function() {
+  var startX = 0, startY = 0;
+  document.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    if (!currentBook || verseJumpOpen()) return;
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+      navigate(dx < 0 ? 1 : -1);
+    }
+  }, { passive: true });
+})();
+
+// ── Init ─────────────────────────────────────────────────────────────────
+buildHome();
+
+// On load, return to where the reader left off; fall back to the home screen.
+(function restoreLast() {
+  var lastBook = localStorage.getItem('last-book');
+  if (lastBook && BOOKS.find(function(b) { return b.id === lastBook; })) {
+    var savedChapter = localStorage.getItem(lastBook + '-pos');
+    if (savedChapter !== null) {
+      var y = localStorage.getItem(lastBook + '-' + savedChapter + '-scroll');
+      pendingScrollRestore = y !== null ? parseInt(y, 10) : null;
+    }
+    showHome();        // prime home behind the reader so the back-button works
+    openBook(lastBook);
+  } else {
+    showHome();
+  }
+})();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+  navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
+}
+
+/* ── Glossary linking (demo) ─────────────────────────────────────────────
+   Tap a technical term -> a sheet slides up in place. The reader never
+   navigates, so there is no place to lose. The full Dictionary entry is one
+   further tap, and the app's existing scroll memory brings them back. */
+var GLOSS = null, GLOSS_BY = {};
+fetch('data/glossary.json').then(function(r){return r.json();}).then(function(j){
+  GLOSS = j;
+  j.forEach(function(t){ t.m.forEach(function(m){ GLOSS_BY[m] = t; }); });
+  if (document.getElementById('content').innerHTML) glDecorate();
+});
+function glDecorate(){
+  if (!GLOSS) return;
+  var root = document.getElementById('content');
+  if (!root) return;
+  var seen = {};                      // first occurrence per chapter only
+  var pats = Object.keys(GLOSS_BY).sort(function(a,b){return b.length-a.length;});
+  var rx = new RegExp('\\b(' + pats.map(function(p){
+      return p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }).join('|') + ')\\b','i');
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(n){
+      if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p = n.parentNode;
+      while (p && p !== root) {
+        var t = p.nodeName.toLowerCase();
+        var c = p.classList || { contains: function(){ return false; } };
+        if (t === 'a' || t === 'sup' || t === 'summary' || c.contains('gl')) return NodeFilter.FILTER_REJECT;
+        /* NEVER mark Scripture: the ESV panel, or a quoted verse in the commentary. */
+        if (c.contains('passage-text') || c.contains('vbv-quote')) return NodeFilter.FILTER_REJECT;
+        /* NEVER mark a navigation heading -- those labels are also jump chips. */
+        if (c.contains('section-hd') || c.contains('section-hd-ref') || /^h[1-6]$/.test(t)) return NodeFilter.FILTER_REJECT;
+        /* A short <em> is usually a term being defined (keep); a long one is
+           almost always a quoted verse (reject). */
+        if (t === 'em' && p.textContent.trim().split(/\s+/).length > 3) return NodeFilter.FILTER_REJECT;
+        p = p.parentNode;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }});
+  var nodes = [], n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  nodes.forEach(function(node){
+    var m = rx.exec(node.nodeValue);
+    if (!m) return;
+    var key = m[1].toLowerCase();
+    var term = GLOSS_BY[key];
+    if (!term || seen[term.a]) return;
+    seen[term.a] = 1;
+    var after = node.splitText(m.index);
+    after.nodeValue = after.nodeValue.slice(m[1].length);
+    var span = document.createElement('span');
+    span.className = 'gl';
+    span.textContent = m[1];
+    span.setAttribute('data-a', term.a);
+    span.onclick = function(){ glOpen(term.a); };
+    node.parentNode.insertBefore(span, after);
+  });
+}
+function glOpen(a){
+  var t = GLOSS.find(function(x){return x.a === a;});
+  if (!t) return;
+  document.getElementById('gl-name').textContent = t.n;
+  document.getElementById('gl-word').textContent = t.w;
+  document.getElementById('gl-body').textContent = t.g;
+  document.getElementById('gl-full').href = 'dictionary.html#term-' + t.a;
+  document.getElementById('gl-sheet').classList.add('open');
+  document.getElementById('gl-backdrop').classList.add('open');
+}
+function glClose(){
+  document.getElementById('gl-sheet').classList.remove('open');
+  document.getElementById('gl-backdrop').classList.remove('open');
+}
+
+</script>
+</body>
+</html>
