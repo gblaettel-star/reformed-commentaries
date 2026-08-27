@@ -1,12 +1,33 @@
 [
  {
+  "n": "Armor of God",
+  "a": "armor-of-god",
+  "w": "panoplia tou theou (Greek) — the full armour of God; the complete spiritual equipment provided by God for the believer's warfare against spiritual enemies",
+  "g": "\"Put on the whole armour of God, that you may be able to stand against the schemes of the devil\" (Ephesians 6:11). The armour of God is not a metaphor for general moral improvement.",
+  "m": [
+   "armor of god"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "Access to the Father",
+  "a": "access-to-the-father",
+  "w": "prosagōgē (Greek) — introduction, right of entry, approach; the free and unhindered access to God the Father that believers have through Christ in the Spirit",
+  "g": "\"For through him we both have access in one Spirit to the Father\" (Ephesians 2:18). The word prosagōgē was used in the ancient world for the act of bringing someone into the presence of a king — the formal introduction, the granted audience, the right to enter where others cannot.",
+  "m": [
+   "access to the father"
+  ],
+  "r": 0.008
+ },
+ {
   "n": "Aseity",
   "a": "aseity",
   "w": "a se (Latin) — from himself; the perfection by which God exists of himself, depending on nothing outside himself for his being, life or blessedness",
   "g": "Every single thing you have ever seen was caused by something else. You exist because of your parents; they existed because of theirs.",
   "m": [
    "aseity"
-  ]
+  ],
+  "r": 0.0011
  },
  {
   "n": "Immutability",
@@ -15,7 +36,8 @@
   "g": "Everything you love is changing. The people you know are becoming older, and in small ways other than they were.",
   "m": [
    "immutability"
-  ]
+  ],
+  "r": 0.0023
  },
  {
   "n": "Omnipresence",
@@ -24,7 +46,8 @@
   "g": "Omnipresence is not that God is very large, or thinly distributed like air through a room. He is not partly here and partly somewhere else.",
   "m": [
    "omnipresence"
-  ]
+  ],
+  "r": 0.0011
  },
  {
   "n": "Intermediate State",
@@ -33,7 +56,8 @@
   "g": "Christians die, and the resurrection has not happened yet. So what is true of a believer in the meantime?",
   "m": [
    "intermediate state"
-  ]
+  ],
+  "r": 0.0023
  },
  {
   "n": "Definite Atonement",
@@ -44,7 +68,8 @@
    "definite atonement",
    "particular redemption",
    "limited atonement"
-  ]
+  ],
+  "r": 0.0011
  },
  {
   "n": "Imputation",
@@ -52,9 +77,9 @@
   "w": "logizomai (Greek) — to reckon, to credit to an account; the crediting to a person of something that is not natively theirs",
   "g": "Imputation is an accounting word, and it is the hinge on which justification turns. To impute is to credit something to someone's account — not to infuse it into them, not to pretend it is there, but to reckon it to them on the basis of a real representative.",
   "m": [
-   "imputation",
-   "imputed"
-  ]
+   "imputation"
+  ],
+  "r": 0.0069
  },
  {
   "n": "Active Obedience of Christ",
@@ -63,7 +88,8 @@
   "g": "Most Christians know that Christ died for them. Fewer have been told that he also lived for them, and that this is half of what saved them.",
   "m": [
    "active obedience"
-  ]
+  ],
+  "r": 0.0034
  },
  {
   "n": "Kenosis",
@@ -72,7 +98,8 @@
   "g": "He emptied himself, by taking the form of a servant, being born in the likeness of men (Philippians 2:7). The Greek verb is ekenōsen , from which the doctrine takes its name — and everything depends on what he emptied himself of .",
   "m": [
    "kenosis"
-  ]
+  ],
+  "r": 0.0011
  },
  {
   "n": "Total Depravity",
@@ -81,7 +108,8 @@
   "g": "The name has done more damage than the doctrine. Total depravity does not mean that every person is as wicked as they could possibly be — plainly they are not.",
   "m": [
    "total depravity"
-  ]
+  ],
+  "r": 0.0126
  },
  {
   "n": "Ordo Salutis",
@@ -90,7 +118,8 @@
   "g": "Paul gives the outline himself in what has been called the golden chain: those whom he foreknew he also predestined... and those whom he predestined he also called, and those whom he called he also justified, and those whom he justified he also glorified (Romans 8:29–30).",
   "m": [
    "ordo salutis"
-  ]
+  ],
+  "r": 0.0
  },
  {
   "n": "Expiation",
@@ -98,9 +127,9 @@
   "w": "expiare (Latin) — to remove or cleanse away; the taking away of sin and its guilt, distinguished from propitiation, which turns away wrath",
   "g": "Expiation and propitiation are two halves of one rescue, and the difference is what each deals with. To expiate is to deal with the sin — to remove it, carry it off, cleanse it away.",
   "m": [
-   "expiation",
-   "expiate"
-  ]
+   "expiation"
+  ],
+  "r": 0.0011
  },
  {
   "n": "Eternal Generation of the Son",
@@ -109,7 +138,8 @@
   "g": "The Nicene Creed says the Son is begotten, not made , and adds begotten of the Father before all worlds. Both halves matter.",
   "m": [
    "eternal generation"
-  ]
+  ],
+  "r": 0.0011
  },
  {
   "n": "Perichoresis",
@@ -118,7 +148,8 @@
   "g": "The three persons of the Trinity are not three parts of God arranged side by side. Each dwells wholly in the others — the Father entirely in the Son, the Son entirely in the Father, and the Spirit in both — without any of the three blurring into the others.",
   "m": [
    "perichoresis"
-  ]
+  ],
+  "r": 0.0023
  },
  {
   "n": "Covenant of Works",
@@ -127,7 +158,8 @@
   "g": "God placed Adam in a garden, gave him everything but one tree, and attached a penalty: in the day that you eat of it you shall surely die (Genesis 2:17). Reformed theology has called this arrangement the covenant of works — obedience as the condition, life as the outcome, and death as the consequence of failure.",
   "m": [
    "covenant of works"
-  ]
+  ],
+  "r": 0.0046
  },
  {
   "n": "Covenant of Grace",
@@ -136,7 +168,8 @@
   "g": "The moment after the first sin, before any sentence is carried out, God makes a promise: the offspring of the woman will crush the serpent's head (Genesis 3:15). Reformed theology calls what begins there the covenant of grace — the single arrangement by which God saves sinners, unfolded through Noah, Abraham, Moses and David, and…",
   "m": [
    "covenant of grace"
-  ]
+  ],
+  "r": 0.008
  },
  {
   "n": "Covenant of Redemption",
@@ -145,7 +178,8 @@
   "g": "Before there was a world, there was an agreement. The Father purposed to save a people and gave them to the Son; the Son undertook to become one of them and pay for them; the Spirit undertook to bring them to the Son and keep them.",
   "m": [
    "covenant of redemption"
-  ]
+  ],
+  "r": 0.0034
  },
  {
   "n": "Adoption",
@@ -154,7 +188,18 @@
   "g": "Adoption is the most personal word in the gospel. Forgiveness deals with the record — the charges are dropped, the debt is cancelled.",
   "m": [
    "adoption"
-  ]
+  ],
+  "r": 0.0424
+ },
+ {
+  "n": "Abomination of Desolation",
+  "a": "abomination-of-desolation",
+  "w": "shiqquts shomem (Hebrew) — the detestable thing that causes horror; a desecration of the holy place that signals supreme crisis",
+  "g": "The phrase \"abomination of desolation\" appears first in Daniel (9:27, 11:31, 12:11) and is taken up directly by Jesus in His Olivet Discourse: \"So when you see the abomination of desolation spoken of by the prophet Daniel, standing in the holy place — let the reader understand — then let those who are in Judea flee to the mountains\"…",
+  "m": [
+   "abomination of desolation"
+  ],
+  "r": 0.0057
  },
  {
   "n": "Antichrist",
@@ -163,7 +208,8 @@
   "g": "The word \"antichrist\" appears only in the letters of John — and he uses it in a way that surprises most people. We expect a single, dramatic, end-time figure.",
   "m": [
    "antichrist"
-  ]
+  ],
+  "r": 0.0057
  },
  {
   "n": "Apostasy",
@@ -172,7 +218,409 @@
   "g": "Apostasy is one of the most solemn subjects in the New Testament — and one of the most misunderstood. The word means a \"standing away from\" — a deliberate departure from the faith one once held.",
   "m": [
    "apostasy"
-  ]
+  ],
+  "r": 0.0619
+ },
+ {
+  "n": "Apostle",
+  "a": "apostle",
+  "w": "apostolos (Greek) — one sent on a mission with the authority of the sender; the foundational office of the New Testament church",
+  "g": "An apostle is more than a messenger. The Greek apostolos — \"one sent\" — carries the weight of the sender's authority.",
+  "m": [
+   "apostle"
+  ],
+  "r": 0.1686
+ },
+ {
+  "n": "Alienated from the Life of God",
+  "a": "alienated-from-life-of-god",
+  "w": "apēllotriōmenoi tēs zōēs tou theou (Greek) — estranged, excluded from the life of God; describing the spiritual condition of those whose minds and hearts are darkened and cut off from their Creator",
+  "g": "\"They are darkened in their understanding, alienated from the life of God because of the ignorance that is in them, due to their hardness of heart\" (Ephesians 4:18). Alienation is a strong word.",
+  "m": [
+   "alienated from the life of god"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Anger",
+  "a": "anger",
+  "w": "orgē / thymos (Greek) — settled wrath / passionate outburst; two shades of anger, both of which the gospel addresses and the Spirit disciplines",
+  "g": "\"Let all bitterness and wrath and anger and clamour and slander be put away from you, along with all malice\" (Ephesians 4:31). Paul lists anger alongside bitterness, wrath, clamour, slander, and malice — the family of responses that damage the body of Christ and grieve the Holy Spirit.",
+  "m": [
+   "anger"
+  ],
+  "r": 0.1525
+ },
+ {
+  "n": "Atonement",
+  "a": "atonement",
+  "w": "kaphar (Hebrew) / hilasmos (Greek) — covering, propitiation, making right",
+  "g": "Atonement is the answer to the most urgent question a human being can ask: how can a holy God and a sinful person occupy the same space? How can the One who cannot look upon evil look upon me — and not destroy me?",
+  "m": [
+   "atonement"
+  ],
+  "r": 0.1273
+ },
+ {
+  "n": "Birth Pains",
+  "a": "birth-pains",
+  "w": "odin (Greek) — labour pains; the intensifying sufferings that precede the new age, like contractions before birth",
+  "g": "When Jesus describes the events preceding His return — wars, famines, earthquakes, persecution, false prophets — He calls them \"the beginning of birth pains\" (Matthew 24:8). The image He reaches for is not catastrophe for its own sake but purposeful suffering that is moving toward something.",
+  "m": [
+   "birth pains"
+  ],
+  "r": 0.0046
+ },
+ {
+  "n": "Crucifixion",
+  "a": "crucifixion",
+  "w": "stauros (Greek) — the cross; the Roman instrument of execution by which Jesus accomplished the redemption of the world",
+  "g": "The crucifixion of Jesus Christ is the central event in human history. Not merely the most important event in religious history, not merely the most influential death in the story of Western civilisation — the actual centre of all time, the point toward which everything before it was moving and from which everything after it derives…",
+  "m": [
+   "crucifixion"
+  ],
+  "r": 0.0894
+ },
+ {
+  "n": "Children, Obey Your Parents",
+  "a": "children-obey-parents",
+  "w": "tekna, hypakouete tois goneusin (Greek) — children, obey your parents; the household code's instruction to children, grounded in the fifth commandment and the promise attached to it",
+  "g": "\"Children, obey your parents in the Lord, for this is right. 'Honour your father and mother' (this is the first commandment with a promise), 'that it may go well with you and that you may live long in the land'\" (Ephesians 6:1–3).",
+  "m": [
+   "children, obey your parents"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Christ is Head of the Church",
+  "a": "christ-head-of-church",
+  "w": "kephalē tēs ekklēsias (Greek) — head of the church; Christ's relationship to the church as its supreme authority, source of life, and loving governor",
+  "g": "\"For the husband is the head of the wife even as Christ is the head of the church, his body, and is himself its Saviour\" (Ephesians 5:23). The headship of Christ over the church is not merely an administrative role.",
+  "m": [
+   "christ is head of the church"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Calling",
+  "a": "calling",
+  "w": "klēsis (Greek) — a calling, an invitation; the divine summons by which God draws sinners to Himself and appoints them to His purpose",
+  "g": "Calling is the word that stands at the hinge between eternity and time. In the golden chain of Romans 8, it comes after predestination and before justification: \"those whom he predestined he also called, and those whom he called he also justified\" (v.30).",
+  "m": [
+   "calling"
+  ],
+  "r": 0.2374
+ },
+ {
+  "n": "Children of Wrath",
+  "a": "children-of-wrath",
+  "w": "tekna orgēs (Greek) — those who, by nature and by conduct, stand under the righteous judgment of God; the universal human condition apart from grace",
+  "g": "\"We all once lived in the passions of our flesh, carrying out the desires of the body and the mind, and were by nature children of wrath, like the rest of mankind\" (Ephesians 2:3). These are among the most searingly honest words in Scripture.",
+  "m": [
+   "children of wrath"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "Circumcision / Uncircumcision",
+  "a": "circumcision",
+  "w": "peritomē / akrobystia (Greek) — the physical sign of the Mosaic covenant; and the absence of it; shorthand for the two great divisions of humanity before the gospel",
+  "g": "\"Therefore remember that at one time you Gentiles in the flesh, called 'the uncircumcision' by what is called the circumcision, which is made in the flesh by hands...\" (Ephesians 2:11). Before going further, Paul wants the Gentile believers in Ephesus to remember what they were.",
+  "m": [
+   "circumcision",
+   "uncircumcision"
+  ],
+  "r": 0.0585
+ },
+ {
+  "n": "Clamour",
+  "a": "clamour",
+  "w": "kraugē (Greek) — a loud cry, an outcry; the raised voice of anger, complaint, or dispute that disorders the community and drowns out grace",
+  "g": "\"Let all bitterness and wrath and anger and clamour and slander be put away from you, along with all malice\" (Ephesians 4:31). Clamour — kraugē — is the loud, uncontrolled expression of inner turmoil.",
+  "m": [
+   "clamour"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Covetousness",
+  "a": "covetousness",
+  "w": "pleonexia (Greek) — greediness, wanting always more; the insatiable appetite for what belongs to another; named as idolatry in the New Testament",
+  "g": "\"But sexual immorality and all impurity or covetousness must not even be named among you, as is proper among saints\" (Ephesians 5:3). Covetousness — pleonexia — means literally \"the desire to have more.\" It is the appetite that is never satisfied, the desire that feeds on what it receives and grows hungrier with every gratification.",
+  "m": [
+   "covetousness"
+  ],
+  "r": 0.0092
+ },
+ {
+  "n": "Crude Joking",
+  "a": "crude-joking",
+  "w": "eutrapelia (Greek) — wit, facetiousness; in context, the kind of sharp, sexually-tinged humour that degrades what God has made holy and substitutes cleverness for worship",
+  "g": "\"Let there be no filthiness nor foolish talk nor crude joking, which are out of place, but instead let there be thanksgiving\" (Ephesians 5:4). Eutrapelia — often translated as \"crude joking\" — is an interesting word.",
+  "m": [
+   "crude joking"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Coming Ages",
+  "a": "coming-ages",
+  "w": "aiōnes eperchomai (Greek) — the ages yet to come; the unending future in which God's grace in Christ will be displayed before the watching universe",
+  "g": "\"So that in the coming ages he might show the immeasurable riches of his grace in kindness toward us in Christ Jesus\" (Ephesians 2:7). This verse pulls back the curtain on the purpose of salvation at a scale most Christians never pause to consider.",
+  "m": [
+   "coming ages"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Commonwealth of Israel",
+  "a": "commonwealth-of-israel",
+  "w": "politeia tou Israēl (Greek) — citizenship in Israel; the body politic of God's covenant people, with all its rights, privileges, and promises",
+  "g": "\"...remember that you were at that time... alienated from the commonwealth of Israel and strangers to the covenants of promise, having no hope and without God in the world\" (Ephesians 2:11–12).",
+  "m": [
+   "commonwealth of israel"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "Christ as the Cornerstone",
+  "a": "cornerstone",
+  "w": "akrogōniaios (Greek) — the cornerstone; the foundational stone that determines the alignment of the entire building; Christ as the defining reference point of the church",
+  "g": "\"...built on the foundation of the apostles and prophets, Christ Jesus himself being the cornerstone, in whom the whole structure, being joined together, grows into a holy temple in the Lord\" (Ephesians 2:20–21). The cornerstone in ancient architecture was not decorative — it was structural.",
+  "m": [
+   "christ as the cornerstone"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Covenants of Promise",
+  "a": "covenants-of-promise",
+  "w": "diathēkai tēs epangelias (Greek) — the succession of covenant commitments through which God progressively revealed and secured His saving promise",
+  "g": "\"...strangers to the covenants of promise\" (Ephesians 2:12). The plural is significant: not one covenant but many — a succession of divine commitments by which God revealed, renewed, and progressively clarified His saving purpose across the centuries.",
+  "m": [
+   "covenants of promise"
+  ],
+  "r": 0.0046
+ },
+ {
+  "n": "Darkness",
+  "a": "darkness",
+  "w": "skotos (Greek) — darkness; the spiritual condition of the unregenerate world; blindness, ignorance, and moral evil in opposition to the light of God",
+  "g": "\"For at one time you were darkness, but now you are light in the Lord\" (Ephesians 5:8). Notice what Paul does not say.",
+  "m": [
+   "darkness"
+  ],
+  "r": 0.1927
+ },
+ {
+  "n": "Days Are Evil",
+  "a": "days-are-evil",
+  "w": "hai hēmerai ponērai eisin (Greek) — the days are evil; Paul's diagnosis of the present age as morally hostile, requiring urgency and wisdom from the believer",
+  "g": "\"Look carefully then how you walk, not as unwise but as wise, making the best use of the time, because the days are evil\" (Ephesians 5:15–16). \"The days are evil\" is not pessimism — it is realism.",
+  "m": [
+   "days are evil"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "Deceive",
+  "a": "deceive",
+  "w": "apataō / exapataō (Greek) — to deceive, to lead astray with empty words; the spiritual danger of believing lies dressed as wisdom",
+  "g": "\"Let no one deceive you with empty words, for because of these things the wrath of God comes upon the sons of disobedience\" (Ephesians 5:6). The deception Paul warns against is not crude or obviously false — it comes with words.",
+  "m": [
+   "deceive"
+  ],
+  "r": 0.0287
+ },
+ {
+  "n": "Debauchery",
+  "a": "debauchery",
+  "w": "asōtia (Greek) — reckless, wasteful living; the dissolute life that has abandoned all restraint; the opposite of the Spirit-filled life",
+  "g": "\"And do not get drunk with wine, for that is debauchery, but be filled with the Spirit\" (Ephesians 5:18). Asōtia — translated debauchery or dissipation — is the word used in Luke 15:13 for the Prodigal Son's \"reckless living,\" the squandering of what was given in a life of unrestrained indulgence.",
+  "m": [
+   "debauchery"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Day of Redemption",
+  "a": "day-of-redemption",
+  "w": "hēmera apolytrōseōs (Greek) — the day of final redemption; the eschatological completion of salvation when the body is redeemed and all things are made new",
+  "g": "\"And do not grieve the Holy Spirit of God, by whom you were sealed for the day of redemption\" (Ephesians 4:30). The day of redemption is the horizon toward which the whole Christian life is oriented — the day when salvation, now received in its beginning and middle chapters, will reach its final and full expression.",
+  "m": [
+   "day of redemption"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Day of the Lord",
+  "a": "day-of-the-lord",
+  "w": "yom YHWH (Hebrew) — the decisive moment of God's intervention in history to judge evil and vindicate His people",
+  "g": "The Day of the Lord is one of the great themes of the prophets — and one of the most misunderstood. The people of Israel expected it eagerly, the way you might anticipate the arrival of an army coming to rescue you.",
+  "m": [
+   "day of the lord"
+  ],
+  "r": 0.039
+ },
+ {
+  "n": "Disciple",
+  "a": "disciple",
+  "w": "mathetes (Greek) — a learner, a follower; one who attaches himself to a teacher to learn his way of life",
+  "g": "A disciple in the ancient world was not a student in the modern sense — someone who absorbs information, passes an exam, and moves on. A disciple attached himself to a rabbi and followed him everywhere, watching how he lived, listening to how he spoke, learning not merely what he taught but who he was.",
+  "m": [
+   "disciple"
+  ],
+  "r": 0.0894
+ },
+ {
+  "n": "Dead in Trespasses and Sins",
+  "a": "dead-in-trespasses",
+  "w": "nekros en paraptōmasin kai hamartiais (Greek) — spiritually dead; without life, response, or movement toward God; the fundamental condition of fallen humanity",
+  "g": "\"And you were dead in the trespasses and sins in which you once walked\" (Ephesians 2:1). Dead.",
+  "m": [
+   "dead in trespasses and sins"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Expose the Works of Darkness",
+  "a": "expose-works-of-darkness",
+  "w": "elenchō (Greek) — to expose, reprove, convict; to bring hidden things into the light so their true nature becomes visible",
+  "g": "\"Take no part in the unfruitful works of darkness, but instead expose them\" (Ephesians 5:11). The believer's relationship to the darkness around them is not passive avoidance but active exposure.",
+  "m": [
+   "expose the works of darkness"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Equipping the Saints",
+  "a": "equipping-the-saints",
+  "w": "katartismos (Greek) — the mending, fitting, and preparing of something for its proper function; the purpose for which Christ gave gifts to His church",
+  "g": "\"To equip the saints for the work of ministry, for building up the body of Christ\" (Ephesians 4:12). This single verse overturns the most pervasive misunderstanding in the history of the church.",
+  "m": [
+   "equipping the saints"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Eternal Life",
+  "a": "eternal-life",
+  "w": "zoe aionios (Greek) — the life of the age to come; a quality of knowing God that begins now and never ends",
+  "g": "Eternal life is not primarily about duration. Most people hear the phrase and think: life that goes on forever — the endless extension of existence beyond death.",
+  "m": [
+   "eternal life"
+  ],
+  "r": 0.0573
+ },
+ {
+  "n": "Election",
+  "a": "election",
+  "w": "eklegō (Greek) — to choose out, to select",
+  "g": "Election is one of those doctrines that makes people uncomfortable — and it should, because it strips us of every last shred of self-congratulation and places the whole of our salvation in the hands of God. To be elect is to be chosen — not because of anything foreseen in you, not because you were wiser or more responsive than others,…",
+  "m": [
+   "election"
+  ],
+  "r": 0.0722
+ },
+ {
+  "n": "Evangelist",
+  "a": "evangelist",
+  "w": "euangelistēs (Greek) — a proclaimer of good news; one whose defining work is announcing the gospel to those who have not yet heard it",
+  "g": "The evangelist is the church's frontier runner. While the shepherd tends the flock and the teacher builds it up, the evangelist is always looking outward — toward the person who has not yet heard, the community not yet reached, the edge of the known territory where the gospel has not yet arrived.",
+  "m": [
+   "evangelist"
+  ],
+  "r": 0.0493
+ },
+ {
+  "n": "God's Power for Us",
+  "a": "gods-power-for-us",
+  "w": "dynamis / energeia / kratos / ischus (Greek) — four interlocking words for divine power; the immeasurable, active, invincible strength that God directs toward His people",
+  "g": "\"...and what is the immeasurable greatness of his power toward us who believe, according to the working of his great might that he worked in Christ when he raised him from the dead and seated him at his right hand in the heavenly places\" (Ephesians 1:19–20). Paul reaches for four different Greek words for power in a single sentence —…",
+  "m": [
+   "god's power for us"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Good Works",
+  "a": "good-works",
+  "w": "erga agatha (Greek) — deeds of genuine moral and spiritual worth; the God-prepared fruit of saving faith, not its root",
+  "g": "\"For we are his workmanship, created in Christ Jesus for good works, which God prepared beforehand, that we should walk in them\" (Ephesians 2:10). This verse is the completion of one of the most carefully constructed arguments in Paul's letters.",
+  "m": [
+   "good works"
+  ],
+  "r": 0.0321
+ },
+ {
+  "n": "Gentleness",
+  "a": "gentleness",
+  "w": "prautēs (Greek) — meekness, controlled strength; power under submission, not weakness",
+  "g": "Gentleness has a reputation problem. In a culture that prizes forcefulness, assertiveness, and the projection of strength, gentleness is often mistaken for timidity — the virtue of the person who cannot stand up for themselves.",
+  "m": [
+   "gentleness"
+  ],
+  "r": 0.0459
+ },
+ {
+  "n": "Grieving the Holy Spirit",
+  "a": "grieving-the-holy-spirit",
+  "w": "lypeō to pneuma to hagion (Greek) — to cause grief or sorrow to the Holy Spirit; the relational harm done to the indwelling person of God by sin",
+  "g": "\"And do not grieve the Holy Spirit of God, by whom you were sealed for the day of redemption\" (Ephesians 4:30). This is one of the most tender verses in the New Testament — and one of the most searching.",
+  "m": [
+   "grieving the holy spirit"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Grow Up into Him / Christ",
+  "a": "grow-up-into-him",
+  "w": "auxēsōmen eis auton ta panta (Greek) — to grow up in all things into Him; the organic, Spirit-driven movement of the whole church toward Christlikeness",
+  "g": "\"Rather, speaking the truth in love, we are to grow up in every way into him who is the head, into Christ\" (Ephesians 4:15). Growing up in Christ is not self-improvement in a religious key.",
+  "m": [
+   "grow up into him"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Fathers, Do Not Provoke Your Children to Anger",
+  "a": "fathers-not-provoke",
+  "w": "pateres, mē parorgizete ta tekna (Greek) — fathers, do not provoke your children to anger; the counterpart to children's obedience, placing the burden of wise, grace-shaped parenting on the father",
+  "g": "\"Fathers, do not provoke your children to anger, but bring them up in the discipline and instruction of the Lord\" (Ephesians 6:4). Paul's word to fathers is the counterpart to his word to children — and it is the more demanding of the two.",
+  "m": [
+   "fathers, do not provoke your children to anger"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Filthy and Foolish Talk",
+  "a": "filthy-foolish-talk",
+  "w": "aischrologia / mōrologia (Greek) — obscene speech / foolish, morally empty talk; words that shame and degrade rather than give grace",
+  "g": "\"Let there be no filthiness nor foolish talk nor crude joking, which are out of place, but instead let there be thanksgiving\" (Ephesians 5:4). Paul names two related categories of speech.",
+  "m": [
+   "filthy and foolish talk"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Flaming Darts of the Evil One",
+  "a": "flaming-darts",
+  "w": "bele pepyrōmena tou ponērou (Greek) — the burning arrows of the evil one; the rapid, targeted spiritual assaults that the enemy launches against the mind and heart of the believer",
+  "g": "\"In all circumstances take up the shield of faith, with which you can extinguish all the flaming darts of the evil one\" (Ephesians 6:16). The image is vivid and militarily precise.",
+  "m": [
+   "flaming darts of the evil one"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Fruit of Light",
+  "a": "fruit-of-light",
+  "w": "karpos tou phōtos (Greek) — the fruit of light; the natural moral and spiritual produce of a life genuinely filled with the light of God",
+  "g": "\"For the fruit of light is found in all that is good and right and true\" (Ephesians 5:9). The fruit of light is what grows naturally in a life that has been genuinely exposed to and filled with the light of God.",
+  "m": [
+   "fruit of light"
+  ],
+  "r": 0.0011
  },
  {
   "n": "Justification",
@@ -181,7 +629,208 @@
   "g": "Justification is a courtroom word. It does not mean \"to make righteous\" — as if God gradually improves you until you are good enough to stand before Him.",
   "m": [
    "justification"
-  ]
+  ],
+  "r": 0.0872
+ },
+ {
+  "n": "Repentance",
+  "a": "repentance",
+  "w": "metanoia (Greek) — change of mind, turning around",
+  "g": "Repentance is not remorse. Remorse says \"I feel terrible about what I did.\" Repentance says \"I was wrong, I am turning, and I am going in a different direction.\" The difference matters enormously.",
+  "m": [
+   "repentance"
+  ],
+  "r": 0.1927
+ },
+ {
+  "n": "Sexual Immorality",
+  "a": "sexual-immorality",
+  "w": "porneia (Greek) — sexual immorality; any sexual activity outside the covenant of marriage between a man and woman; named among the gravest sins in the New Testament",
+  "g": "\"But sexual immorality and all impurity or covetousness must not even be named among you, as is proper among saints\" (Ephesians 5:3). Porneia is the comprehensive New Testament term for sexual sin — including fornication, adultery, and every form of sexual activity outside the covenant of marriage.",
+  "m": [
+   "sexual immorality"
+  ],
+  "r": 0.0367
+ },
+ {
+  "n": "Sensuality",
+  "a": "sensuality",
+  "w": "aselgeia (Greek) — licentiousness, unbridled indulgence; the shameless pursuit of pleasure without restraint, the fruit of a heart that has grown callous to God",
+  "g": "\"They have become callous and have given themselves up to sensuality, greedy to practise every kind of impurity\" (Ephesians 4:19). Sensuality — aselgeia — describes not a single act of indulgence but a way of life characterised by the complete abandonment of moral restraint.",
+  "m": [
+   "sensuality"
+  ],
+  "r": 0.0103
+ },
+ {
+  "n": "Sealed with the Holy Spirit",
+  "a": "sealed-with-the-holy-spirit",
+  "w": "sphragizō (Greek) — to mark with a seal; to authenticate, secure, and certify ownership; the Spirit as God's mark of possession on the believer",
+  "g": "\"In him you also, when you heard the word of truth, the gospel of your salvation, and believed in him, were sealed with the promised Holy Spirit\" (Ephesians 1:13). A seal in the ancient world did three things: it identified ownership, it guaranteed authenticity, and it protected contents.",
+  "m": [
+   "sealed with the holy spirit"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Seated in Heavenly Places",
+  "a": "seated-in-heavenly-places",
+  "w": "synkathizō en tois epouraniois (Greek) — co-seated, enthroned together with Christ in the heavenly realm; the present positional reality of every believer in union with the risen Lord",
+  "g": "\"And raised us up with him and seated us with him in the heavenly places in Christ Jesus\" (Ephesians 2:6). Three verbs, three past tenses, three astonishing facts about every person who is in Christ: made alive together with Him, raised together with Him, seated together with Him.",
+  "m": [
+   "seated in heavenly places"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Shepherds and Teachers",
+  "a": "shepherds-and-teachers",
+  "w": "poimenas kai didaskalous (Greek) — the linked pair of the pastoral office: one who tends and guards the flock and feeds it on truth",
+  "g": "In Ephesians 4:11, the final gift Christ gives to His church is listed as \"shepherds and teachers\" — not two separate offices but one, linked by a single Greek article: the shepherd who teaches, the teacher who shepherds. You cannot be a true shepherd without feeding the flock on truth.",
+  "m": [
+   "shepherds and teachers"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Signs and Wonders",
+  "a": "signs-and-wonders",
+  "w": "semeia kai terata (Greek) — miraculous acts that point beyond themselves to God's power and purposes",
+  "g": "Signs and wonders appear throughout Scripture as God's dramatic interventions in the natural order — acts that cannot be explained by ordinary cause and effect and that point beyond themselves to the power and purposes of God. The plagues of Egypt, the parting of the Red Sea, the healings of Elisha, the miracles of Jesus, the signs…",
+  "m": [
+   "signs and wonders"
+  ],
+  "r": 0.0195
+ },
+ {
+  "n": "Shield of Faith",
+  "a": "shield-of-faith",
+  "w": "thyreos tēs pisteōs (Greek) — the large door-shaped shield of faith; the piece of armour that intercepts and extinguishes the burning arrows of the enemy before they penetrate the heart",
+  "g": "\"In all circumstances take up the shield of faith, with which you can extinguish all the flaming darts of the evil one\" (Ephesians 6:16). The thyreos was not the small round shield of the light infantryman — it was the large, body-covering shield of the heavy soldier, typically two and a half feet wide and four feet tall, made of wood…",
+  "m": [
+   "shield of faith"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Shoes for Your Feet / Gospel of Peace",
+  "a": "shoes-gospel-of-peace",
+  "w": "hypodēsamenoi tous podas en hetoimasia tou euangeliou tēs eirēnēs (Greek) — having fitted your feet with the readiness of the gospel of peace; the stable, mobile foundation the gospel provides for the believer's standing and walking",
+  "g": "\"And, as shoes for your feet, having put on the readiness given by the gospel of peace\" (Ephesians 6:15). The Roman soldier's boots — heavy-soled, studded with hobnails — were essential for two things: stability and mobility.",
+  "m": [
+   "shoes for your feet"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Speaking in Tongues",
+  "a": "speaking-in-tongues",
+  "w": "glossa (Greek) — tongue, language; a Spirit-given capacity to speak in a language not naturally known, or in a heavenly language of prayer",
+  "g": "Speaking in tongues is one of the most discussed and most divisive gifts in the New Testament — and a great deal of the division comes from reading 1 Corinthians 14 without first reading Acts 2, and from conflating what may be two distinct phenomena. At Pentecost, the disciples spoke in recognisable human languages they had not…",
+  "m": [
+   "speaking in tongues"
+  ],
+  "r": 0.0046
+ },
+ {
+  "n": "Slander",
+  "a": "slander",
+  "w": "blasphēmia (Greek) — speech that injures reputation; defamation, malicious talk about another; the destructive use of words against the character of a person",
+  "g": "\"Let all bitterness and wrath and anger and clamour and slander be put away from you, along with all malice\" (Ephesians 4:31). Slander — blasphēmia — is the word we transliterate as \"blasphemy,\" and it is used both of injurious speech against God and injurious speech against people.",
+  "m": [
+   "slander"
+  ],
+  "r": 0.0401
+ },
+ {
+  "n": "Sons of Disobedience",
+  "a": "sons-of-disobedience",
+  "w": "huioi tēs apeithias (Greek) — a Hebraic idiom for those whose defining characteristic is refusal to submit to God; those in whom the spirit of disobedience is at home",
+  "g": "\"Following the prince of the power of the air, the spirit that is now at work in the sons of disobedience\" (Ephesians 2:2). \"Sons of disobedience\" is a Hebraic expression — just as \"sons of thunder\" means those who are characteristically thunderous, \"sons of disobedience\" means those whose core orientation is non-compliance with God.",
+  "m": [
+   "sons of disobedience"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "Speak the Truth",
+  "a": "speak-the-truth",
+  "w": "alētheuontes (Greek) — being truthful, living in truth; the practice of honest, sincere speech that corresponds to reality and serves the good of those who hear it",
+  "g": "\"Therefore, having put away falsehood, let each one of you speak the truth with his neighbour, for we are members one of another\" (Ephesians 4:25). Speaking the truth is the positive command that follows the negative one — put away falsehood; speak the truth.",
+  "m": [
+   "speak the truth"
+  ],
+  "r": 0.0046
+ },
+ {
+  "n": "Speaking Truth in Love",
+  "a": "speaking-truth-in-love",
+  "w": "alētheuontes en agapē (Greek) — truthing in love; the integration of honest speech with genuine care; the manner by which the body of Christ grows up into the head",
+  "g": "\"Rather, speaking the truth in love, we are to grow up in every way into him who is the head, into Christ\" (Ephesians 4:15). \"Speaking the truth in love\" is the most famous pairing in Ephesians — so famous, in fact, that it has been split in two by its admirers.",
+  "m": [
+   "speaking truth in love"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Slaves, Obey Your Masters",
+  "a": "slaves-obey-masters",
+  "w": "douloi, hypakouete tois kyriois (Greek) — slaves, obey your masters; the household code's instruction to those in the lowest social position, reframing their work as service rendered to Christ",
+  "g": "\"Bondservants, obey your earthly masters with fear and trembling, with a sincere heart, as you would Christ, not by the way of eye-service, as people-pleasers, but as bondservants of Christ, doing the will of God from the heart, rendering service with a good will as to the Lord and not to man, knowing that whatever good anyone does,…",
+  "m": [
+   "slaves, obey your masters"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Stand Against the Schemes of the Devil",
+  "a": "stand-against-schemes",
+  "w": "stēnai pros tas methodeias tou diabolou (Greek) — to stand against the methodical, calculated strategies of the devil; the spiritual posture of the armoured believer in the face of organised spiritual opposition",
+  "g": "\"Put on the whole armour of God, that you may be able to stand against the schemes of the devil\" (Ephesians 6:11). Two words deserve close attention.",
+  "m": [
+   "stand against the schemes of the devil"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Submitting to One Another",
+  "a": "submitting-to-one-another",
+  "w": "hypotassomenoi allēlois (Greek) — submitting to one another; the mutual, Spirit-filled posture of deference and other-orientation that characterises life in the new community",
+  "g": "\"...submitting to one another out of reverence for Christ\" (Ephesians 5:21). This verse is the hinge between the section on the Spirit-filled life (5:18–20) and the household codes (5:22–6:9).",
+  "m": [
+   "submitting to one another"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Sword of the Spirit",
+  "a": "sword-of-the-spirit",
+  "w": "machaira tou pneumatos (Greek) — the short sword of the Spirit; the word of God as the believer's active, Spirit-wielded weapon for both defence and proclamation",
+  "g": "\"The sword of the Spirit, which is the word of God\" (Ephesians 6:17). Every other piece of armour Paul describes is defensive — the belt, the breastplate, the shoes, the shield, the helmet all protect the believer from what the enemy sends.",
+  "m": [
+   "sword of the spirit"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Sovereignty",
+  "a": "sovereignty",
+  "w": "pantokrator (Greek) — the Almighty; the absolute, supreme, uncontested rule of God over all creation",
+  "g": "The sovereignty of God is not merely His power to do what He wants — it is His actual, present, comprehensive governance of everything that exists. He is not a bystander hoping things go well.",
+  "m": [
+   "sovereignty"
+  ],
+  "r": 0.1021
+ },
+ {
+  "n": "Saints",
+  "a": "saints",
+  "w": "hagioi (Greek) — the holy ones; every person set apart by God through union with Christ, called to a life that matches their identity",
+  "g": "Saint is not an honorary title for the exceptionally devout. In the New Testament, Paul addresses entire congregations as saints — ordinary believers in Corinth, Ephesus, Philippi, Rome — people with real sins, real conflicts, real failures.",
+  "m": [
+   "saints"
+  ],
+  "r": 0.1089
  },
  {
   "n": "Sanctification",
@@ -190,7 +839,359 @@
   "g": "If justification is the verdict, sanctification is the life lived in the light of it. Justification happens in an instant and is complete; sanctification happens across a lifetime and is never quite finished this side of glory.",
   "m": [
    "sanctification"
-  ]
+  ],
+  "r": 0.0505
+ },
+ {
+  "n": "Great White Throne",
+  "a": "great-white-throne",
+  "w": "megas leukos thronos (Greek) — the final judgment seat of God at the end of all things",
+  "g": "Revelation 20:11–15 describes the most solemn scene in all of Scripture: \"Then I saw a great white throne and him who was seated on it. From his presence earth and sky fled away, and no place was found for them.\" The Great White Throne is the final judgment — the last and ultimate assize of all humanity, when every person who has ever…",
+  "m": [
+   "great white throne"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "God the Father",
+  "a": "god-the-father",
+  "w": "Pater (Greek) — the first person of the Trinity; Father of the eternal Son and, by adoption, of all who are in Christ",
+  "g": "God is Father in two distinct but related senses — and confusing the two has produced enormous theological error and enormous spiritual harm. He is first and eternally the Father of the Son.",
+  "m": [
+   "god the father"
+  ],
+  "r": 0.0356
+ },
+ {
+  "n": "God the Holy Spirit",
+  "a": "god-the-holy-spirit",
+  "w": "Ruach / Pneuma — the third person of the Trinity; the Spirit of God who indwells, empowers, and transforms",
+  "g": "The Holy Spirit is the most neglected person of the Trinity — and the one whose absence is most felt. He is not a force, an influence, or an atmosphere.",
+  "m": [
+   "god the holy spirit"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "God the Son",
+  "a": "god-the-son",
+  "w": "Huios tou Theou (Greek) — the second person of the Trinity; eternally begotten of the Father, incarnate as Jesus of Nazareth",
+  "g": "The Son of God is the most important person in the history of the universe. He is not merely the most important person who has ever lived — He is the one through whom all things were made, in whom all things hold together, and toward whom all things are moving (Colossians 1:16–17).",
+  "m": [
+   "god the son"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Baptism",
+  "a": "baptism",
+  "w": "baptisma (Greek) — immersion, washing; the initiatory sacrament of the new covenant signifying union with Christ in death and resurrection",
+  "g": "Baptism is the door of the church. It is the initiatory act by which a person is publicly identified with Jesus Christ — with His death, His burial, and His resurrection — and incorporated into His body, the church.",
+  "m": [
+   "baptism"
+  ],
+  "r": 0.0975
+ },
+ {
+  "n": "Bearing with One Another",
+  "a": "bearing-with-one-another",
+  "w": "anechomenoi allēlōn (Greek) — holding up one another, enduring one another; the active, daily choice to carry the weight of another person's faults and limitations in love",
+  "g": "\"Bearing with one another in love\" (Ephesians 4:2). The word anechomenoi means to hold something up, to endure, to carry.",
+  "m": [
+   "bearing with one another"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "Body of Christ",
+  "a": "body-of-christ",
+  "w": "sōma Christou (Greek) — the living organism of which Christ is the head; the church in its most intimate theological description",
+  "g": "The body of Christ is not a metaphor for a religious club. It is Paul's most audacious description of the church — and he means it literally.",
+  "m": [
+   "body of christ"
+  ],
+  "r": 0.0356
+ },
+ {
+  "n": "Be Angry and Do Not Sin",
+  "a": "be-angry-do-not-sin",
+  "w": "orgizesthe kai mē hamartanete (Greek) — a quotation from Psalm 4:4; the apostolic permission for righteous anger and the boundary that keeps it from becoming sin",
+  "g": "\"Be angry and do not sin; do not let the sun go down on your anger, and give no opportunity to the devil\" (Ephesians 4:26–27). This is one of the most practically important sentences in the New Testament.",
+  "m": [
+   "be angry and do not sin"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Bitterness",
+  "a": "bitterness",
+  "w": "pikria (Greek) — sharp, cutting bitterness; a long-nursed resentment that hardens the heart and poisons relationships; the fruit of unresolved anger",
+  "g": "\"Let all bitterness and wrath and anger and clamour and slander be put away from you, along with all malice\" (Ephesians 4:31). Bitterness is listed first in Paul's catalogue of what must be removed — and not by accident.",
+  "m": [
+   "bitterness"
+  ],
+  "r": 0.0493
+ },
+ {
+  "n": "Be Filled with the Spirit",
+  "a": "be-filled-with-the-spirit",
+  "w": "plērousthe en pneumati (Greek) — be filled with the Spirit; the present-passive-imperative command to keep on being filled, receiving, and yielding to the Spirit's influence rather than any substitute",
+  "g": "\"And do not get drunk with wine, for that is debauchery, but be filled with the Spirit\" (Ephesians 5:18). This is the positive command that governs all the instructions that follow: addressing one another in psalms and hymns, singing to the Lord, giving thanks in everything, submitting to one another.",
+  "m": [
+   "be filled with the spirit"
+  ],
+  "r": 0.008
+ },
+ {
+  "n": "Be Strong in the Lord",
+  "a": "be-strong-in-the-lord",
+  "w": "endynamousthe en Kyriō (Greek) — be strengthened in the Lord; the present-passive command to receive and draw on the Lord's own strength rather than relying on human resources in the spiritual battle",
+  "g": "\"Finally, be strong in the Lord and in the strength of his might\" (Ephesians 6:10). With this verse Paul turns to his closing section on spiritual warfare — and he begins not with strategy or technique but with the source of all spiritual capability: the Lord's own strength.",
+  "m": [
+   "be strong in the lord"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Become One Flesh",
+  "a": "become-one-flesh",
+  "w": "esontai hoi dyo eis sarka mian (Greek) — the two shall become one flesh; the profound physical, relational, and covenantal union of husband and wife, cited by Paul as a picture of Christ's union with the church",
+  "g": "\"'Therefore a man shall leave his father and mother and hold fast to his wife, and the two shall become one flesh.' This mystery is profound, and I am saying that it refers to Christ and the church\" (Ephesians 5:31–32). Paul quotes Genesis 2:24 at the climax of his teaching on Christian marriage — and then reveals that the one-flesh…",
+  "m": [
+   "become one flesh"
+  ],
+  "r": 0.0046
+ },
+ {
+  "n": "Belt of Truth",
+  "a": "belt-of-truth",
+  "w": "perizōsamenoi tēn osphyn en alētheia (Greek) — having girded your waist with truth; truth as the foundational piece of spiritual armour that holds everything else in place",
+  "g": "\"Stand therefore, having fastened on the belt of truth\" (Ephesians 6:14). The belt was the first piece of Roman armour to be put on — it was the central piece around which everything else was organised.",
+  "m": [
+   "belt of truth"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Breastplate of Righteousness",
+  "a": "breastplate-of-righteousness",
+  "w": "thōraka tēs dikaiosynēs (Greek) — the breastplate of righteousness; the imputed righteousness of Christ and the practical righteousness of the believer's life, together protecting the heart from the enemy's assault",
+  "g": "\"Stand therefore, having fastened on the belt of truth, and having put on the breastplate of righteousness\" (Ephesians 6:14). The breastplate protected the vital organs — the heart, the lungs, the life.",
+  "m": [
+   "breastplate of righteousness"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Bring Up Children in the Discipline and Instruction of the Lord",
+  "a": "bring-up-children",
+  "w": "ektrepho en paideia kai nouthesia Kyriou (Greek) — nourish, raise up in the discipline and instruction of the Lord; the positive calling of parenting toward the formation of children in the ways of God",
+  "g": "\"Bring them up in the discipline and instruction of the Lord\" (Ephesians 6:4). Two Greek words carry the weight of this command.",
+  "m": [
+   "bring up children in the discipline and instruction of the lord"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Boldness",
+  "a": "boldness",
+  "w": "parrēsia (Greek) — freedom of speech, openness, confidence; the frank, unashamed, unhesitating approach to God and announcement of the gospel that grace produces",
+  "g": "\"In whom we have boldness and access with confidence through our faith in him\" (Ephesians 3:12). Parrēsia — boldness — was originally a political word.",
+  "m": [
+   "boldness"
+  ],
+  "r": 0.0585
+ },
+ {
+  "n": "Helmet of Salvation",
+  "a": "helmet-of-salvation",
+  "w": "perikephalaia tou sōtēriou (Greek) — the helmet of salvation; the protection of the mind through the sure knowledge that salvation in Christ is complete, final, and secure",
+  "g": "\"Take the helmet of salvation\" (Ephesians 6:17). The helmet protects the head — and in the spiritual warfare Paul describes, the head means the mind.",
+  "m": [
+   "helmet of salvation"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Husband Is Head of the Wife",
+  "a": "husband-head-of-wife",
+  "w": "kephalē tēs gynaikos (Greek) — head of the wife; the husband's God-given role of loving, sacrificial, Christ-patterned headship within marriage",
+  "g": "\"For the husband is the head of the wife even as Christ is the head of the church, his body, and is himself its Saviour\" (Ephesians 5:23). This is one of the most misunderstood and misapplied statements in Paul's letters — misunderstood as a warrant for domination, when in fact it is one of the most demanding calls to…",
+  "m": [
+   "husband is head of the wife"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Husbands, Love Your Wives",
+  "a": "husbands-love-wives",
+  "w": "hoi andres, agapate tas gynaikas (Greek) — husbands, love your wives; the governing command of the Ephesians 5 household code for men, measured against the self-giving love of Christ for the church",
+  "g": "\"Husbands, love your wives, as Christ loved the church and gave himself up for her\" (Ephesians 5:25). This is the single most demanding sentence ever written about marriage.",
+  "m": [
+   "husbands, love your wives"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Hardness of Heart / Callous",
+  "a": "hardness-of-heart",
+  "w": "pōrōsis tēs kardias / apēlgēkotes (Greek) — hardening of the heart; having become callous; the progressive deadening of moral and spiritual sensitivity through persistent sin",
+  "g": "\"...due to their hardness of heart. They have become callous and have given themselves up to sensuality, greedy to practise every kind of impurity\" (Ephesians 4:18–19).",
+  "m": [
+   "hardness of heart"
+  ],
+  "r": 0.0149
+ },
+ {
+  "n": "Heavenly Places",
+  "a": "heavenly-places",
+  "w": "epourania (Greek) — the heavenly realm; the sphere of spiritual reality where Christ reigns and where the believer is already positioned in Him",
+  "g": "\"Heavenly places\" is one of the most distinctive phrases in Ephesians, appearing five times in the letter and nowhere else in the New Testament. It is not a synonym for heaven as a future destination.",
+  "m": [
+   "heavenly places"
+  ],
+  "r": 0.0138
+ },
+ {
+  "n": "Holiness",
+  "a": "holiness",
+  "w": "qadosh (Hebrew) / hagios (Greek) — set apart, other, utterly distinct; the foundational attribute of God from which all His other attributes derive their character",
+  "g": "Holiness is the attribute of God that every other attribute needs in order to be understood correctly. His love is holy love — not sentimentality but a love that is pure, costly, and morally serious.",
+  "m": [
+   "holiness"
+  ],
+  "r": 0.1743
+ },
+ {
+  "n": "Holy Temple in the Lord / Dwelling Place for God",
+  "a": "holy-temple",
+  "w": "naos hagios / katoikētērion tou theou (Greek) — the holy sanctuary; the dwelling of God; the church as the living temple in which the Spirit of God makes His home",
+  "g": "\"In whom the whole structure, being joined together, grows into a holy temple in the Lord. In him you also are being built together into a dwelling place for God by the Spirit\" (Ephesians 2:21–22).",
+  "m": [
+   "holy temple in the lord"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Holy Place",
+  "a": "holy-place",
+  "w": "qodesh / hagion — the sacred space set apart for God's presence; the innermost sanctuary where God dwells",
+  "g": "The Holy Place — and beyond it, the Most Holy Place, or Holy of Holies — was the beating heart of Israel's worship and the most concentrated statement in all of the Old Testament about the holiness of God and the problem of human sin. The tabernacle and later the temple were arranged as a series of concentric zones of increasing…",
+  "m": [
+   "holy place"
+  ],
+  "r": 0.0516
+ },
+ {
+  "n": "Hypocrites",
+  "a": "hypocrites",
+  "w": "hypokrites (Greek) — an actor wearing a mask; one whose outward religion conceals an inward reality that is entirely different",
+  "g": "The word \"hypocrite\" comes from the Greek theatre. A hypokrites was an actor — a person who wore a mask and played a part, presenting to the audience a face that was not their own.",
+  "m": [
+   "hypocrites"
+  ],
+  "r": 0.0218
+ },
+ {
+  "n": "Idol / Idolater",
+  "a": "idol-idolater",
+  "w": "eidōlon / eidōlolatrēs (Greek) — an image, a substitute object of worship; one who gives to a created thing the devotion that belongs to God alone",
+  "g": "\"For you may be sure of this, that everyone who is sexually immoral or impure, or who is covetous (that is, an idolater), has no inheritance in the kingdom of Christ and God\" (Ephesians 5:5). The parenthetical identification of covetousness as idolatry is one of the most searching definitions in Scripture.",
+  "m": [
+   "idolatry",
+   "idolater"
+  ],
+  "r": 0.0917
+ },
+ {
+  "n": "Imitators of God",
+  "a": "imitators-of-god",
+  "w": "mimētai tou theou (Greek) — imitators of God; the breathtaking calling to model one's life on the character and conduct of God Himself, as beloved children imitate their Father",
+  "g": "\"Therefore be imitators of God, as beloved children\" (Ephesians 5:1). This is one of the most extraordinary commands in all of Scripture.",
+  "m": [
+   "imitators of god"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Impurity",
+  "a": "impurity",
+  "w": "akatharsia (Greek) — uncleanness, moral defilement; the condition of the person who has given themselves over to practices incompatible with holiness",
+  "g": "\"...greedy to practise every kind of impurity\" (Ephesians 4:19). Impurity — akatharsia — is a condition of defilement, a state of uncleanness that renders a person unfit for the presence of the holy God.",
+  "m": [
+   "impurity"
+  ],
+  "r": 0.0206
+ },
+ {
+  "n": "Inheritance",
+  "a": "inheritance",
+  "w": "klēronomia (Greek) — a possession received as a share, a portion allotted by right; the totality of what God has reserved for His people in Christ",
+  "g": "\"In him we have obtained an inheritance, having been predestined according to the purpose of him who works all things according to the counsel of his will\" (Ephesians 1:11). An inheritance is not earned — it is received.",
+  "m": [
+   "inheritance"
+  ],
+  "r": 0.1606
+ },
+ {
+  "n": "Intercession",
+  "a": "intercession",
+  "w": "enteuxis (Greek) — a meeting with; pleading on behalf of another; the ongoing priestly prayer of Christ for His people",
+  "g": "Intercession is praying on behalf of someone else — standing between them and God, bringing their need before the throne. But before it is our calling, it is Christ's.",
+  "m": [
+   "intercession"
+  ],
+  "r": 0.0826
+ },
+ {
+  "n": "Jesus's Return",
+  "a": "jesus-return",
+  "w": "parousia (Greek) — presence, arrival; the visible, bodily, glorious return of Christ at the end of the age",
+  "g": "Jesus is coming back. This is not a metaphor for His presence in the church, not a symbol of spiritual renewal, not the language of pious hope with no literal referent.",
+  "m": [
+   "second coming"
+  ],
+  "r": 0.0103
+ },
+ {
+  "n": "Kingdom of God",
+  "a": "kingdom-of-god",
+  "w": "basileia tou Theou (Greek) — the reign of God; the sphere where God's rule is acknowledged and His will is done",
+  "g": "The kingdom of God was the central theme of Jesus's preaching. He did not begin with the church, or with personal salvation, or with a moral code — He began with the kingdom: \"The time is fulfilled, and the kingdom of God is at hand; repent and believe in the gospel\" (Mark 1:15).",
+  "m": [
+   "kingdom of god"
+  ],
+  "r": 0.0894
+ },
+ {
+  "n": "Lord's Supper",
+  "a": "lords-supper",
+  "w": "kyriakon deipnon (Greek) — the Lord's own meal; the ongoing sacrament of remembrance, proclamation, and communion",
+  "g": "On the night He was betrayed, Jesus took bread and broke it, took a cup and gave it, and said: \"Do this in remembrance of me\" (Luke 22:19). He was not improvising.",
+  "m": [
+   "lord's supper"
+  ],
+  "r": 0.0298
+ },
+ {
+  "n": "Law of Commandments / Ordinances",
+  "a": "law-of-commandments",
+  "w": "nomos tōn entolōn en dogmasin (Greek) — the law consisting of commandments expressed in ordinances; the Mosaic legal code in its function as a dividing barrier, abolished in Christ",
+  "g": "\"By abolishing the law of commandments expressed in ordinances, that he might create in himself one new man in place of the two, so making peace\" (Ephesians 2:15). This is one of the most theologically precise statements in Ephesians — and one of the most frequently misunderstood.",
+  "m": [
+   "law of commandments"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Light in the Lord",
+  "a": "light-in-the-lord",
+  "w": "phōs en Kyriō (Greek) — light in the Lord; the believer's identity as light, not merely as one who possesses light, but as one whose very nature has been transformed by union with Christ who is light",
+  "g": "\"For at one time you were darkness, but now you are light in the Lord. Walk as children of light\" (Ephesians 5:8).",
+  "m": [
+   "light in the lord"
+  ],
+  "r": 0.0011
  },
  {
   "n": "Logos",
@@ -199,7 +1200,58 @@
   "g": "\"In the beginning was the Word.\" John opens his Gospel with the most deliberately chosen first line in all of Scripture. Every reader in the first century — Jewish or Greek — would have stopped.",
   "m": [
    "logos"
-  ]
+  ],
+  "r": 0.008
+ },
+ {
+  "n": "Knowledge of the Son of God",
+  "a": "knowledge-of-the-son-of-god",
+  "w": "epignōsis tou huiou tou theou (Greek) — full, personal, experiential knowledge of the Son of God; the goal of the church's maturity",
+  "g": "\"The knowledge of the Son of God\" (Ephesians 4:13) is the destination to which every gift in the church is driving. Not the knowledge of a doctrine about Him, though that matters.",
+  "m": [
+   "knowledge of the son of god"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Passions of Our Flesh",
+  "a": "passions-of-our-flesh",
+  "w": "epithymiai tēs sarkos (Greek) — the deep desires and cravings of the fallen nature; the inward engine of sin apart from grace",
+  "g": "\"Among whom we all once lived in the passions of our flesh, carrying out the desires of the body and the mind\" (Ephesians 2:3). The passions of the flesh are not primarily about sensuality, though they include it.",
+  "m": [
+   "passions of our flesh"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Pharisees and Sadducees",
+  "a": "pharisees-and-sadducees",
+  "w": "Pharisaioi kai Saddoukaioi (Greek) — the two leading religious parties of first-century Judaism; rivals in belief who became allies in opposing Christ",
+  "g": "Two parties dominated the religious landscape into which Jesus came, and they could hardly have been more different from each other. The Pharisees were the party of the law — meticulous, separated, devoted.",
+  "m": [
+   "pharisees and sadducees"
+  ],
+  "r": 0.0126
+ },
+ {
+  "n": "Renewed in the Spirit of Your Mind",
+  "a": "renewed-in-spirit-of-mind",
+  "w": "ananeousthai tō pneumati tou noos — to be renewed in the spirit of the mind; the ongoing transformation of the inner faculty of thought and orientation toward God",
+  "g": "\"...to be renewed in the spirit of your minds\" (Ephesians 4:23). The renewal of the mind stands at the heart of Paul's description of the transition from the old self to the new.",
+  "m": [
+   "renewed in the spirit of your mind"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Righteousness and Holiness",
+  "a": "righteousness-and-holiness",
+  "w": "dikaiosynē kai hosiotēs (Greek) — righteousness toward others and holy devotion toward God; the two dimensions of the new self's moral character",
+  "g": "\"...and to put on the new self, created after the likeness of God in true righteousness and holiness\" (Ephesians 4:24). The new self is described with two words: righteousness and holiness.",
+  "m": [
+   "righteousness and holiness"
+  ],
+  "r": 0.0011
  },
  {
   "n": "Reconciliation",
@@ -208,7 +1260,8 @@
   "g": "Reconciliation begins with an honest diagnosis: we were enemies. Not strangers, not merely distant — enemies.",
   "m": [
    "reconciliation"
-  ]
+  ],
+  "r": 0.0493
  },
  {
   "n": "Son of Man",
@@ -217,7 +1270,128 @@
   "g": "\"Son of Man\" is the title Jesus used for Himself more than any other — over eighty times in the Gospels — and it is one of the most loaded phrases in all of Scripture. On the surface it seems modest: the human one, a man among men.",
   "m": [
    "son of man"
-  ]
+  ],
+  "r": 0.0837
+ },
+ {
+  "n": "Futility / Futile",
+  "a": "futility",
+  "w": "mataiotēs (Greek) — emptiness, vanity, aimlessness; the condition of a mind or life cut off from the living God",
+  "g": "\"They are darkened in their understanding, alienated from the life of God because of the ignorance that is in them, due to their hardness of heart\" — and the verse before it says they \"walk in the futility of their minds\" (Ephesians 4:17–18). Mataiotēs — futility, vanity, emptiness — is one of the most searching words in all of Scripture.",
+  "m": [
+   "futility"
+  ],
+  "r": 0.0252
+ },
+ {
+  "n": "Filled with the Fullness of God",
+  "a": "filled-with-fullness-of-god",
+  "w": "plēroō eis pan to plērōma tou theou (Greek) — to be filled to all the fullness of God; the ultimate goal of the believer's growth and the church's existence",
+  "g": "\"That you may be filled with all the fullness of God\" (Ephesians 3:19). Pause here.",
+  "m": [
+   "filled with the fullness of god"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Falsehood",
+  "a": "falsehood",
+  "w": "pseudos (Greek) — a lie, a false statement, deception; the fundamental violation of the community of truth that the gospel creates",
+  "g": "\"Therefore, having put away falsehood, let each one of you speak the truth with his neighbour, for we are members one of another\" (Ephesians 4:25). The reason Paul gives for truthfulness is not primarily moral — it is relational and ecclesial: \"we are members one of another.\" Falsehood is incompatible with genuine community because it…",
+  "m": [
+   "falsehood"
+  ],
+  "r": 0.0241
+ },
+ {
+  "n": "Flesh (Pauline)",
+  "a": "flesh",
+  "w": "sarx (Greek) — not the physical body, but the fallen self oriented away from God",
+  "g": "When Paul uses the word \"flesh,\" he is almost never talking about the physical body. He is not a Greek dualist who thinks matter is evil and spirit is good.",
+  "m": [
+   "the flesh"
+  ],
+  "r": 0.1239
+ },
+ {
+  "n": "Forgiving One Another",
+  "a": "forgiving-one-another",
+  "w": "charizomenoi heautois (Greek) — granting grace to one another; the practical extension of God's forgiveness to fellow believers, modelled on and powered by what was received in Christ",
+  "g": "\"Be kind to one another, tenderhearted, forgiving one another, as God in Christ forgave you\" (Ephesians 4:32). The word Paul uses for forgiving is charizomai — from charis , grace.",
+  "m": [
+   "forgiving one another"
+  ],
+  "r": 0.0057
+ },
+ {
+  "n": "Forgiveness",
+  "a": "forgiveness",
+  "w": "aphesis (Greek) — release, letting go; the cancellation of a debt and the restoration of a broken relationship",
+  "g": "Forgiveness is one of the most radical words in Scripture — and one of the most misunderstood in ordinary life. We use it to mean many things: moving on, no longer feeling angry, deciding not to retaliate.",
+  "m": [
+   "forgiveness"
+  ],
+  "r": 0.133
+ },
+ {
+  "n": "False Christs",
+  "a": "false-christs",
+  "w": "pseudochristos (Greek) — a counterfeit messiah; one who falsely claims to be the Christ or presents a Christ who is not the biblical Jesus",
+  "g": "\"For false christs and false prophets will arise and perform great signs and wonders, so as to lead astray, if possible, even the elect\" (Matthew 24:24). Jesus's warning is striking in its scope — not false teachers offering mildly wrong doctrine, but false christs: people or movements that present a counterfeit saviour capable of…",
+  "m": [
+   "false christs"
+  ],
+  "r": 0.0046
+ },
+ {
+  "n": "False Prophets",
+  "a": "false-prophets",
+  "w": "pseudoprophetes (Greek) — one who claims to speak for God but does not; a teacher whose message leads people away from the true Christ",
+  "g": "Jesus warned about false prophets with an urgency that should sober every generation: \"Beware of false prophets, who come to you in sheep's clothing but inwardly are ravenous wolves. You will recognise them by their fruits\" (Matthew 7:15–16).",
+  "m": [
+   "false prophets"
+  ],
+  "r": 0.0138
+ },
+ {
+  "n": "Tribulation",
+  "a": "tribulation",
+  "w": "thlipsis (Greek) — pressure, affliction, the crushing weight of suffering; the normal condition of God's people in this age",
+  "g": "Tribulation is not exceptional for the Christian — it is expected. \"In the world you will have tribulation,\" Jesus says, and He says it as a statement of fact, not a warning that might not apply to you (John 16:33).",
+  "m": [
+   "tribulation"
+  ],
+  "r": 0.0275
+ },
+ {
+  "n": "In Adam",
+  "a": "in-adam",
+  "w": "Federal headship — solidarity with Adam as the representative of fallen humanity",
+  "g": "Paul sets two great humanities against each other in Romans 5 and 1 Corinthians 15: those who are \"in Adam\" and those who are \"in Christ.\" To be in Adam is to be part of the natural human family — born into the solidarity of the first man's rebellion, inheriting both his guilt and his corruption. This is not a popular doctrine, but it…",
+  "m": [
+   "in Adam"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Spirit of Wisdom and Revelation",
+  "a": "spirit-of-wisdom-and-revelation",
+  "w": "pneuma sophias kai apokalypseōs (Greek) — the Spirit given to open the eyes of the heart to the knowledge of God; the divine agent of all true spiritual understanding",
+  "g": "\"I do not cease to give thanks for you, remembering you in my prayers, that the God of our Lord Jesus Christ, the Father of glory, may give you the Spirit of wisdom and of revelation in the knowledge of him\" (Ephesians 1:16–17). This is what Paul prays for the Ephesians — and they are already believers.",
+  "m": [
+   "spirit of wisdom and revelation"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Spiritual Blessing",
+  "a": "spiritual-blessing",
+  "w": "pneumatikē eulogia (Greek) — blessing of a spiritual and heavenly character; all that God has given in Christ in the realm of the Spirit and the age to come",
+  "g": "\"Blessed be the God and Father of our Lord Jesus Christ, who has blessed us in Christ with every spiritual blessing in the heavenly places\" (Ephesians 1:3). The doxology that opens Ephesians begins with a declaration so comprehensive that it should stop us cold: every spiritual blessing.",
+  "m": [
+   "spiritual blessing"
+  ],
+  "r": 0.008
  },
  {
   "n": "Ascension",
@@ -226,7 +1400,8 @@
   "g": "The ascension is the most neglected event in the life of Christ. Christmas fills our calendars, Good Friday breaks our hearts, Easter morning fills our churches — but forty days after the resurrection, Jesus rose from the earth into the clouds and was received into heaven, and most Christians treat it as a footnote.",
   "m": [
    "ascension"
-  ]
+  ],
+  "r": 0.0424
  },
  {
   "n": "Incarnation",
@@ -235,7 +1410,128 @@
   "g": "The incarnation is the most staggering event in all of history — more staggering than the creation of the universe, because in the creation God made something outside Himself, but in the incarnation He entered what He had made. The eternal, self-sufficient, all-glorious Son of God — through whom the worlds were created, who holds all…",
   "m": [
    "incarnation"
-  ]
+  ],
+  "r": 0.0734
+ },
+ {
+  "n": "Mature Manhood",
+  "a": "mature-manhood",
+  "w": "aner teleios (Greek) — the complete, fully-grown man; the corporate goal of the church's growth toward the fullness of Christ",
+  "g": "\"Mature manhood\" (Ephesians 4:13) is the image Paul uses for the destination of the church's growth — not individual spiritual achievement but the corporate maturity of the whole body. The word teleios means complete, having arrived at the intended end.",
+  "m": [
+   "mature manhood"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Measure of the Stature of the Fullness of Christ",
+  "a": "measure-of-the-stature-of-fullness",
+  "w": "metron hēlikias tou plērōmatos tou Christou (Greek) — the full standard of Christ's completed stature; the incomprehensible height to which the church is called to grow",
+  "g": "\"The measure of the stature of the fullness of Christ\" (Ephesians 4:13) is Paul at his most breathtaking. He has been describing the goal toward which every gift in the church is aimed — and now he names it with a phrase so vast it can barely be said.",
+  "m": [
+   "measure of the stature of the fullness of christ"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Malice",
+  "a": "malice",
+  "w": "kakia (Greek) — wickedness, ill-will; the settled disposition of ill-intent toward another; the root from which bitterness, slander, and anger spring",
+  "g": "\"Let all bitterness and wrath and anger and clamour and slander be put away from you, along with all malice\" (Ephesians 4:31). Malice — kakia — closes the list, and again not without intention.",
+  "m": [
+   "malice"
+  ],
+  "r": 0.0447
+ },
+ {
+  "n": "Make the Best Use of Your Time",
+  "a": "make-best-use-of-time",
+  "w": "exagorazomenoi ton kairon (Greek) — buying up the opportunity; redeeming the season; the urgent, wise use of every God-given moment in evil days",
+  "g": "\"Making the best use of the time, because the days are evil\" (Ephesians 5:16). The phrase \"making the best use of the time\" translates a commercial metaphor: exagorazomenoi ton kairon — buying up the opportunity, seizing what is available in the market before it is gone.",
+  "m": [
+   "make the best use of your time"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Members of His Body",
+  "a": "members-of-his-body",
+  "w": "melē tou sōmatos autou (Greek) — members of his body; the intimate union of every believer with the living Christ and with one another as constituent parts of one organism",
+  "g": "\"Because we are members of his body\" (Ephesians 5:30). This is Paul's deepest ground for the husband's love of his wife — the love Christ has for the church flows from the fact that the church is His body.",
+  "m": [
+   "members of his body"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Mystery of Man and Wife / Christ and the Church",
+  "a": "mystery-of-marriage",
+  "w": "to mystērion touto mega estin (Greek) — this mystery is profound; the marriage union as a cosmic sign pointing to the union of Christ and His church",
+  "g": "\"This mystery is profound, and I am saying that it refers to Christ and the church\" (Ephesians 5:32). Paul has been speaking about marriage — husband and wife becoming one flesh (quoting Genesis 2:24) — and then he steps back and reveals the ultimate meaning behind the institution.",
+  "m": [
+   "mystery of man and wife"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Mystery of the Gospel",
+  "a": "mystery-of-the-gospel",
+  "w": "mystērion tou euangeliou (Greek) — the mystery of the gospel; the previously-hidden divine secret, now disclosed, that the gospel proclaimed by Paul is the eternal purpose of God for Jew and Gentile alike in Christ",
+  "g": "\"...for which I am an ambassador in chains, that I may declare it boldly, as I ought to speak\" (Ephesians 6:20). The mystery of the gospel is the subject of Paul's closing prayer request — this is what he is in chains for, what he is an ambassador of, what he wants to declare boldly.",
+  "m": [
+   "mystery of the gospel"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Martyr",
+  "a": "martyr",
+  "w": "martys (Greek) — witness; one who bears testimony to Christ at the cost of their life",
+  "g": "The word \"martyr\" is the Greek word for witness. It did not begin as a word for death — it began as a word for testimony.",
+  "m": [
+   "martyr"
+  ],
+  "r": 0.0206
+ },
+ {
+  "n": "Messiah (Christ)",
+  "a": "messiah",
+  "w": "Mashiach (Hebrew) / Christos (Greek) — the Anointed One; the long-promised King, Priest, and Prophet of God",
+  "g": "Messiah is not Jesus's last name. It is His title — the most loaded, most longed-for title in all of Jewish history.",
+  "m": [
+   "messiah"
+  ],
+  "r": 0.1365
+ },
+ {
+  "n": "Members of the Household of God",
+  "a": "members-household-of-god",
+  "w": "oikeioi tou theou (Greek) — those who belong to the household of God; family members in the eternal family of the Father",
+  "g": "\"So then you are no longer strangers and aliens, but you are fellow citizens with the saints and members of the household of God\" (Ephesians 2:19). This verse contains two escalating images of belonging.",
+  "m": [
+   "members of the household of god"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Mystery of Christ",
+  "a": "mystery-of-christ",
+  "w": "mystērion tou Christou (Greek) — the sacred secret now revealed; God's eternal plan, hidden in ages past, now disclosed in the gospel: that Gentiles are co-heirs with Israel in Christ",
+  "g": "\"When you read this, you can perceive my insight into the mystery of Christ, which was not made known to the sons of men in other generations as it has now been revealed to his holy apostles and prophets by the Spirit\" (Ephesians 3:4–5). The mystery Paul speaks of is not a puzzle or an enigma — it is a sacred secret that has been…",
+  "m": [
+   "mystery of christ"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "New Creation",
+  "a": "new-creation",
+  "w": "kaine ktisis (Greek) — new creation; not a patched-up version of the old but a genuine renewal of all things by the power of God",
+  "g": "The Bible does not end with souls floating in a disembodied heaven. It ends with a new heaven and a new earth.",
+  "m": [
+   "new creation"
+  ],
+  "r": 0.0906
  },
  {
   "n": "New Birth / Born Again",
@@ -244,8 +1540,81 @@
   "g": "\"You must be born again.\" Jesus says it to Nicodemus — one of the most educated, most religiously serious men in Jerusalem — and Nicodemus is completely lost. He asks if he must re-enter his mother's womb.",
   "m": [
    "regeneration",
-   "new birth"
-  ]
+   "new birth",
+   "born again"
+  ],
+  "r": 0.0573
+ },
+ {
+  "n": "New Self",
+  "a": "new-self",
+  "w": "kainos anthrōpos (Greek) — the new man; the regenerate person created in the likeness of God in true righteousness and holiness; what we are in Christ",
+  "g": "\"...and to put on the new self, created after the likeness of God in true righteousness and holiness\" (Ephesians 4:24). The new self is not a renovated version of the old self — it is a new creation.",
+  "m": [
+   "new self"
+  ],
+  "r": 0.0057
+ },
+ {
+  "n": "Old Self",
+  "a": "old-self",
+  "w": "palaios anthrōpos (Greek) — the old man; the unregenerate self dominated by sin and oriented away from God; the identity that was crucified with Christ and is to be definitively put off",
+  "g": "\"...to put off your old self, which belongs to your former manner of life and is corrupt through deceitful desires\" (Ephesians 4:22). The old self is not merely bad habits or personality flaws — it is the whole person as they existed before Christ: oriented away from God, governed by sin, shaped by \"deceitful desires\" that promised…",
+  "m": [
+   "old self"
+  ],
+  "r": 0.0149
+ },
+ {
+  "n": "Old Self / New Self",
+  "a": "old-self-new-self",
+  "w": "palaios anthrōpos / kainos anthrōpos (Greek) — old man / new man; the two identities defined by Adam and Christ; the self that was crucified with Christ and the self that has been raised to new life",
+  "g": "\"You were taught to put off your old self, which belongs to your former manner of life and is corrupt through deceitful desires, and to be renewed in the spirit of your minds, and to put on the new self, created after the likeness of God in true righteousness and holiness\" (Ephesians 4:22–24). The old self and the new self are not two…",
+  "m": [
+   "old self",
+   "new self"
+  ],
+  "r": 0.0161
+ },
+ {
+  "n": "Praying in the Spirit",
+  "a": "praying-in-the-spirit",
+  "w": "proseuchomenoi en pneumati (Greek) — praying in the Spirit; prayer that is animated, directed, and sustained by the Holy Spirit; the final piece of the armour of God",
+  "g": "\"Praying at all times in the Spirit, with all prayer and supplication. To that end, keep alert with all perseverance, making supplication for all the saints\" (Ephesians 6:18).",
+  "m": [
+   "praying in the spirit"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Praying in the Name of Jesus",
+  "a": "praying-in-the-name",
+  "w": "en tō onomati Iēsou (Greek) — in the authority and identity of Jesus; praying as those who stand in His name before the Father",
+  "g": "\"Whatever you ask in my name, this I will do\" (John 14:13). These words have been used to justify every kind of prayer — as if \"in Jesus's name\" were a formula that guarantees any request will be granted.",
+  "m": [
+   "praying in the name of jesus"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Providence",
+  "a": "providence",
+  "w": "pronoia (Greek) — forethought, provision; the ongoing, purposeful governance of all things by God toward His ends",
+  "g": "Providence is the doctrine that God did not wind up the universe and step back. He is actively, continuously, purposefully governing every detail of His creation — from the movement of galaxies to the roll of a die (Proverbs 16:33), from the rise and fall of empires to the number of hairs on your head (Matthew 10:30).",
+  "m": [
+   "providence"
+  ],
+  "r": 0.0917
+ },
+ {
+  "n": "Power and Glory",
+  "a": "power-and-glory",
+  "w": "dynamis / doxa — the might of God in action and the radiant weight of His manifest presence",
+  "g": "\"For thine is the kingdom, and the power, and the glory, for ever\" — these closing words of the Lord's Prayer (in the traditional form) gather up three of the great attributes of God into a single doxology. They belong together and must be understood together.",
+  "m": [
+   "power and glory"
+  ],
+  "r": 0.0011
  },
  {
   "n": "Rapture",
@@ -254,7 +1623,118 @@
   "g": "The rapture is one of the most discussed and most misunderstood events in Christian eschatology. The word itself does not appear in most English Bibles — it comes from the Latin rapturo , Jerome's translation of the Greek harpazo in 1 Thessalonians 4:17: \"we who are alive, who are left, will be caught up together with them in the…",
   "m": [
    "rapture"
-  ]
+  ],
+  "r": 0.0092
+ },
+ {
+  "n": "Revelation",
+  "a": "revelation",
+  "w": "apokalypsis (Greek) — an unveiling, a disclosure; God's act of making known what was hidden; the indispensable source of all true knowledge of God and His purposes",
+  "g": "\"...having the eyes of your hearts enlightened... the mystery was made known to me by revelation\" (Ephesians 1:18; 3:3).",
+  "m": [
+   "revelation"
+  ],
+  "r": 0.2351
+ },
+ {
+  "n": "Riches of His Glory",
+  "a": "riches-of-his-glory",
+  "w": "ploutos tēs doxēs autou (Greek) — the wealth of His splendour; the inexhaustible, overflowing abundance of God's own magnificence freely given to His people",
+  "g": "\"That according to the riches of his glory he may grant you to be strengthened with power through his Spirit in your inner being\" (Ephesians 3:16). The riches of God's glory are the measure of what God gives when He gives.",
+  "m": [
+   "riches of his glory"
+  ],
+  "r": 0.0034
+ },
+ {
+  "n": "Rooted and Grounded in Love",
+  "a": "rooted-and-grounded-in-love",
+  "w": "errizōmenoi kai tethemeliōmenoi en agapē (Greek) — having been rooted and having been founded in love; the stable, deep, structural anchoring of the believer's life in the love of God",
+  "g": "\"That you, being rooted and grounded in love, may have strength to comprehend with all the saints what is the breadth and length and height and depth, and to know the love of Christ that surpasses knowledge\" (Ephesians 3:17–19). Two metaphors pressed together — botanical and architectural — each doing the same theological work.",
+  "m": [
+   "rooted and grounded in love"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Resurrection",
+  "a": "resurrection",
+  "w": "anastasis (Greek) — a standing up again; the bodily raising of the dead to new and imperishable life",
+  "g": "The resurrection is not a metaphor. It is not a symbol of new beginnings, a spiritual truth about inner renewal, or the disciples' way of saying that Jesus's influence lived on after His death.",
+  "m": [
+   "resurrection"
+  ],
+  "r": 0.2397
+ },
+ {
+  "n": "Tenderhearted",
+  "a": "tenderhearted",
+  "w": "eusplanchnos (Greek) — having good or strong bowels; compassionate, deeply moved by the condition of others; the inner sensitivity that makes kindness and forgiveness possible",
+  "g": "\"Be kind to one another, tenderhearted, forgiving one another, as God in Christ forgave you\" (Ephesians 4:32). Tenderhearted — eusplanchnos — is a vivid word.",
+  "m": [
+   "tenderhearted"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Testify in the Lord",
+  "a": "testify-in-the-lord",
+  "w": "martyromai en Kyriō (Greek) — to bear witness, to solemnly affirm; Paul's appeal grounded in his union with Christ as he calls believers away from the old life",
+  "g": "\"Now this I say and testify in the Lord, that you must no longer walk as the Gentiles do, in the futility of their minds\" (Ephesians 4:17). \"I testify in the Lord\" — Paul's appeal before his sharpest exhortation in the letter carries the full weight of his apostolic authority, his union with Christ, and his pastoral love.",
+  "m": [
+   "testify in the lord"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Thanksgiving",
+  "a": "thanksgiving",
+  "w": "eucharistia (Greek) — gratitude, giving of thanks; the fitting response of the redeemed to God's grace; the atmosphere of the Spirit-filled life and the antidote to the vices Paul names in Ephesians 5",
+  "g": "\"...but instead let there be thanksgiving\" (Ephesians 5:4). Three times in Ephesians 5:4 and 5:20, Paul directs the community toward thanksgiving.",
+  "m": [
+   "thanksgiving"
+  ],
+  "r": 0.0459
+ },
+ {
+  "n": "Unity of the Faith",
+  "a": "unity-of-the-faith",
+  "w": "henotēs tēs pisteōs (Greek) — the oneness that comes through shared faith; the doctrinal and relational convergence the church is growing toward",
+  "g": "\"Until we all attain to the unity of the faith and of the knowledge of the Son of God\" (Ephesians 4:13). The unity of the faith is not where the church starts — it is where the church is going.",
+  "m": [
+   "unity of the faith"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Understand the Will of the Lord",
+  "a": "understand-will-of-lord",
+  "w": "syniete ti to thelēma tou Kyriou (Greek) — understand what the will of the Lord is; the call to discernment and wisdom that allows the believer to navigate the present age purposefully",
+  "g": "\"Therefore do not be foolish, but understand what the will of the Lord is\" (Ephesians 5:17). In the middle of a passage about wise living in evil days, Paul calls for the most foundational kind of wisdom: knowing what God wants.",
+  "m": [
+   "understand the will of the lord"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Unfruitful Works of Darkness",
+  "a": "unfruitful-works-of-darkness",
+  "w": "erga tou skotous ta akarpa (Greek) — the unfruitful works of darkness; the activities of the unregenerate life that appear productive but produce nothing of lasting worth",
+  "g": "\"Take no part in the unfruitful works of darkness, but instead expose them\" (Ephesians 5:11). The modifier is essential: not just \"works of darkness\" but \"unfruitful works of darkness.\" Akarpos — without fruit.",
+  "m": [
+   "unfruitful works of darkness"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Unity of the Spirit",
+  "a": "unity-of-the-spirit",
+  "w": "henotēs tou pneumatos (Greek) — the oneness produced by the Spirit; the bond that makes the church one body, one temple, one people",
+  "g": "\"Eager to maintain the unity of the Spirit in the bond of peace\" (Ephesians 4:3). Not create it — maintain it.",
+  "m": [
+   "unity of the spirit"
+  ],
+  "r": 0.0011
  },
  {
   "n": "Virgin Birth",
@@ -263,7 +1743,108 @@
   "g": "\"Behold, the virgin shall conceive and bear a son, and shall call his name Immanuel\" (Isaiah 7:14; Matthew 1:23). At the very threshold of the Gospels stands a miracle that the modern mind loves to dismiss and the believing heart must learn to treasure.",
   "m": [
    "virgin birth"
-  ]
+  ],
+  "r": 0.0057
+ },
+ {
+  "n": "Word of Truth",
+  "a": "word-of-truth",
+  "w": "logos tēs alētheias (Greek) — the message characterised by truth; the gospel as the definitive, reliable, life-giving word that corresponds perfectly to reality as God knows it",
+  "g": "\"In him you also, when you heard the word of truth, the gospel of your salvation, and believed in him, were sealed with the promised Holy Spirit\" (Ephesians 1:13). Paul calls the gospel \"the word of truth\" — and the phrase is more than a compliment.",
+  "m": [
+   "word of truth"
+  ],
+  "r": 0.0092
+ },
+ {
+  "n": "Witness / Testify",
+  "a": "witness",
+  "w": "martys / martyreō (Greek) — a witness; one who testifies to what they have seen, heard, and know to be true; the church's essential vocation in the world",
+  "g": "A witness is not an advocate who argues a position. A witness is someone who tells what they have seen.",
+  "m": [
+   "testify"
+  ],
+  "r": 0.0539
+ },
+ {
+  "n": "Walk in Love",
+  "a": "walk-in-love",
+  "w": "peripateite en agapē (Greek) — walk in love; to make love the defining, habitual, directional orientation of the entire life, modelled on Christ's self-giving love for us",
+  "g": "\"And walk in love, as Christ loved us and gave himself up for us, a fragrant offering and sacrifice to God\" (Ephesians 5:2). This is the specific content of what it means to be an imitator of God (5:1): walk in love.",
+  "m": [
+   "walk in love"
+  ],
+  "r": 0.0023
+ },
+ {
+  "n": "Wife, Respect Your Husband",
+  "a": "wife-respect-husband",
+  "w": "gynē phobētai ton andra (Greek) — let the wife respect her husband; the specific instruction to the wife within the household code, balancing the call to submission with the language of deep honour and reverence",
+  "g": "\"However, let each one of you love his wife as himself, and let the wife see that she respects her husband\" (Ephesians 5:33). At the close of his teaching on marriage, Paul captures each party's primary responsibility in a single verb: the husband, love; the wife, respect.",
+  "m": [
+   "wife, respect your husband"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Wives, Submit to Your Husbands",
+  "a": "wives-submit",
+  "w": "gynaikes, hypeikete tois idiois andrasi (Greek) — wives, submit to your own husbands; the Spirit-filled, gospel-shaped, voluntary deference of the wife within the covenant of marriage",
+  "g": "\"Wives, submit to your own husbands, as to the Lord. For the husband is the head of the wife even as Christ is the head of the church, his body, and is himself its Saviour.",
+  "m": [
+   "wives, submit to your husbands"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Wrestle Against Rulers, Authorities, Cosmic Powers",
+  "a": "wrestle-against-powers",
+  "w": "palē pros tas archas, tas exousias, tous kosmokratoras (Greek) — wrestling against the rulers, the authorities, the cosmic powers; the hand-to-hand, intensely personal spiritual conflict that constitutes the believer's warfare",
+  "g": "\"For we do not wrestle against flesh and blood, but against the rulers, against the authorities, against the cosmic powers over this present darkness, against the spiritual forces of evil in the heavenly places\" (Ephesians 6:12). The word \"wrestle\" — palē — is significant.",
+  "m": [
+   "wrestle against rulers, authorities, cosmic powers"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Wind of Doctrine",
+  "a": "wind-of-doctrine",
+  "w": "anemō tēs didaskalias (Greek) — every shifting current of false or unstable teaching that carries immature believers away from the truth",
+  "g": "\"Carried about by every wind of doctrine\" (Ephesians 4:14) — Paul's phrase for the instability of the spiritually immature, and his warning against it. The image is of a small boat on open water: no anchor, no rudder, completely at the mercy of whatever is blowing that day.",
+  "m": [
+   "wind of doctrine"
+  ],
+  "r": 0.0011
+ },
+ {
+  "n": "Weeping and Gnashing of Teeth",
+  "a": "weeping-and-gnashing",
+  "w": "klauthmos kai brygmos (Greek) — the expression of profound grief, anguish, and rage at final exclusion from God's presence",
+  "g": "\"Weeping and gnashing of teeth\" — Jesus uses this phrase seven times in Matthew and once in Luke, always to describe the experience of those who are excluded from the kingdom of God at the final judgment. It is not a phrase to be softened or explained away.",
+  "m": [
+   "weeping and gnashing of teeth"
+  ],
+  "r": 0.0046
+ },
+ {
+  "n": "Wrath of God",
+  "a": "wrath-of-god",
+  "w": "orge (Greek) / chemah (Hebrew) — settled, holy indignation against all that is evil",
+  "g": "The wrath of God is one of the most avoided doctrines in the modern church — and one of the most essential. We have been so eager to present God as loving that we have quietly set aside His wrath, as if it were an embarrassment, a relic of a less enlightened age.",
+  "m": [
+   "wrath of god"
+  ],
+  "r": 0.0252
+ },
+ {
+  "n": "Fear of God",
+  "a": "fear-of-god",
+  "w": "yir'ah (Hebrew) — awe, reverence, holy dread",
+  "g": "We have domesticated God. We have made Him comfortable, manageable, broadly supportive of our plans — a cosmic life coach who wants us to be our best selves.",
+  "m": [
+   "fear of god"
+  ],
+  "r": 0.047
  },
  {
   "n": "Redemption",
@@ -272,7 +1853,18 @@
   "g": "Redemption is a marketplace word pressed into service for the most staggering transaction in the history of the universe. In the ancient world, a redeemer was a kinsman who stepped in to buy a family member out of slavery, paying the price that set them free.",
   "m": [
    "redemption"
-  ]
+  ],
+  "r": 0.1204
+ },
+ {
+  "n": "Confession",
+  "a": "confession",
+  "w": "homologeō (Greek) — to say the same thing; to agree with God about what is true concerning your sin",
+  "g": "Confession is not the same as remorse, and it is not the same as repentance — though it belongs with both. Remorse is the feeling of shame or regret.",
+  "m": [
+   "confession"
+  ],
+  "r": 0.1881
  },
  {
   "n": "Glorification",
@@ -281,7 +1873,8 @@
   "g": "Glorification is the last word in salvation — the moment when everything God began in the believer is brought to its completion. Justification declared us righteous.",
   "m": [
    "glorification"
-  ]
+  ],
+  "r": 0.0229
  },
  {
   "n": "Mediator",
@@ -290,7 +1883,8 @@
   "g": "A mediator stands between two parties who cannot reach each other on their own. In the case of God and humanity, the problem is not merely distance — it is the absolute moral chasm between infinite holiness and creature-in-rebellion.",
   "m": [
    "mediator"
-  ]
+  ],
+  "r": 0.0608
  },
  {
   "n": "Perseverance of the Saints",
@@ -300,7 +1894,8 @@
   "m": [
    "perseverance of the saints",
    "perseverance"
-  ]
+  ],
+  "r": 0.0333
  },
  {
   "n": "Predestined",
@@ -309,7 +1904,28 @@
   "g": "\"He predestined us for adoption to himself as sons through Jesus Christ, according to the purpose of his will\" (Ephesians 1:5). Predestination is not a doctrine invented by cold-hearted theologians to make God sound arbitrary.",
   "m": [
    "predestined"
-  ]
+  ],
+  "r": 0.0149
+ },
+ {
+  "n": "Prince of Power of the Air",
+  "a": "prince-of-power-of-the-air",
+  "w": "archōn tēs exousias tou aeros (Greek) — the ruler of the domain of the air; a title for Satan as the spiritual power presently active in the realm of fallen humanity",
+  "g": "\"...following the prince of the power of the air, the spirit that is now at work in the sons of disobedience\" (Ephesians 2:2). Paul does not describe the pre-conversion life as simply one of poor choices or bad habits.",
+  "m": [
+   "prince of power of the air"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Prophet",
+  "a": "prophet",
+  "w": "prophētēs (Greek) / nabi (Hebrew) — one who speaks forth; the mouthpiece of God who declares His word, His will, and His purposes",
+  "g": "The prophet is not primarily a predictor of the future. The Hebrew nabi means one who speaks forth — a mouthpiece, someone through whom God speaks to His people.",
+  "m": [
+   "prophet"
+  ],
+  "r": 0.2236
  },
  {
   "n": "Propitiation",
@@ -317,8 +1933,8 @@
   "w": "hilastērion (Greek) — the mercy seat; the covering of wrath through the offering of an acceptable sacrifice",
   "g": "Propitiation is the word that tells you what the cross actually did to the wrath of God. It is not enough to say that Christ died for sins, or that He paid a penalty, or that He reconciled us to God — though all of that is true.",
   "m": [
-   "propitiation",
-   "propitiate"
-  ]
+   "propitiation"
+  ],
+  "r": 0.0161
  }
 ]

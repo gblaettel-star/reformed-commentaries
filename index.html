@@ -154,6 +154,31 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   nav button{min-width:2.5rem;padding:.4rem .5rem;font-size:1rem}
   #unit-select{font-size:.8rem}
 }
+
+/* ── Terms in this chapter ── */
+#gl-chips{margin:.1rem 0 .9rem;display:none}
+#gl-chips.on{display:block}
+.gl-chips-label{color:#7090b0;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+.gl-chips-row{display:flex;flex-wrap:wrap;gap:.4rem}
+.gl-chip{background:#112840;border:1px dashed #6d8bab;color:#c9a84c;font-size:.8rem;
+ padding:.25rem .7rem;border-radius:20px;cursor:pointer;white-space:nowrap}
+.gl-chip:active{background:#1a3a5c}
+#gl-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:119;opacity:0;pointer-events:none;transition:opacity .2s}
+#gl-backdrop.open{opacity:1;pointer-events:auto}
+#gl-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;
+ background:#16304e;border-top:1px solid #c9a84c;border-radius:12px 12px 0 0;
+ padding:1rem 1.1rem 1.4rem;transform:translateY(102%);transition:transform .24s ease;
+ box-shadow:0 -8px 30px rgba(0,0,0,.45);max-height:74vh;overflow-y:auto}
+#gl-sheet.open{transform:translateY(0)}
+.gl-head{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem}
+.gl-name{color:#c9a84c;font-weight:600;font-size:1.12rem}
+.gl-close{background:none;border:none;color:#8fa9c4;font-size:1.15rem;cursor:pointer;padding:.1rem .3rem}
+.gl-word{color:#7090b0;font-size:.79rem;font-style:italic;margin:.15rem 0 .7rem}
+.gl-body{color:#dbe6f0;font-size:.94rem;line-height:1.62;margin:0 0 1rem}
+.gl-acts{display:flex;flex-wrap:wrap;gap:.5rem}
+.gl-btn{display:inline-block;background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;
+ padding:.5rem 1rem;border-radius:4px;font-size:.87rem;text-decoration:none;cursor:pointer}
+
 </style>
 </head>
 <body>
@@ -184,6 +209,18 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   </svg>
 </button>
 
+
+<div id="gl-backdrop" onclick="glClose()"></div>
+<div id="gl-sheet" role="dialog" aria-label="Term">
+  <div class="gl-head"><span class="gl-name" id="gl-name"></span>
+    <button class="gl-close" onclick="glClose()" aria-label="Close">&#10005;</button></div>
+  <p class="gl-word" id="gl-word"></p>
+  <p class="gl-body" id="gl-body"></p>
+  <div class="gl-acts">
+    <span class="gl-btn" id="gl-goto" style="display:none"></span>
+    <a class="gl-btn" id="gl-full" href="#">Read the full entry &#8594;</a>
+  </div>
+</div>
 <div id="vjump-backdrop" onclick="closeVerseJump()"></div>
 <div id="vjump-sheet" role="dialog" aria-label="Jump to verse">
   <div class="vjump-head">
@@ -800,6 +837,7 @@ function render(idx) {
   var ref   = ch.ref   || (k === 0 ? 'Introduction' : k === currentKeys[currentKeys.length-1] ? 'About' : '');
   if (title) html += '<h2>' + title + '</h2>';
   if (ref)   html += '<div class="ref">' + ref + '</div>';
+  html += '<div id="gl-chips"><div class="gl-chips-label">Terms in this chapter</div><div class="gl-chips-row" id="gl-chips-row"></div></div>';
 
   // ESV text
   if (ch.text) {
@@ -920,7 +958,8 @@ function render(idx) {
       + 'Continue to ' + nb.title + ' &#8594;</button></div>');
   }
 
-  if (pendingScrollRestore !== null) {
+  glBuild();
+    if (pendingScrollRestore !== null) {
     var y = pendingScrollRestore; pendingScrollRestore = null;
     requestAnimationFrame(function() { window.scrollTo(0, y); });
   } else {
@@ -995,6 +1034,109 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
   navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
 }
+
+/* ── Terms in this chapter ───────────────────────────────────────────────
+   The commentary prose is never marked up: no inline links anywhere. Each
+   chapter instead lists the technical terms it deals with, as chips under the
+   heading. A chip opens a sheet with the definition; where the term is taught
+   in the verse track the sheet offers a jump to that entry, so the chip points
+   at the TEACHING rather than at whichever mention happened to come first.
+   The glossary is optional -- if it fails to load the app is unaffected. */
+var GLOSS = null, GL_RX = null, GL_BY = {}, GL_FOUND = [], GL_MAX = 12;
+fetch('data/glossary.json').then(function(r){ return r.json(); }).then(function(j){
+  GLOSS = j;
+  var pats = [];
+  j.forEach(function(t){ t.m.forEach(function(m){ GL_BY[m.toLowerCase()] = t; pats.push(m); }); });
+  pats.sort(function(a, b){ return b.length - a.length; });
+  GL_RX = new RegExp('\\b(' + pats.map(function(p){
+    return p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')\\b', 'gi');
+  glBuild();
+}).catch(function(){});
+
+function glBuild(){
+  var row = document.getElementById('gl-chips-row');
+  var wrap = document.getElementById('gl-chips');
+  if (!GLOSS || !row || !wrap) return;
+  row.innerHTML = ''; GL_FOUND = [];
+  var root = document.getElementById('content');
+  if (!root) return;
+  var seen = {}, hits = [];
+  /* the verse track first, in order -- these carry a jump target */
+  [].slice.call(root.querySelectorAll('.vbv-entry')).forEach(function(en){
+    var c = en.querySelector('.vbv-commentary');       /* never the quoted verse */
+    if (!c) return;
+    var txt = c.textContent || '', m;
+    GL_RX.lastIndex = 0;
+    while ((m = GL_RX.exec(txt))) {
+      var t = GL_BY[m[1].toLowerCase()];
+      if (!t || seen[t.a]) continue;
+      seen[t.a] = 1;
+      var rf = en.querySelector('.vbv-ref');
+      hits.push({ t: t, el: en, ref: rf ? rf.textContent.trim() : '' });
+    }
+  });
+  /* then anything appearing only in a box -- no jump target rather than a wrong one */
+  ['.detail-body', '.section-hd-overview', '.accent-box'].forEach(function(sel){
+    [].slice.call(root.querySelectorAll(sel)).forEach(function(bx){
+      var txt = bx.textContent || '', m;
+      GL_RX.lastIndex = 0;
+      while ((m = GL_RX.exec(txt))) {
+        var t = GL_BY[m[1].toLowerCase()];
+        if (!t || seen[t.a]) continue;
+        seen[t.a] = 1;
+        hits.push({ t: t, el: null, ref: '' });
+      }
+    });
+  });
+  /* Cap the row. Some chapters match dozens of terms (the dictionary began as
+     an Ephesians glossary, so Eph. 4 matches 54). Keep the RAREST, which are
+     the ones that actually say something about this chapter, then restore
+     reading order for display. */
+  if (hits.length > GL_MAX) {
+    hits.forEach(function(h, i){ h.i = i; });
+    hits = hits.slice().sort(function(a, b){ return (a.t.r || 0) - (b.t.r || 0); })
+               .slice(0, GL_MAX)
+               .sort(function(a, b){ return a.i - b.i; });
+  }
+  GL_FOUND = hits;
+  if (!GL_FOUND.length) { wrap.classList.remove('on'); return; }
+  GL_FOUND.forEach(function(f, i){
+    var c = document.createElement('span');
+    c.className = 'gl-chip';
+    c.textContent = f.t.n;
+    c.onclick = function(){ glOpen(i); };
+    row.appendChild(c);
+  });
+  wrap.classList.add('on');
+}
+function glOpen(i){
+  var f = GL_FOUND[i]; if (!f) return;
+  document.getElementById('gl-name').textContent = f.t.n;
+  document.getElementById('gl-word').textContent = f.t.w;
+  document.getElementById('gl-body').textContent = f.t.g;
+  document.getElementById('gl-full').href = 'dictionary.html#term-' + f.t.a;
+  var go = document.getElementById('gl-goto');
+  if (f.el && f.ref) {
+    go.textContent = 'Go to ' + f.ref;
+    go.style.display = '';
+    go.onclick = function(){ glClose(); glGoto(f.el); };
+  } else { go.style.display = 'none'; }
+  document.getElementById('gl-sheet').classList.add('open');
+  document.getElementById('gl-backdrop').classList.add('open');
+}
+function glGoto(el){
+  var p = el;
+  while (p && p.id !== 'content') { if (p.nodeName === 'DETAILS') p.open = true; p = p.parentNode; }
+  setTimeout(function(){
+    var r = el.getBoundingClientRect();
+    window.scrollTo({ top: window.scrollY + r.top - 90, behavior: 'smooth' });
+  }, 60);
+}
+function glClose(){
+  document.getElementById('gl-sheet').classList.remove('open');
+  document.getElementById('gl-backdrop').classList.remove('open');
+}
+
 </script>
 </body>
 </html>
