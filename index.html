@@ -785,7 +785,7 @@ var ESV_BOOKS = (function(){
 // mistaken for a book named "v".  curBook = canonical ESV name of the book in view
 // (or null on non-Bible entries); curChapter = current chapter as a string (or null).
 /* Study line under a passage: two pills (Note, Parallels), each opening its own panel. */
-var STUDY_GROUPS = [['same','Same event'],['quoted','Quoted here'],['background','Background'],['see','See also']];
+var STUDY_GROUPS = [['same','Same event'],['saying','Same saying'],['quoted','Quoted here'],['background','Background'],['see','See also']];
 function studyToggle(btn, which){
   var box = btn.parentNode, open = box.getAttribute('data-open') === which ? '' : which;
   box.setAttribute('data-open', open);
