@@ -67,11 +67,14 @@ summary:hover{background:#22487a}
 .vbv-quote{font-style:italic;color:#d4c4a8;margin-bottom:.6rem;line-height:1.7}
 .vbv-commentary{line-height:1.8}
 .vbv-study{margin:-.2rem 0 .8rem;font-size:.85rem;line-height:1.6;color:#9fb3c8}
-.study-btn{background:none;border:1px solid rgba(201,168,76,.45);color:#c9a84c;border-radius:999px;padding:.1rem .6rem;margin-right:.6rem;font:inherit;font-size:.8rem;cursor:pointer}
-.study-btn:hover,.vbv-study.open .study-btn{background:rgba(201,168,76,.15)}
-.study-lbl{text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;color:#c9a84c;margin-right:.3rem}
-.study-note{display:none;margin-top:.5rem;padding:.55rem .8rem;border-left:2px solid #c9a84c;background:#112840;color:#d4dde6}
-.vbv-study.open .study-note{display:block}
+.study-btn{background:none;border:1px solid rgba(201,168,76,.45);color:#c9a84c;border-radius:999px;padding:.15rem .7rem;margin:0 .4rem .2rem 0;font:inherit;font-size:.8rem;cursor:pointer}
+.study-btn:hover,.study-btn[aria-expanded="true"]{background:rgba(201,168,76,.15)}
+.study-panel{display:none;margin-top:.45rem;padding:.6rem .85rem;border-left:2px solid #c9a84c;background:#112840;color:#d4dde6}
+.vbv-study[data-open="note"] .study-note,.vbv-study[data-open="par"] .study-pars{display:block}
+.study-grp+.study-grp{margin-top:.5rem}
+.study-lbl{text-transform:uppercase;letter-spacing:.06em;font-size:.7rem;color:#c9a84c}
+.study-item{margin-top:.1rem}
+.study-desc{color:#9fb3c8}
 .vbv-commentary p{margin-bottom:.7rem}
 .vbv-commentary p:last-child{margin-bottom:0}
 .scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
@@ -781,6 +784,34 @@ var ESV_BOOKS = (function(){
 // Verse-word form is matched BEFORE the book form so "v. 3" (with a space) is not
 // mistaken for a book named "v".  curBook = canonical ESV name of the book in view
 // (or null on non-Bible entries); curChapter = current chapter as a string (or null).
+/* Study line under a passage: two pills (Note, Parallels), each opening its own panel. */
+var STUDY_GROUPS = [['same','Same event'],['quoted','Quoted here'],['background','Background'],['see','See also']];
+function studyToggle(btn, which){
+  var box = btn.parentNode, open = box.getAttribute('data-open') === which ? '' : which;
+  box.setAttribute('data-open', open);
+  box.querySelectorAll('.study-btn').forEach(function(b){ b.setAttribute('aria-expanded', b.getAttribute('data-w') === open); });
+}
+function studyLine(v){
+  var par = (v.parallels || []).map(function(x){ return typeof x === 'string' ? { type: 'see', ref: x } : x; });
+  var h = '<div class="vbv-study" data-open="">';
+  if (v.note) h += '<button type="button" class="study-btn" data-w="note" aria-expanded="false" onclick="studyToggle(this,\'note\')">&#9432; Note</button>';
+  if (par.length) h += '<button type="button" class="study-btn" data-w="par" aria-expanded="false" onclick="studyToggle(this,\'par\')">&#8644; ' + par.length + (par.length === 1 ? ' parallel' : ' parallels') + '</button>';
+  if (v.note) h += '<div class="study-panel study-note">' + v.note + '</div>';
+  if (par.length) {
+    h += '<div class="study-panel study-pars">';
+    STUDY_GROUPS.forEach(function(g){
+      var items = par.filter(function(x){ return x.type === g[0]; });
+      if (!items.length) return;
+      h += '<div class="study-grp"><div class="study-lbl">' + g[1] + '</div>';
+      var plain = items.filter(function(x){ return !x.desc; }), rich = items.filter(function(x){ return x.desc; });
+      if (plain.length) h += '<div class="study-item">' + plain.map(function(x){ return x.ref; }).join(' &middot; ') + '</div>';
+      rich.forEach(function(x){ h += '<div class="study-item">' + x.ref + ' <span class="study-desc">&mdash; ' + x.desc + '</span></div>'; });
+      h += '</div>';
+    });
+    h += '</div>';
+  }
+  return h + '</div>';
+}
 function linkifyScripture(root, curBook, curChapter){
   if (!root || !document.createTreeWalker) return;
   var SP = '[\\s\\u00A0]';
@@ -911,13 +942,7 @@ function render(idx) {
         var entry = '<div class="vbv-entry" id="vs' + i + '">';
         entry += '<div class="vbv-ref">' + v.ref + '</div>';
         if (v.quote) { var q = v.quote.replace(/^[“”"]+/, '').replace(/^(&ldquo;|&rdquo;)+/, '').replace(/[“”"]+$/, '').replace(/(&ldquo;|&rdquo;)+$/, ''); entry += '<div class="vbv-quote">&ldquo;' + q + '&rdquo;</div>'; }
-        if (v.note || (v.parallels && v.parallels.length)) {
-          entry += '<div class="vbv-study">';
-          if (v.note) entry += '<button type="button" class="study-btn" aria-expanded="false" onclick="var o=this.parentNode.classList.toggle(\'open\');this.setAttribute(\'aria-expanded\',o)">&#9432; Note</button>';
-          if (v.parallels && v.parallels.length) entry += '<span class="study-par"><span class="study-lbl">Parallels</span> ' + v.parallels.join(' &middot; ') + '</span>';
-          if (v.note) entry += '<div class="study-note">' + v.note + '</div>';
-          entry += '</div>';
-        }
+        if (v.note || (v.parallels && v.parallels.length)) entry += studyLine(v);
         if (v.commentary) entry += '<div class="vbv-commentary">' + v.commentary + '</div>';
         entry += '</div>';
         verseBuffer.push(entry);
