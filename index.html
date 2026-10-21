@@ -39,12 +39,15 @@ nav button:disabled:hover{background:rgba(255,255,255,.025);border-color:rgba(20
 .section-chevron.open{transform:rotate(90deg)}
 .section-body{overflow:hidden;transition:max-height .25s ease}
 
-.book-row{display:flex;align-items:center;padding:.85rem 1.2rem;border-bottom:1px solid #1a3050;cursor:pointer;transition:background .12s}
+.group-hd{padding:.9rem 1.2rem .5rem;background:#0a1a2c;border-bottom:1px solid rgba(201,168,76,.22)}
+.group-title{color:#e8dcc8;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase}
+.group-sub{color:#7090b0;font-size:.78rem;font-style:italic;margin-top:.2rem}
+.book-row{display:flex;align-items:center;gap:.9rem;padding:.85rem 1.2rem;border-bottom:1px solid #1a3050;cursor:pointer;transition:background .12s}
 .book-row:hover{background:#1a3a5c}
 .book-row:active{background:#22487a}
 .row-name{color:#c9a84c;font-size:1rem;font-weight:bold;min-width:110px}
 .row-sub{color:#7090b0;font-size:.82rem;flex:1}
-.row-arrow{color:#3a5a7c;font-size:1rem;margin-left:.5rem}
+.row-arrow{color:#3a5a7c;font-size:1rem;margin-left:auto}
 
 /* ── Reader ── */
 #reader-screen{display:none}
@@ -310,40 +313,60 @@ const BOOKS = [
   { id:'3john',        title:'3 John',        subtitle:'Walking in Truth, Tested by Character', testament:'NT', chapters:1  },
   { id:'jude',         title:'Jude',         subtitle:'Contend for the Faith',               testament:'NT', chapters:1  },
   { id:'revelation',   title:'Revelation',   subtitle:'The Lamb Who Conquers',               testament:'NT', chapters:22 },
-  // Christian Living Studies
-  { id:'more-than-imagined',    title:'More Than You Imagined', subtitle:'The Full Meaning of the Christian Life',             testament:'SL', chapters:7 },
-  { id:'spiritual-disciplines', title:'Spiritual Disciplines', subtitle:'The Means of Grace and the Growth of the Soul',      testament:'SL', chapters:6 },
-  { id:'prayer',                title:'Prayer',                subtitle:'Talking with the Living God',                         testament:'SL', chapters:6 },
-  { id:'biblical-wisdom',       title:'Biblical Wisdom',       subtitle:'Skill for Living in the Fear of the Lord',            testament:'SL', chapters:9 },
-  { id:'fear-of-the-lord',      title:'The Fear of the Lord',  subtitle:'Trembling Love Before a Holy God',                    testament:'SL', chapters:6 },
-  { id:'attributes-of-god',     title:'The Attributes of God', subtitle:'Knowing the God Who Is',                              testament:'SL', chapters:6 },
-  { id:'holiness-of-god',       title:'The Holiness of God',   subtitle:'Holy, Holy, Holy Is the Lord',                        testament:'SL', chapters:6 },
-  { id:'grace-of-god',          title:'The Grace of God',      subtitle:'Amazing Grace from First to Last',                    testament:'SL', chapters:6 },
-  { id:'sovereignty-of-god',    title:'The Sovereignty of God',subtitle:'The Lord Reigns over All',                            testament:'SL', chapters:6 },
-  { id:'providence-of-god',     title:'The Providence of God', subtitle:'The Hidden Hand That Holds All Things',               testament:'SL', chapters:6 },
-  { id:'money-stewardship',     title:'Money & Stewardship',   subtitle:'Wealth, Generosity, and the Kingdom of God',         testament:'SL', chapters:6 },
-  { id:'assurance',             title:'Assurance of Salvation',subtitle:'Knowing That You Are His',                            testament:'SL', chapters:6 },
-  { id:'forgiveness-reconciliation', title:'Forgiveness & Reconciliation', subtitle:'Forgiven by God, Forgiving One Another', testament:'SL', chapters:6 },
-  { id:'christian-work',        title:'Christian at Work',     subtitle:'Vocation, Calling, and the Glory of God',             testament:'SL', chapters:6 },
-  { id:'christian-marriage',    title:'Christian Marriage',    subtitle:'Covenant Love and the Gospel',                        testament:'SL', chapters:6 },
-  { id:'biblical-manhood',      title:'Biblical Manhood',      subtitle:'Strength for the Sake of Others',                     testament:'SL', chapters:6 },
-  { id:'biblical-womanhood',    title:'Biblical Womanhood',    subtitle:'Strength and Dignity in Christ',                      testament:'SL', chapters:6 },
-  { id:'christian-parenting',   title:'Christian Parenting',   subtitle:'Training Up Children in the Fear of the Lord',        testament:'SL', chapters:6 },
-  { id:'christian-suffering',   title:'Christian Suffering',   subtitle:'Held Fast Through the Fire',                         testament:'SL', chapters:6 },
-  { id:'biblical-counseling',   title:'Biblical Counseling',   subtitle:'Caring for Souls with the Word of God',              testament:'SL', chapters:20 },
-  { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',        testament:'SL', chapters:6 },
-  { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', chapters:6 },
-  // General Studies
-  { id:'how-we-got-our-bible',  title:'How We Got Our Bible',  subtitle:'Inspiration, Canon, Transmission, and Translation',   testament:'SG', chapters:7 },
-  { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',      testament:'SG', chapters:6 },
-  { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                         testament:'SG', chapters:8 },
-  { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',           testament:'SG', chapters:8 },
-  { id:'covenant-theology',     title:'Covenant Theology',     subtitle:'The Backbone of Reformed Biblical Theology',          testament:'SG', chapters:6 },
-  { id:'end-times',             title:'End Times Models',      subtitle:'Amillennialism, Premillennialism, Postmillennialism',  testament:'SG', chapters:5 },
-  { id:'dispensational-distinctives', title:'Dispensational Distinctives', subtitle:'A Biblical Guide to the Dispensational Framework', testament:'SG', chapters:6 },
-  { id:'denominations',         title:'Denominations',         subtitle:'The Major Christian Traditions and Their Distinctives',testament:'SG', chapters:13 },
-  { id:'kingdom-of-god',        title:'The Kingdom of God',    subtitle:'The Reign of God and the Hope of the World',          testament:'SG', chapters:6 },
-  { id:'jesus-and-apostles',    title:'Jesus & the Apostles',  subtitle:'One Gospel, Two Moments — Did They Preach the Same Message?', testament:'SG', chapters:6 },
+  // Studies, grouped by topic (TOPIC_GROUPS below sets the order and headings)
+  // The Bible
+  { id:'how-we-got-our-bible',  title:'How We Got Our Bible',  subtitle:'Inspiration, Canon, Transmission, and Translation',   testament:'SL', group:'bible', chapters:7 },
+  { id:'hermeneutics',          title:'Hermeneutics',          subtitle:'The Art and Science of Biblical Interpretation',      testament:'SL', group:'bible', chapters:6 },
+  // Knowing God
+  { id:'attributes-of-god',     title:'The Attributes of God', subtitle:'Knowing the God Who Is',                              testament:'SL', group:'god', chapters:6 },
+  { id:'holiness-of-god',       title:'The Holiness of God',   subtitle:'Holy, Holy, Holy Is the Lord',                        testament:'SL', group:'god', chapters:6 },
+  { id:'sovereignty-of-god',    title:'The Sovereignty of God',subtitle:'The Lord Reigns over All',                            testament:'SL', group:'god', chapters:6 },
+  { id:'providence-of-god',     title:'The Providence of God', subtitle:'The Hidden Hand That Holds All Things',               testament:'SL', group:'god', chapters:6 },
+  { id:'fear-of-the-lord',      title:'The Fear of the Lord',  subtitle:'Trembling Love Before a Holy God',                    testament:'SL', group:'god', chapters:6 },
+  // Christ & Salvation
+  { id:'grace-of-god',          title:'The Grace of God',      subtitle:'Amazing Grace from First to Last',                    testament:'SL', group:'salvation', chapters:6 },
+  { id:'theology-distinctives', title:'Theology Distinctives', subtitle:'The Great Doctrines of the Reformed Faith',           testament:'SL', group:'salvation', chapters:8 },
+  { id:'assurance',             title:'Assurance of Salvation',subtitle:'Knowing That You Are His',                            testament:'SL', group:'salvation', chapters:6 },
+  { id:'jesus-and-apostles',    title:'Jesus & the Apostles',  subtitle:'One Gospel, Two Moments — Did They Preach the Same Message?', testament:'SL', group:'salvation', chapters:6 },
+  // The Church
+  { id:'denominations',         title:'Denominations',         subtitle:'The Major Christian Traditions and Their Distinctives',testament:'SL', group:'church', chapters:13 },
+  { id:'church-history',        title:'Church History',        subtitle:'Two Thousand Years of Grace',                         testament:'SL', group:'church', chapters:8 },
+  // Growing in Christ
+  { id:'more-than-imagined',    title:'More Than You Imagined', subtitle:'The Full Meaning of the Christian Life',             testament:'SL', group:'growth', chapters:7 },
+  { id:'spiritual-disciplines', title:'Spiritual Disciplines', subtitle:'The Means of Grace and the Growth of the Soul',      testament:'SL', group:'growth', chapters:6 },
+  { id:'prayer',                title:'Prayer',                subtitle:'Talking with the Living God',                         testament:'SL', group:'growth', chapters:6 },
+  { id:'biblical-wisdom',       title:'Biblical Wisdom',       subtitle:'Skill for Living in the Fear of the Lord',            testament:'SL', group:'growth', chapters:9 },
+  // Relationships, Marriage & Family
+  { id:'forgiveness-reconciliation', title:'Forgiveness & Reconciliation', subtitle:'Forgiven by God, Forgiving One Another', testament:'SL', group:'family', chapters:6 },
+  { id:'christian-marriage',    title:'Christian Marriage',    subtitle:'Covenant Love and the Gospel',                        testament:'SL', group:'family', chapters:6 },
+  { id:'biblical-manhood',      title:'Biblical Manhood',      subtitle:'Strength for the Sake of Others',                     testament:'SL', group:'family', chapters:6 },
+  { id:'biblical-womanhood',    title:'Biblical Womanhood',    subtitle:'Strength and Dignity in Christ',                      testament:'SL', group:'family', chapters:6 },
+  { id:'christian-parenting',   title:'Christian Parenting',   subtitle:'Training Up Children in the Fear of the Lord',        testament:'SL', group:'family', chapters:6 },
+  // Faith in the World
+  { id:'christian-work',        title:'Christian at Work',     subtitle:'Vocation, Calling, and the Glory of God',             testament:'SL', group:'world', chapters:6 },
+  { id:'money-stewardship',     title:'Money & Stewardship',   subtitle:'Wealth, Generosity, and the Kingdom of God',         testament:'SL', group:'world', chapters:6 },
+  { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', group:'world', chapters:6 },
+  { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',        testament:'SL', group:'world', chapters:6 },
+  // Suffering & Soul Care
+  { id:'christian-suffering',   title:'Christian Suffering',   subtitle:'Held Fast Through the Fire',                         testament:'SL', group:'care', chapters:6 },
+  { id:'biblical-counseling',   title:'Biblical Counseling',   subtitle:'Caring for Souls with the Word of God',              testament:'SL', group:'care', chapters:20 },
+  // God's Plan & the Last Things
+  { id:'covenant-theology',     title:'Covenant Theology',     subtitle:'The Backbone of Reformed Biblical Theology',          testament:'SL', group:'story', chapters:6 },
+  { id:'kingdom-of-god',        title:'The Kingdom of God',    subtitle:'The Reign of God and the Hope of the World',          testament:'SL', group:'story', chapters:6 },
+  { id:'end-times',             title:'End Times Models',      subtitle:'Amillennialism, Premillennialism, Postmillennialism',  testament:'SL', group:'story', chapters:5 },
+  { id:'dispensational-distinctives', title:'Dispensational Distinctives', subtitle:'A Biblical Guide to the Dispensational Framework', testament:'SL', group:'story', chapters:6 },
+];
+
+var TOPIC_GROUPS = [
+  { id:'bible', title:'The Bible', sub:'Where Scripture came from and how to read it' },
+  { id:'god', title:'Knowing God', sub:'Who God is and how he rules his world' },
+  { id:'salvation', title:'Christ &amp; Salvation', sub:'Who Jesus is, what he has done, and how sinners are saved' },
+  { id:'church', title:'The Church', sub:'Its life, its worship and its history' },
+  { id:'growth', title:'Growing in Christ', sub:'Prayer, Scripture, wisdom and the fight for holiness' },
+  { id:'family', title:'Relationships, Marriage &amp; Family', sub:'Forgiveness, friendship, sexuality, marriage and children' },
+  { id:'world', title:'Faith in the World', sub:'Work, money, culture and witness' },
+  { id:'care', title:'Suffering &amp; Soul Care', sub:'Pain, grief, counsel and hope' },
+  { id:'story', title:'God&#39;s Plan &amp; the Last Things', sub:'Covenants, the kingdom and the end times' },
 ];
 
 var currentBook = null;
@@ -627,8 +650,13 @@ function toggleSection(id) {
 function buildHome() {
   var ot = BOOKS.filter(b => b.testament === 'OT');
   var nt = BOOKS.filter(b => b.testament === 'NT');
-  var sg = BOOKS.filter(b => b.testament === 'SG');
-  var sl = BOOKS.filter(b => b.testament === 'SL');
+  var st = BOOKS.filter(b => b.group);
+  var stHtml = TOPIC_GROUPS.map(function(g) {
+    var list = st.filter(b => b.group === g.id);
+    if (!list.length) return '';
+    return '<div class="group-hd"><div class="group-title">' + g.title + '</div>'
+      + '<div class="group-sub">' + g.sub + '</div></div>' + list.map(row).join('');
+  }).join('');
 
   var refHtml = ''
     + '<div class="book-row" onclick="window.location.href=\'dictionary.html\'">'
@@ -663,8 +691,7 @@ function buildHome() {
   var html = '';
   html += section('ot', 'Old Testament — ' + ot.length + ' books', ot.map(row).join(''), false);
   html += section('nt', 'New Testament — ' + nt.length + ' books', nt.map(row).join(''), false);
-  html += section('sl', 'Christian Living Studies — ' + sl.length + ' studies', sl.map(row).join(''), false);
-  html += section('sg', 'General Studies — ' + sg.length + ' studies', sg.map(row).join(''), false);
+  html += section('st', 'Studies by Topic — ' + st.length + ' studies', stHtml, false);
   html += section('ref', 'Reference', refHtml, false);
   var prayerHtml = '<div class="book-row" onclick="window.location.href=\'prayer.html\'">'
     + '<div class="row-name">Monthly Prayer</div>'
