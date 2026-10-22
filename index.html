@@ -168,6 +168,12 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .pk-wide:hover{border-color:#c9a84c}
 .pk-wait{color:#7090b0;text-align:center;padding:1.5rem 0;font-style:italic}
 
+/* ── Back chip after following a Scripture reference ── */
+#back-chip{position:fixed;top:calc(var(--hdr,6.5rem) + .45rem);left:50%;transform:translateX(-50%);z-index:95;display:none;align-items:center;gap:.2rem;background:#c9a84c;color:#0d2137;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.45);font-family:'Georgia',serif;font-size:.86rem;font-weight:bold;max-width:calc(100% - 2rem)}
+#back-chip.show{display:flex}
+#back-chip button{background:none;border:none;color:inherit;font:inherit;cursor:pointer;touch-action:manipulation;padding:.5rem .3rem .5rem .9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#back-chip .bc-x{padding:.5rem .8rem .5rem .4rem;font-weight:normal;opacity:.7}
+
 /* ── About (home screen) ── */
 .about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;cursor:pointer;user-select:none;touch-action:manipulation}
 .about-toggle:hover{background:#112840}
@@ -265,6 +271,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
     <a class="gl-btn" id="gl-full" href="#">Read the full entry &#8594;</a>
   </div>
 </div>
+<div id="back-chip"><button id="bc-go" onclick="backChipGo()"></button><button class="bc-x" onclick="backChipHide()" aria-label="Dismiss">&#10005;</button></div>
 <div id="pk-backdrop" onclick="pkClose()"></div>
 <div id="pk-sheet" role="dialog" aria-label="Go to a passage">
   <div class="pk-head">
@@ -783,6 +790,37 @@ function pkGo(id, c, v) {
 }
 var pkAfterOpen = null;
 
+/* ── Following a Scripture reference into the commentary (from the reference
+   card in scripture-links.js), with a one-tap way back to where you were. ── */
+var backPos = null;
+function sdgGoto(id, c, v) {
+  var reading = currentBook && currentData && document.getElementById('reader-screen').style.display !== 'none';
+  if (reading) {
+    var k = currentKeys[currentIdx];
+    var label = PK_ABBR[currentBook.id] ? (currentBook.id === 'psalms' ? 'Psalm ' + k : currentBook.title + (k ? ' ' + k : ' Introduction')) : currentBook.title;
+    backPos = { id: currentBook.id, key: k, y: window.scrollY, label: label };
+  }
+  pkGo(id, c, v);
+  if (backPos && !(backPos.id === id && backPos.key === c && !v)) {
+    document.getElementById('bc-go').innerHTML = '&#8592; Back to ' + backPos.label;
+    document.getElementById('back-chip').classList.add('show');
+  }
+}
+function backChipHide() { document.getElementById('back-chip').classList.remove('show'); }
+function backChipGo() {
+  var b = backPos; backChipHide(); backPos = null;
+  if (!b) return;
+  if (currentBook && currentBook.id === b.id && currentData) {
+    pendingScrollRestore = b.y;
+    render(currentKeys.indexOf(b.key));
+  } else {
+    try { localStorage.setItem(b.id + '-pos', b.key); } catch (e) {}
+    pendingScrollRestore = b.y;
+    openBook(b.id);
+  }
+}
+
+
 
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeVerseJump();
@@ -808,6 +846,8 @@ function showHome() {
   document.getElementById('vjump-pill').style.display = 'none';
   closeVerseJump();
   pkClose();
+  backChipHide();
+  if (window.RefCard) RefCard.close();
   document.title = 'Soli Deo Gloria';
   ['ot','nt','sl','sg','ref'].forEach(function(id) {
     var body = document.getElementById('body-' + id);
@@ -1181,7 +1221,7 @@ function navigate(dir) {
 
 // ── Keyboard navigation ───────────────────────────────────────────────────
 document.addEventListener('keydown', function(e) {
-  if (!currentBook || verseJumpOpen() || pkIsOpen()) return;
+  if (!currentBook || verseJumpOpen() || pkIsOpen() || (window.RefCard && RefCard.isOpen())) return;
   if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(-1); }
   if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
@@ -1195,7 +1235,7 @@ document.addEventListener('keydown', function(e) {
     startY = e.touches[0].clientY;
   }, { passive: true });
   document.addEventListener('touchend', function(e) {
-    if (!currentBook || verseJumpOpen() || pkIsOpen()) return;
+    if (!currentBook || verseJumpOpen() || pkIsOpen() || (window.RefCard && RefCard.isOpen())) return;
     var dx = e.changedTouches[0].clientX - startX;
     var dy = e.changedTouches[0].clientY - startY;
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
@@ -1209,6 +1249,13 @@ buildHome();
 
 // On load, return to where the reader left off; fall back to the home screen.
 (function restoreLast() {
+  var go = /[?&]go=([a-z0-9]+)\.(\d+)\.(\d+)/.exec(location.search);
+  if (go && BOOKS.find(function(b) { return b.id === go[1]; })) {
+    history.replaceState(null, '', location.pathname);
+    showHome();
+    pkGo(go[1], +go[2], +go[3]);
+    return;
+  }
   var lastBook = localStorage.getItem('last-book');
   if (lastBook && BOOKS.find(function(b) { return b.id === lastBook; })) {
     var savedChapter = localStorage.getItem(lastBook + '-pos');

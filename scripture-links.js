@@ -142,3 +142,118 @@ function autoLinkifyScripture(){
   else init();
   window.addEventListener('load', run);
 }
+
+// ── Reference card ─────────────────────────────────────────────────────────
+// Tapping any Scripture link opens a small card with the verse's ESV text (taken
+// from the commentary's own quotations) and two choices: read our commentary on
+// it, or open ESV.org. Tap outside the card to close it. Pages that host the
+// commentary define window.sdgGoto(bookId, chapter, verse); other pages open
+// index.html?go=book.chapter.verse.
+var RefCard = (function(){
+  var data = {}, el = null, cur = null;
+  function bookId(canon){ var c = canon.toLowerCase().replace(/\s+/g, ''); return c === 'songofsolomon' ? 'songofsongs' : c; }
+  function parse(href){
+    var m = /esv\.org\/(.+?)\/?$/.exec(href || ''); if (!m) return null;
+    var s = decodeURIComponent(m[1]), i = s.lastIndexOf('+'); if (i < 0) return null;
+    var canon = ESV_BOOKS[s.slice(0, i).toLowerCase().replace(/[\s+.]/g, '')];
+    var cm = /^(\d+)(?::(\d+))?/.exec(s.slice(i + 1));
+    if (!canon || !cm) return null;
+    return { canon: canon, id: bookId(canon), ch: +cm[1], v: cm[2] ? +cm[2] : 0, href: href };
+  }
+  function load(id){
+    if (!data[id]) data[id] = fetch('data/' + id + '.json').then(function(r){ if (!r.ok) throw 0; return r.json(); });
+    return data[id];
+  }
+  var ONE = { obadiah: 1, philemon: 1, '2john': 1, '3john': 1, jude: 1 };
+  function lbl(r, a, b){
+    var name = r.canon === 'Psalms' ? 'Psalm' : r.canon;
+    if (!a) return name + ' ' + r.ch;
+    var vs = a === b ? a : a + '–' + b;
+    return name + ' ' + (ONE[r.id] ? vs : r.ch + ':' + vs);
+  }
+  function plain(h){ var d = document.createElement('div'); d.innerHTML = h || ''; return (d.textContent || '').replace(/\s+/g, ' ').trim(); }
+  function esc(t){ return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function find(ch, v){
+    var best = null;
+    ((ch && ch.verseByVerse) || []).forEach(function(e){
+      if (best || e.sectionBreak) return;
+      var m = /^v{1,2}\.\s*(\d+)(?:\s*[–—-]\s*(\d+))?/.exec(String(e.ref || ''));
+      if (!m) return;
+      var a = +m[1], b = m[2] ? +m[2] : a;
+      if (!v || (v >= a && v <= b)) best = { a: a, b: b, q: e.quote };
+    });
+    return best;
+  }
+  function build(){
+    var st = document.createElement('style');
+    st.textContent = '#rc-bd{position:fixed;inset:0;background:rgba(5,14,24,.55);z-index:130;opacity:0;pointer-events:none;transition:opacity .18s}'
+      + '#rc-bd.open{opacity:1;pointer-events:auto}'
+      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:1rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .22s ease;font-family:Georgia,serif}'
+      + '#rc.open{transform:translateY(0)}'
+      + '#rc .rc-ref{color:#c9a84c;font-weight:bold;font-size:1rem;margin-bottom:.55rem}'
+      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:1rem;line-height:1.65;max-height:42vh;overflow-y:auto;margin-bottom:1rem}'
+      + '#rc .rc-wait{color:#7090b0;font-style:normal}'
+      + '#rc .rc-acts{display:flex;gap:.6rem}'
+      + '#rc .rc-btn{flex:1;text-align:center;text-decoration:none;font-family:Georgia,serif;font-size:.92rem;padding:.75rem .5rem;border-radius:8px;cursor:pointer;touch-action:manipulation;border:1px solid #c9a84c}'
+      + '#rc .rc-go{background:#c9a84c;color:#0d2137;font-weight:bold}'
+      + '#rc .rc-go[disabled]{opacity:.4;cursor:default}'
+      + '#rc .rc-esv{background:transparent;color:#c9a84c}';
+    document.head.appendChild(st);
+    var bd = document.createElement('div'); bd.id = 'rc-bd'; bd.onclick = close;
+    el = document.createElement('div'); el.id = 'rc'; el.setAttribute('role', 'dialog');
+    el.innerHTML = '<div class="rc-ref"></div><div class="rc-text"></div><div class="rc-acts">'
+      + '<button class="rc-btn rc-go" type="button">Commentary</button>'
+      + '<a class="rc-btn rc-esv" target="_blank" rel="noopener">ESV.org &#8599;</a></div>';
+    document.body.appendChild(bd); document.body.appendChild(el);
+    el.querySelector('.rc-go').onclick = go;
+    el.querySelector('.rc-esv').onclick = function(){ setTimeout(close, 50); };
+  }
+  function open(r, label){
+    if (!el) build();
+    cur = r;
+    var refEl = el.querySelector('.rc-ref'), txt = el.querySelector('.rc-text'), btn = el.querySelector('.rc-go');
+    refEl.textContent = lbl(r, r.v, r.v);
+    txt.innerHTML = '<span class="rc-wait">Loading&hellip;</span>';
+    btn.disabled = true;
+    el.querySelector('.rc-esv').href = r.href;
+    document.getElementById('rc-bd').classList.add('open'); el.classList.add('open');
+    load(r.id).then(function(d){
+      if (cur !== r) return;
+      var ch = d[r.ch];
+      if (!ch) throw 0;
+      btn.disabled = false;
+      var e = find(ch, r.v);
+      if (r.v && e) {
+        refEl.textContent = lbl(r, e.a, e.b);
+        txt.innerHTML = esc(plain(e.q));
+      } else {
+        var t = plain(ch.title || ''), q = e ? plain(e.q) : '';
+        if (q.length > 320) q = q.slice(0, 317).replace(/\s+\S*$/, '') + '…';
+        txt.innerHTML = (t ? '<div style="font-style:normal;color:#c9a84c;margin-bottom:.4rem">' + esc(t) + '</div>' : '') + esc(q);
+      }
+    }).catch(function(){
+      if (cur !== r) return;
+      txt.innerHTML = '<span class="rc-wait">This passage isn’t in the commentary yet.</span>';
+    });
+  }
+  function close(){
+    if (!el) return;
+    el.classList.remove('open'); document.getElementById('rc-bd').classList.remove('open'); cur = null;
+  }
+  function go(){
+    if (!cur) return;
+    var r = cur; close();
+    if (typeof window.sdgGoto === 'function') window.sdgGoto(r.id, r.ch, r.v);
+    else location.href = 'index.html?go=' + r.id + '.' + r.ch + '.' + r.v;
+  }
+  document.addEventListener('click', function(ev){
+    if (ev.defaultPrevented || ev.button || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    var a = ev.target.closest && ev.target.closest('a.scripture-link');
+    if (!a) return;
+    var r = parse(a.href);
+    if (!r) return;           // unparseable: let the ESV link work as before
+    ev.preventDefault();
+    open(r);
+  }, true);
+  return { open: open, close: close, isOpen: function(){ return !!(el && el.classList.contains('open')); } };
+})();
