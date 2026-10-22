@@ -176,7 +176,7 @@ var sdgLog = (function(){
 })();
 
 var RefCard = (function(){
-  var data = {}, el = null, cur = null, openedAt = 0;
+  var data = {}, el = null, cur = null, openedAt = 0, closedAt = 0, startOutside = false;
   function bookId(canon){ var c = canon.toLowerCase().replace(/\s+/g, ''); return c === 'songofsolomon' ? 'songofsongs' : c; }
   function parse(href){
     var m = /esv\.org\/(.+?)\/?$/.exec(href || ''); if (!m) return null;
@@ -213,13 +213,13 @@ var RefCard = (function(){
   function build(){
     var st = document.createElement('style');
     st.textContent = '#rc-bd{position:fixed;inset:0;background:rgba(5,14,24,.55);z-index:130;opacity:0;pointer-events:none;transition:opacity .18s}'
-      + '#rc-bd.open{opacity:1;pointer-events:auto}'
-      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.8rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s ease;font-family:Georgia,serif;display:flex;flex-direction:column;max-height:80vh;max-height:80dvh;touch-action:manipulation}'
+      + '#rc-bd.open{opacity:1}'
+      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.8rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s ease;font-family:Georgia,serif;display:flex;flex-direction:column;max-height:80vh;max-height:80dvh}'
       + '#rc.open{transform:translateY(0)}'
       + '#rc .rc-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;flex-shrink:0}'
       + '#rc .rc-ref{color:#c9a84c;font-weight:bold;font-size:1rem;flex:1}'
       + '#rc .rc-x{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-size:1rem;line-height:1;padding:.4rem .65rem;cursor:pointer;touch-action:manipulation}'
-      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;flex:1 1 auto;min-height:2.5em;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-bottom:1rem}'
+      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;flex:1 1 auto;min-height:2.5em;overflow-y:auto;overscroll-behavior:contain;margin-bottom:1rem}'
       + '#rc .rc-wait{color:#7090b0;font-style:normal}'
       + '#rc .rc-acts{display:flex;gap:.6rem;flex-shrink:0}'
       + '#rc .rc-btn{flex:1;text-align:center;text-decoration:none;font-family:Georgia,serif;font-size:.92rem;padding:.75rem .5rem;border-radius:8px;cursor:pointer;touch-action:manipulation;border:1px solid #c9a84c}'
@@ -227,13 +227,10 @@ var RefCard = (function(){
       + '#rc .rc-go[disabled]{opacity:.4;cursor:default}'
       + '#rc .rc-esv{background:transparent;color:#c9a84c}';
     document.head.appendChild(st);
+    // The dark backdrop is purely visual (pointer-events:none). iPhone Safari can
+    // leave the page unresponsive when a touch lands on a full-screen overlay that
+    // then disappears, so outside taps are detected on the document instead.
     var bd = document.createElement('div'); bd.id = 'rc-bd';
-    // Close only on a tap that genuinely starts on the backdrop: the tap that
-    // opened the card began on the link, so its late or repeated clicks never count.
-    var bdDown = false;
-    bd.addEventListener('touchstart', function(){ bdDown = true; }, { passive: true });
-    bd.addEventListener('mousedown', function(){ bdDown = true; });
-    bd.onclick = function(){ var ok = bdDown && Date.now() - openedAt > 400; sdgLog.log('backdrop click (down=' + bdDown + ', ' + (Date.now() - openedAt) + 'ms) ' + (ok ? 'closes' : 'ignored')); if (ok) close('backdrop'); bdDown = false; };
     el = document.createElement('div'); el.id = 'rc'; el.setAttribute('role', 'dialog');
     el.innerHTML = '<div class="rc-head"><div class="rc-ref"></div><button class="rc-x" type="button" aria-label="Close">&#10005;</button></div><div class="rc-text"></div><div class="rc-acts">'
       + '<button class="rc-btn rc-go" type="button">Commentary</button>'
@@ -276,7 +273,7 @@ var RefCard = (function(){
   function close(why){
     if (!el) return;
     sdgLog.log('close: ' + (typeof why === 'string' ? why : 'other'));
-    el.classList.remove('open'); document.getElementById('rc-bd').classList.remove('open'); cur = null;
+    el.classList.remove('open'); document.getElementById('rc-bd').classList.remove('open'); cur = null; closedAt = Date.now();
   }
   function go(){
     if (!cur) return;
@@ -284,6 +281,29 @@ var RefCard = (function(){
     if (typeof window.sdgGoto === 'function') window.sdgGoto(r.id, r.ch, r.v);
     else location.href = 'index.html?go=' + r.id + '.' + r.ch + '.' + r.v;
   }
+  // Outside taps: a touch/press that STARTS outside the open card, then a click
+  // outside it, closes the card and is swallowed (so nothing underneath fires).
+  function isOpen(){ return !!(el && el.classList.contains('open')); }
+  function startHandler(ev){
+    startOutside = isOpen() && !el.contains(ev.target);
+    if (!isOpen() && closedAt && Date.now() - closedAt < 8000) {
+      var t = ev.target; sdgLog.log('touch after close on ' + (t.tagName || '?').toLowerCase() + (t.id ? '#' + t.id : '') + (t.className && typeof t.className === 'string' ? '.' + t.className.split(' ')[0] : ''));
+    }
+  }
+  document.addEventListener('touchstart', startHandler, { capture: true, passive: true });
+  document.addEventListener('mousedown', startHandler, true);
+  document.addEventListener('click', function(ev){
+    if (!isOpen() || el.contains(ev.target)) return;
+    ev.preventDefault(); ev.stopPropagation();
+    var ok = startOutside && Date.now() - openedAt > 400;
+    sdgLog.log('outside tap (' + (Date.now() - openedAt) + 'ms) ' + (ok ? 'closes' : 'ignored'));
+    if (ok) close('outside tap');
+    startOutside = false;
+  }, true);
+  window.addEventListener('scroll', function(){
+    if (closedAt && Date.now() - closedAt < 8000 && !isOpen()) { sdgLog.log('page scrolls after close'); closedAt = 0; }
+  }, { passive: true });
+
   // diagnostic: does the touch reach a link even when no click follows?
   document.addEventListener('touchend', function(ev){
     var t = ev.target, a = t && t.closest ? t.closest('a.scripture-link') : null;
@@ -299,5 +319,5 @@ var RefCard = (function(){
     ev.preventDefault();
     open(r);
   }, true);
-  return { open: open, close: close, isOpen: function(){ return !!(el && el.classList.contains('open')); } };
+  return { open: open, close: close, isOpen: isOpen };
 })();
