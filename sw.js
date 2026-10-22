@@ -1,9 +1,8 @@
-const CACHE = 'commentaries-v2340';
+const CACHE = 'commentaries-v2341';
 const PAGES = [
   './index.html',
   './share.js',
   './scripture-links.js',
-  './esv-links.js',
   './prayer.html',
   './dictionary.html',
   './figures.html',
@@ -12,6 +11,10 @@ const PAGES = [
   './councils.html',
   './creeds.html',
   './solas.html',
+  './manifest.json',
+  './icons/icon-180.png',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
 ];
 
 self.addEventListener('install', e => {

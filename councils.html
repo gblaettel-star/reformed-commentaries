@@ -90,6 +90,8 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
 .scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
 .scripture-link:hover{text-decoration-color:#c9a84c}
 </style>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
 </head>
 <body>
 
@@ -453,6 +455,6 @@ function toggleIndex() {
 init();
 </script>
 <script src="share.js" data-card-selector=".council-card"></script>
-<script src="esv-links.js"></script>
+<script>if (window.autoLinkifyScripture) autoLinkifyScripture();</script>
 </body>
 </html>

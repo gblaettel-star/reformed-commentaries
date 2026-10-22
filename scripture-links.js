@@ -119,3 +119,26 @@ function linkifyScripture(root, curBook, curChapter){
     }
   });
 }
+
+// Auto mode for the study pages (formerly esv-links.js): links the whole page,
+// and re-links whenever the page re-renders (filters, search). Also injects the
+// link style so it wins over each page's own rule, as before.
+function autoLinkifyScripture(){
+  var st = document.createElement('style');
+  st.textContent = '.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.45);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}.scripture-link:hover{text-decoration-color:#c9a84c}';
+  (document.head || document.documentElement).appendChild(st);
+  var obs = null, t = null;
+  function run(){
+    if (obs) obs.disconnect();
+    try { linkifyScripture(document.body); } catch (e) {}
+    if (obs) obs.observe(document.body, { childList: true, subtree: true });
+  }
+  function schedule(){ clearTimeout(t); t = setTimeout(run, 150); }
+  function init(){
+    if (window.MutationObserver) obs = new MutationObserver(schedule);
+    run();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+  window.addEventListener('load', run);
+}
