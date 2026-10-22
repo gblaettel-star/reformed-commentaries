@@ -1,4 +1,7 @@
-const CACHE = 'commentaries-v2343';
+const CACHE = 'commentaries-v2344';
+// Book data lives in its own cache that survives version bumps, so a
+// "Download for offline" is not wiped every time the app is updated.
+const DATA_CACHE = 'commentaries-data';
 const PAGES = [
   './index.html',
   './share.js',
@@ -25,7 +28,7 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k !== CACHE && k !== DATA_CACHE).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
@@ -48,15 +51,20 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Cache-first for data files — they don't change once written
+  // Data files: network-first so fixes arrive at once, falling back to the saved
+  // copy when offline -- or after 4 s on a weak signal, if a copy is saved.
   if (url.includes('/data/')) {
-    e.respondWith(
-      caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-        const copy = res.clone();
-        if (res.ok) caches.open(CACHE).then(c => c.put(e.request, copy));
+    e.respondWith((async () => {
+      const cache = await caches.open(DATA_CACHE);
+      const cached = await cache.match(e.request);
+      const net = fetch(e.request).then(res => {
+        if (res.ok) cache.put(e.request, res.clone());
         return res;
-      }))
-    );
+      });
+      if (!cached) return net;
+      const slow = new Promise(r => setTimeout(() => r(cached), 4000));
+      return Promise.race([net.catch(() => cached), slow]);
+    })());
     return;
   }
 
