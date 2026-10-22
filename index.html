@@ -341,7 +341,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2356"></script>
+<script src="scripture-links.js?v=2357"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -996,7 +996,11 @@ window.addEventListener('scroll', function() {
   if (scrollSaveTimer) return;
   scrollSaveTimer = setTimeout(function() {
     scrollSaveTimer = null;
+    if (document.getElementById('reader-screen').style.display === 'none') return;   // went home meanwhile
     localStorage.setItem(currentBook.id + '-' + currentKeys[currentIdx] + '-scroll', window.scrollY);
+    // and which verse is at the top, for the home screen's "Continue reading"
+    var vs = (verseEntries.length && window.scrollY > 60) ? verseEntries[currentEntryIndex()].start : 0;
+    localStorage.setItem(currentBook.id + '-' + currentKeys[currentIdx] + '-verse', vs);
   }, 250);
 });
 
@@ -1039,11 +1043,27 @@ function homeContinue() {
   if (!b) { el.innerHTML = ''; if (card) card.style.display = 'none'; return; }
   if (card) card.style.display = '';
   var k = localStorage.getItem(id + '-pos'), where = b.title;
-  if (k !== null && +k > 0) where = (id === 'psalms' ? 'Psalm ' : b.title + ' ') + k;
+  var v = k !== null ? +(localStorage.getItem(id + '-' + k + '-verse') || 0) : 0;
+  if (k !== null && +k > 0) where = (id === 'psalms' ? 'Psalm ' : b.title + ' ') + k + (v ? ':' + v : '');
   else if (k === '0') where = b.title + ' · Introduction';
-  el.innerHTML = '<button class="home-cont" onclick="openBook(\'' + id + '\')">'
+  el.innerHTML = '<button class="home-cont" onclick="continueReading(\'' + id + '\')">'
     + '<span class="hc-lbl">Continue reading</span><span class="hc-where">' + where + '</span>'
     + '<span class="hc-arrow">&#8250;</span></button>';
+}
+// Back to the exact place last read: same book, chapter and scroll position.
+function continueReading(id) {
+  var k = localStorage.getItem(id + '-pos');
+  var y = k !== null ? localStorage.getItem(id + '-' + k + '-scroll') : null;
+  pendingScrollRestore = y !== null ? parseInt(y, 10) : null;
+  if (currentBook && currentBook.id === id && currentData && k !== null && currentData[+k] !== undefined) {
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('reader-screen').style.display = 'block';
+    document.getElementById('reader-nav').style.display = 'flex';
+    document.title = currentBook.title;
+    render(currentKeys.indexOf(+k));
+  } else {
+    openBook(id);
+  }
 }
 function toggleAbout() {
   var body = document.getElementById('about-body');
