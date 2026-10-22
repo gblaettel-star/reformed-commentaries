@@ -160,23 +160,8 @@ function autoLinkifyScripture(){
 // it, or open ESV.org. Tap outside the card to close it. Pages that host the
 // commentary define window.sdgGoto(bookId, chapter, verse); other pages open
 // index.html?go=book.chapter.verse.
-// Diagnostic log for the reference card (shown by tapping the home-screen
-// version line five times). Survives a reload within the same session.
-var sdgLog = (function(){
-  var L = [];
-  try { L = JSON.parse(sessionStorage.getItem('sdg-log') || '[]'); } catch (e) {}
-  function log(m){
-    var t = new Date(); L.push(('0' + t.getMinutes()).slice(-2) + ':' + ('0' + t.getSeconds()).slice(-2) + '.' + ('00' + t.getMilliseconds()).slice(-3).slice(0, 1) + ' ' + m);
-    if (L.length > 60) L.shift();
-    try { sessionStorage.setItem('sdg-log', JSON.stringify(L)); } catch (e) {}
-  }
-  log('page load ' + location.pathname.split('/').pop() + (document.currentScript ? ' ' + document.currentScript.src.split('/').pop() : ''));
-  window.addEventListener('error', function(e){ log('ERROR ' + e.message + ' @' + (e.lineno || '')); });
-  return { log: log, all: function(){ return L.slice(); } };
-})();
-
 var RefCard = (function(){
-  var data = {}, el = null, cur = null, openedAt = 0, closedAt = 0, startOutside = false;
+  var data = {}, el = null, cur = null, openedAt = 0, startOutside = false;
   function bookId(canon){ var c = canon.toLowerCase().replace(/\s+/g, ''); return c === 'songofsolomon' ? 'songofsongs' : c; }
   function parse(href){
     var m = /esv\.org\/(.+?)\/?$/.exec(href || ''); if (!m) return null;
@@ -260,7 +245,6 @@ var RefCard = (function(){
       close('esv button');
       if (window.navigator.standalone === true && /^https:/.test(href)) {
         ev.preventDefault();
-        sdgLog.log('esv: opening in Safari app');
         window.location.href = 'x-safari-' + href;
       }
     };
@@ -281,7 +265,6 @@ var RefCard = (function(){
       txt.innerHTML = (t ? '<div style="font-style:normal;color:#c9a84c;margin-bottom:.4rem">' + esc(t) + '</div>' : '') + esc(q);
     }
     txt.scrollTop = 0;
-    if (cur.mode_ === 'chapter') sdgLog.log('back to verse');
     cur.mode_ = 'verse';
   }
   // Chapter view: the whole chapter's ESV text, scrolled to the tapped verse(s).
@@ -303,12 +286,10 @@ var RefCard = (function(){
     txt.scrollTop = 0;
     if (target) txt.scrollTop = Math.max(0, target.offsetTop - txt.offsetTop - 60);
     cur.mode_ = 'chapter';
-    sdgLog.log('whole chapter ' + r.canon + ' ' + r.ch);
   }
   function open(r, label){
     if (!el) build();
     cur = r; openedAt = Date.now();
-    sdgLog.log('open ' + r.canon + ' ' + r.ch + ':' + r.v);
     el.classList.remove('chapter');
     var refEl = el.querySelector('.rc-ref'), txt = el.querySelector('.rc-text'),
         btn = el.querySelector('.rc-go'), chb = el.querySelector('.rc-ch');
@@ -331,8 +312,7 @@ var RefCard = (function(){
   }
   function close(why){
     if (!el) return;
-    sdgLog.log('close: ' + (typeof why === 'string' ? why : 'other'));
-    el.classList.remove('open', 'chapter'); document.getElementById('rc-bd').classList.remove('open'); cur = null; closedAt = Date.now();
+    el.classList.remove('open', 'chapter'); document.getElementById('rc-bd').classList.remove('open'); cur = null;
   }
   function go(){
     if (!cur) return;
@@ -345,9 +325,6 @@ var RefCard = (function(){
   function isOpen(){ return !!(el && el.classList.contains('open')); }
   function startHandler(ev){
     startOutside = isOpen() && !el.contains(ev.target);
-    if (!isOpen() && closedAt && Date.now() - closedAt < 8000) {
-      var t = ev.target; sdgLog.log('touch after close on ' + (t.tagName || '?').toLowerCase() + (t.id ? '#' + t.id : '') + (t.className && typeof t.className === 'string' ? '.' + t.className.split(' ')[0] : ''));
-    }
   }
   document.addEventListener('touchstart', startHandler, { capture: true, passive: true });
   document.addEventListener('mousedown', startHandler, true);
@@ -355,40 +332,27 @@ var RefCard = (function(){
     if (!isOpen() || el.contains(ev.target)) return;
     ev.preventDefault(); ev.stopPropagation();
     var ok = startOutside && Date.now() - openedAt > 400;
-    sdgLog.log('outside tap (' + (Date.now() - openedAt) + 'ms) ' + (ok ? 'closes' : 'ignored'));
     if (ok) close('outside tap');
     startOutside = false;
   }, true);
   // Coming back to the app (from Safari, another app or the lock screen):
   // close any open card and nudge the page so iOS hands touches back to it.
-  function wake(why){
-    sdgLog.log('app back in view (' + why + ')' + (isOpen() ? ', card closed' : ''));
+  function wake(){
     if (isOpen()) close('back in view');
     startOutside = false;
     var y = window.scrollY; window.scrollTo(0, y + 1); window.scrollTo(0, y);
   }
   document.addEventListener('visibilitychange', function(){
-    if (document.visibilityState === 'visible') wake('visible'); else sdgLog.log('app hidden');
+    if (document.visibilityState === 'visible') wake();
   });
-  window.addEventListener('pageshow', function(e){ if (e.persisted) wake('pageshow'); });
-  window.addEventListener('focus', function(){ if (closedAt && Date.now() - closedAt < 60000) sdgLog.log('window focus'); });
+  window.addEventListener('pageshow', function(e){ if (e.persisted) wake(); });
 
-  window.addEventListener('scroll', function(){
-    if (closedAt && Date.now() - closedAt < 8000 && !isOpen()) { sdgLog.log('page scrolls after close'); closedAt = 0; }
-  }, { passive: true });
-
-  // diagnostic: does the touch reach a link even when no click follows?
-  document.addEventListener('touchend', function(ev){
-    var t = ev.target, a = t && t.closest ? t.closest('a.scripture-link') : null;
-    if (a) sdgLog.log('touch on link "' + a.textContent + '"');
-  }, { capture: true, passive: true });
   document.addEventListener('click', function(ev){
     if (ev.defaultPrevented || ev.button || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
     var a = ev.target.closest && ev.target.closest('a.scripture-link');
-    if (!a) { if (ev.target && ev.target.nodeType !== 1) sdgLog.log('click on non-element ' + ev.target.nodeType); return; }
-    sdgLog.log('tap link "' + a.textContent + '"');
+    if (!a) return;
     var r = parse(a.href);
-    if (!r) { sdgLog.log('could not read link ' + a.href); return; }           // unparseable: let the ESV link work as before
+    if (!r) return;           // unparseable: let the ESV link work as before
     ev.preventDefault();
     open(r);
   }, true);

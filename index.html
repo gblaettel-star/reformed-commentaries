@@ -343,7 +343,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2353"></script>
+<script src="scripture-links.js?v=2354"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -932,21 +932,6 @@ function dlStart() {
 
 /* ── Version line at the foot of the home screen: the version running on this
    device (its service-worker cache name), plus a note if a newer one is live. ── */
-var verTaps = 0, verTimer = null;
-function verTap() {
-  verTaps++; clearTimeout(verTimer); verTimer = setTimeout(function(){ verTaps = 0; }, 1500);
-  if (verTaps < 5) return;
-  verTaps = 0;
-  var lines = (window.sdgLog ? sdgLog.all() : ['no log available']).slice(-40);
-  var info = 'Version: ' + (document.getElementById('app-ver').textContent || '?') + '\nScript: ' + (typeof RefCard) + '\n' + navigator.userAgent.replace(/^Mozilla\/5\.0 /, '') + '\n\n';
-  var box = document.createElement('div');
-  box.style.cssText = 'position:fixed;inset:0;z-index:300;background:#05101c;color:#cfe;font:12px/1.45 Menlo,monospace;padding:1rem 1rem 4rem;overflow:auto;white-space:pre-wrap';
-  box.textContent = 'DIAGNOSTICS — take a screenshot and send it\n\n' + info + lines.join('\n');
-  var x = document.createElement('button'); x.textContent = 'Close';
-  x.style.cssText = 'position:fixed;bottom:1rem;left:1rem;right:1rem;padding:.8rem;background:#c9a84c;color:#0d2137;border:none;border-radius:8px;font:bold 1rem Georgia,serif';
-  x.onclick = function(){ box.remove(); x.remove(); };
-  document.body.appendChild(box); document.body.appendChild(x);
-}
 function showVersion() {
   var el = document.getElementById('app-ver'); if (!el) return;
   var mine = null;
@@ -1173,7 +1158,7 @@ function buildHome() {
     + '<p>Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</p>'
     + '</div>'
     + '</div>';
-  html += '<div class="app-ver" id="app-ver" onclick="verTap()"></div></div>';
+  html += '<div class="app-ver" id="app-ver"></div></div>';
   document.getElementById('book-list').innerHTML = html;
   homeContinue();
   dlRefresh();
