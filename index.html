@@ -139,6 +139,35 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .vjump-top{margin-top:.9rem;width:100%;background:#1a3a5c;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.85rem;padding:.6rem;border-radius:6px;cursor:pointer;touch-action:manipulation}
 .vjump-top:hover{border-color:#c9a84c}
 
+/* ── Passage picker (Book → Chapter → Verse) ── */
+#pk-btn{background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.3);color:#c9a84c;border-radius:8px;cursor:pointer;flex-shrink:0;min-height:2.75rem;min-width:2.75rem;padding:0 .55rem;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
+#pk-btn:hover{border-color:rgba(201,168,76,.65)}
+#pk-btn svg{display:block}
+.pk-home{display:flex;align-items:center;justify-content:center;gap:.55rem;margin:1rem 1.2rem .4rem;padding:.85rem 1rem;background:#12293f;border:1px solid rgba(201,168,76,.45);border-radius:10px;color:#c9a84c;font-family:'Georgia',serif;font-size:1rem;letter-spacing:.04em;cursor:pointer;touch-action:manipulation;width:calc(100% - 2.4rem)}
+.pk-home:hover{border-color:#c9a84c;background:#16324f}
+#pk-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
+#pk-backdrop.open{opacity:1;pointer-events:auto}
+#pk-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.9rem 1rem calc(1.2rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .24s ease;max-height:86vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#pk-sheet.open{transform:translateY(0)}
+.pk-head{display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;min-height:2.2rem}
+.pk-back{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-family:'Georgia',serif;font-size:.85rem;padding:.4rem .6rem;cursor:pointer;touch-action:manipulation;visibility:hidden}
+.pk-title{flex:1;color:#c9a84c;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;text-align:center}
+.pk-recent{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem}
+.pk-rc{background:#16324f;border:1px solid rgba(201,168,76,.55);color:#e8dcc8;border-radius:999px;font-family:'Georgia',serif;font-size:.82rem;padding:.35rem .75rem;cursor:pointer;touch-action:manipulation}
+.pk-lbl{color:#7090b0;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;margin:.6rem 0 .4rem}
+.pk-books{display:grid;grid-template-columns:repeat(6,1fr);gap:.35rem}
+.pk-b{border:1px solid #2a4a6c;border-radius:6px;color:#e8dcc8;font-family:'Georgia',serif;font-size:.8rem;padding:.62rem .1rem;text-align:center;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;white-space:nowrap;overflow:hidden}
+.pk-b{background:#152d45;border-bottom-width:3px}
+.pk-b.g1{border-bottom-color:#c9a84c}.pk-b.g2{border-bottom-color:#5f93c4}.pk-b.g3{border-bottom-color:#9b84c9}.pk-b.g4{border-bottom-color:#c46f5a}.pk-b.g5{border-bottom-color:#d39a52}.pk-b.g6{border-bottom-color:#7fb98a}.pk-b.g7{border-bottom-color:#5fb0b5}.pk-b.g8{border-bottom-color:#a3b1c2}
+.pk-b.cur{border-color:#c9a84c;color:#c9a84c;font-weight:bold}
+.pk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(2.9rem,1fr));gap:.45rem}
+.pk-n{background:#112840;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.95rem;padding:.62rem .2rem;border-radius:6px;cursor:pointer;text-align:center;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.pk-n:hover{background:#1a3a5c;border-color:#c9a84c}
+.pk-n.cur{background:#c9a84c;color:#0d2137;border-color:#c9a84c;font-weight:bold}
+.pk-wide{display:block;width:100%;margin:0 0 .7rem;background:#1a3a5c;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.88rem;padding:.65rem;border-radius:6px;cursor:pointer;touch-action:manipulation}
+.pk-wide:hover{border-color:#c9a84c}
+.pk-wait{color:#7090b0;text-align:center;padding:1.5rem 0;font-style:italic}
+
 /* ── About (home screen) ── */
 .about-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#0a1e30;cursor:pointer;user-select:none;touch-action:manipulation}
 .about-toggle:hover{background:#112840}
@@ -201,6 +230,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <h1 onclick="showHome()">Soli Deo Gloria</h1>
   <nav id="reader-nav" style="display:none">
     <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
+    <button id="pk-btn" onclick="pkOpen()" aria-label="Go to a passage" title="Go to a passage"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c2.5-1.2 5.5-1.2 9 .8v13c-3.5-2-6.5-2-9-.8z"/><path d="M21 5.5c-2.5-1.2-5.5-1.2-9 .8v13c3.5-2 6.5-2 9-.8z"/></svg></button>
     <select id="unit-select" onchange="goTo(+this.value)"></select>
     <button id="next-btn" onclick="navigate(1)">&#8594;</button>
   </nav>
@@ -234,6 +264,15 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
     <span class="gl-btn" id="gl-goto" style="display:none"></span>
     <a class="gl-btn" id="gl-full" href="#">Read the full entry &#8594;</a>
   </div>
+</div>
+<div id="pk-backdrop" onclick="pkClose()"></div>
+<div id="pk-sheet" role="dialog" aria-label="Go to a passage">
+  <div class="pk-head">
+    <button class="pk-back" id="pk-back" onclick="pkBack()">&#8249; Back</button>
+    <span class="pk-title" id="pk-title">Go to a Passage</span>
+    <button class="vjump-close" onclick="pkClose()" aria-label="Close">&#10005;</button>
+  </div>
+  <div id="pk-body"></div>
 </div>
 <div id="vjump-backdrop" onclick="closeVerseJump()"></div>
 <div id="vjump-sheet" role="dialog" aria-label="Jump to verse">
@@ -600,6 +639,151 @@ function jumpToTop() { closeVerseJump(); window.scrollTo(0, 0); }
 
 function verseJumpOpen() { return document.getElementById('vjump-sheet').classList.contains('open'); }
 
+/* ── Passage picker: Book → Chapter → Verse in three taps. Additive: the
+   chapter dropdown, arrows and verse tab all still work as before. ── */
+var PK_ABBR = {genesis:'Gen',exodus:'Exod',leviticus:'Lev',numbers:'Num',deuteronomy:'Deut',joshua:'Josh',judges:'Judg',ruth:'Ruth','1samuel':'1 Sam','2samuel':'2 Sam','1kings':'1 Kgs','2kings':'2 Kgs','1chronicles':'1 Chr','2chronicles':'2 Chr',ezra:'Ezra',nehemiah:'Neh',esther:'Esth',job:'Job',psalms:'Ps',proverbs:'Prov',ecclesiastes:'Eccl',songofsongs:'Song',isaiah:'Isa',jeremiah:'Jer',lamentations:'Lam',ezekiel:'Ezek',daniel:'Dan',hosea:'Hos',joel:'Joel',amos:'Amos',obadiah:'Obad',jonah:'Jonah',micah:'Mic',nahum:'Nah',habakkuk:'Hab',zephaniah:'Zeph',haggai:'Hag',zechariah:'Zech',malachi:'Mal',matthew:'Matt',mark:'Mark',luke:'Luke',john:'John',acts:'Acts',romans:'Rom','1corinthians':'1 Cor','2corinthians':'2 Cor',galatians:'Gal',ephesians:'Eph',philippians:'Phil',colossians:'Col','1thessalonians':'1 Thess','2thessalonians':'2 Thess','1timothy':'1 Tim','2timothy':'2 Tim',titus:'Titus',philemon:'Phlm',hebrews:'Heb',james:'Jas','1peter':'1 Pet','2peter':'2 Pet','1john':'1 Jn','2john':'2 Jn','3john':'3 Jn',jude:'Jude',revelation:'Rev'};
+// Tint groups: law, history, poetry, major prophets, minor prophets, gospels+acts, Paul, general letters+Revelation
+var PK_GROUP = [[5,1],[12,2],[5,3],[5,4],[12,5],[5,6],[13,7],[9,8]];
+var pk = { step: 'books', book: null, ch: null, data: null };
+
+function pkBible() { return BOOKS.filter(function(b){ return PK_ABBR[b.id] && (b.testament === 'OT' || b.testament === 'NT'); }); }
+function pkIsOpen() { return document.getElementById('pk-sheet').classList.contains('open'); }
+function pkRecent() { try { return JSON.parse(localStorage.getItem('pk-recent') || '[]'); } catch (e) { return []; } }
+function pkLabel(r) {
+  var one = (BOOKS.find(function(b){ return b.id === r.b; }) || {}).chapters === 1;
+  return PK_ABBR[r.b] + ' ' + (one && r.v ? r.v : r.c + (r.v ? ':' + r.v : ''));
+}
+
+function pkOpen() {
+  closeVerseJump();
+  // Open where the reader already is: in a Bible book, start at its chapters.
+  if (currentBook && PK_ABBR[currentBook.id] && document.getElementById('reader-screen').style.display !== 'none') {
+    pk.book = currentBook; pk.data = { id: currentBook.id, d: currentData };
+    pkChapters();
+  } else {
+    pkBooks();
+  }
+  document.getElementById('pk-backdrop').classList.add('open');
+  document.getElementById('pk-sheet').classList.add('open');
+}
+function pkClose() {
+  document.getElementById('pk-backdrop').classList.remove('open');
+  document.getElementById('pk-sheet').classList.remove('open');
+}
+function pkBack() { if (pk.step === 'verses' && pk.book.chapters > 1) pkChapters(); else pkBooks(); }
+function pkHead(title, back) {
+  document.getElementById('pk-title').textContent = title;
+  document.getElementById('pk-back').style.visibility = back ? 'visible' : 'hidden';
+  document.getElementById('pk-sheet').scrollTop = 0;
+}
+
+function pkBooks() {
+  pk.step = 'books'; pkHead('Choose a Book', false);
+  var h = '', rec = pkRecent();
+  if (rec.length) {
+    h += '<div class="pk-lbl">Recent</div><div class="pk-recent">'
+      + rec.map(function(r, i){ return '<button class="pk-rc" onclick="pkRecentGo(' + i + ')">' + pkLabel(r) + '</button>'; }).join('')
+      + '</div>';
+  }
+  var books = pkBible(), gi = 0, left = PK_GROUP[0][0], cls = [];
+  books.forEach(function(b){ if (left === 0) { gi++; left = PK_GROUP[gi][0]; } cls.push('g' + PK_GROUP[gi][1]); left--; });
+  ['OT', 'NT'].forEach(function(t){
+    h += '<div class="pk-lbl">' + (t === 'OT' ? 'Old Testament' : 'New Testament') + '</div><div class="pk-books">';
+    books.forEach(function(b, i){
+      if (b.testament !== t) return;
+      var cur = currentBook && currentBook.id === b.id ? ' cur' : '';
+      h += '<button class="pk-b ' + cls[i] + cur + '" onclick="pkPickBook(\'' + b.id + '\')" title="' + b.title + '">' + PK_ABBR[b.id] + '</button>';
+    });
+    h += '</div>';
+  });
+  document.getElementById('pk-body').innerHTML = h;
+}
+
+function pkPickBook(id) {
+  pk.book = BOOKS.find(function(b){ return b.id === id; });
+  if (pk.book.chapters === 1) { pk.ch = 1; pkVerses(); return; }   // Obadiah, Philemon, 2–3 John, Jude
+  pkChapters();
+}
+
+function pkChapters() {
+  pk.step = 'chapters'; pkHead(pk.book.title, true);
+  var here = currentBook && currentBook.id === pk.book.id && currentKeys ? currentKeys[currentIdx] : null;
+  var h = '<button class="pk-wide" onclick="pkGo(\'' + pk.book.id + '\',0,0)">Introduction to ' + pk.book.title + '</button><div class="pk-grid">';
+  for (var c = 1; c <= pk.book.chapters; c++)
+    h += '<button class="pk-n' + (c === here ? ' cur' : '') + '" onclick="pkPickChapter(' + c + ')">' + c + '</button>';
+  document.getElementById('pk-body').innerHTML = h + '</div>';
+  pkLoad(pk.book.id);   // warm the book while the reader chooses a chapter
+}
+
+function pkLoad(id) {
+  if (pk.data && pk.data.id === id && pk.data.d) return Promise.resolve(pk.data.d);
+  if (currentBook && currentBook.id === id && currentData) { pk.data = { id: id, d: currentData }; return Promise.resolve(currentData); }
+  if (pk.data && pk.data.id === id && pk.data.p) return pk.data.p;
+  var p = fetch('data/' + id + '.json').then(function(r){ return r.json(); })
+    .then(function(d){ if (pk.data && pk.data.id === id) pk.data.d = d; return d; });
+  pk.data = { id: id, p: p };
+  return p;
+}
+
+function pkVerseMax(ch) {
+  var max = 0;
+  ((ch && ch.verseByVerse) || []).forEach(function(v){
+    if (v.sectionBreak) return;
+    var r = parseVerseRef(v.ref); if (r && r[1] > max) max = r[1];
+  });
+  return max;
+}
+
+function pkPickChapter(c) { pk.ch = c; pkVerses(); }
+
+function pkVerses() {
+  pk.step = 'verses';
+  var title = (pk.book.id === 'psalms' ? 'Psalm ' : pk.book.title + ' ') + pk.ch;
+  pkHead(title, pk.book.chapters > 1);
+  if (pk.book.chapters === 1) document.getElementById('pk-back').style.visibility = 'visible';
+  var body = document.getElementById('pk-body');
+  body.innerHTML = '<div class="pk-wait">Opening ' + title + '&hellip;</div>';
+  var id = pk.book.id, c = pk.ch;
+  pkLoad(id).then(function(d){
+    if (pk.step !== 'verses' || pk.book.id !== id || pk.ch !== c) return;
+    var max = pkVerseMax(d[c]);
+    if (!max) { pkGo(id, c, 0); return; }     // no verse-level entries: open the chapter
+    var sameCh = currentBook && currentBook.id === id && currentKeys && currentKeys[currentIdx] === c && verseEntries.length;
+    var curE = sameCh ? verseEntries[currentEntryIndex()] : null;
+    var h = '<button class="pk-wide" onclick="pkGo(\'' + id + '\',' + c + ',0)">&#8593; Top of ' + title + '</button><div class="pk-grid">';
+    for (var v = 1; v <= max; v++)
+      h += '<button class="pk-n' + (curE && v >= curE.start && v <= curE.end ? ' cur' : '') + '" onclick="pkGo(\'' + id + '\',' + c + ',' + v + ')">' + v + '</button>';
+    body.innerHTML = h + '</div>';
+  }).catch(function(){ body.innerHTML = '<div class="pk-wait">Could not open ' + title + '.</div>'; });
+}
+
+function pkRecentGo(i) { var r = pkRecent()[i]; if (r) pkGo(r.b, r.c, r.v); }
+
+function pkRemember(b, c, v) {
+  if (!c) return;
+  var rec = pkRecent().filter(function(r){ return !(r.b === b && r.c === c && r.v === v); });
+  rec.unshift({ b: b, c: c, v: v });
+  try { localStorage.setItem('pk-recent', JSON.stringify(rec.slice(0, 6))); } catch (e) {}
+}
+
+function pkGo(id, c, v) {
+  pkClose();
+  pkRemember(id, c, v);
+  var land = function() {
+    pendingScrollRestore = null;
+    var idx = currentKeys.indexOf(c);
+    if (idx < 0) idx = 0;
+    if (idx !== currentIdx || !v) render(idx);
+    if (v) requestAnimationFrame(function(){ requestAnimationFrame(function(){ jumpToVerse(v); }); });
+  };
+  if (currentBook && currentBook.id === id && currentData && document.getElementById('reader-screen').style.display !== 'none') { land(); return; }
+  try { localStorage.setItem(id + '-pos', c); } catch (e) {}
+  pkAfterOpen = v ? function(){ requestAnimationFrame(function(){ requestAnimationFrame(function(){ jumpToVerse(v); }); }); } : null;
+  openBook(id);
+}
+var pkAfterOpen = null;
+
+
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeVerseJump();
 });
@@ -623,6 +807,7 @@ function showHome() {
   document.getElementById('reader-nav').style.display = 'none';
   document.getElementById('vjump-pill').style.display = 'none';
   closeVerseJump();
+  pkClose();
   document.title = 'Soli Deo Gloria';
   ['ot','nt','sl','sg','ref'].forEach(function(id) {
     var body = document.getElementById('body-' + id);
@@ -715,7 +900,7 @@ function buildHome() {
     + '<div class="row-sub">The battle cries of the Reformation — Scripture, Grace, Faith, Christ, Glory</div>'
     + '<div class="row-arrow">&#8250;</div></div>';
 
-  var html = '';
+  var html = '<button class="pk-home" onclick="pkOpen()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c2.5-1.2 5.5-1.2 9 .8v13c-3.5-2-6.5-2-9-.8z"/><path d="M21 5.5c-2.5-1.2-5.5-1.2-9 .8v13c3.5-2 6.5-2 9-.8z"/></svg>Go to a Passage</button>';
   html += section('ot', 'Old Testament — ' + ot.length + ' books', ot.map(row).join(''), false);
   html += section('nt', 'New Testament — ' + nt.length + ' books', nt.map(row).join(''), false);
   html += section('st', 'Studies by Topic — ' + st.length + ' studies', stHtml, false);
@@ -756,8 +941,8 @@ function openBook(id) {
   document.title = currentBook.title;
   document.getElementById('content').innerHTML = '<p style="padding:2rem;color:#a09070;text-align:center">Loading&hellip;</p>';
 
-  fetch('data/' + id + '.json')
-    .then(r => r.json())
+  var pre = (typeof pk !== 'undefined' && pk.data && pk.data.id === id) ? pkLoad(id) : null;
+  (pre || fetch('data/' + id + '.json').then(r => r.json()))
     .then(data => {
       currentData = data;
       currentKeys = Object.keys(data).map(Number).sort((a,b) => a-b);
@@ -793,6 +978,7 @@ function openBook(id) {
       var saved = localStorage.getItem(id + '-pos');
       var start = (saved !== null && data[+saved] !== undefined) ? +saved : currentKeys[0];
       render(currentKeys.indexOf(start));
+      if (pkAfterOpen) { var f = pkAfterOpen; pkAfterOpen = null; f(); }
     })
     .catch(() => {
       document.getElementById('content').innerHTML = '<p style="padding:2rem;color:#c9a84c">Could not load ' + currentBook.title + '.</p>';
@@ -995,7 +1181,7 @@ function navigate(dir) {
 
 // ── Keyboard navigation ───────────────────────────────────────────────────
 document.addEventListener('keydown', function(e) {
-  if (!currentBook || verseJumpOpen()) return;
+  if (!currentBook || verseJumpOpen() || pkIsOpen()) return;
   if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
   if (e.key === 'ArrowLeft')  { e.preventDefault(); navigate(-1); }
   if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
@@ -1009,7 +1195,7 @@ document.addEventListener('keydown', function(e) {
     startY = e.touches[0].clientY;
   }, { passive: true });
   document.addEventListener('touchend', function(e) {
-    if (!currentBook || verseJumpOpen()) return;
+    if (!currentBook || verseJumpOpen() || pkIsOpen()) return;
     var dx = e.changedTouches[0].clientX - startX;
     var dy = e.changedTouches[0].clientY - startY;
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
