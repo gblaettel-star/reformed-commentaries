@@ -198,7 +198,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .dl-bar div{height:100%;width:0;background:#c9a84c;transition:width .2s}
 .dl-btn{background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;font-family:'Georgia',serif;font-size:.9rem;padding:.6rem 1rem;border-radius:8px;cursor:pointer;touch-action:manipulation}
 .dl-btn[disabled]{opacity:.5;cursor:default}
-.app-ver{text-align:center;color:#5d7a98;font-size:.75rem;letter-spacing:.06em;padding:1rem 1rem 1.4rem}
+.app-ver{white-space:nowrap;text-align:center;color:#5d7a98;font-size:.75rem;letter-spacing:.06em;padding:1rem 1rem 1.4rem}
 
 /* ── Text size panel ── */
 #ts-btn{background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.3);color:#c9a84c;border-radius:8px;cursor:pointer;flex-shrink:0;min-height:2.75rem;min-width:2.75rem;padding:0 .45rem;font-family:'Georgia',serif;font-size:1rem;touch-action:manipulation}
@@ -349,7 +349,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2360"></script>
+<script src="scripture-links.js?v=2361"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -961,7 +961,7 @@ function showVersion() {
         var live = (txt.match(/commentaries-v(\d+)/) || [])[1];
         var when = mod ? new Date(mod).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : '';
         if (!mine) mine = live;
-        var line = 'Version ' + mine + (live === mine && when ? ' · published ' + when : '');
+        var line = 'Version ' + mine + (live === mine && when ? ' · ' + when : '');
         if (live && mine && live !== mine) line += ' · version ' + live + ' is ready — close and reopen the app';
         el.textContent = line;
       });
