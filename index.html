@@ -190,7 +190,6 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 
 /* ── Offline download + version (home screen) ── */
 .dl-status{}
-.dl-status.ok{color:#8fb98a}
 .dl-body{display:none;padding:.2rem 1rem 1rem;background:#0e2236;font-family:'Georgia',serif}
 .dl-body.open{display:block}
 .dl-text{color:#9fb3c8;font-size:.85rem;line-height:1.55;margin-bottom:.65rem}
@@ -349,7 +348,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2361"></script>
+<script src="scripture-links.js?v=2362"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -908,9 +907,9 @@ function dlRefresh() {
     var have = {}; keys.forEach(function(r){ have[new URL(r.url).pathname.replace(/^.*\/data\//, 'data/')] = 1; });
     var files = dlFiles(), n = files.filter(function(f){ return have[f]; }).length;
     if (n >= files.length) {
-      t.innerHTML = '&#10003; Everything is saved on this device &mdash; all ' + BOOKS.length + ' books and studies can be read without a connection. Updates still arrive automatically when you are online.';
+      t.innerHTML = 'Everything is saved on this device &mdash; all ' + BOOKS.length + ' books and studies can be read without a connection. Updates still arrive automatically when you are online.';
       btn.textContent = 'Download again'; btn.disabled = false;
-      dlStatus('\u2713 saved', true);
+      dlStatus('saved');
     } else {
       t.textContent = (n ? n + ' of ' + files.length + ' are saved so far. ' : '') + 'Save every book and study on this device (about 24 MB) so the whole app works without a connection — on a flight or wherever there is no signal.';
       btn.textContent = n ? 'Download the rest' : 'Download everything'; btn.disabled = false;
