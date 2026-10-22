@@ -160,6 +160,21 @@ function autoLinkifyScripture(){
 // it, or open ESV.org. Tap outside the card to close it. Pages that host the
 // commentary define window.sdgGoto(bookId, chapter, verse); other pages open
 // index.html?go=book.chapter.verse.
+// Diagnostic log for the reference card (shown by tapping the home-screen
+// version line five times). Survives a reload within the same session.
+var sdgLog = (function(){
+  var L = [];
+  try { L = JSON.parse(sessionStorage.getItem('sdg-log') || '[]'); } catch (e) {}
+  function log(m){
+    var t = new Date(); L.push(('0' + t.getMinutes()).slice(-2) + ':' + ('0' + t.getSeconds()).slice(-2) + '.' + ('00' + t.getMilliseconds()).slice(-3).slice(0, 1) + ' ' + m);
+    if (L.length > 60) L.shift();
+    try { sessionStorage.setItem('sdg-log', JSON.stringify(L)); } catch (e) {}
+  }
+  log('page load ' + location.pathname.split('/').pop() + (document.currentScript ? ' ' + document.currentScript.src.split('/').pop() : ''));
+  window.addEventListener('error', function(e){ log('ERROR ' + e.message + ' @' + (e.lineno || '')); });
+  return { log: log, all: function(){ return L.slice(); } };
+})();
+
 var RefCard = (function(){
   var data = {}, el = null, cur = null, openedAt = 0;
   function bookId(canon){ var c = canon.toLowerCase().replace(/\s+/g, ''); return c === 'songofsolomon' ? 'songofsongs' : c; }
@@ -218,20 +233,21 @@ var RefCard = (function(){
     var bdDown = false;
     bd.addEventListener('touchstart', function(){ bdDown = true; }, { passive: true });
     bd.addEventListener('mousedown', function(){ bdDown = true; });
-    bd.onclick = function(){ if (bdDown && Date.now() - openedAt > 400) close(); bdDown = false; };
+    bd.onclick = function(){ var ok = bdDown && Date.now() - openedAt > 400; sdgLog.log('backdrop click (down=' + bdDown + ', ' + (Date.now() - openedAt) + 'ms) ' + (ok ? 'closes' : 'ignored')); if (ok) close('backdrop'); bdDown = false; };
     el = document.createElement('div'); el.id = 'rc'; el.setAttribute('role', 'dialog');
     el.innerHTML = '<div class="rc-head"><div class="rc-ref"></div><button class="rc-x" type="button" aria-label="Close">&#10005;</button></div><div class="rc-text"></div><div class="rc-acts">'
       + '<button class="rc-btn rc-go" type="button">Commentary</button>'
       + '<a class="rc-btn rc-esv" target="_blank" rel="noopener">ESV.org &#8599;</a></div>';
     document.body.appendChild(bd); document.body.appendChild(el);
     el.querySelector('.rc-go').onclick = go;
-    el.querySelector('.rc-x').onclick = close;
-    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
-    el.querySelector('.rc-esv').onclick = function(){ setTimeout(close, 50); };
+    el.querySelector('.rc-x').onclick = function(){ close('x button'); };
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close('escape'); });
+    el.querySelector('.rc-esv').onclick = function(){ setTimeout(function(){ close('esv button'); }, 50); };
   }
   function open(r, label){
     if (!el) build();
     cur = r; openedAt = Date.now();
+    sdgLog.log('open ' + r.canon + ' ' + r.ch + ':' + r.v);
     var refEl = el.querySelector('.rc-ref'), txt = el.querySelector('.rc-text'), btn = el.querySelector('.rc-go');
     refEl.textContent = lbl(r, r.v, r.v);
     txt.innerHTML = '<span class="rc-wait">Loading&hellip;</span>';
@@ -257,22 +273,29 @@ var RefCard = (function(){
       txt.innerHTML = '<span class="rc-wait">This passage isn’t in the commentary yet.</span>';
     });
   }
-  function close(){
+  function close(why){
     if (!el) return;
+    sdgLog.log('close: ' + (typeof why === 'string' ? why : 'other'));
     el.classList.remove('open'); document.getElementById('rc-bd').classList.remove('open'); cur = null;
   }
   function go(){
     if (!cur) return;
-    var r = cur; close();
+    var r = cur; close('commentary button');
     if (typeof window.sdgGoto === 'function') window.sdgGoto(r.id, r.ch, r.v);
     else location.href = 'index.html?go=' + r.id + '.' + r.ch + '.' + r.v;
   }
+  // diagnostic: does the touch reach a link even when no click follows?
+  document.addEventListener('touchend', function(ev){
+    var t = ev.target, a = t && t.closest ? t.closest('a.scripture-link') : null;
+    if (a) sdgLog.log('touch on link "' + a.textContent + '"');
+  }, { capture: true, passive: true });
   document.addEventListener('click', function(ev){
     if (ev.defaultPrevented || ev.button || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
     var a = ev.target.closest && ev.target.closest('a.scripture-link');
-    if (!a) return;
+    if (!a) { if (ev.target && ev.target.nodeType !== 1) sdgLog.log('click on non-element ' + ev.target.nodeType); return; }
+    sdgLog.log('tap link "' + a.textContent + '"');
     var r = parse(a.href);
-    if (!r) return;           // unparseable: let the ESV link work as before
+    if (!r) { sdgLog.log('could not read link ' + a.href); return; }           // unparseable: let the ESV link work as before
     ev.preventDefault();
     open(r);
   }, true);
