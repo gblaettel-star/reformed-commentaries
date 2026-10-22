@@ -21,10 +21,17 @@ nav button:hover{background:rgba(201,168,76,.13);border-color:rgba(201,168,76,.7
 nav button:active{background:#c9a84c;color:#0d2137;border-color:#c9a84c}
 nav button:disabled{opacity:.22;cursor:default}
 nav button:disabled:hover{background:rgba(255,255,255,.025);border-color:rgba(201,168,76,.3);color:#c9a84c}
-/* appearance:none drops the OS chevron so we can draw a thinner one to match */
-#unit-select{appearance:none;-webkit-appearance:none;color:#c9a84c;border:1px solid rgba(201,168,76,.3);padding:.4rem 2.1rem .4rem .75rem;border-radius:8px;font-size:.95rem;font-family:'Georgia',serif;flex:1;min-width:0;min-height:2.75rem;cursor:pointer;transition:border-color .15s;background:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.75 6 6.25 11 1.75' fill='none' stroke='%23c9a84c' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right .8rem center/11px 8px,#12293f}
-#unit-select:hover{border-color:rgba(201,168,76,.65)}
-#unit-select:focus{outline:none;border-color:rgba(201,168,76,.8)}
+/* Reader: one row — home, previous, the current place (opens the passage
+   picker; in studies an invisible native chapter list sits over it), next, text size. */
+body.reading header h1{display:none}
+body.reading header{padding:.45rem .75rem}
+#ch-wrap{position:relative;flex:1;min-width:0;display:flex}
+#ch-btn{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:.45rem;padding:.4rem .6rem;font-family:'Georgia',serif;font-size:1.02rem;color:#e8dcc8}
+#ch-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ch-btn svg{color:#c9a84c;flex-shrink:0}
+#unit-select{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none;font-size:16px;cursor:pointer;-webkit-appearance:none;appearance:none}
+#ch-wrap.native #unit-select{pointer-events:auto}
+#home-btn svg{display:block;margin:auto}
 
 /* ── Home screen ── */
 #home-screen{width:100%;padding:0}
@@ -152,9 +159,6 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .vjump-top:hover{border-color:#c9a84c}
 
 /* ── Passage picker (Book → Chapter → Verse) ── */
-#pk-btn{background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.3);color:#c9a84c;border-radius:8px;cursor:pointer;flex-shrink:0;min-height:2.75rem;min-width:2.75rem;padding:0 .55rem;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
-#pk-btn:hover{border-color:rgba(201,168,76,.65)}
-#pk-btn svg{display:block}
 #pk-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
 #pk-backdrop.open{opacity:1;pointer-events:auto}
 #pk-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.9rem 1rem calc(1.2rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .24s ease;max-height:86vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -227,7 +231,6 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 @media(max-width:640px){
   header{padding:.4rem .75rem .4rem}
   nav button{min-width:2.75rem;padding:.4rem .7rem}
-  #unit-select{font-size:.85rem}
   .row-sub{display:none}
   .book-row{padding:.9rem 1rem}
   .row-name{font-size:.95rem}
@@ -236,8 +239,8 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 /* Tiny phones / very large zoom */
 @media(max-width:380px){
   header h1{font-size:1rem}
-  nav button{min-width:2.5rem;padding:.4rem .5rem;font-size:1rem}
-  #unit-select{font-size:.8rem}
+  nav button{min-width:2.4rem;padding:.4rem .45rem;font-size:1rem}
+  #ch-btn{font-size:.95rem}
 }
 
 /* ── Terms in this chapter ── */
@@ -273,11 +276,14 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 <header>
   <h1 onclick="showHome()">Soli Deo Gloria</h1>
   <nav id="reader-nav" style="display:none">
-    <button id="prev-btn" onclick="navigate(-1)">&#8592;</button>
-    <button id="pk-btn" onclick="pkOpen()" aria-label="Go to a passage" title="Go to a passage"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c2.5-1.2 5.5-1.2 9 .8v13c-3.5-2-6.5-2-9-.8z"/><path d="M21 5.5c-2.5-1.2-5.5-1.2-9 .8v13c3.5-2 6.5-2 9-.8z"/></svg></button>
+    <button id="home-btn" onclick="showHome()" aria-label="Home" title="Home"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h12V9.5"/></svg></button>
+    <button id="prev-btn" onclick="navigate(-1)" aria-label="Previous chapter">&#8592;</button>
+    <div id="ch-wrap">
+      <button id="ch-btn" onclick="pkOpen()"><span id="ch-label"></span><svg viewBox="0 0 12 8" width="11" height="8" aria-hidden="true"><path d="M1 1.75 6 6.25 11 1.75" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <select id="unit-select" onchange="goTo(+this.value)" aria-label="Choose a chapter"></select>
+    </div>
+    <button id="next-btn" onclick="navigate(1)" aria-label="Next chapter">&#8594;</button>
     <button id="ts-btn" onclick="tsOpen()" aria-label="Text size" title="Text size"><small>A</small>A</button>
-    <select id="unit-select" onchange="goTo(+this.value)"></select>
-    <button id="next-btn" onclick="navigate(1)">&#8594;</button>
   </nav>
 </header>
 
@@ -343,7 +349,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2358"></script>
+<script src="scripture-links.js?v=2359"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1013,6 +1019,7 @@ function showHome() {
   document.getElementById('reader-screen').style.display = 'none';
   document.getElementById('reader-nav').style.display = 'none';
   document.getElementById('vjump-pill').style.display = 'none';
+  document.body.classList.remove('reading');
   closeVerseJump();
   pkClose();
   tsClose();
@@ -1063,6 +1070,7 @@ function continueReading(id) {
     document.getElementById('home-screen').style.display = 'none';
     document.getElementById('reader-screen').style.display = 'block';
     document.getElementById('reader-nav').style.display = 'flex';
+    document.body.classList.add('reading');
     document.title = currentBook.title;
     render(currentKeys.indexOf(+k));
   } else {
@@ -1203,6 +1211,7 @@ function openBook(id) {
   document.getElementById('home-screen').style.display = 'none';
   document.getElementById('reader-screen').style.display = 'block';
   document.getElementById('reader-nav').style.display = 'flex';
+  document.body.classList.add('reading');
   document.title = currentBook.title;
   document.getElementById('content').innerHTML = '<p style="padding:2rem;color:#a09070;text-align:center">Loading&hellip;</p>';
 
@@ -1284,6 +1293,13 @@ function render(idx) {
   var k = currentKeys[idx];
   var ch = currentData[k];
   document.getElementById('unit-select').value = k;
+  // Header label: "Romans 8" / "Psalm 23" / "Romans · Introduction" in the Bible;
+  // the chapter list's own label in studies (where the native list is used).
+  var bible = !!PK_ABBR[currentBook.id], lab;
+  if (bible) lab = k === 0 ? currentBook.title + ' \u00b7 Intro' : (currentBook.id === 'psalms' ? 'Psalm ' : currentBook.title + ' ') + k;
+  else { var opt = document.getElementById('unit-select').selectedOptions[0]; lab = opt ? opt.textContent : currentBook.title; }
+  document.getElementById('ch-label').textContent = lab;
+  document.getElementById('ch-wrap').classList.toggle('native', !bible);
   localStorage.setItem(currentBook.id + '-pos', k);
   try { var tt = document.createElement('div'); tt.innerHTML = ch.title || ch.subtitle || ''; localStorage.setItem(currentBook.id + '-' + k + '-title', tt.textContent.replace(/</g, '')); } catch (e) {}
 
