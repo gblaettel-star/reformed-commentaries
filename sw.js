@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v2339';
+const CACHE = 'commentaries-v2340';
 const PAGES = [
   './index.html',
   './share.js',
@@ -36,7 +36,8 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       fetch(e.request)
         .then(res => {
-          caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+          const copy = res.clone();
+          if (res.ok) caches.open(CACHE).then(c => c.put(e.request, copy));
           return res;
         })
         .catch(() => caches.match(e.request))
@@ -48,7 +49,8 @@ self.addEventListener('fetch', e => {
   if (url.includes('/data/')) {
     e.respondWith(
       caches.match(e.request).then(r => r || fetch(e.request).then(res => {
-        caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        const copy = res.clone();
+        if (res.ok) caches.open(CACHE).then(c => c.put(e.request, copy));
         return res;
       }))
     );
@@ -59,7 +61,8 @@ self.addEventListener('fetch', e => {
   e.respondWith(
     fetch(e.request)
       .then(res => {
-        caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+        const copy = res.clone();
+        if (res.ok && e.request.method === 'GET') caches.open(CACHE).then(c => c.put(e.request, copy));
         return res;
       })
       .catch(() => caches.match(e.request))
