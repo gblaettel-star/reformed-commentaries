@@ -6,6 +6,17 @@
 // Usage:  linkifyScripture(rootElement, curBook, curChapter)
 //   curBook/curChapter may be null on non-Bible pages; full refs such as
 //   "Eph 1:8-9" resolve on their own.
+// Reading text size (set from the app's "Aa" panel; stored per device).
+// Scales the page's <main> only, so headers and buttons keep their size.
+(function(){
+  var v = 1;
+  try { v = parseFloat(localStorage.getItem('text-scale')) || 1; } catch (e) {}
+  document.documentElement.style.setProperty('--ts', v);
+  var st = document.createElement('style');
+  st.textContent = 'main{zoom:var(--ts,1)}';
+  (document.head || document.documentElement).appendChild(st);
+})();
+
 var ESV_BOOKS = (function(){
   var defs = [
     ['Genesis','genesis gen ge gn'],['Exodus','exodus exod exo ex'],
@@ -191,7 +202,7 @@ var RefCard = (function(){
       + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:1rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .22s ease;font-family:Georgia,serif}'
       + '#rc.open{transform:translateY(0)}'
       + '#rc .rc-ref{color:#c9a84c;font-weight:bold;font-size:1rem;margin-bottom:.55rem}'
-      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:1rem;line-height:1.65;max-height:42vh;overflow-y:auto;margin-bottom:1rem}'
+      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;max-height:42vh;overflow-y:auto;margin-bottom:1rem}'
       + '#rc .rc-wait{color:#7090b0;font-style:normal}'
       + '#rc .rc-acts{display:flex;gap:.6rem}'
       + '#rc .rc-btn{flex:1;text-align:center;text-decoration:none;font-family:Georgia,serif;font-size:.92rem;padding:.75rem .5rem;border-radius:8px;cursor:pointer;touch-action:manipulation;border:1px solid #c9a84c}'
