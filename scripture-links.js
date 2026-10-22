@@ -193,7 +193,7 @@ var RefCard = (function(){
   var ONE = { obadiah: 1, philemon: 1, '2john': 1, '3john': 1, jude: 1 };
   function lbl(r, a, b){
     var name = r.canon === 'Psalms' ? 'Psalm' : r.canon;
-    if (!a) return name + ' ' + r.ch;
+    if (!a) return ONE[r.id] ? name : name + ' ' + r.ch;
     var vs = a === b ? a : a + '–' + b;
     return name + ' ' + (ONE[r.id] ? vs : r.ch + ':' + vs);
   }
@@ -214,29 +214,42 @@ var RefCard = (function(){
     var st = document.createElement('style');
     st.textContent = '#rc-bd{position:fixed;inset:0;background:rgba(5,14,24,.55);z-index:130;opacity:0;pointer-events:none;transition:opacity .18s}'
       + '#rc-bd.open{opacity:1}'
-      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.8rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s ease;font-family:Georgia,serif;display:flex;flex-direction:column;max-height:80vh;max-height:80dvh}'
+      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.8rem 1.1rem calc(.7rem + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s ease;font-family:Georgia,serif;display:flex;flex-direction:column;max-height:80vh;max-height:80dvh}'
       + '#rc.open{transform:translateY(0)}'
+      + '#rc.chapter{height:82vh;height:82dvh;max-height:none}'
       + '#rc .rc-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;flex-shrink:0}'
       + '#rc .rc-ref{color:#c9a84c;font-weight:bold;font-size:1rem;flex:1}'
-      + '#rc .rc-x{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-size:1rem;line-height:1;padding:.4rem .65rem;cursor:pointer;touch-action:manipulation}'
-      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;flex:1 1 auto;min-height:2.5em;overflow-y:auto;overscroll-behavior:contain;margin-bottom:1rem}'
+      + '#rc .rc-x,#rc .rc-back{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-family:Georgia,serif;font-size:.95rem;line-height:1;padding:.42rem .65rem;cursor:pointer;touch-action:manipulation}'
+      + '#rc .rc-back{display:none}#rc.chapter .rc-back{display:inline-block}'
+      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;flex:1 1 auto;min-height:2.5em;overflow-y:auto;overscroll-behavior:contain;margin-bottom:.9rem}'
+      + '#rc.chapter .rc-text{font-style:normal;line-height:1.75}'
+      + '#rc .rc-text p{margin:0 0 .7rem}'
+      + '#rc .rc-text sup{color:#c9a84c;font-size:.68em;font-style:normal;font-weight:bold;margin:0 .2em 0 .35em;vertical-align:super}'
+      + '#rc .rc-text .hl{background:rgba(201,168,76,.18);border-radius:3px;box-shadow:0 0 0 2px rgba(201,168,76,.18)}'
+      + '#rc .rc-text sup.hl{background:#c9a84c;color:#0d2137;border-radius:8px;padding:0 .3em;box-shadow:none}'
       + '#rc .rc-wait{color:#7090b0;font-style:normal}'
       + '#rc .rc-acts{display:flex;gap:.6rem;flex-shrink:0}'
-      + '#rc .rc-btn{flex:1;text-align:center;text-decoration:none;font-family:Georgia,serif;font-size:.92rem;padding:.75rem .5rem;border-radius:8px;cursor:pointer;touch-action:manipulation;border:1px solid #c9a84c}'
+      + '#rc .rc-btn{flex:1;text-align:center;font-family:Georgia,serif;font-size:.92rem;padding:.75rem .5rem;border-radius:8px;cursor:pointer;touch-action:manipulation;border:1px solid #c9a84c}'
       + '#rc .rc-go{background:#c9a84c;color:#0d2137;font-weight:bold}'
-      + '#rc .rc-go[disabled]{opacity:.4;cursor:default}'
-      + '#rc .rc-esv{background:transparent;color:#c9a84c}';
+      + '#rc .rc-ch{background:transparent;color:#c9a84c}'
+      + '#rc.chapter .rc-ch{display:none}'
+      + '#rc .rc-btn[disabled]{opacity:.4;cursor:default}'
+      + '#rc .rc-esv{display:block;text-align:center;color:#7f97b0;font-size:.8rem;text-decoration:none;padding:.65rem 0 .1rem;flex-shrink:0}';
     document.head.appendChild(st);
     // The dark backdrop is purely visual (pointer-events:none). iPhone Safari can
     // leave the page unresponsive when a touch lands on a full-screen overlay that
     // then disappears, so outside taps are detected on the document instead.
     var bd = document.createElement('div'); bd.id = 'rc-bd';
     el = document.createElement('div'); el.id = 'rc'; el.setAttribute('role', 'dialog');
-    el.innerHTML = '<div class="rc-head"><div class="rc-ref"></div><button class="rc-x" type="button" aria-label="Close">&#10005;</button></div><div class="rc-text"></div><div class="rc-acts">'
+    el.innerHTML = '<div class="rc-head"><button class="rc-back" type="button">&#8249; Back</button><div class="rc-ref"></div>'
+      + '<button class="rc-x" type="button" aria-label="Close">&#10005;</button></div><div class="rc-text"></div><div class="rc-acts">'
       + '<button class="rc-btn rc-go" type="button">Commentary</button>'
-      + '<a class="rc-btn rc-esv" target="_blank" rel="noopener">ESV.org &#8599;</a></div>';
+      + '<button class="rc-btn rc-ch" type="button">Whole chapter</button></div>'
+      + '<a class="rc-esv" target="_blank" rel="noopener">Open on ESV.org &#8599;</a>';
     document.body.appendChild(bd); document.body.appendChild(el);
     el.querySelector('.rc-go').onclick = go;
+    el.querySelector('.rc-ch').onclick = showChapter;
+    el.querySelector('.rc-back').onclick = showVerse;
     el.querySelector('.rc-x').onclick = function(){ close('x button'); };
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close('escape'); });
     // Installed on an iPhone home screen, a normal link opens ESV.org in a browser
@@ -252,30 +265,65 @@ var RefCard = (function(){
       }
     };
   }
+  // Verse view: the commentary's quotation of the tapped verse(s).
+  function showVerse(){
+    if (!cur || !cur.ch_) return;
+    var r = cur, ch = r.ch_, e = r.e_;
+    el.classList.remove('chapter');
+    var refEl = el.querySelector('.rc-ref'), txt = el.querySelector('.rc-text');
+    if (r.v && e) {
+      refEl.textContent = lbl(r, e.a, e.b);
+      txt.innerHTML = esc(plain(e.q));
+    } else {
+      var t = plain(ch.title || ''), q = e ? plain(e.q) : '';
+      refEl.textContent = lbl(r, 0, 0);
+      if (q.length > 320) q = q.slice(0, 317).replace(/\s+\S*$/, '') + '…';
+      txt.innerHTML = (t ? '<div style="font-style:normal;color:#c9a84c;margin-bottom:.4rem">' + esc(t) + '</div>' : '') + esc(q);
+    }
+    txt.scrollTop = 0;
+    if (cur.mode_ === 'chapter') sdgLog.log('back to verse');
+    cur.mode_ = 'verse';
+  }
+  // Chapter view: the whole chapter's ESV text, scrolled to the tapped verse(s).
+  function showChapter(){
+    if (!cur || !cur.ch_ || !cur.ch_.text) return;
+    var r = cur, e = r.e_, a = r.v ? (e ? e.a : r.v) : 0, b = r.v ? (e ? e.b : r.v) : 0;
+    var parts = String(r.ch_.text).split(/<sup>(\d+)<\/sup>/), h = parts[0];
+    for (var i = 1; i < parts.length; i += 2) {
+      var n = +parts[i], body = parts[i + 1] || '', on = a && n >= a && n <= b;
+      var clean = !/<\/?(p|div|blockquote|br)\b/i.test(body);
+      h += '<sup' + (on ? ' class="hl"' : '') + ' data-v="' + n + '">' + n + '</sup>'
+        + (on && clean ? '<span class="hl">' + body + '</span>' : body);
+    }
+    el.classList.add('chapter');
+    el.querySelector('.rc-ref').textContent = lbl(r, 0, 0);
+    var txt = el.querySelector('.rc-text');
+    txt.innerHTML = h;
+    var target = a ? txt.querySelector('sup[data-v="' + a + '"]') : null;
+    txt.scrollTop = 0;
+    if (target) txt.scrollTop = Math.max(0, target.offsetTop - txt.offsetTop - 60);
+    cur.mode_ = 'chapter';
+    sdgLog.log('whole chapter ' + r.canon + ' ' + r.ch);
+  }
   function open(r, label){
     if (!el) build();
     cur = r; openedAt = Date.now();
     sdgLog.log('open ' + r.canon + ' ' + r.ch + ':' + r.v);
-    var refEl = el.querySelector('.rc-ref'), txt = el.querySelector('.rc-text'), btn = el.querySelector('.rc-go');
+    el.classList.remove('chapter');
+    var refEl = el.querySelector('.rc-ref'), txt = el.querySelector('.rc-text'),
+        btn = el.querySelector('.rc-go'), chb = el.querySelector('.rc-ch');
     refEl.textContent = lbl(r, r.v, r.v);
     txt.innerHTML = '<span class="rc-wait">Loading&hellip;</span>';
-    btn.disabled = true;
+    btn.disabled = true; chb.disabled = true;
     el.querySelector('.rc-esv').href = r.href;
     document.getElementById('rc-bd').classList.add('open'); el.classList.add('open');
     load(r.id).then(function(d){
       if (cur !== r) return;
       var ch = d[r.ch];
       if (!ch) throw 0;
-      btn.disabled = false;
-      var e = find(ch, r.v);
-      if (r.v && e) {
-        refEl.textContent = lbl(r, e.a, e.b);
-        txt.innerHTML = esc(plain(e.q));
-      } else {
-        var t = plain(ch.title || ''), q = e ? plain(e.q) : '';
-        if (q.length > 320) q = q.slice(0, 317).replace(/\s+\S*$/, '') + '…';
-        txt.innerHTML = (t ? '<div style="font-style:normal;color:#c9a84c;margin-bottom:.4rem">' + esc(t) + '</div>' : '') + esc(q);
-      }
+      r.ch_ = ch; r.e_ = find(ch, r.v);
+      btn.disabled = false; chb.disabled = !ch.text;
+      showVerse();
     }).catch(function(){
       if (cur !== r) return;
       txt.innerHTML = '<span class="rc-wait">This passage isn’t in the commentary yet.</span>';
@@ -284,7 +332,7 @@ var RefCard = (function(){
   function close(why){
     if (!el) return;
     sdgLog.log('close: ' + (typeof why === 'string' ? why : 'other'));
-    el.classList.remove('open'); document.getElementById('rc-bd').classList.remove('open'); cur = null; closedAt = Date.now();
+    el.classList.remove('open', 'chapter'); document.getElementById('rc-bd').classList.remove('open'); cur = null; closedAt = Date.now();
   }
   function go(){
     if (!cur) return;
