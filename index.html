@@ -134,12 +134,12 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 /* ── Verse jump (floating pill + sheet) ── */
 /* A slim tab hugging the left bezel, vertically centred — the left thumb's resting arc.
    Deliberately small and faint; ::after widens the hit area well past the visible tab. */
-#vjump-pill{position:fixed;left:env(safe-area-inset-left,0);top:50%;transform:translateY(-50%);z-index:90;display:none;align-items:center;justify-content:center;width:1.15rem;height:2.1rem;background:#16324f;border:1px solid rgba(201,168,76,.5);border-left:none;color:#c9a84c;padding:0;border-radius:0 13px 13px 0;cursor:pointer;box-shadow:1px 0 6px rgba(0,0,0,.3);opacity:.32;transition:opacity .15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#vjump-pill{position:fixed;left:env(safe-area-inset-left,0);top:50%;transform:translateY(-50%);z-index:90;display:none;align-items:center;justify-content:center;width:1.3rem;height:2.7rem;background:#12293f;border:1px solid rgba(201,168,76,.55);border-left:none;color:#c9a84c;padding:0;border-radius:0 11px 11px 0;cursor:pointer;box-shadow:2px 0 8px rgba(0,0,0,.35);opacity:.5;transition:opacity .15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #vjump-pill::after{content:'';position:absolute;top:-11px;bottom:-11px;left:0;right:-16px}
 /* Deliberately stays faint at all times — never brightens on scroll, never
    inverts to solid gold on press. A gentle opacity nudge is the only feedback. */
-#vjump-pill:hover{opacity:.5}
-#vjump-pill:active{opacity:.6}
+#vjump-pill:hover{opacity:.65}
+#vjump-pill:active{opacity:.75}
 #vjump-pill svg{display:block}
 
 #vjump-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
@@ -349,7 +349,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2359"></script>
+<script src="scripture-links.js?v=2360"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -674,6 +674,15 @@ function scrollToEl(el) {
 
 function openVerseJump() {
   if (!verseEntries.length) return;
+  // Bible books: the same panel as "Go to a Passage", opened at this chapter's verses
+  if (currentBook && PK_ABBR[currentBook.id] && currentData) {
+    pk.book = currentBook; pk.data = { id: currentBook.id, d: currentData };
+    pk.ch = currentKeys[currentIdx];
+    pkVerses();
+    document.getElementById('pk-backdrop').classList.add('open');
+    document.getElementById('pk-sheet').classList.add('open');
+    return;
+  }
   var cur = verseEntries[currentEntryIndex()];
   var grid = document.getElementById('vjump-grid'), html = '';
   for (var v = 1; v <= verseMax; v++) {
