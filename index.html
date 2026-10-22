@@ -29,23 +29,35 @@ nav button:disabled:hover{background:rgba(255,255,255,.025);border-color:rgba(20
 /* ── Home screen ── */
 #home-screen{width:100%;padding:0}
 
-/* Collapsible section header */
-.section-toggle{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.2rem;background:#1a3a5c;border-bottom:1px solid rgba(201,168,76,.28);cursor:pointer;user-select:none;touch-action:manipulation}
-.section-toggle:hover{background:#22487a}
-.section-toggle:active{background:#22487a}
-.section-title{color:#c9a84c;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
-.section-count{color:#7090b0;font-size:.72rem;letter-spacing:.06em}
-.section-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
+/* Home layout: one calm column of rounded cards, same row style throughout */
+.home-wrap{max-width:640px;margin:0 auto;padding:1rem 1rem 0}
+.home-card{background:#12293f;border:1px solid rgba(201,168,76,.18);border-radius:12px;overflow:hidden;margin-bottom:1.1rem}
+.home-lbl{color:#7f97b0;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;margin:0 .3rem .45rem}
+.home-start{padding:.9rem}
+.home-cont{display:flex;align-items:center;gap:.6rem;width:100%;background:none;border:none;border-bottom:1px solid rgba(201,168,76,.14);padding:.1rem .1rem .85rem;margin-bottom:.85rem;cursor:pointer;text-align:left;font-family:'Georgia',serif;touch-action:manipulation}
+.hc-lbl{color:#7f97b0;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.hc-where{color:#e8dcc8;font-size:1.02rem;flex:1;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hc-arrow{color:#c9a84c;font-size:1.1rem}
+.home-go{display:flex;align-items:center;justify-content:center;gap:.55rem;width:100%;background:#c9a84c;color:#0d2137;border:none;border-radius:9px;padding:.85rem 1rem;font-family:'Georgia',serif;font-size:1.02rem;font-weight:bold;letter-spacing:.02em;cursor:pointer;touch-action:manipulation}
+.home-go:active{background:#d8ba62}
+
+/* Rows inside the cards (library sections and settings) */
+.section-toggle{display:flex;align-items:center;gap:.6rem;padding:.9rem 1rem;border-top:1px solid rgba(201,168,76,.12);cursor:pointer;user-select:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.home-card > .section-wrap:first-child > .section-toggle,.home-card > .section-toggle:first-child{border-top:none}
+.section-toggle:active{background:#183552}
+.section-title{color:#e8dcc8;font-size:1rem;font-family:'Georgia',serif;flex:1}
+.section-count{color:#7f97b0;font-size:.82rem;white-space:nowrap}
+.section-chevron{color:#c9a84c;font-size:1.1rem;transition:transform .2s;flex-shrink:0;width:.8rem;text-align:center}
 .section-chevron.open{transform:rotate(90deg)}
 .section-body{overflow:hidden;transition:max-height .25s ease}
 
-.group-hd{padding:.9rem 1.2rem .5rem;background:#0a1a2c;border-bottom:1px solid rgba(201,168,76,.22)}
+.group-hd{padding:.9rem 1rem .5rem 1.4rem;background:#0b1d30;border-top:1px solid rgba(201,168,76,.16)}
 .group-title{color:#e8dcc8;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase}
 .group-sub{color:#7090b0;font-size:.78rem;font-style:italic;margin-top:.2rem}
-.book-row{display:flex;align-items:center;gap:.9rem;padding:.85rem 1.2rem;border-bottom:1px solid #1a3050;cursor:pointer;transition:background .12s}
+.book-row{display:flex;align-items:center;gap:.9rem;padding:.75rem 1rem .75rem 1.4rem;border-top:1px solid #1a3050;background:#0e2236;cursor:pointer;transition:background .12s}
 .book-row:hover{background:#1a3a5c}
 .book-row:active{background:#22487a}
-.row-name{color:#c9a84c;font-size:1rem;font-weight:bold;min-width:110px}
+.row-name{color:#d6bf82;font-size:.96rem;min-width:110px}
 .row-sub{color:#7090b0;font-size:.82rem;flex:1}
 .row-arrow{color:#3a5a7c;font-size:1rem;margin-left:auto}
 
@@ -143,8 +155,6 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 #pk-btn{background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.3);color:#c9a84c;border-radius:8px;cursor:pointer;flex-shrink:0;min-height:2.75rem;min-width:2.75rem;padding:0 .55rem;display:flex;align-items:center;justify-content:center;touch-action:manipulation}
 #pk-btn:hover{border-color:rgba(201,168,76,.65)}
 #pk-btn svg{display:block}
-.pk-home{display:flex;align-items:center;justify-content:center;gap:.55rem;margin:1rem 1.2rem .4rem;padding:.85rem 1rem;background:#12293f;border:1px solid rgba(201,168,76,.45);border-radius:10px;color:#c9a84c;font-family:'Georgia',serif;font-size:1rem;letter-spacing:.04em;cursor:pointer;touch-action:manipulation;width:calc(100% - 2.4rem)}
-.pk-home:hover{border-color:#c9a84c;background:#16324f}
 #pk-backdrop{position:fixed;inset:0;background:rgba(5,14,24,.6);z-index:110;opacity:0;pointer-events:none;transition:opacity .2s}
 #pk-backdrop.open{opacity:1;pointer-events:auto}
 #pk-sheet{position:fixed;left:0;right:0;bottom:0;z-index:120;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.9rem 1rem calc(1.2rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .24s ease;max-height:86vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -175,9 +185,9 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 #back-chip .bc-x{padding:.5rem .8rem .5rem .4rem;font-weight:normal;opacity:.7}
 
 /* ── Offline download + version (home screen) ── */
-.dl-status{margin-left:auto;margin-right:.7rem;color:#7090b0;font-size:.75rem;font-family:'Georgia',serif;letter-spacing:.04em}
+.dl-status{}
 .dl-status.ok{color:#8fb98a}
-.dl-body{display:none;padding:.3rem 1.2rem 1rem;background:#0a1e30;font-family:'Georgia',serif}
+.dl-body{display:none;padding:.2rem 1rem 1rem;background:#0e2236;font-family:'Georgia',serif}
 .dl-body.open{display:block}
 .dl-text{color:#9fb3c8;font-size:.85rem;line-height:1.55;margin-bottom:.65rem}
 .dl-bar{height:6px;background:#12293f;border-radius:3px;overflow:hidden;margin-bottom:.6rem;display:none}
@@ -208,8 +218,8 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .about-toggle-title{color:#c9a84c;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;font-family:'Georgia',serif}
 .about-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
 .about-chevron.open{transform:rotate(90deg)}
-.about-body{overflow:hidden;max-height:0;transition:max-height .25s ease;background:#0a1e30;padding:0 1.2rem}
-.about-body.open{max-height:600px;padding:1rem 1.2rem 1.5rem}
+.about-body{overflow:hidden;max-height:0;transition:max-height .25s ease;background:#0e2236;padding:0 1rem}
+.about-body.open{max-height:700px;padding:.9rem 1rem 1.2rem}
 .about-body p{color:#7090b0;font-size:.82rem;line-height:1.75;margin-bottom:.8rem}
 .about-body p:last-child{margin-bottom:0}
 
@@ -1005,7 +1015,8 @@ function showHome() {
   backChipHide();
   if (window.RefCard) RefCard.close();
   document.title = 'Soli Deo Gloria';
-  ['ot','nt','sl','sg','ref'].forEach(function(id) {
+  homeContinue();
+  ['ot','nt','st','ref','prayer'].forEach(function(id) {
     var body = document.getElementById('body-' + id);
     var chevron = document.querySelector('#sec-' + id + ' .section-chevron');
     if (body) body.style.maxHeight = '0';
@@ -1021,6 +1032,19 @@ function showHome() {
   window.scrollTo(0,0);
 }
 
+
+/* Home: "Continue reading" — the book and chapter last open on this device. */
+function homeContinue() {
+  var el = document.getElementById('home-cont'); if (!el) return;
+  var id = localStorage.getItem('last-book'), b = id && BOOKS.find(function(x){ return x.id === id; });
+  if (!b) { el.innerHTML = ''; return; }
+  var k = localStorage.getItem(id + '-pos'), where = b.title;
+  if (k !== null && +k > 0) where = (id === 'psalms' ? 'Psalm ' : b.title + ' ') + k;
+  else if (k === '0') where = b.title + ' · Introduction';
+  el.innerHTML = '<button class="home-cont" onclick="openBook(\'' + id + '\')">'
+    + '<span class="hc-lbl">Continue reading</span><span class="hc-where">' + where + '</span>'
+    + '<span class="hc-arrow">&#8250;</span></button>';
+}
 function toggleAbout() {
   var body = document.getElementById('about-body');
   var chevron = document.getElementById('about-chevron');
@@ -1028,13 +1052,13 @@ function toggleAbout() {
   chevron.classList.toggle('open');
 }
 
-function section(id, title, contentHtml, startOpen) {
-  var open = startOpen ? ' open' : '';
+function section(id, title, contentHtml, startOpen, meta) {
   var chevronOpen = startOpen ? ' open' : '';
   var bodyStyle = startOpen ? '' : 'style="max-height:0"';
   return '<div class="section-wrap" id="sec-' + id + '">'
     + '<div class="section-toggle" onclick="toggleSection(\'' + id + '\')">'
     + '<span class="section-title">' + title + '</span>'
+    + (meta ? '<span class="section-count">' + meta + '</span>' : '')
     + '<span class="section-chevron' + chevronOpen + '">&#8250;</span>'
     + '</div>'
     + '<div class="section-body" id="body-' + id + '" ' + bodyStyle + '>'
@@ -1042,7 +1066,6 @@ function section(id, title, contentHtml, startOpen) {
     + '</div>'
     + '</div>';
 }
-
 function toggleSection(id) {
   var body = document.getElementById('body-' + id);
   var chevron = document.querySelector('#sec-' + id + ' .section-chevron');
@@ -1099,37 +1122,45 @@ function buildHome() {
     + '<div class="row-sub">The battle cries of the Reformation — Scripture, Grace, Faith, Christ, Glory</div>'
     + '<div class="row-arrow">&#8250;</div></div>';
 
-  var html = '<button class="pk-home" onclick="pkOpen()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c2.5-1.2 5.5-1.2 9 .8v13c-3.5-2-6.5-2-9-.8z"/><path d="M21 5.5c-2.5-1.2-5.5-1.2-9 .8v13c3.5-2 6.5-2 9-.8z"/></svg>Go to a Passage</button>';
-  html += '<button class="pk-home" style="margin-top:.5rem;font-size:.92rem" onclick="tsOpen()"><span style="font-size:.8em">A</span>A&nbsp; Text size &middot; <span id="ts-home-val">' + Math.round(tsGet() * 100) + '%</span></button>';
-  html += section('ot', 'Old Testament — ' + ot.length + ' books', ot.map(row).join(''), false);
-  html += section('nt', 'New Testament — ' + nt.length + ' books', nt.map(row).join(''), false);
-  html += section('st', 'Studies by Topic — ' + st.length + ' studies', stHtml, false);
-  html += section('ref', 'Reference', refHtml, false);
   var prayerHtml = '<div class="book-row" onclick="window.location.href=\'prayer.html\'">'
     + '<div class="row-name">Monthly Prayer</div>'
     + '<div class="row-sub">A prayer for every month — shaped by the Lord\'s Prayer, offered for your family and congregation</div>'
     + '<div class="row-arrow">&#8250;</div></div>';
-  html += section('prayer', 'Monthly Prayer', prayerHtml, false);
-  html += '<div class="about-toggle" onclick="toggleAbout()">'
-    + '<span class="about-toggle-title">About Soli Deo Gloria</span>'
-    + '<span class="about-chevron" id="about-chevron">&#8250;</span>'
-    + '</div>'
+  var html = '<div class="home-wrap">';
+  // Start: continue where you left off, or go anywhere in three taps
+  html += '<div class="home-card home-start">'
+    + '<div id="home-cont"></div>'
+    + '<button class="home-go" onclick="pkOpen()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c2.5-1.2 5.5-1.2 9 .8v13c-3.5-2-6.5-2-9-.8z"/><path d="M21 5.5c-2.5-1.2-5.5-1.2-9 .8v13c3.5-2 6.5-2 9-.8z"/></svg><span>Go to a Passage</span></button>'
+    + '</div>';
+  // Library
+  html += '<div class="home-lbl">Library</div><div class="home-card">'
+    + section('ot', 'Old Testament', ot.map(row).join(''), false, ot.length + ' books')
+    + section('nt', 'New Testament', nt.map(row).join(''), false, nt.length + ' books')
+    + section('st', 'Studies by Topic', stHtml, false, st.length + ' studies')
+    + section('ref', 'Reference', refHtml, false, '7 pages')
+    + section('prayer', 'Monthly Prayer', prayerHtml, false, '12 prayers')
+    + '</div>';
+  // Settings
+  html += '<div class="home-lbl">Settings</div><div class="home-card">'
+    + '<div class="section-toggle" onclick="tsOpen()"><span class="section-title">Text size</span>'
+    + '<span class="section-count" id="ts-home-val">' + Math.round(tsGet() * 100) + '%</span><span class="section-chevron">&#8250;</span></div>'
+    + '<div class="section-toggle" onclick="dlToggle()"><span class="section-title">Offline reading</span>'
+    + '<span class="section-count dl-status" id="dl-status"></span><span class="section-chevron" id="dl-chevron">&#8250;</span></div>'
+    + '<div class="dl-body" id="dl-body">'
+    + '<div class="dl-text" id="dl-text">Checking what is saved on this device&hellip;</div>'
+    + '<div class="dl-bar" id="dl-bar"><div></div></div>'
+    + '<button class="dl-btn" id="dl-btn" onclick="dlStart()" disabled>Download everything</button></div>'
+    + '<div class="section-toggle" onclick="toggleAbout()"><span class="section-title">About Soli Deo Gloria</span>'
+    + '<span class="section-chevron" id="about-chevron">&#8250;</span></div>'
     + '<div class="about-body" id="about-body">'
     + '<p>Soli Deo Gloria is a Reformed Bible commentary app designed to open the Scriptures with depth, warmth, and reverence. Each commentary draws on the work of faithful expositors including Timothy Keller, Alistair Begg, R.C. Sproul, Sinclair Ferguson, John MacArthur, John Stott, John Calvin, Derek Kidner, Bruce Waltke, Gordon Wenham, and D.A. Carson.</p>'
     + '<p>The aim is not merely to inform the mind but to stir the heart &mdash; to see Christ on every page, and to leave the reader with a deeper love for God and his Word.</p>'
     + '<p>Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</p>'
-    + '</div>';
-  html += '<div class="about-toggle" onclick="dlToggle()">'
-    + '<span class="about-toggle-title">Offline Reading</span>'
-    + '<span class="dl-status" id="dl-status"></span>'
-    + '<span class="about-chevron" id="dl-chevron">&#8250;</span>'
     + '</div>'
-    + '<div class="dl-body" id="dl-body">'
-    + '<div class="dl-text" id="dl-text">Checking what is saved on this device&hellip;</div>'
-    + '<div class="dl-bar" id="dl-bar"><div></div></div>'
-    + '<button class="dl-btn" id="dl-btn" onclick="dlStart()" disabled>Download everything</button></div>';
-  html += '<div class="app-ver" id="app-ver"></div>';
+    + '</div>';
+  html += '<div class="app-ver" id="app-ver"></div></div>';
   document.getElementById('book-list').innerHTML = html;
+  homeContinue();
   dlRefresh();
   showVersion();
 }
