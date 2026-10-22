@@ -175,8 +175,10 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 #back-chip .bc-x{padding:.5rem .8rem .5rem .4rem;font-weight:normal;opacity:.7}
 
 /* ── Offline download + version (home screen) ── */
-.dl-box{margin:1rem 1.2rem .2rem;padding:.9rem 1rem;background:#0a1e30;border:1px solid #2a4a6c;border-radius:10px;font-family:'Georgia',serif}
-.dl-title{color:#c9a84c;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.35rem}
+.dl-status{margin-left:auto;margin-right:.7rem;color:#7090b0;font-size:.75rem;font-family:'Georgia',serif;letter-spacing:.04em}
+.dl-status.ok{color:#8fb98a}
+.dl-body{display:none;padding:.3rem 1.2rem 1rem;background:#0a1e30;font-family:'Georgia',serif}
+.dl-body.open{display:block}
 .dl-text{color:#9fb3c8;font-size:.85rem;line-height:1.55;margin-bottom:.65rem}
 .dl-bar{height:6px;background:#12293f;border-radius:3px;overflow:hidden;margin-bottom:.6rem;display:none}
 .dl-bar div{height:100%;width:0;background:#c9a84c;transition:width .2s}
@@ -864,6 +866,15 @@ function tsClose() {
 var DL_CACHE = 'commentaries-data';
 var dlBusy = false;
 function dlFiles() { return BOOKS.map(function(b){ return 'data/' + b.id + '.json'; }).concat(['data/glossary.json']); }
+function dlToggle() {
+  var b = document.getElementById('dl-body'), c = document.getElementById('dl-chevron');
+  var open = !b.classList.contains('open');
+  b.classList.toggle('open', open); c.classList.toggle('open', open);
+}
+function dlStatus(txt, ok) {
+  var el = document.getElementById('dl-status'); if (!el) return;
+  el.textContent = txt; el.classList.toggle('ok', !!ok);
+}
 function dlRefresh() {
   var t = document.getElementById('dl-text'), btn = document.getElementById('dl-btn');
   if (!t || dlBusy) return;
@@ -874,9 +885,11 @@ function dlRefresh() {
     if (n >= files.length) {
       t.innerHTML = '&#10003; Everything is saved on this device &mdash; all ' + BOOKS.length + ' books and studies can be read without a connection. Updates still arrive automatically when you are online.';
       btn.textContent = 'Download again'; btn.disabled = false;
+      dlStatus('\u2713 saved', true);
     } else {
       t.textContent = (n ? n + ' of ' + files.length + ' are saved so far. ' : '') + 'Save every book and study on this device (about 24 MB) so the whole app works without a connection — on a flight or wherever there is no signal.';
       btn.textContent = n ? 'Download the rest' : 'Download everything'; btn.disabled = false;
+      dlStatus(n ? n + ' / ' + files.length + ' saved' : 'not saved');
     }
   }).catch(function(){ t.textContent = 'Offline saving is not available here.'; });
 }
@@ -893,6 +906,7 @@ function dlStart() {
       return c.add(f).catch(function(){ failed++; }).then(function(){
         done++;
         t.textContent = 'Downloading… ' + done + ' of ' + files.length;
+        dlStatus(done + ' / ' + files.length);
         bar.firstChild.style.width = Math.round(100 * done / files.length) + '%';
         return step();
       });
@@ -900,7 +914,7 @@ function dlStart() {
     return Promise.all([step(), step(), step(), step()]);
   }).then(function(){
     dlBusy = false; bar.style.display = 'none';
-    if (failed) { t.textContent = failed + ' could not be downloaded (check the connection) — tap to try again.'; btn.textContent = 'Try again'; btn.disabled = false; }
+    if (failed) { dlStatus('incomplete'); t.textContent = failed + ' could not be downloaded (check the connection) — tap to try again.'; btn.textContent = 'Try again'; btn.disabled = false; }
     else dlRefresh();
     if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
   });
@@ -1000,6 +1014,9 @@ function showHome() {
   var ab = document.getElementById('about-body');
   var ac = document.getElementById('about-chevron');
   if (ab) ab.classList.remove('open');
+  var db = document.getElementById('dl-body'), dc = document.getElementById('dl-chevron');
+  if (db) db.classList.remove('open');
+  if (dc) dc.classList.remove('open');
   if (ac) ac.classList.remove('open');
   window.scrollTo(0,0);
 }
@@ -1093,10 +1110,6 @@ function buildHome() {
     + '<div class="row-sub">A prayer for every month — shaped by the Lord\'s Prayer, offered for your family and congregation</div>'
     + '<div class="row-arrow">&#8250;</div></div>';
   html += section('prayer', 'Monthly Prayer', prayerHtml, false);
-  html += '<div class="dl-box"><div class="dl-title">Offline Reading</div>'
-    + '<div class="dl-text" id="dl-text">Checking what is saved on this device&hellip;</div>'
-    + '<div class="dl-bar" id="dl-bar"><div></div></div>'
-    + '<button class="dl-btn" id="dl-btn" onclick="dlStart()" disabled>Download everything</button></div>';
   html += '<div class="about-toggle" onclick="toggleAbout()">'
     + '<span class="about-toggle-title">About Soli Deo Gloria</span>'
     + '<span class="about-chevron" id="about-chevron">&#8250;</span>'
@@ -1106,6 +1119,15 @@ function buildHome() {
     + '<p>The aim is not merely to inform the mind but to stir the heart &mdash; to see Christ on every page, and to leave the reader with a deeper love for God and his Word.</p>'
     + '<p>Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</p>'
     + '</div>';
+  html += '<div class="about-toggle" onclick="dlToggle()">'
+    + '<span class="about-toggle-title">Offline Reading</span>'
+    + '<span class="dl-status" id="dl-status"></span>'
+    + '<span class="about-chevron" id="dl-chevron">&#8250;</span>'
+    + '</div>'
+    + '<div class="dl-body" id="dl-body">'
+    + '<div class="dl-text" id="dl-text">Checking what is saved on this device&hellip;</div>'
+    + '<div class="dl-bar" id="dl-bar"><div></div></div>'
+    + '<button class="dl-btn" id="dl-btn" onclick="dlStart()" disabled>Download everything</button></div>';
   html += '<div class="app-ver" id="app-ver"></div>';
   document.getElementById('book-list').innerHTML = html;
   dlRefresh();
