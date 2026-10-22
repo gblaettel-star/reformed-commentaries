@@ -239,7 +239,18 @@ var RefCard = (function(){
     el.querySelector('.rc-go').onclick = go;
     el.querySelector('.rc-x').onclick = function(){ close('x button'); };
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close('escape'); });
-    el.querySelector('.rc-esv').onclick = function(){ setTimeout(function(){ close('esv button'); }, 50); };
+    // Installed on an iPhone home screen, a normal link opens ESV.org in a browser
+    // layer over the app, and returning from it leaves Safari's touch handling
+    // stuck. There, hand the page to the Safari app itself instead.
+    el.querySelector('.rc-esv').onclick = function(ev){
+      var href = this.href;
+      close('esv button');
+      if (window.navigator.standalone === true && /^https:/.test(href)) {
+        ev.preventDefault();
+        sdgLog.log('esv: opening in Safari app');
+        window.location.href = 'x-safari-' + href;
+      }
+    };
   }
   function open(r, label){
     if (!el) build();
@@ -300,6 +311,20 @@ var RefCard = (function(){
     if (ok) close('outside tap');
     startOutside = false;
   }, true);
+  // Coming back to the app (from Safari, another app or the lock screen):
+  // close any open card and nudge the page so iOS hands touches back to it.
+  function wake(why){
+    sdgLog.log('app back in view (' + why + ')' + (isOpen() ? ', card closed' : ''));
+    if (isOpen()) close('back in view');
+    startOutside = false;
+    var y = window.scrollY; window.scrollTo(0, y + 1); window.scrollTo(0, y);
+  }
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible') wake('visible'); else sdgLog.log('app hidden');
+  });
+  window.addEventListener('pageshow', function(e){ if (e.persisted) wake('pageshow'); });
+  window.addEventListener('focus', function(){ if (closedAt && Date.now() - closedAt < 60000) sdgLog.log('window focus'); });
+
   window.addEventListener('scroll', function(){
     if (closedAt && Date.now() - closedAt < 8000 && !isOpen()) { sdgLog.log('page scrolls after close'); closedAt = 0; }
   }, { passive: true });
