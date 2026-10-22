@@ -13,7 +13,7 @@
   try { v = parseFloat(localStorage.getItem('text-scale')) || 1; } catch (e) {}
   document.documentElement.style.setProperty('--ts', v);
   var st = document.createElement('style');
-  st.textContent = 'main{zoom:var(--ts,1)}';
+  st.textContent = 'main{zoom:var(--ts,1)}html{touch-action:manipulation}';
   (document.head || document.documentElement).appendChild(st);
 })();
 
@@ -161,7 +161,7 @@ function autoLinkifyScripture(){
 // commentary define window.sdgGoto(bookId, chapter, verse); other pages open
 // index.html?go=book.chapter.verse.
 var RefCard = (function(){
-  var data = {}, el = null, cur = null;
+  var data = {}, el = null, cur = null, openedAt = 0;
   function bookId(canon){ var c = canon.toLowerCase().replace(/\s+/g, ''); return c === 'songofsolomon' ? 'songofsongs' : c; }
   function parse(href){
     var m = /esv\.org\/(.+?)\/?$/.exec(href || ''); if (!m) return null;
@@ -199,29 +199,34 @@ var RefCard = (function(){
     var st = document.createElement('style');
     st.textContent = '#rc-bd{position:fixed;inset:0;background:rgba(5,14,24,.55);z-index:130;opacity:0;pointer-events:none;transition:opacity .18s}'
       + '#rc-bd.open{opacity:1;pointer-events:auto}'
-      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:1rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .22s ease;font-family:Georgia,serif}'
+      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.8rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s ease;font-family:Georgia,serif;display:flex;flex-direction:column;max-height:80vh;max-height:80dvh;touch-action:manipulation}'
       + '#rc.open{transform:translateY(0)}'
-      + '#rc .rc-ref{color:#c9a84c;font-weight:bold;font-size:1rem;margin-bottom:.55rem}'
-      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;max-height:42vh;overflow-y:auto;margin-bottom:1rem}'
+      + '#rc .rc-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;flex-shrink:0}'
+      + '#rc .rc-ref{color:#c9a84c;font-weight:bold;font-size:1rem;flex:1}'
+      + '#rc .rc-x{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-size:1rem;line-height:1;padding:.4rem .65rem;cursor:pointer;touch-action:manipulation}'
+      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;flex:1 1 auto;min-height:2.5em;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-bottom:1rem}'
       + '#rc .rc-wait{color:#7090b0;font-style:normal}'
-      + '#rc .rc-acts{display:flex;gap:.6rem}'
+      + '#rc .rc-acts{display:flex;gap:.6rem;flex-shrink:0}'
       + '#rc .rc-btn{flex:1;text-align:center;text-decoration:none;font-family:Georgia,serif;font-size:.92rem;padding:.75rem .5rem;border-radius:8px;cursor:pointer;touch-action:manipulation;border:1px solid #c9a84c}'
       + '#rc .rc-go{background:#c9a84c;color:#0d2137;font-weight:bold}'
       + '#rc .rc-go[disabled]{opacity:.4;cursor:default}'
       + '#rc .rc-esv{background:transparent;color:#c9a84c}';
     document.head.appendChild(st);
-    var bd = document.createElement('div'); bd.id = 'rc-bd'; bd.onclick = close;
+    var bd = document.createElement('div'); bd.id = 'rc-bd';
+    bd.onclick = function(){ if (Date.now() - openedAt > 500) close(); };
     el = document.createElement('div'); el.id = 'rc'; el.setAttribute('role', 'dialog');
-    el.innerHTML = '<div class="rc-ref"></div><div class="rc-text"></div><div class="rc-acts">'
+    el.innerHTML = '<div class="rc-head"><div class="rc-ref"></div><button class="rc-x" type="button" aria-label="Close">&#10005;</button></div><div class="rc-text"></div><div class="rc-acts">'
       + '<button class="rc-btn rc-go" type="button">Commentary</button>'
       + '<a class="rc-btn rc-esv" target="_blank" rel="noopener">ESV.org &#8599;</a></div>';
     document.body.appendChild(bd); document.body.appendChild(el);
     el.querySelector('.rc-go').onclick = go;
+    el.querySelector('.rc-x').onclick = close;
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
     el.querySelector('.rc-esv').onclick = function(){ setTimeout(close, 50); };
   }
   function open(r, label){
     if (!el) build();
-    cur = r;
+    cur = r; openedAt = Date.now();
     var refEl = el.querySelector('.rc-ref'), txt = el.querySelector('.rc-text'), btn = el.querySelector('.rc-go');
     refEl.textContent = lbl(r, r.v, r.v);
     txt.innerHTML = '<span class="rc-wait">Loading&hellip;</span>';
