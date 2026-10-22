@@ -35,6 +35,9 @@ if [ -z "$CUR" ]; then
 fi
 NEW="v$(( ${CUR#v} + 1 ))"
 sed -i '' "s/commentaries-${CUR}/commentaries-${NEW}/" sw.js
+# Stamp shared scripts with the version, so phones never run a stale cached
+# copy (GitHub lets browsers keep a file for 10 minutes) against a new page.
+perl -pi -e 's/src="(scripture-links|share)\.js(\?v=\d+)?"/src="$1.js?v='"${NEW#v}"'"/g' ./*.html
 
 TMP="$(mktemp)"
 trap 'rm -f "$TMP"' EXIT

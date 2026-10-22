@@ -213,7 +213,12 @@ var RefCard = (function(){
       + '#rc .rc-esv{background:transparent;color:#c9a84c}';
     document.head.appendChild(st);
     var bd = document.createElement('div'); bd.id = 'rc-bd';
-    bd.onclick = function(){ if (Date.now() - openedAt > 500) close(); };
+    // Close only on a tap that genuinely starts on the backdrop: the tap that
+    // opened the card began on the link, so its late or repeated clicks never count.
+    var bdDown = false;
+    bd.addEventListener('touchstart', function(){ bdDown = true; }, { passive: true });
+    bd.addEventListener('mousedown', function(){ bdDown = true; });
+    bd.onclick = function(){ if (bdDown && Date.now() - openedAt > 400) close(); bdDown = false; };
     el = document.createElement('div'); el.id = 'rc'; el.setAttribute('role', 'dialog');
     el.innerHTML = '<div class="rc-head"><div class="rc-ref"></div><button class="rc-x" type="button" aria-label="Close">&#10005;</button></div><div class="rc-text"></div><div class="rc-acts">'
       + '<button class="rc-btn rc-go" type="button">Commentary</button>'

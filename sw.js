@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v2348';
+const CACHE = 'commentaries-v2349';
 // Book data lives in its own cache that survives version bumps, so a
 // "Download for offline" is not wiped every time the app is updated.
 const DATA_CACHE = 'commentaries-data';
@@ -46,7 +46,7 @@ self.addEventListener('fetch', e => {
           if (res.ok) caches.open(CACHE).then(c => c.put(e.request, copy));
           return res;
         })
-        .catch(() => caches.match(e.request))
+        .catch(() => caches.match(e.request, { ignoreSearch: true }))
     );
     return;
   }
@@ -76,6 +76,6 @@ self.addEventListener('fetch', e => {
         if (res.ok && e.request.method === 'GET') caches.open(CACHE).then(c => c.put(e.request, copy));
         return res;
       })
-      .catch(() => caches.match(e.request))
+      .catch(() => caches.match(e.request, { ignoreSearch: true }))
   );
 });
