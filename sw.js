@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v2384';
+const CACHE = 'commentaries-v2385';
 // Book data lives in its own cache that survives version bumps, so a
 // "Download for offline" is not wiped every time the app is updated.
 const DATA_CACHE = 'commentaries-data';
@@ -39,9 +39,11 @@ self.addEventListener('fetch', e => {
   const url = e.request.url;
 
   // Network-first for all HTML pages — always get the latest when online
+  // cache: 'no-cache' makes the browser check with GitHub every time instead of reusing its own
+  // copy for up to 10 minutes, so a page published a moment ago is seen at once.
   if (PAGES.some(p => url.includes(p.replace('./', ''))) || url.endsWith('/')) {
     e.respondWith(
-      fetch(e.request)
+      fetch(url, { cache: 'no-cache', credentials: 'same-origin' })
         .then(res => {
           const copy = res.clone();
           if (res.ok) caches.open(CACHE).then(c => c.put(e.request, copy));
@@ -58,7 +60,7 @@ self.addEventListener('fetch', e => {
     e.respondWith((async () => {
       const cache = await caches.open(DATA_CACHE);
       const cached = await cache.match(e.request);
-      const net = fetch(e.request).then(res => {
+      const net = fetch(e.request, { cache: 'no-cache' }).then(res => {
         if (res.ok) cache.put(e.request, res.clone());
         return res;
       });
