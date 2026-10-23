@@ -141,7 +141,9 @@ function linkifyScripture(root, curBook, curChapter){
         canon = curBook; cv = curChapter + ':' + m[2];
         activeBook = curBook;
       } else if (m[3]){                            // Full "Book ch:v"
-        canon = ESV_BOOKS[m[3].toLowerCase().replace(/[.\s ]/g, '')];
+        // Book names are capitalised; a lower-case word is ordinary prose ("that is 6:19"
+        // means this book's 6:19, not Isaiah), so it is skipped and "6:19" read as bare.
+        canon = /^[\s\u00A0]*[a-z]/.test(m[3]) ? null : ESV_BOOKS[m[3].toLowerCase().replace(/[.\s ]/g, '')];
         if (!canon){ re.lastIndex = start + m[3].length; continue; } // unknown word ("cf.", "see"): rewind so a trailing "1 Cor" isn't eaten
         cv = m[4];
         activeBook = canon;
