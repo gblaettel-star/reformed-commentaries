@@ -1,0 +1,83 @@
+/* Sanctuary — shared look for the Dictionary and Reference pages.
+   Loaded after each page's own <style>, so it restyles them in the same
+   reverent, bookish language as the main app: classical type, hairline
+   gold rules instead of boxes, quiet outlined filters. */
+:root{
+  --ink:#0b1524; --ink-2:#0f1c2f;
+  --parch:#ece3cf; --parch-2:#d9cdb3; --muted:#8e9db0; --faint:#5f7088;
+  --gold:#c8a95a; --gold-soft:rgba(200,169,90,.55);
+  --hair:rgba(200,169,90,.26); --hair-soft:rgba(236,227,207,.085);
+  --display:'Cormorant Garamond','EB Garamond',Georgia,serif;
+  --text:'EB Garamond',Georgia,serif;
+}
+html{background:var(--ink)}
+body{font-family:var(--text);font-size:1.06rem;color:var(--parch);
+  background:var(--ink) radial-gradient(120% 60% at 50% -10%,rgba(200,169,90,.07),transparent 60%) no-repeat;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern","liga","onum";touch-action:manipulation}
+button,input,select{font-family:var(--text)}
+
+/* Header */
+header{background:rgba(11,21,36,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair);box-shadow:none}
+header h1{font-family:var(--display);font-weight:500;color:var(--gold);letter-spacing:.04em;font-size:1.65rem;line-height:1.1}
+header h2{font-family:var(--display);font-weight:500;color:var(--muted);letter-spacing:.24em;font-size:.74rem}
+.home-link{background:none;border:none;color:var(--gold);font-style:italic;font-size:1rem;padding:.3rem .2rem}
+.home-link:hover{background:none;color:var(--parch)}
+
+/* Search, filters, index toggles */
+.search-input{background:transparent;border:1px solid var(--hair);border-radius:999px;color:var(--parch);font-size:1rem}
+.search-input:focus{border-color:var(--gold-soft);outline:none}
+.search-input::placeholder{color:var(--faint);font-style:italic}
+.theme-bar,.era-bar,.filter-bar,.month-nav,.sola-nav,.az-bar{background:none;border-bottom:1px solid var(--hair-soft)}
+.theme-btn,.era-btn,.filter-btn,.month-chip,.sola-chip{background:none;border:1px solid var(--hair-soft);border-radius:999px;color:var(--parch-2);font-style:italic;font-weight:400}
+.theme-btn:hover,.era-btn:hover,.filter-btn:hover,.month-chip:hover,.sola-chip:hover{background:rgba(200,169,90,.06);border-color:var(--hair);color:var(--parch)}
+.theme-btn.active,.era-btn.active,.filter-btn.active,.month-chip.active{background:rgba(200,169,90,.12);border-color:var(--gold-soft);color:var(--gold)}
+.az-link{color:var(--gold-soft);font-family:var(--display);font-weight:500;font-size:1.05rem}
+.term-index-toggle,.fig-index-toggle,.name-index-toggle,.index-toggle{background:none;border:none;border-top:1px solid var(--hair-soft);border-bottom:1px solid var(--hair-soft);border-radius:0;
+  color:var(--gold);font-family:var(--display);font-weight:500;letter-spacing:.22em;text-transform:uppercase;font-size:.82rem}
+.term-chip-idx,.fig-chip-idx,.name-chip,.index-chip{background:none;border:none;border-bottom:1px solid var(--hair);border-radius:0;color:var(--parch-2);font-style:italic;padding:.1rem 0;margin:0 .4rem}
+.term-chip-idx:hover,.fig-chip-idx:hover,.name-chip:hover,.index-chip:hover{background:none;color:var(--gold)}
+.intro-banner{background:none;border:none;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);border-radius:0}
+.intro-text{color:var(--parch-2);font-style:italic}
+
+/* Section heads (letters, eras) */
+.letter-head,.era-head{background:none;border:none;border-bottom:1px solid var(--hair);color:var(--gold);font-family:var(--display);font-weight:500;letter-spacing:.2em;text-align:center}
+
+/* Entries: a page of a book, not a stack of cards */
+.term-card,.fig-card,.phil-card,.heresy-card,.council-card,.creed-card,.sola-card,.prayer-card{background:none;border:none;border-top:1px solid var(--hair);border-radius:0;box-shadow:none}
+.term-header,.fig-header,.phil-header,.heresy-header,.council-header,.creed-header,.sola-header,.prayer-header{background:none;border:none}
+.term-name,.fig-name,.phil-name,.heresy-name,.council-name,.creed-name,.sola-english,.prayer-month-name{font-family:var(--display);font-weight:600;color:var(--gold);font-size:1.75rem;letter-spacing:.005em;line-height:1.15}
+.term-anchor-word,.fig-meta,.phil-meta,.heresy-meta,.council-meta,.creed-meta,.sola-latin,.sola-tagline,.prayer-theme,.prayer-month-label{color:var(--muted);font-style:italic}
+.sola-number{font-family:var(--display);color:var(--gold-soft)}
+.era-tag,.type-tag,.trad-tag,.verdict-tag,[class^="type-"],[class^="trad-"],.verdict-condemned,.verdict-ongoing,.term-header [class*="cat"]{background:none;border:1px solid var(--hair);border-radius:999px;color:var(--gold);font-family:var(--display);font-weight:500;letter-spacing:.14em}
+.term-body,.fig-body,.phil-body,.heresy-body,.council-body,.creed-body,.sola-body,.prayer-body,.meaning-text,.creed-text,.prayer-text{line-height:1.85;color:var(--parch)}
+
+/* Inner panels: a single hairline instead of a filled box */
+.wtl-box,.wtm-box,.fig-quote-wrap,.fig-work-wrap,.fig-why-wrap,.influence-wrap,.reformed-box,.key-work,.error-box,.proponents-wrap,.response-wrap,
+.still-matters,.key-text-box,.col-box,.figures-wrap,.outcome-wrap,.key-doc,.text-block,.articles-wrap,.guards-wrap,.use-box,.origin-box,
+.scripture-block,.voices-wrap,.prayer-section,.scripture-prompt{background:none;border:none;border-left:1px solid var(--hair);border-radius:0;box-shadow:none;padding-left:1rem}
+.key-verses-label,.wtl-label,.wtm-label,.fig-quote-label,.fig-work-label,.fig-why-label,.influence-label,.reformed-label,.kw-label,.error-label,.proponents-label,
+.response-label,.still-label,.kt-label,.col-label,.figures-label,.outcome-label,.kd-label,.text-label,.articles-label,.guards-label,.use-label,.origin-label,
+.scripture-label,.voices-label,.section-label,.scripture-prompt-label{color:var(--gold);font-family:var(--display);font-weight:500;letter-spacing:.22em;text-transform:uppercase;font-size:.8rem}
+.wtm-text,.fig-quote-text,.voice-quote,.error-quote,.scripture-text,.verse-text,.scripture-prompt-text{font-style:italic;color:var(--parch-2)}
+.verse-entry{border:none;border-top:1px solid var(--hair-soft);background:none}
+.verse-ref,.scripture-ref,.scripture-prompt-ref{color:var(--gold);font-family:var(--display);font-weight:600;font-size:1.08rem;letter-spacing:.03em}
+.verse-note,.scripture-comment,.fig-quote-source,.voice-attr{color:var(--muted)}
+.wtl-dot,.infl-icon,.resp-icon,.out-icon,.art-icon{color:var(--gold-soft)}
+.proponent-chip,.figure-chip,.guard-chip{background:none;border:none;border-bottom:1px solid var(--hair);border-radius:0;color:var(--parch-2);font-style:italic;padding:.1rem 0}
+.amen{font-family:var(--display);color:var(--gold);letter-spacing:.2em}
+.scripture-link{text-decoration-color:rgba(200,169,90,.4)}
+.no-results{color:var(--muted);font-style:italic}
+footer{font-family:var(--display);font-style:italic;color:var(--muted);border-top:none;letter-spacing:.04em;background:none}
+footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-soft);margin-bottom:.6rem}
+.footer-note{color:var(--muted);font-style:italic}
+
+/* The page's own "new version" notice: a quiet floating pill */
+.update-banner{background:var(--ink-2);border:1px solid var(--hair);border-radius:999px;color:var(--parch);box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.update-banner button{background:none;border:1px solid var(--gold-soft);border-radius:999px;color:var(--gold);font-family:var(--text)}
+/* Dictionary category label (set inline): outline instead of a gold fill */
+.term-header span[style*="background:#c9a84c"]{background:none!important;color:var(--gold)!important;border:1px solid var(--hair);font-family:var(--display);font-weight:500;letter-spacing:.16em!important;font-size:.72rem!important}
+/* A–Z bar and index panels: no boxes or fills */
+.az-link{background:none!important;border:none!important;border-radius:0;box-shadow:none}
+.az-link.dim{opacity:.25}
+.term-index-wrap,.fig-index-wrap,.name-index-wrap,.index-wrap,.search-wrap,.search-summary{background:none!important;border-color:var(--hair-soft)!important;box-shadow:none}
+.term-index-chips,.fig-index-chips,.name-index-chips,.index-chips{background:none}
