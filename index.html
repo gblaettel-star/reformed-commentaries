@@ -306,6 +306,9 @@ nav button:disabled,nav button:disabled:hover{opacity:.22;background:none}
 #ch-btn{font-family:var(--display);font-size:1.28rem;font-weight:500;color:var(--parch);letter-spacing:.02em;border-radius:999px}
 #ch-btn svg{opacity:.8}
 body.reading header{padding:.35rem .6rem}
+/* Narrow screens (small phones, Display Zoom): slimmer buttons so the place
+   name keeps its room; fitChLabel() shortens it to "Jer 45" if it still does not fit. */
+@media(max-width:400px){body.reading header{padding-left:.3rem;padding-right:.3rem}nav{gap:0}nav button,#ts-btn{min-width:2.4rem;padding:.3rem .25rem}#ch-btn{gap:.3rem;padding:.3rem .2rem}#ch-btn.tight{font-size:1.05rem}}
 
 /* Home: an index page — centred small-caps headings between hairlines,
    rows separated by hairlines, no filled cards */
@@ -517,7 +520,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2368"></script>
+<script src="scripture-links.js?v=2369"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -814,6 +817,19 @@ function syncHeaderOffset() {
   document.documentElement.style.setProperty('--hdr', headerOffset() + 'px');
 }
 window.addEventListener('resize', syncHeaderOffset);
+
+// Header place name: "Jeremiah 45" when it fits, otherwise "Jer 45" (a size
+// smaller if need be) rather than "J…".
+function fitChLabel() {
+  var el = document.getElementById('ch-label');
+  if (!el || !el.dataset.full) return;
+  el.parentNode.classList.remove('tight');
+  el.textContent = el.dataset.full;
+  if (!el.dataset.short || el.scrollWidth <= el.clientWidth) return;
+  el.textContent = el.dataset.short;
+  if (el.scrollWidth > el.clientWidth) el.parentNode.classList.add('tight');
+}
+window.addEventListener('resize', fitChLabel);
 
 // Which entry is currently at the top of the viewport?
 function currentEntryIndex() {
@@ -1475,7 +1491,11 @@ function render(idx) {
   var bible = !!PK_ABBR[currentBook.id], lab;
   if (bible) lab = k === 0 ? currentBook.title + ' \u00b7 Intro' : (currentBook.id === 'psalms' ? 'Psalm ' : currentBook.title + ' ') + k;
   else { var opt = document.getElementById('unit-select').selectedOptions[0]; lab = opt ? opt.textContent : currentBook.title; }
-  document.getElementById('ch-label').textContent = lab;
+  var el = document.getElementById('ch-label');
+  el.textContent = lab;
+  el.dataset.full = lab;
+  el.dataset.short = bible ? (k === 0 ? PK_ABBR[currentBook.id] + ' \u00b7 Intro' : PK_ABBR[currentBook.id] + ' ' + k) : '';
+  fitChLabel();
   document.getElementById('ch-wrap').classList.toggle('native', !bible);
   localStorage.setItem(currentBook.id + '-pos', k);
   try { var tt = document.createElement('div'); tt.innerHTML = ch.title || ch.subtitle || ''; localStorage.setItem(currentBook.id + '-' + k + '-title', tt.textContent.replace(/</g, '')); } catch (e) {}
