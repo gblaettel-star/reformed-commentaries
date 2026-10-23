@@ -35,6 +35,12 @@ if ! git pull -q --rebase --autostash; then
   exit 1
 fi
 
+# Rebuild the search index from the text, so Search always matches what is published.
+if ! python3 scripts/build_search_index.py; then
+  echo "publish.sh: could not rebuild the search index; nothing was published" >&2
+  exit 1
+fi
+
 CUR=$(grep -o "commentaries-v[0-9]\{1,\}" sw.js | head -1 | sed 's/commentaries-//')
 if [ -z "$CUR" ]; then
   echo "publish.sh: could not read cache version from sw.js" >&2

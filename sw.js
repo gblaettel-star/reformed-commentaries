@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v2373';
+const CACHE = 'commentaries-v2374';
 // Book data lives in its own cache that survives version bumps, so a
 // "Download for offline" is not wiped every time the app is updated.
 const DATA_CACHE = 'commentaries-data';
@@ -52,9 +52,9 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Data files: network-first so fixes arrive at once, falling back to the saved
+  // Data files and the search index: network-first so fixes arrive at once, falling back to the saved
   // copy when offline -- or after 4 s on a weak signal, if a copy is saved.
-  if (url.includes('/data/')) {
+  if (url.includes('/data/') || url.includes('/search/')) {
     e.respondWith((async () => {
       const cache = await caches.open(DATA_CACHE);
       const cached = await cache.match(e.request);
