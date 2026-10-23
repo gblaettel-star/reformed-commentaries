@@ -55,5 +55,17 @@
       "Read(**/*.pem)",
       "Read(**/*.key)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && if git pull --ff-only -q 2>&1; then echo \"Up to date with GitHub ($(git log -1 --pretty=%s)).\"; else echo \"WARNING: could not pull the latest from GitHub; bring this copy up to date before editing.\"; fi"
+          }
+        ]
+      }
+    ]
   }
 }
