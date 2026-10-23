@@ -28,6 +28,13 @@ if [ -z "$(git status --porcelain)" ]; then
   exit 1
 fi
 
+# Bring in anything published from elsewhere (e.g. the iPhone) first, so the
+# version bump below starts from the live number and the push is not refused.
+if ! git pull -q --rebase --autostash; then
+  echo "publish.sh: could not pull the latest from GitHub; nothing was published" >&2
+  exit 1
+fi
+
 CUR=$(grep -o "commentaries-v[0-9]\{1,\}" sw.js | head -1 | sed 's/commentaries-//')
 if [ -z "$CUR" ]; then
   echo "publish.sh: could not read cache version from sw.js" >&2
