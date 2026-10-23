@@ -309,6 +309,18 @@ body.reading header{padding:.35rem .6rem}
 /* Narrow screens (small phones, Display Zoom): slimmer buttons so the place
    name keeps its room; fitChLabel() shortens it to "Jer 45" if it still does not fit. */
 @media(max-width:400px){body.reading header{padding-left:.3rem;padding-right:.3rem}nav{gap:0}nav button,#ts-btn{min-width:2.4rem;padding:.3rem .25rem}#ch-btn{gap:.3rem;padding:.3rem .2rem}#ch-btn.tight{font-size:1.05rem}}
+/* Previous / next live in a bar at the foot of the screen, in reach of the thumb,
+   each naming where it goes ("← Jer 44", "Jer 46 →"); the header keeps Home, place and text size. */
+#prev-btn,#next-btn{display:none}
+#pager{display:none}
+body.reading #pager{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:100;justify-content:space-between;align-items:center;
+  padding:.2rem .5rem calc(.2rem + env(safe-area-inset-bottom));background:rgba(11,21,36,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--hair)}
+#pager button{display:flex;align-items:center;gap:.45rem;background:none;border:none;border-radius:999px;color:var(--gold);font-family:var(--display);
+  font-size:1.1rem;min-height:2.75rem;padding:.3rem .7rem;cursor:pointer;touch-action:manipulation;font-variant-numeric:lining-nums;transition:background .2s}
+#pager button:active{background:rgba(200,169,90,.14)}
+#pager button:disabled{visibility:hidden}
+#pager .pg-lbl{color:var(--muted)}
+body.reading #reader-screen{padding-bottom:calc(3.3rem + env(safe-area-inset-bottom))}
 
 /* Home: an index page — centred small-caps headings between hairlines,
    rows separated by hairlines, no filled cards */
@@ -398,7 +410,9 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
 #content button[onclick^="openBook"]{background:none!important;border:1px solid var(--hair)!important;border-radius:999px!important;color:var(--gold)!important;font-family:var(--text)!important;padding:.6rem 1.4rem!important}
 
 /* Bottom sheets (passage picker, verse jump, text size, terms) */
-#pk-sheet,#vjump-sheet,#ts-sheet,#gl-sheet{background:var(--ink-2);border-top:1px solid var(--hair);border-radius:18px 18px 0 0;box-shadow:0 -20px 40px rgba(0,0,0,.45)}
+#pk-sheet,#vjump-sheet,#ts-sheet,#gl-sheet{background:var(--ink-2);border-top:1px solid var(--hair);border-radius:18px 18px 0 0;box-shadow:none}
+/* Shadow only while open: a closed sheet waits just below the screen and would otherwise darken its foot. */
+#pk-sheet.open,#vjump-sheet.open,#ts-sheet.open,#gl-sheet.open{box-shadow:0 -20px 40px rgba(0,0,0,.45)}
 #pk-sheet:before,#vjump-sheet:before,#ts-sheet:before,#gl-sheet:before{content:"";display:block;width:2.4rem;height:3px;border-radius:2px;background:var(--hair);margin:-.3rem auto .7rem}
 #pk-backdrop,#vjump-backdrop,#ts-backdrop,#gl-backdrop{background:rgba(4,9,16,.55)}
 .pk-title,.vjump-title{font-family:var(--display);color:var(--gold);font-size:.88rem;font-weight:500;letter-spacing:.3em}
@@ -466,6 +480,10 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <main id="content"></main>
   <footer>Soli Deo Gloria &mdash; To God Alone Be Glory</footer>
 </div>
+<div id="pager">
+  <button id="pg-prev" onclick="navigate(-1)" aria-label="Previous chapter">&#8592; <span class="pg-lbl" id="pg-prev-lbl"></span></button>
+  <button id="pg-next" onclick="navigate(1)" aria-label="Next chapter"><span class="pg-lbl" id="pg-next-lbl"></span> &#8594;</button>
+</div>
 
 <button id="vjump-pill" onclick="openVerseJump()" aria-label="Jump to verse" title="Jump to verse">
   <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor" aria-hidden="true">
@@ -520,7 +538,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2369"></script>
+<script src="scripture-links.js?v=2370"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1619,6 +1637,10 @@ function render(idx) {
   // Prev/next button state
   document.getElementById('prev-btn').disabled = (idx === 0 && !prevBook());
   document.getElementById('next-btn').disabled = (idx === currentKeys.length - 1 && !nextBook());
+  document.getElementById('pg-prev').disabled = document.getElementById('prev-btn').disabled;
+  document.getElementById('pg-next').disabled = document.getElementById('next-btn').disabled;
+  document.getElementById('pg-prev-lbl').textContent = pagerLabel(-1);
+  document.getElementById('pg-next-lbl').textContent = pagerLabel(1);
 
   // Cross-book nav: "Continue to" at end only
   var atEnd = idx === currentKeys.length - 1;
@@ -1650,6 +1672,18 @@ function nextBook() {
   return idx < BOOKS.length - 1 ? BOOKS[idx + 1] : null;
 }
 
+// Where the foot-of-screen arrows lead: "Jer 44", "Jer · Intro", or the next book's name.
+function pagerLabel(dir) {
+  var i = currentIdx + dir, bible = !!PK_ABBR[currentBook.id];
+  if (i < 0 || i >= currentKeys.length) {
+    var b = dir < 0 ? prevBook() : nextBook();
+    return b ? (PK_ABBR[b.id] || b.title) : '';
+  }
+  if (!bible) return dir < 0 ? 'Previous' : 'Next';
+  var k = currentKeys[i], ref = currentData[k].ref || '';
+  if (k === 0) return PK_ABBR[currentBook.id] + ' \u00b7 Intro';
+  return /\d/.test(ref) ? PK_ABBR[currentBook.id] + ' ' + k : ref;
+}
 function goTo(k)         { render(currentKeys.indexOf(+k)); }
 function navigate(dir) {
   var newIdx = currentIdx + dir;
