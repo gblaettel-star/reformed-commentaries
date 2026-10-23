@@ -63,8 +63,45 @@ var ESV_BOOKS = (function(){
 // Verse-word form is matched BEFORE the book form so "v. 3" (with a space) is not
 // mistaken for a book named "v".  curBook = canonical ESV name of the book in view
 // (or null on non-Bible entries); curChapter = current chapter as a string (or null).
+// Typewriter quotes in text become book quotes: "word" -> “word”, don't -> don’t.
+// Decided from the characters either side, carried across inline tags (<em> etc.)
+// and reset at each block, so “<em>Mimētai</em>” pairs up correctly.
+function smartQuotes(root){
+  if (!root || !document.createTreeWalker) return;
+  var SKIP = /^(SCRIPT|STYLE|TEXTAREA|INPUT|CODE|PRE)$/, BLOCK = /^(P|DIV|LI|H[1-6]|TD|TH|SUMMARY|BLOCKQUOTE|SECTION|ARTICLE|MAIN|BODY|DETAILS|DD|DT|FIGCAPTION)$/;
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(n){
+      for (var p = n.parentNode; p && p !== root; p = p.parentNode) if (SKIP.test(p.nodeName)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  var nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  if (!nodes.some(function(n){ return /["']/.test(n.nodeValue); })) return;
+  function block(n){ for (var p = n.parentNode; p; p = p.parentNode) if (BLOCK.test(p.nodeName)) return p; return null; }
+  var word = /[\p{L}\p{N}]/u, opener = /[\s(\[{\u2014\u2013\/\u201C\u2018-]/, prev = ' ', prevBlock = null;
+  for (var i = 0; i < nodes.length; i++){
+    var n = nodes[i], s = n.nodeValue, b = block(n);
+    if (b !== prevBlock) { prev = ' '; prevBlock = b; }
+    if (/["']/.test(s)) {
+      var nextText = '';
+      for (var j = i + 1; j < nodes.length && !nextText; j++) if (block(nodes[j]) === b) nextText = nodes[j].nodeValue; else break;
+      var out = '';
+      for (var k = 0; k < s.length; k++){
+        var c = s[k], before = k ? out[out.length - 1] : prev, after = k + 1 < s.length ? s[k + 1] : (nextText[0] || ' ');
+        if (c === '"') c = (opener.test(before) && !/\s/.test(after)) ? '\u201C' : '\u201D';
+        else if (c === "'") c = (word.test(before) && word.test(after)) ? '\u2019' : (opener.test(before) && word.test(after)) ? '\u2018' : '\u2019';
+        out += c;
+      }
+      if (out !== s) n.nodeValue = out;
+      s = out;
+    }
+    if (s.length) prev = s[s.length - 1];
+  }
+}
+
 function linkifyScripture(root, curBook, curChapter){
   if (!root || !document.createTreeWalker) return;
+  try { smartQuotes(root); } catch (e) {}
   var SP = '[\\s\\u00A0]';
   var re = new RegExp(
     '\\b(vv?\\.|verses?)' + SP + '*(\\d+(?:[-–,]' + SP + '?\\d+)*)' +                                     // 1,2: verse words

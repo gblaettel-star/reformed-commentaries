@@ -320,6 +320,10 @@ body.reading #pager{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:
 #pager button:active{background:rgba(200,169,90,.14)}
 #pager button:disabled{visibility:hidden}
 #pager .pg-lbl{color:var(--muted)}
+.book-next{text-align:center;padding:2rem 0 .5rem}
+.book-next button{background:none;border:1px solid var(--hair);border-radius:999px;color:var(--gold);font-family:var(--display);font-size:1.15rem;
+  padding:.6rem 1.5rem;cursor:pointer;touch-action:manipulation;transition:background .2s}
+.book-next button:active{background:rgba(200,169,90,.14)}
 body.reading #reader-screen{padding-bottom:calc(3.3rem + env(safe-area-inset-bottom))}
 
 /* Home: an index page — centred small-caps headings between hairlines,
@@ -433,7 +437,8 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
 .ts-step{background:none;border:1px solid var(--hair);border-radius:999px;color:var(--gold);font-family:var(--display)}
 .ts-val{font-family:var(--display);letter-spacing:.1em;color:var(--parch-2)}
 .ts-sample{border-top:1px solid var(--hair-soft);font-family:var(--text);color:var(--parch-2)}
-#ts-range{accent-color:var(--gold)}
+#ts-range{accent-color:var(--gold);min-width:0}
+.ts-step{flex-shrink:0}
 .gl-name{font-family:var(--display);font-weight:600;font-size:1.45rem;color:var(--gold)}
 .gl-word{color:var(--muted)}
 .gl-body{color:var(--parch);font-size:1.02rem;line-height:1.7}
@@ -538,7 +543,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2371"></script>
+<script src="scripture-links.js?v=2372"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1508,6 +1513,7 @@ function render(idx) {
   // the chapter list's own label in studies (where the native list is used).
   var bible = !!PK_ABBR[currentBook.id], lab;
   if (bible) lab = k === 0 ? currentBook.title + ' \u00b7 Intro' : (currentBook.id === 'psalms' ? 'Psalm ' : currentBook.title + ' ') + k;
+  else if (ch.ref && ch.ref.length <= 16) lab = ch.ref;   // studies: "Unit 1", "Introduction"
   else { var opt = document.getElementById('unit-select').selectedOptions[0]; lab = opt ? opt.textContent : currentBook.title; }
   var el = document.getElementById('ch-label');
   el.textContent = lab;
@@ -1652,8 +1658,7 @@ function render(idx) {
   var nb = nextBook();
   if (atEnd && nb) {
     document.getElementById('content').insertAdjacentHTML('beforeend',
-      '<div style="text-align:center;padding:2rem 0">'
-      + '<button onclick="openBook(\'' + nb.id + '\')" style="background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;padding:.6rem 1.4rem;border-radius:4px;cursor:pointer;font-size:.95rem">'
+      '<div class="book-next"><button onclick="openBook(\'' + nb.id + '\')">'
       + 'Continue to ' + nb.title + ' &#8594;</button></div>');
   }
 
@@ -1783,7 +1788,7 @@ function glBuild(){
   [].slice.call(root.querySelectorAll('.vbv-entry')).forEach(function(en){
     var c = en.querySelector('.vbv-commentary');       /* never the quoted verse */
     if (!c) return;
-    var txt = c.textContent || '', m;
+    var txt = (c.textContent || '').replace(/\u2019/g, "'"), m;   /* book apostrophes match "lord's supper" */
     GL_RX.lastIndex = 0;
     while ((m = GL_RX.exec(txt))) {
       var t = GL_BY[m[1].toLowerCase()];
@@ -1796,7 +1801,7 @@ function glBuild(){
   /* then anything appearing only in a box -- no jump target rather than a wrong one */
   ['.detail-body', '.section-hd-overview', '.accent-box'].forEach(function(sel){
     [].slice.call(root.querySelectorAll(sel)).forEach(function(bx){
-      var txt = bx.textContent || '', m;
+      var txt = (bx.textContent || '').replace(/\u2019/g, "'"), m;
       GL_RX.lastIndex = 0;
       while ((m = GL_RX.exec(txt))) {
         var t = GL_BY[m[1].toLowerCase()];
