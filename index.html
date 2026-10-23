@@ -538,7 +538,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2370"></script>
+<script src="scripture-links.js?v=2371"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1552,12 +1552,15 @@ function render(idx) {
     var verseBuffer = [];
     var curTheology = '';
     var curExamples = '';
+    var curRange = '';
     function flushVerses() {
       if (!verseBuffer.length) return;
       html += '<details open><summary>' + vbvLabel + '</summary>' + verseBuffer.join('') + '</details>';
       verseBuffer = [];
-      if (curTheology) { html += '<details><summary>Theology</summary><div class="accent-box">' + curTheology + '</div></details>'; curTheology = ''; }
-      if (curExamples) { html += '<details><summary>Then &amp; Now</summary><div class="accent-box">' + curExamples + '</div></details>'; curExamples = ''; }
+      // A section's own boxes carry its verses ("Theology · vv. 4–5"), so they are
+      // not mistaken for the chapter's Theology / Then & Now that may follow.
+      if (curTheology) { html += '<details><summary>Theology' + curRange + '</summary><div class="accent-box">' + curTheology + '</div></details>'; curTheology = ''; }
+      if (curExamples) { html += '<details><summary>Then &amp; Now' + curRange + '</summary><div class="accent-box">' + curExamples + '</div></details>'; curExamples = ''; }
     }
     ch.verseByVerse.forEach((v, i) => {
       if (v.sectionBreak) {
@@ -1568,6 +1571,8 @@ function render(idx) {
         html += '</div>';
         curTheology = v.theology || '';
         curExamples = v.examples || '';
+        var rm = v.ref.match(/^(?:vv?\.\s*)?\d+(?::\d+)?(?:\s*(?:–|-|&ndash;)\s*\d+(?::\d+)?)?/);
+        curRange = rm ? ' &middot; ' + rm[0] : '';
       } else {
         var entry = '<div class="vbv-entry" id="vs' + i + '">';
         entry += '<div class="vbv-ref">' + v.ref + '</div>';
