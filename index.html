@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Soli Deo Gloria</title>
+<meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
@@ -266,6 +270,171 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .gl-btn{display:inline-block;background:#1a3a5c;border:1px solid #c9a84c;color:#c9a84c;
  padding:.5rem 1rem;border-radius:4px;font-size:.87rem;text-decoration:none;cursor:pointer}
 
+
+/* ════════════════════════════════════════════════════════════════════
+   SANCTUARY — the app's visual language (Oct 2026).
+   Quiet, reverent, bookish: classical type (Cormorant Garamond for titles,
+   EB Garamond for reading), hairline gold rules instead of boxes, generous
+   space, no pills or filled buttons. Everything below overrides the older
+   rules above, so this one block defines the look.
+   ════════════════════════════════════════════════════════════════════ */
+:root{
+  --ink:#0b1524; --ink-2:#0f1c2f; --ink-3:#13233a;
+  --parch:#ece3cf; --parch-2:#d9cdb3; --muted:#8e9db0; --faint:#5f7088;
+  --gold:#c8a95a; --gold-soft:rgba(200,169,90,.55);
+  --hair:rgba(200,169,90,.26); --hair-soft:rgba(236,227,207,.085);
+  --display:'Cormorant Garamond','EB Garamond',Georgia,serif;
+  --text:'EB Garamond',Georgia,serif;
+}
+html{background:var(--ink)}
+body{font-family:var(--text);font-size:1.06rem;color:var(--parch);
+  background:var(--ink) radial-gradient(120% 60% at 50% -10%,rgba(200,169,90,.07),transparent 60%) no-repeat;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern","liga","onum"}
+button,select{font-family:var(--text)}
+
+/* Header: ink, one hairline, no boxes */
+header{background:rgba(11,21,36,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--hair);box-shadow:none;padding:.55rem 1rem .6rem}
+header h1{font-family:var(--display);font-weight:500;font-size:1.35rem;letter-spacing:.2em;color:var(--gold);padding:.35rem 0 .3rem}
+nav{gap:.15rem;align-items:center}
+nav button,#ts-btn{background:none;border:none;border-radius:999px;color:var(--gold);min-height:2.6rem;min-width:2.6rem;padding:.3rem .5rem;
+  font-size:1.15rem;font-weight:300;transition:background .2s,opacity .2s}
+nav button:hover{background:rgba(200,169,90,.08);border:none}
+nav button:active{background:rgba(200,169,90,.14);color:var(--gold)}
+nav button:disabled,nav button:disabled:hover{opacity:.22;background:none}
+#ts-btn{font-family:var(--display);font-size:1.15rem;letter-spacing:.02em}
+#ch-btn{font-family:var(--display);font-size:1.28rem;font-weight:500;color:var(--parch);letter-spacing:.02em;border-radius:999px}
+#ch-btn svg{opacity:.8}
+body.reading header{padding:.35rem .6rem}
+
+/* Home: an index page — centred small-caps headings between hairlines,
+   rows separated by hairlines, no filled cards */
+.home-wrap{padding:1.6rem 1.25rem 0}
+.home-card{background:none;border:none;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);border-radius:0;margin-bottom:2rem}
+.home-lbl{display:flex;align-items:center;gap:.9rem;justify-content:center;font-family:var(--display);font-size:.86rem;font-weight:500;
+  letter-spacing:.34em;color:var(--gold);margin:0 0 .8rem;text-transform:uppercase}
+.home-lbl:before,.home-lbl:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--hair))}
+.home-lbl:after{background:linear-gradient(90deg,var(--hair),transparent)}
+.home-start{padding:1rem .2rem}
+.hc-lbl{font-family:var(--display);color:var(--muted);font-size:.74rem;letter-spacing:.26em}
+.hc-where{font-family:var(--display);font-weight:500;font-size:1.55rem;color:var(--parch);letter-spacing:.01em;margin-top:.1rem}
+.hc-title{font-family:var(--text);color:var(--muted);font-size:.98rem}
+.hc-arrow{color:var(--gold);font-weight:300}
+.section-toggle{padding:1rem .2rem;border-top:1px solid var(--hair-soft)}
+.section-toggle:active{background:rgba(200,169,90,.05)}
+.section-title{font-family:var(--text);font-size:1.12rem;color:var(--parch)}
+.section-count{font-family:var(--text);font-style:italic;color:var(--muted);font-size:.95rem}
+.section-chevron{color:var(--gold-soft);font-weight:300}
+.group-hd{background:none;border-top:1px solid var(--hair-soft);padding:1.2rem .2rem .45rem 1rem}
+.group-title{font-family:var(--display);color:var(--gold);font-size:.8rem;letter-spacing:.24em;font-weight:500}
+.group-sub{color:var(--muted);font-size:.9rem}
+.book-row{background:none;border-top:1px solid var(--hair-soft);padding:.8rem .2rem .8rem 1rem}
+.book-row:hover,.book-row:active{background:rgba(200,169,90,.05)}
+.row-name{color:var(--parch-2);font-size:1.05rem;font-weight:400}
+.row-sub{color:var(--muted);font-style:italic}
+.row-arrow{color:var(--gold-soft)}
+.dl-body,.about-body{background:none}
+.about-body p,.dl-text{color:var(--muted);font-size:.95rem}
+.dl-btn,.ts-reset{background:none;border:1px solid var(--hair);color:var(--gold);border-radius:999px;font-family:var(--text);font-size:.98rem;padding:.55rem 1.2rem}
+.dl-bar{height:2px;background:var(--hair-soft)}
+.app-ver{font-family:var(--display);color:var(--faint);letter-spacing:.14em;font-size:.82rem;padding:.2rem 1rem 2.2rem}
+.app-ver:before{content:"✝";display:block;color:var(--gold-soft);font-size:.9rem;margin-bottom:.6rem;letter-spacing:0}
+
+/* Reader: a page of a book */
+main{padding:1.9rem 1.5rem 1rem;max-width:42rem;margin:0 auto}
+h2{font-family:var(--display);font-weight:500;font-size:2.05rem;line-height:1.15;color:var(--gold);text-align:center;letter-spacing:.005em;margin:.2rem 0 .35rem}
+.ref{font-family:var(--display);color:var(--muted);text-align:center;font-size:.9rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:.4rem}
+.ref:after{content:"";display:block;width:7rem;height:1px;margin:1.1rem auto 1.4rem;
+  background:linear-gradient(90deg,transparent,var(--gold-soft),transparent)}
+#gl-chips{text-align:center;margin:0 0 1.4rem}
+.gl-chips-label{font-family:var(--display);color:var(--muted);letter-spacing:.24em;font-size:.74rem}
+.gl-chips-row{justify-content:center;gap:.25rem .9rem}
+.gl-chip{background:none;border:none;border-bottom:1px solid var(--hair);border-radius:0;padding:.1rem 0;color:var(--parch-2);font-style:italic;font-size:.98rem}
+.gl-chip:active{background:none;color:var(--gold)}
+
+details{border:none;border-top:1px solid var(--hair);border-radius:0;margin-bottom:0}
+details:last-of-type{border-bottom:1px solid var(--hair)}
+summary{background:none;font-family:var(--display);font-weight:500;color:var(--gold);letter-spacing:.24em;text-transform:uppercase;font-size:.95rem;
+  padding:1.05rem 2.2rem 1.05rem .1rem}
+summary:hover{background:none}
+summary:after{content:"›";position:absolute;right:.2rem;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-size:1.25rem;letter-spacing:0;transition:transform .2s}
+details[open] > summary:after{transform:translateY(-50%) rotate(90deg)}
+summary .copy-btn{right:1.8rem;opacity:.18}
+.detail-body,.passage-text,.accent-box{padding:.2rem .1rem 1.4rem;line-height:1.8}
+.passage-text{border-top:none;color:var(--parch-2);font-style:normal}
+.passage-text sup,sup{color:var(--gold-soft);font-size:.62em;margin:0 .15em}
+.accent-box{background:none;border-left:none}
+
+.verse-map{justify-content:center;gap:.35rem .55rem;margin:1.2rem 0 1.6rem}
+.verse-chip{background:none;border:1px solid var(--hair-soft);border-radius:999px;color:var(--parch-2);font-size:.9rem;padding:.18rem .6rem}
+.verse-chip:hover{background:rgba(200,169,90,.06);border-color:var(--hair)}
+.section-chip{flex-basis:100%;text-align:center;background:none;border:none;color:var(--gold);font-family:var(--display);font-weight:500;font-style:italic;
+  font-size:1.05rem;padding:.6rem 0 .15rem;border-radius:0}
+.section-chip:hover{background:none;color:var(--parch)}
+
+.section-hd{background:none;border-top:none;padding:2.4rem .1rem 1.2rem;text-align:left}
+.section-hd:before{content:"";display:block;width:3rem;height:1px;background:var(--gold-soft);margin:0 auto 1.4rem}
+.section-hd-ref{font-family:var(--display);font-weight:500;font-size:1.32rem;line-height:1.3;color:var(--gold);letter-spacing:.01em;text-align:center;margin-bottom:1rem}
+.section-hd-overview{color:var(--parch);line-height:1.85}
+
+.vbv-entry{padding:1.4rem .1rem;border-top:1px solid var(--hair-soft)}
+.vbv-ref{font-family:var(--display);font-weight:600;color:var(--gold);font-size:1.12rem;letter-spacing:.04em;margin-bottom:.5rem}
+.vbv-quote{color:var(--parch-2);font-size:1.04rem;line-height:1.75;padding-left:.9rem;border-left:1px solid var(--hair);margin-bottom:.8rem}
+.vbv-commentary{line-height:1.85}
+.vbv-commentary p{margin-bottom:.95rem}
+.vbv-study{color:var(--muted)}
+.study-btn{border:1px solid var(--hair-soft);color:var(--parch-2);font-size:.86rem;padding:.15rem .75rem;font-style:italic}
+.study-btn:hover,.study-btn[aria-expanded="true"]{background:rgba(200,169,90,.07);border-color:var(--hair)}
+.study-panel{background:none;border-left:1px solid var(--hair);padding:.35rem 0 .35rem .9rem;color:var(--parch-2)}
+.study-lbl{font-family:var(--display);letter-spacing:.2em;color:var(--gold);font-size:.74rem}
+.scripture-link{text-decoration-color:rgba(200,169,90,.4)}
+.copy-btn{opacity:.28;color:var(--gold)}
+.vbv-entry .copy-btn{right:0;top:1.2rem}
+footer{font-family:var(--display);font-style:italic;color:var(--muted);font-size:1.05rem;letter-spacing:.04em;border-top:none;margin-top:1.5rem;padding:2rem 1rem 3rem}
+footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-soft);margin-bottom:.7rem}
+#content button[onclick^="openBook"]{background:none!important;border:1px solid var(--hair)!important;border-radius:999px!important;color:var(--gold)!important;font-family:var(--text)!important;padding:.6rem 1.4rem!important}
+
+/* Bottom sheets (passage picker, verse jump, text size, terms) */
+#pk-sheet,#vjump-sheet,#ts-sheet,#gl-sheet{background:var(--ink-2);border-top:1px solid var(--hair);border-radius:18px 18px 0 0;box-shadow:0 -20px 40px rgba(0,0,0,.45)}
+#pk-sheet:before,#vjump-sheet:before,#ts-sheet:before,#gl-sheet:before{content:"";display:block;width:2.4rem;height:3px;border-radius:2px;background:var(--hair);margin:-.3rem auto .7rem}
+#pk-backdrop,#vjump-backdrop,#ts-backdrop,#gl-backdrop{background:rgba(4,9,16,.55)}
+.pk-title,.vjump-title{font-family:var(--display);color:var(--gold);font-size:.88rem;font-weight:500;letter-spacing:.3em}
+.pk-back,.vjump-close,.pk-head .vjump-close{background:none;border:none;color:var(--gold);font-size:1.05rem}
+.pk-head .vjump-close,.vjump-close{color:var(--muted);font-size:1.2rem}
+.pk-lbl{font-family:var(--display);color:var(--muted);letter-spacing:.26em;font-size:.76rem;text-align:center;margin:1rem 0 .55rem}
+.pk-recent{justify-content:center;gap:.3rem .9rem}
+.pk-rc{background:none;border:none;border-bottom:1px solid var(--hair);border-radius:0;padding:.15rem 0;color:var(--parch-2);font-style:italic;font-size:1rem}
+.pk-books{gap:.3rem}
+.pk-b,.pk-b.g1,.pk-b.g2,.pk-b.g3,.pk-b.g4,.pk-b.g5,.pk-b.g6,.pk-b.g7,.pk-b.g8{background:none;border:1px solid var(--hair-soft);border-bottom-width:1px;border-radius:4px;color:var(--parch-2);font-size:.92rem;padding:.6rem .1rem}
+.pk-b.cur{border-color:var(--gold-soft);color:var(--gold);font-weight:500}
+.pk-grid,.vjump-grid{gap:.3rem}
+.pk-n,.vjump-num{background:none;border:1px solid var(--hair-soft);border-radius:4px;color:var(--parch-2);font-family:var(--display);font-size:1.15rem;font-weight:500;padding:.5rem .2rem}
+.pk-n:hover,.vjump-num:hover{background:rgba(200,169,90,.06);border-color:var(--hair)}
+.pk-n.cur,.vjump-num.current{background:rgba(200,169,90,.14);border-color:var(--gold-soft);color:var(--gold);font-weight:600}
+.pk-wide,.vjump-top{background:none;border:none;border-top:1px solid var(--hair-soft);border-bottom:1px solid var(--hair-soft);border-radius:0;color:var(--gold);
+  font-family:var(--text);font-style:italic;font-size:1.02rem;margin:0 0 .9rem;padding:.7rem}
+.ts-step{background:none;border:1px solid var(--hair);border-radius:999px;color:var(--gold);font-family:var(--display)}
+.ts-val{font-family:var(--display);letter-spacing:.1em;color:var(--parch-2)}
+.ts-sample{border-top:1px solid var(--hair-soft);font-family:var(--text);color:var(--parch-2)}
+#ts-range{accent-color:var(--gold)}
+.gl-name{font-family:var(--display);font-weight:600;font-size:1.45rem;color:var(--gold)}
+.gl-word{color:var(--muted)}
+.gl-body{color:var(--parch);font-size:1.02rem;line-height:1.7}
+.gl-btn{background:none;border:1px solid var(--hair);border-radius:999px;color:var(--gold);font-family:var(--text)}
+
+/* Back chip and verse tab: quiet */
+#back-chip{background:var(--ink-2);color:var(--gold);border:1px solid var(--hair);box-shadow:0 6px 18px rgba(0,0,0,.4);font-weight:400;font-style:italic;font-size:.95rem}
+#vjump-pill{background:var(--ink-2);border-color:var(--hair);box-shadow:none;width:1.05rem;opacity:.45}
+
+/* Number grids and counts use even (lining) figures; prose keeps old-style */
+.pk-n,.vjump-num,.pk-b,.pk-rc,.ts-val,#ch-btn,.hc-where,.section-count,.verse-chip,.app-ver{font-variant-numeric:lining-nums}
+
+@media(max-width:640px){
+  main{padding:1.5rem 1.15rem 1rem}
+  h2{font-size:1.8rem}
+  .home-wrap{padding:1.3rem 1.1rem 0}
+}
+
 </style>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -348,7 +517,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2362"></script>
+<script src="scripture-links.js?v=2363"></script>
 <script>
 const BOOKS = [
   // Old Testament

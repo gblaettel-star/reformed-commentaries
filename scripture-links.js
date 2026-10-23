@@ -199,27 +199,30 @@ var RefCard = (function(){
     var st = document.createElement('style');
     st.textContent = '#rc-bd{position:fixed;inset:0;background:rgba(5,14,24,.55);z-index:130;opacity:0;pointer-events:none;transition:opacity .18s}'
       + '#rc-bd.open{opacity:1}'
-      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:#0a1e30;border-top:2px solid #c9a84c;border-radius:14px 14px 0 0;padding:.8rem 1.1rem calc(.7rem + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s ease;font-family:Georgia,serif;display:flex;flex-direction:column;max-height:80vh;max-height:80dvh}'
+      + '#rc{position:fixed;left:0;right:0;bottom:0;z-index:140;max-width:720px;margin:0 auto;background:var(--ink-2,#0f1c2f);border-top:1px solid rgba(200,169,90,.26);border-radius:18px 18px 0 0;box-shadow:0 -20px 40px rgba(0,0,0,.45);padding:.8rem 1.2rem calc(.9rem + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s ease;font-family:var(--text,Georgia),serif;display:flex;flex-direction:column;max-height:80vh;max-height:80dvh}'
       + '#rc.open{transform:translateY(0)}'
       + '#rc.chapter{height:82vh;height:82dvh;max-height:none}'
-      + '#rc .rc-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;flex-shrink:0}'
-      + '#rc .rc-ref{color:#c9a84c;font-weight:bold;font-size:1rem;flex:1}'
-      + '#rc .rc-x,#rc .rc-back{background:none;border:1px solid #2a4a6c;color:#c9a84c;border-radius:6px;font-family:Georgia,serif;font-size:.95rem;line-height:1;padding:.42rem .65rem;cursor:pointer;touch-action:manipulation}'
+      + '#rc:before{content:"";display:block;width:2.4rem;height:4px;border-radius:2px;background:rgba(200,169,90,.26);margin:-.2rem auto .7rem;flex-shrink:0}'
+      + '#rc .rc-head{display:flex;align-items:center;gap:.6rem;margin-bottom:.55rem;flex-shrink:0}'
+      + '#rc .rc-ref{color:var(--gold,#c8a95a);font-family:var(--display,Georgia),serif;font-weight:500;font-size:1.45rem;flex:1;font-variant-numeric:lining-nums}'
+      + '#rc .rc-x,#rc .rc-back{background:none;border:none;color:var(--gold,#c8a95a);font-family:var(--text,Georgia),serif;font-size:1.05rem;line-height:1;padding:.45rem .3rem;cursor:pointer;touch-action:manipulation}'
+      + '#rc .rc-x{font-size:1.15rem;color:#8fa6bd}'
       + '#rc .rc-back{display:none}#rc.chapter .rc-back{display:inline-block}'
-      + '#rc .rc-text{color:#e8dcc8;font-style:italic;font-size:calc(1rem * var(--ts,1));line-height:1.65;flex:1 1 auto;min-height:2.5em;overflow-y:auto;overscroll-behavior:contain;margin-bottom:.9rem}'
+      + '#rc .rc-text{color:var(--parch,#ece3cf);font-style:italic;font-size:calc(1.06rem * var(--ts,1));line-height:1.7;flex:1 1 auto;min-height:2.5em;overflow-y:auto;overscroll-behavior:contain;margin-bottom:.9rem}'
       + '#rc.chapter .rc-text{font-style:normal;line-height:1.75}'
       + '#rc .rc-text p{margin:0 0 .7rem}'
-      + '#rc .rc-text sup{color:#c9a84c;font-size:.68em;font-style:normal;font-weight:bold;margin:0 .2em 0 .35em;vertical-align:super}'
+      + '#rc .rc-text sup{color:rgba(200,169,90,.75);font-size:.68em;font-style:normal;font-weight:bold;margin:0 .2em 0 .35em;vertical-align:super}'
       + '#rc .rc-text .hl{background:rgba(201,168,76,.18);border-radius:3px;box-shadow:0 0 0 2px rgba(201,168,76,.18)}'
       + '#rc .rc-text sup.hl{background:#c9a84c;color:#0d2137;border-radius:8px;padding:0 .3em;box-shadow:none}'
       + '#rc .rc-wait{color:#7090b0;font-style:normal}'
-      + '#rc .rc-acts{display:flex;gap:.6rem;flex-shrink:0}'
-      + '#rc .rc-btn{flex:1;text-align:center;font-family:Georgia,serif;font-size:.92rem;padding:.75rem .5rem;border-radius:8px;cursor:pointer;touch-action:manipulation;border:1px solid #c9a84c}'
-      + '#rc .rc-go{background:#c9a84c;color:#0d2137;font-weight:bold}'
-      + '#rc .rc-ch{background:transparent;color:#c9a84c}'
+      + '#rc .rc-acts{flex-shrink:0;border-top:1px solid rgba(200,169,90,.26);border-bottom:1px solid rgba(200,169,90,.26)}'
+      + '#rc .rc-btn{display:flex;align-items:center;width:100%;background:none;border:none;border-top:1px solid rgba(236,227,207,.085);color:var(--parch,#ece3cf);text-decoration:none;text-align:left;font-family:var(--text,Georgia),serif;font-size:1.08rem;padding:.85rem .1rem;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}'
+      + '#rc .rc-btn:first-child{border-top:none}'
+      + '#rc .rc-btn:active{background:rgba(200,169,90,.06)}'
+      + '#rc .rc-btn span{flex:1}'
+      + '#rc .rc-btn i{font-style:normal;color:rgba(200,169,90,.7);font-size:1.15rem}'
       + '#rc.chapter .rc-ch{display:none}'
-      + '#rc .rc-btn[disabled]{opacity:.4;cursor:default}'
-      + '#rc .rc-esv{display:block;text-align:center;color:#7f97b0;font-size:.8rem;text-decoration:none;padding:.65rem 0 .1rem;flex-shrink:0}';
+      + '#rc .rc-btn[disabled]{opacity:.4;cursor:default}';
     document.head.appendChild(st);
     // The dark backdrop is purely visual (pointer-events:none). iPhone Safari can
     // leave the page unresponsive when a touch lands on a full-screen overlay that
@@ -228,9 +231,9 @@ var RefCard = (function(){
     el = document.createElement('div'); el.id = 'rc'; el.setAttribute('role', 'dialog');
     el.innerHTML = '<div class="rc-head"><button class="rc-back" type="button">&#8249; Back</button><div class="rc-ref"></div>'
       + '<button class="rc-x" type="button" aria-label="Close">&#10005;</button></div><div class="rc-text"></div><div class="rc-acts">'
-      + '<button class="rc-btn rc-go" type="button">Commentary</button>'
-      + '<button class="rc-btn rc-ch" type="button">Whole chapter</button></div>'
-      + '<a class="rc-esv" target="_blank" rel="noopener">Open on ESV.org &#8599;</a>';
+      + '<button class="rc-btn rc-go" type="button"><span>Commentary</span><i>&#8250;</i></button>'
+      + '<button class="rc-btn rc-ch" type="button"><span>Whole chapter</span><i>&#8250;</i></button>'
+      + '<a class="rc-btn rc-esv" target="_blank" rel="noopener"><span>ESV.org</span><i>&#8599;</i></a></div>';
     document.body.appendChild(bd); document.body.appendChild(el);
     el.querySelector('.rc-go').onclick = go;
     el.querySelector('.rc-ch').onclick = showChapter;
