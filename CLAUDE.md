@@ -28,8 +28,8 @@ These rules keep the two sides from mixing each other's work up.
 
 ## Mac only: iCloud
 
-The folder lives in iCloud Drive, so iCloud may offload files to save space.
-
-- The git store is `.git.nosync`, which iCloud leaves alone. `.git` is a one-line pointer to it.
-- If a command hangs, look for offloaded files with `find . -flags +dataless`.
-  - Restore tracked ones with `git checkout -f -- <files>`.
+The real folder is `~/Documents/commentaries/unified.nosync`, and `unified` is a shortcut to it.
+- The `.nosync` ending keeps iCloud from syncing it or offloading its files. GitHub is the sync.
+- The git store inside it is `.git.nosync`. `.git` is a one-line pointer to it.
+- If a command ever hangs on an offloaded file, list them with `find . -flags +dataless`.
+  - Replace each one with `git show HEAD:<file> > <file>.tmp`, then `mv` it over the original.
