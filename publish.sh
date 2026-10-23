@@ -28,38 +28,75 @@ if [ -z "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-# Bring in anything published from elsewhere (e.g. the iPhone) first, so the
-# version bump below starts from the live number and the push is not refused.
-if ! git pull -q --rebase --autostash; then
-  echo "publish.sh: could not pull the latest from GitHub; nothing was published" >&2
-  exit 1
-fi
-
-# Rebuild the search index from the text, so Search always matches what is published.
-if ! python3 scripts/build_search_index.py; then
-  echo "publish.sh: could not rebuild the search index; nothing was published" >&2
-  exit 1
-fi
-
-CUR=$(grep -o "commentaries-v[0-9]\{1,\}" sw.js | head -1 | sed 's/commentaries-//')
-if [ -z "$CUR" ]; then
-  echo "publish.sh: could not read cache version from sw.js" >&2
-  exit 1
-fi
-NEW="v$(( ${CUR#v} + 1 ))"
-sed -i '' "s/commentaries-${CUR}/commentaries-${NEW}/" sw.js
-# Stamp shared scripts with the version, so phones never run a stale cached
-# copy (GitHub lets browsers keep a file for 10 minutes) against a new page.
-perl -pi -e 's/src="(scripture-links|share)\.js(\?v=\d+)?"/src="$1.js?v='"${NEW#v}"'"/g' ./*.html
-perl -pi -e 's/href="(sanctuary-pages)\.css(\?v=\d+)?"/href="$1.css?v='"${NEW#v}"'"/g' ./*.html
-
 TMP="$(mktemp)"
 trap 'rm -f "$TMP"' EXIT
-sed "s/{SW}/${NEW}/g" "$MSGFILE" > "$TMP"
 
+# Edits come from the Mac and from the iPhone. The edits are first held in a
+# commit of their own (WIP), which is replayed on top of whatever the other
+# side has published. Only then are the search index, version number and
+# stamps made, from that latest state, so the two sides never fight over them.
 git add -A
-git commit -q -F "$TMP"
-git push -q
+git commit -q -m "publish.sh: edits waiting to be published"
+WIP=$(git rev-parse HEAD)
+
+# Give the edits back exactly as they were before publish.sh ran.
+give_back() {
+  git reset -q --hard "$WIP"
+  git reset -q --soft HEAD~1
+  git reset -q
+}
+
+for ATTEMPT in 1 2 3; do
+  # Bring in anything published from elsewhere. A clash with the other side's
+  # edits, or no connection, stops here with nothing published.
+  if ! git pull -q --rebase; then
+    git rebase --abort 2>/dev/null || true
+    give_back
+    echo "publish.sh: these edits clash with what was published from elsewhere, or GitHub could not be reached; nothing was published (the edits are still here)" >&2
+    exit 1
+  fi
+  WIP=$(git rev-parse HEAD)
+
+  # Rebuild the search index from the text, so Search always matches what is published.
+  if ! python3 scripts/build_search_index.py; then
+    give_back
+    echo "publish.sh: could not rebuild the search index; nothing was published" >&2
+    exit 1
+  fi
+
+  CUR=$(grep -o "commentaries-v[0-9]\{1,\}" sw.js | head -1 | sed 's/commentaries-//')
+  if [ -z "$CUR" ]; then
+    give_back
+    echo "publish.sh: could not read cache version from sw.js" >&2
+    exit 1
+  fi
+  NEW="v$(( ${CUR#v} + 1 ))"
+  # perl rather than sed -i, so this runs the same on the Mac and in the cloud.
+  perl -pi -e "s/commentaries-${CUR}\b/commentaries-${NEW}/" sw.js
+  # Stamp shared scripts with the version, so phones never run a stale cached
+  # copy (GitHub lets browsers keep a file for 10 minutes) against a new page.
+  perl -pi -e 's/src="(scripture-links|share)\.js(\?v=\d+)?"/src="$1.js?v='"${NEW#v}"'"/g' ./*.html
+  perl -pi -e 's/href="(sanctuary-pages)\.css(\?v=\d+)?"/href="$1.css?v='"${NEW#v}"'"/g' ./*.html
+
+  sed "s/{SW}/${NEW}/g" "$MSGFILE" > "$TMP"
+
+  # One commit: the edits plus the index, version and stamps.
+  git add -A
+  git reset -q --soft HEAD~1
+  git commit -q -F "$TMP"
+  if git push -q; then
+    break
+  fi
+  # Refused: the other side published in the meantime. Drop the index,
+  # version and stamps (they are made again) and go round from their version.
+  git reset -q --hard "$WIP"
+  if [ "$ATTEMPT" = 3 ]; then
+    give_back
+    echo "publish.sh: GitHub kept refusing the push; nothing was published (the edits are still here)" >&2
+    exit 1
+  fi
+  echo "publish.sh: something was published from elsewhere meanwhile; trying again" >&2
+done
 
 HEAD_SHA=$(git rev-parse HEAD)
 UP_SHA=$(git rev-parse '@{u}')
