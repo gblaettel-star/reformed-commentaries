@@ -208,7 +208,10 @@ var RefCard = (function(){
     var canon = ESV_BOOKS[s.slice(0, i).toLowerCase().replace(/[\s+.]/g, '')];
     var cm = /^(\d+)(?::(\d+))?/.exec(s.slice(i + 1));
     if (!canon || !cm) return null;
-    return { canon: canon, id: bookId(canon), ch: +cm[1], v: cm[2] ? +cm[2] : 0, href: href };
+    var id = bookId(canon);
+    // "Jude 24": a one-chapter book's lone number is the verse
+    if (ONE[id] && !cm[2]) return { canon: canon, id: id, ch: 1, v: +cm[1], href: href };
+    return { canon: canon, id: id, ch: +cm[1], v: cm[2] ? +cm[2] : 0, href: href };
   }
   function load(id){
     if (!data[id]) data[id] = fetch('data/' + id + '.json').then(function(r){ if (!r.ok) throw 0; return r.json(); });
@@ -227,7 +230,7 @@ var RefCard = (function(){
     var best = null;
     ((ch && ch.verseByVerse) || []).forEach(function(e){
       if (best || e.sectionBreak) return;
-      var m = /^v{1,2}\.\s*(\d+)(?:\s*[–—-]\s*(\d+))?/.exec(String(e.ref || ''));
+      var m = /^v{1,2}\.\s*(\d+)(?:\s*(?:[–—-]|&ndash;|&mdash;)\s*(\d+))?/.exec(String(e.ref || ''));
       if (!m) return;
       var a = +m[1], b = m[2] ? +m[2] : a;
       if (!v || (v >= a && v <= b)) best = { a: a, b: b, q: e.quote };
