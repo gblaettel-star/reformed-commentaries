@@ -138,6 +138,11 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .section-hd .copy-btn{right:.6rem;top:.6rem}
 .vbv-entry{position:relative}
 .vbv-entry .copy-btn{right:.5rem;top:.5rem}
+.essay{position:relative}
+.essay > .copy-btn{right:-.3rem;top:-.4rem}
+.essay h3{position:relative;padding-right:2.2rem}
+.essay h3 .copy-btn{right:-.3rem;top:1rem}
+.essay .lede{padding-right:1.6rem}
 .vbv-ref{padding-right:2rem}
 
 /* ── Verse jump (floating pill + sheet) ── */
@@ -611,7 +616,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2429"></script>
+<script src="scripture-links.js?v=2430"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -800,7 +805,24 @@ function buildShareText(btn) {
   var entry = btn.closest('.vbv-entry');
   var sec   = btn.closest('.section-hd');
   var det   = btn.closest('details');
-  if (entry) {
+  var essay = btn.closest('.essay'), eh = btn.closest('.essay h3');
+  if (essay) {
+    // the chapter title, then the section under this heading — or the whole article
+    var t = document.querySelector('#content > h2');
+    lines.push(shareHeader(t ? htmlToText(t.innerHTML) : ''));
+    var parts = [];
+    if (eh) {
+      for (var n = eh; n && (n === eh || n.tagName !== 'H3'); n = n.nextElementSibling) parts.push(n);
+    } else {
+      parts = [].slice.call(essay.children).filter(function(n){ return !n.classList.contains('copy-btn'); });
+    }
+    parts.forEach(function(n){
+      var cn = n.cloneNode(true); cn.querySelectorAll('.copy-btn').forEach(function(b){ b.remove(); });
+      var txt = htmlToText(cn.innerHTML).trim();
+      if (txt) lines.push('', n.tagName === 'H3' ? txt.toUpperCase() : txt);
+    });
+    hasScripture = true;
+  } else if (entry) {
     var r = entry.querySelector('.vbv-ref'), q = entry.querySelector('.vbv-quote'), cm = entry.querySelector('.vbv-commentary');
     lines.push(shareHeader(r ? htmlToText(r.innerHTML) : ''));
     if (q)  { hasScripture = true; lines.push('', htmlToText(q.innerHTML)); }
@@ -852,6 +874,9 @@ function addCopyButtons() {
   c.querySelectorAll('details > summary').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('beforeend', COPY_ICON); });
   c.querySelectorAll('.section-hd').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
   c.querySelectorAll('.vbv-entry').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
+  // An article: one button for the whole chapter, one beside each heading for its section
+  c.querySelectorAll('.essay').forEach(function(a){ if (!a.querySelector(':scope > .copy-btn')) a.insertAdjacentHTML('afterbegin', COPY_ICON); });
+  c.querySelectorAll('.essay h3').forEach(function(h){ if (!h.querySelector('.copy-btn')) h.insertAdjacentHTML('beforeend', COPY_ICON); });
 }
 
 document.addEventListener('click', function(e) {
