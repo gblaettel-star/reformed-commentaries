@@ -81,3 +81,23 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
 .az-link.dim{opacity:.25}
 .term-index-wrap,.fig-index-wrap,.name-index-wrap,.index-wrap,.search-wrap,.search-summary{background:none!important;border-color:var(--hair-soft)!important;box-shadow:none}
 .term-index-chips,.fig-index-chips,.name-index-chips,.index-chips{background:none}
+
+/* Label above its text, never beside it: side by side, a long Key Work was
+   squeezed into a narrow column on a phone. */
+.fig-work-wrap,.key-work,.key-doc,.key-text-box{display:block}
+.fig-work-label,.kw-label,.kd-label,.kt-label{display:block;margin-bottom:.4rem;white-space:normal}
+
+/* Small phones (iPhone SE and mini are 375px wide): one modest margin at the
+   page edge instead of margins nested three deep, so the text gets the width. */
+@media (max-width:600px){
+  main{padding-left:1rem;padding-right:1rem}
+  .term-header,.fig-header,.phil-header,.heresy-header,.council-header,.creed-header,.sola-header,.prayer-header,
+  .term-body,.fig-body,.phil-body,.heresy-body,.council-body,.creed-body,.sola-body,.prayer-body{padding-left:0;padding-right:0}
+  .wtl-box,.wtm-box,.fig-quote-wrap,.fig-work-wrap,.fig-why-wrap,.influence-wrap,.reformed-box,.key-work,.error-box,.proponents-wrap,.response-wrap,
+  .still-matters,.key-text-box,.col-box,.figures-wrap,.outcome-wrap,.key-doc,.text-block,.articles-wrap,.guards-wrap,.use-box,.origin-box,
+  .scripture-block,.voices-wrap,.prayer-section,.scripture-prompt{padding-left:.8rem;padding-right:0}
+  .voice-entry{padding-left:.8rem;padding-right:.8rem}
+  .wtl-item,.influence-row,.resp-row,.out-row,.article-row{gap:.5rem}
+  .fig-quote-source,.voice-attr,.proponent-chip,.figure-chip,.guard-chip,.footer-note{font-size:.88rem}
+}
+.fig-work-text{font-size:1rem;line-height:1.7}
