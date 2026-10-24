@@ -598,7 +598,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2395"></script>
+<script src="scripture-links.js?v=2396"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -877,7 +877,8 @@ function buildVerseIndex(ch) {
   });
   if (!verseEntries.length) { verseMax = 0; return; }
   verseEntries.forEach(function(e, ei) {
-    for (var v = e.start; v <= e.end; v++) verseToEntry[v] = ei;
+    // First entry wins: with "v. 14a" / "v. 14b", or "vv. 2–3" then "v. 3", a jump lands on the earlier one.
+    for (var v = e.start; v <= e.end; v++) if (verseToEntry[v] === undefined) verseToEntry[v] = ei;
   });
   for (var v = 1; v <= verseMax; v++) {                     // forward-fill any gaps
     if (verseToEntry[v] === undefined) verseToEntry[v] = (v > 1 ? verseToEntry[v-1] : 0);
