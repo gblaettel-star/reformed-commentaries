@@ -8,6 +8,7 @@ byte-identical files, so nothing new is committed.
   search/places.json   every searchable place: book, chapter, verse entry, field
   search/w-XX.json     words starting with XX -> the places that contain them
   search/r-PAGE.json   the plain text of each entry on a Reference page, for result snippets
+  search/p-XX.json     word pairs, for "exact phrase" searches (see pair_keys)
 
 A "place" is one block of commentary as the reader shows it: a verse entry's
 commentary (or its study note), a section's overview / Theology / Then & Now,
@@ -17,7 +18,7 @@ a month's prayer); its "book" number counts on past the books, into REFS.
 
 The word rules here must match sxWords() in index.html.
 """
-import json, os, re, sys, unicodedata, html, glob
+import json, os, re, sys, unicodedata, html, glob, functools
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from js_literal import literal
 
@@ -65,6 +66,41 @@ def words(text):
     return {w for w in re.findall(r'[a-z]+', fold(text)) if len(w) > 1 and w not in STOP}
 
 
+# Phrases.  Each pair of neighbouring words, with the small words between them
+# ("fruit of the spirit", "faith alone"), is hashed into one of PAIR_BUCKETS
+# buckets; a bucket lists the places holding any pair that lands in it.  A
+# phrase's places are those in all its pairs' buckets that also hold all its
+# words; Search then checks the text itself when it shows them.  Storing the
+# pairs themselves would take some 45 MB; the buckets take a fraction of that.
+# pair_keys() and fnv() must match sxPairKeys() and sxFnv() in index.html.
+PAIR_BITS = 18
+PAIR_BUCKETS = 1 << PAIR_BITS
+PAIR_SHARD_BITS = 10          # 2^(18-10) = 256 files, search/p-00.json … p-ff.json
+MAX_GAP = 3                   # more small words than this in a row break the chain
+
+
+def pair_keys(text):
+    keys, prev, gap = set(), None, []
+    for t in re.findall(r'[a-z]+', fold(text)):
+        if len(t) > 1 and t not in STOP:
+            if prev:
+                keys.add(' '.join([prev] + gap + [t]))
+            prev, gap = t, []
+        else:
+            gap.append(t)
+            if len(gap) > MAX_GAP:
+                prev, gap = None, []
+    return keys
+
+
+@functools.lru_cache(maxsize=None)
+def fnv(s):
+    h = 0x811c9dc5
+    for ch in s.encode('ascii'):
+        h = ((h ^ ch) * 0x01000193) & 0xffffffff
+    return h
+
+
 def verses(ref):
     m = re.match(r'\s*(?:vv?\.\s*)?(\d+(?::\d+)?(?:\s*(?:–|-|&ndash;)\s*\d+(?::\d+)?)?)', ref or '')
     return m.group(1).replace('&ndash;', '–').replace('-', '–').replace(' ', '') if m else ''
@@ -91,14 +127,19 @@ def main():
     books = book_ids()
     places, index = [], {}
 
+    pairs = {}
+
     def add(b, k, i, f, label, text):
-        ws = words(text if f == 'ref' else plain(text))
+        text = text if f == 'ref' else plain(text)
+        ws = words(text)
         if not ws:
             return
         p = len(places)
         places.append([b, k, i, FIELDS.index(f), label])
         for w in ws:
             index.setdefault(w, []).append(p)
+        for h in {fnv(key) % PAIR_BUCKETS for key in pair_keys(text)}:
+            pairs.setdefault(h, []).append(p)
 
     for b, bid in enumerate(books):
         path = os.path.join(ROOT, 'data', bid + '.json')
@@ -135,25 +176,37 @@ def main():
         keep.add(name)
         write(os.path.join(OUT, name), texts)
 
+    pshards = {}
+    for h in sorted(pairs):
+        pshards.setdefault('%02x' % (h >> PAIR_SHARD_BITS), {})[base36(h & ((1 << PAIR_SHARD_BITS) - 1))] = deltas(pairs[h])
+    for key, d in pshards.items():
+        name = 'p-' + key + '.json'
+        keep.add(name)
+        write(os.path.join(OUT, name), d)
+
     shards = {}
     for w in sorted(index):
-        ids = index[w]
-        prev, deltas = 0, []
-        for p in ids:
-            deltas.append(base36(p - prev)); prev = p
-        shards.setdefault(w[:2], {})[w] = ','.join(deltas)
+        shards.setdefault(w[:2], {})[w] = deltas(index[w])
 
     for key, d in shards.items():
         name = 'w-' + key + '.json'
         keep.add(name)
         write(os.path.join(OUT, name), d)
     write(os.path.join(OUT, 'places.json'),
-          {'v': 1, 'books': books, 'refs': [[p, t, sh] for p, _, t, sh, _ in REFS], 'fields': FIELDS, 'shards': sorted(shards), 'places': places})
+          {'v': 1, 'pairs': {'bits': PAIR_BITS, 'shardBits': PAIR_SHARD_BITS, 'gap': MAX_GAP, 'shards': sorted(pshards)}, 'books': books, 'refs': [[p, t, sh] for p, _, t, sh, _ in REFS], 'fields': FIELDS, 'shards': sorted(shards), 'places': places})
     keep.add('places.json')
     for old in os.listdir(OUT):
         if old not in keep:
             os.remove(os.path.join(OUT, old))
     print('search index: %d places, %d words, %d shards' % (len(places), len(index), len(shards)))
+
+
+def deltas(ids):
+    """Place numbers, in order, as base-36 gaps: "3,1a,2" is places 3, 49, 51."""
+    prev, out = 0, []
+    for p in ids:
+        out.append(base36(p - prev)); prev = p
+    return ','.join(out)
 
 
 def base36(n):

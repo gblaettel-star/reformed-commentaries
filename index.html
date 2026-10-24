@@ -337,6 +337,10 @@ body.sx-open{overflow:hidden}
 #sx-q::-webkit-search-cancel-button{display:none}
 .sx-clear{background:none;border:none;color:var(--muted);font-size:1rem;min-width:2.2rem;min-height:2.2rem;cursor:pointer;visibility:hidden}
 .sx-clear.on{visibility:visible}
+.sx-mode{display:flex;margin:.6rem .9rem 0;border:1px solid var(--hair);border-radius:999px;overflow:hidden}
+.sx-mode button{flex:1;background:none;border:none;border-left:1px solid var(--hair);padding:.35rem .3rem;color:var(--parch-2);font-family:var(--text);font-size:.9rem;cursor:pointer;touch-action:manipulation;white-space:nowrap}
+.sx-mode button:first-child{border-left:none}
+.sx-mode button.on{background:rgba(200,169,90,.14);color:var(--gold)}
 .sx-chips{display:flex;gap:.4rem;padding:.7rem .9rem .3rem;overflow-x:auto;scrollbar-width:none}
 .sx-chips::-webkit-scrollbar{display:none}
 .sx-chips2{padding-top:.2rem}
@@ -539,6 +543,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
     <div class="sx-box"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><input id="sx-q" type="search" placeholder="Search the commentary" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Search the commentary">
       <button class="sx-clear" id="sx-clear" onclick="sxClear()" aria-label="Clear">&#10005;</button></div>
   </div>
+  <div class="sx-mode" id="sx-mode"></div>
   <div class="sx-chips" id="sx-chips"></div>
   <div class="sx-chips sx-chips2" id="sx-chips2" style="display:none"></div>
   <div id="sx-body"></div>
@@ -601,7 +606,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2421"></script>
+<script src="scripture-links.js?v=2422"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1191,7 +1196,8 @@ function dlStart() {
   var files = dlFiles(), done = 0, failed = 0, next = 0;
   btn.disabled = true; bar.style.display = 'block';
   sxMeta().catch(function(){ return null; }).then(function(m){
-    if (m) files = files.concat(['search/places.json'], m.shards.map(function(s){ return 'search/w-' + s + '.json'; }), (m.refs || []).map(function(r){ return 'search/r-' + r[0] + '.json'; }));
+    if (m) files = files.concat(['search/places.json'], m.shards.map(function(s){ return 'search/w-' + s + '.json'; }), (m.refs || []).map(function(r){ return 'search/r-' + r[0] + '.json'; }),
+      m.pairs ? m.pairs.shards.map(function(s){ return 'search/p-' + s + '.json'; }) : []);
     return caches.open(DL_CACHE);
   }).then(function(c){
     function step() {
@@ -1263,7 +1269,7 @@ function sdgGoto(id, c, v) {
 var SX_STOP = {};
 ('a an and are as at be but by for from had has have he her hers him his i if in into is it its me my no not of on or our she so than that the their them then there these they this those to us was we were what when which who whom will with you your yours').split(' ').forEach(function(w){ SX_STOP[w] = 1; });
 var SX_FIELD = { n: ' · Note', st: ' · Theology', se: ' · Then & Now', o: ' · Overview', t: ' · Theology', e: ' · Then & Now', r: ' · For Reflection' };
-var sx = { meta: null, metaP: null, shards: {}, books: {}, res: null, filter: 'all', open: {}, more: {}, all: false, seq: 0, timer: null, scroll: 0 };
+var sx = { meta: null, metaP: null, shards: {}, pshards: {}, books: {}, res: null, filter: 'all', mode: 'all', bad: {}, ok: {}, open: {}, more: {}, all: false, seq: 0, timer: null, scroll: 0 };
 
 function sxFold(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
 function sxWords(q) { return (sxFold(q).match(/[a-z]+/g) || []).filter(function(w){ return w.length > 1 && !SX_STOP[w]; }); }
@@ -1277,13 +1283,73 @@ function sxShard(key) {
   if (!sx.shards[key]) sx.shards[key] = sxGet('search/w-' + key + '.json').catch(function(e){ delete sx.shards[key]; throw e; });
   return sx.shards[key];
 }
-// Every place holding a word that begins with w ("adopt" finds adoption, adopted…)
-function sxPlaces(w, shard) {
+function sxDeltas(s, set) { var p = 0; (s || '').split(',').forEach(function(d){ if (d) { p += parseInt(d, 36); set.add(p); } }); return set; }
+// Every place holding a word that begins with w ("adopt" finds adoption, adopted…), or exactly w
+function sxPlaces(w, shard, exact) {
+  if (exact) return sxDeltas(shard[w], new Set());
   var set = new Set();
-  for (var word in shard) if (word.lastIndexOf(w, 0) === 0) {
-    var p = 0; shard[word].split(',').forEach(function(d){ p += parseInt(d, 36); set.add(p); });
-  }
+  for (var word in shard) if (word.lastIndexOf(w, 0) === 0) sxDeltas(shard[word], set);
   return set;
+}
+
+/* Match options.  'all': places with every word, in any order, each word also
+   the start of a longer one (adopt → adoption).  'whole': the same, whole words
+   only.  'phrase': the words together, in this order.  "Words in quotes" are a
+   phrase whatever the option.  A phrase is looked up by its pairs of neighbouring
+   words in search/p-XX.json; sxPairKeys() and sxFnv() must match pair_keys()
+   and fnv() in scripts/build_search_index.py.  The pairs narrow the places down
+   (a few more than the exact ones), and sxVerify() checks the text itself. */
+var SX_MODES = [['all', 'All words'], ['whole', 'Whole words'], ['phrase', 'Exact phrase']];
+function sxModes() {
+  document.getElementById('sx-mode').innerHTML = SX_MODES.map(function(m){
+    return '<button class="' + (sx.mode === m[0] ? 'on' : '') + '" onclick="sxSetMode(\'' + m[0] + '\')">' + m[1] + '</button>';
+  }).join('');
+}
+function sxSetMode(m) { sx.mode = m; sxModes(); if (sx.res || document.getElementById('sx-q').value) sxRun(); }
+// The query as terms: { w, exact } for a word, { toks, ws, keys } for a phrase.
+function sxQuery(q) {
+  var phrases = [], terms = [];
+  var rest = q.replace(/["\u201c\u201d\u201e]([^"\u201c\u201d\u201e]*)["\u201c\u201d\u201e]?/g, function(_, p){ phrases.push(p); return ' '; });
+  if (sx.mode === 'phrase') { phrases.push(rest); rest = ''; }
+  phrases.forEach(function(p){
+    var toks = sxFold(p).match(/[a-z]+/g) || [];
+    var ws = toks.filter(function(t){ return t.length > 1 && !SX_STOP[t]; });
+    if (!ws.length) return;
+    if (toks.length === 1) terms.push({ w: toks[0], exact: true });
+    else terms.push({ toks: toks, ws: ws, keys: sxPairKeys(toks) });
+  });
+  sxWords(rest).forEach(function(w){ terms.push({ w: w, exact: sx.mode === 'whole' }); });
+  return terms;
+}
+function sxPairKeys(toks) {
+  var keys = [], prev = null, gap = [], max = sx.meta.pairs ? sx.meta.pairs.gap : 3;
+  toks.forEach(function(t){
+    if (t.length > 1 && !SX_STOP[t]) { if (prev) keys.push([prev].concat(gap, [t]).join(' ')); prev = t; gap = []; }
+    else { gap.push(t); if (gap.length > max) { prev = null; gap = []; } }
+  });
+  return keys;
+}
+function sxFnv(s) {
+  var h = 0x811c9dc5;
+  for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h;
+}
+// The places holding (perhaps) the pair: everything in its bucket
+function sxPairPlaces(key) {
+  var pm = sx.meta.pairs, h = sxFnv(key) % (1 << pm.bits), sk = ('0' + (h >>> pm.shardBits).toString(16)).slice(-2);
+  if (pm.shards.indexOf(sk) < 0) return Promise.resolve(new Set());
+  if (!sx.pshards[sk]) sx.pshards[sk] = sxGet('search/p-' + sk + '.json').catch(function(e){ delete sx.pshards[sk]; throw e; });
+  // unreachable (offline, not downloaded): no narrowing, sxVerify() still checks the text
+  return sx.pshards[sk].then(function(d){ return sxDeltas(d[(h & ((1 << pm.shardBits) - 1)).toString(36)], new Set()); }, function(){ return null; });
+}
+// What to mark: the phrases whole and the words (as typed, or each word alone when a phrase spans several lines of markup)
+function sxRx(terms) {
+  return '(^|[^a-z])(' + terms.map(function(t){ return t.toks ? t.toks.join('[^a-z]+') : t.w + (t.exact ? '' : '[a-z]*'); }).join('|') + ')(?![a-z])';
+}
+function sxWordRx(terms) {
+  var ws = [];
+  terms.forEach(function(t){ (t.toks ? t.ws.map(function(w){ return { w: w, exact: true }; }) : [t]).forEach(function(x){ ws.push(x); }); });
+  return sxRx(ws);
 }
 
 function sxIsOpen() { return document.getElementById('sx').classList.contains('open'); }
@@ -1291,7 +1357,7 @@ function sxOpen(restore) {
   var el = document.getElementById('sx'), q = document.getElementById('sx-q');
   backChipHide(); pkClose(); tsClose(); closeVerseJump();
   el.classList.add('open'); document.body.classList.add('sx-open');
-  sxChips();
+  sxModes(); sxChips();
   if (restore) { document.getElementById('sx-body').scrollTop = sx.scroll; return; }
   if (!sx.res) sxDraw();
   q.focus(); q.select();
@@ -1309,16 +1375,28 @@ function sxInput() {
 }
 // keep: the open groups and scroll to put back, when coming back from a Reference page
 function sxRun(keep) {
-  var q = document.getElementById('sx-q').value, ws = sxWords(q), seq = ++sx.seq;
-  if (!ws.length) { sx.res = null; sxDraw(); return; }
+  var q = document.getElementById('sx-q').value, seq = ++sx.seq, terms;
+  if (!sxWords(q).length) { sx.res = null; sxDraw(); return; }
   sxMeta().then(function(){
-    return Promise.all(ws.map(function(w){ return sxShard(w.slice(0, 2)).then(function(sh){ return sxPlaces(w, sh); }); }));
+    terms = sxQuery(q);
+    var looks = [];
+    terms.forEach(function(t){
+      (t.toks ? t.ws : [t.w]).forEach(function(w){
+        looks.push(sxShard(w.slice(0, 2)).then(function(sh){ return sxPlaces(w, sh, t.toks ? true : t.exact); }));
+      });
+      if (t.toks && sx.meta.pairs) t.keys.forEach(function(k){ looks.push(sxPairPlaces(k)); });
+    });
+    return Promise.all(looks);
   }).then(function(sets){
     if (seq !== sx.seq) return;
+    sets = sets.filter(function(s){ return s; });
     sets.sort(function(a, b){ return a.size - b.size; });
-    var hits = []; sets[0].forEach(function(p){ if (sets.every(function(s){ return s.has(p); })) hits.push(p); });
+    var hits = []; if (sets.length) sets[0].forEach(function(p){ if (sets.every(function(s){ return s.has(p); })) hits.push(p); });
     hits.sort(function(a, b){ return a - b; });
-    sx.res = { q: q, ws: ws, hits: hits };
+    var phrases = terms.filter(function(t){ return t.toks; });
+    sx.res = { q: q, hits: hits, rx: sxRx(terms), wrx: sxWordRx(terms),
+               check: phrases.map(function(t){ return sxRx([t]); }) };
+    sx.bad = {}; sx.ok = {};
     sx.open = keep ? keep.open : {}; sx.more = keep ? keep.more : {}; sx.all = keep ? keep.all : false;
     for (var b in sx.open) if (sx.open[b]) sxLoad(+b);
     sxDraw(); document.getElementById('sx-body').scrollTop = keep ? keep.scroll : 0;
@@ -1375,13 +1453,17 @@ function sxDict(q) {
 function sxDraw() {
   var body = document.getElementById('sx-body');
   if (!sx.res) {
-    body.innerHTML = '<div class="sx-in"><div class="sx-hint">Search every book and study, the Reference pages and the monthly prayers.<br>Several words find places that contain them all.</div></div>';
+    body.innerHTML = '<div class="sx-in"><div class="sx-hint">Search every book and study, the Reference pages and the monthly prayers.<br>'
+      + '<b>All words</b> finds places with every word, in any order; &ldquo;adopt&rdquo; also finds adoption. '
+      + '<b>Whole words</b> leaves out the longer words. <b>Exact phrase</b> finds the words together, in that order &mdash; '
+      + 'or put a phrase in quotes: &ldquo;fruit of the Spirit&rdquo; grace.</div></div>';
     return;
   }
   var m = sx.meta, groups = {}, order = [];
+  sxVerify();
   sx.res.hits.forEach(function(p){
     var b = m.places[p][0];
-    if (!sxKeep(b)) return;
+    if (!sxKeep(b) || sx.bad[p]) return;
     if (!groups[b]) { groups[b] = []; order.push(b); }
     groups[b].push(p);
   });
@@ -1407,6 +1489,17 @@ function sxDraw() {
     h += '<div class="sx-grp"><button class="sx-gh" onclick="sx.all=true;sxDraw()"><span class="sx-gt" style="color:var(--muted)">&hellip;and ' + rest + ' more ' + (rest === 1 ? 'book, study or page' : 'books, studies and pages') + '</span><span class="sx-chev">&#8250;</span></button></div>';
   }
   body.innerHTML = h + '</div>';
+}
+// For a phrase, drop the places whose text, once loaded, does not hold it word for word.
+function sxVerify() {
+  if (!sx.res.check.length) return;
+  sx.res.hits.forEach(function(p){
+    if (sx.ok[p] || sx.bad[p]) return;
+    var d = sx.books[sxSrc(sx.meta.places[p][0])];
+    if (!d || typeof d.then === 'function') return;
+    var t = sxText(d, p);
+    if (sx.res.check.every(function(rx){ return sxFind(t, rx).length; })) sx.ok[p] = 1; else sx.bad[p] = 1;
+  });
 }
 function sxToggle(b) {
   sx.open[b] = !sx.open[b];
@@ -1447,15 +1540,16 @@ function sxText(d, p) {
 }
 // Matches of the searched words in t, as [start, end] pairs, found in an
 // accent-free lower-case copy that keeps t's character positions.
-function sxFind(t, ws) {
+function sxFind(t, rx) {
   var f = '';
   for (var i = 0; i < t.length; i++) { var c = sxFold(t[i]); f += c.length === 1 ? c : t[i].toLowerCase(); }
-  var re = new RegExp('(^|[^a-z])((?:' + ws.join('|') + ')[a-z]*)', 'g'), out = [], m;
+  var re = new RegExp(rx, 'g'), out = [], m;
   while ((m = re.exec(f))) out.push([m.index + m[1].length, m.index + m[0].length]);
   return out;
 }
 function sxSnippet(d, p) {
-  var t = sxText(d, p), ms = sxFind(t, sx.res.ws), at = ms.length ? ms[0][0] : 0;
+  var t = sxText(d, p), ms = sxFind(t, sx.res.rx), ph = sx.res.check.length ? sxFind(t, sx.res.check[0]) : [];
+  var at = ph.length ? ph[0][0] : ms.length ? ms[0][0] : 0;   // centred on the phrase, if there is one
   var a = Math.max(0, at - 90), b = Math.min(t.length, at + 170);
   if (a > 0) a = t.indexOf(' ', a) + 1;
   if (b < t.length) b = t.lastIndexOf(' ', b);
@@ -1489,9 +1583,9 @@ function sxGo(p) {
 // offers "Back to results", which comes back here and puts the results back (sxResume).
 function sxGoRef(page, id) {
   try {
-    sessionStorage.setItem('sx-back', JSON.stringify({ q: sx.res.q, filter: sx.filter, open: sx.open, more: sx.more, all: sx.all,
+    sessionStorage.setItem('sx-back', JSON.stringify({ q: sx.res.q, filter: sx.filter, mode: sx.mode, open: sx.open, more: sx.more, all: sx.all,
       scroll: document.getElementById('sx-body').scrollTop }));
-    sessionStorage.setItem('sx-land', JSON.stringify({ id: id, ws: sx.res.ws }));
+    sessionStorage.setItem('sx-land', JSON.stringify({ id: id, rx: sx.res.rx, wrx: sx.res.wrx }));
   } catch (e) {}
   window.location.href = page + '.html#' + encodeURIComponent(id);
 }
@@ -1504,7 +1598,7 @@ function sxResume() {
   } catch (e) {}
   if (!st) return;
   if (sxIsOpen() && sx.res && sx.res.q === st.q) return;   // the page was kept as it was
-  document.getElementById('sx-q').value = st.q; sx.filter = st.filter;
+  document.getElementById('sx-q').value = st.q; sx.filter = st.filter; sx.mode = st.mode || 'all';
   document.getElementById('sx-clear').classList.toggle('on', !!st.q);
   sxOpen(true); document.getElementById('sx-q').blur();
   sxRun(st);
@@ -1524,18 +1618,18 @@ function sxLand(pl) {
   if (!el) return;
   for (var a = el; a && a !== root; a = a.parentNode) if (a.nodeName === 'DETAILS') a.open = true;
   var area = f === 'c' ? el.querySelector('.vbv-commentary') : f === 'so' ? el.querySelector('.section-hd-overview') : el;
-  var first = sxMark(area || el, sx.res ? sx.res.ws : []);
+  var first = sx.res ? sxMark(area || el, sx.res.rx) || sxMark(area || el, sx.res.wrx) : null;
   // the word about a third of the way down, clear of the "Back to results" chip
   var y = window.scrollY + (first || el).getBoundingClientRect().top - headerOffset() - (first ? Math.round(window.innerHeight * .25) : 48);
   window.scrollTo(0, Math.max(0, y));
 }
-function sxMark(root, ws) {
-  if (!root || !ws.length) return null;
+function sxMark(root, rx) {
+  if (!root || !rx) return null;
   var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), nodes = [], n, first = null, count = 0;
   while ((n = w.nextNode())) nodes.push(n);
   nodes.forEach(function(n){
     if (count > 40) return;
-    var t = n.nodeValue, ms = sxFind(t, ws);
+    var t = n.nodeValue, ms = sxFind(t, rx);
     if (!ms.length) return;
     var frag = document.createDocumentFragment(), pos = 0;
     ms.forEach(function(m){

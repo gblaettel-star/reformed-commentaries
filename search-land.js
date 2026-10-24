@@ -8,21 +8,21 @@
   if (!land || decodeURIComponent(location.hash.slice(1)) !== land.id) return;
   try { sessionStorage.removeItem('sx-land'); } catch (e) {}
 
-  // Same word rules as sxFind() in index.html: accent-free, lower case, words that begin with a searched word.
+  // As sxFind() in index.html: the pattern Search made (land.rx), matched in an accent-free, lower-case copy.
   function fold(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
-  function find(t, ws) {
+  function find(t, rx) {
     var f = '';
     for (var i = 0; i < t.length; i++) { var c = fold(t[i]); f += c.length === 1 ? c : t[i].toLowerCase(); }
-    var re = new RegExp('(^|[^a-z])((?:' + ws.join('|') + ')[a-z]*)', 'g'), out = [], m;
+    var re = new RegExp(rx, 'g'), out = [], m;
     while ((m = re.exec(f))) out.push([m.index + m[1].length, m.index + m[0].length]);
     return out;
   }
-  function mark(root, ws) {
+  function mark(root, rx) {
     var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), nodes = [], n, first = null, count = 0;
     while ((n = w.nextNode())) nodes.push(n);
     nodes.forEach(function (n) {
       if (count > 40) return;
-      var t = n.nodeValue, ms = find(t, ws);
+      var t = n.nodeValue, ms = find(t, rx);
       if (!ms.length) return;
       var frag = document.createDocumentFragment(), pos = 0;
       ms.forEach(function (m) {
@@ -46,7 +46,8 @@
     if (typeof window.searchReveal === 'function') window.searchReveal(land.id);
     var el = document.getElementById(land.id);
     if (!el) return;
-    var first = land.ws && land.ws.length ? mark(el, land.ws) : null;
+    // the phrase whole, or failing that (it runs across markup) its words
+    var first = land.rx ? mark(el, land.rx) || mark(el, land.wrx) : null;
     var st = document.createElement('style');
     st.textContent = 'mark.sx-mark{background:rgba(201,168,76,.45);color:inherit;border-radius:2px;padding:0 .05em;animation:sx-fade 1.6s ease 3.5s forwards}'
       + '@keyframes sx-fade{to{background:transparent}}'
