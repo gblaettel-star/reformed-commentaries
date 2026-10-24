@@ -307,9 +307,11 @@
   "w": "klēsis (Greek) — a calling, an invitation; the divine summons by which God draws sinners to himself and appoints them to his purpose",
   "g": "Calling is the word that stands at the hinge between eternity and time. In the golden chain of Romans 8, it comes after predestination and before justification: \"those whom he predestined he also called, and those whom he called he also justified\" (v.30).",
   "m": [
-   "calling"
+   "calling",
+   "effectual call",
+   "effectual calling"
   ],
-  "r": 0.2374
+  "r": 0.25
  },
  {
   "n": "Children of Wrath",
@@ -1541,29 +1543,10 @@
   "m": [
    "regeneration",
    "new birth",
-   "born again"
+   "born again",
+   "regenerate"
   ],
-  "r": 0.0573
- },
- {
-  "n": "New Self",
-  "a": "new-self",
-  "w": "kainos anthrōpos (Greek) — the new man; the regenerate person created in the likeness of God in true righteousness and holiness; what we are in Christ",
-  "g": "\"...and to put on the new self, created after the likeness of God in true righteousness and holiness\" (Ephesians 4:24). The new self is not a renovated version of the old self — it is a new creation.",
-  "m": [
-   "new self"
-  ],
-  "r": 0.0057
- },
- {
-  "n": "Old Self",
-  "a": "old-self",
-  "w": "palaios anthrōpos (Greek) — the old man; the unregenerate self dominated by sin and oriented away from God; the identity that was crucified with Christ and is to be definitively put off",
-  "g": "\"...to put off your old self, which belongs to your former manner of life and is corrupt through deceitful desires\" (Ephesians 4:22). The old self is not merely bad habits or personality flaws — it is the whole person as they existed before Christ: oriented away from God, governed by sin, shaped by \"deceitful desires\" that promised…",
-  "m": [
-   "old self"
-  ],
-  "r": 0.0149
+  "r": 0.0601
  },
  {
   "n": "Old Self / New Self",
@@ -1571,10 +1554,10 @@
   "w": "palaios anthrōpos / kainos anthrōpos (Greek) — old man / new man; the two identities defined by Adam and Christ; the self that was crucified with Christ and the self that has been raised to new life",
   "g": "\"...to put off your old self, which belongs to your former manner of life and is corrupt through deceitful desires, and to be renewed in the spirit of your minds, and to put on the new self, created after the likeness of God in true righteousness and holiness\" (Ephesians 4:22–24). The old self and the new self are not two competing…",
   "m": [
-   "old self",
-   "new self"
+   "new self",
+   "old self"
   ],
-  "r": 0.0161
+  "r": 0.0138
  },
  {
   "n": "Praying in the Spirit",
@@ -1936,5 +1919,718 @@
    "propitiation"
   ],
   "r": 0.0161
+ },
+ {
+  "n": "Trinity",
+  "a": "trinity",
+  "w": "trias (Greek) / trinitas (Latin) — threeness; the one God eternally existing as three persons, Father, Son and Holy Spirit",
+  "g": "The Trinity is the Bible’s teaching that there is one God, and that this one God exists eternally as three persons: the Father, the Son and the Holy Spirit. Each person is fully God, not a third of God.",
+  "m": [
+   "trinity",
+   "triune"
+  ],
+  "r": 0.0505
+ },
+ {
+  "n": "Image of God",
+  "a": "image-of-god",
+  "w": "tselem Elohim (Hebrew) / imago Dei (Latin) — the image of God; humanity created to reflect God and represent him in the world",
+  "g": "The image of God is what makes human beings different from every other creature: we are made to resemble God and to represent him. “So God created man in his own image, in the image of God he created him; male and female he created them” (Genesis 1:27).",
+  "m": [
+   "image of god",
+   "imago dei"
+  ],
+  "r": 0.0306
+ },
+ {
+  "n": "Steadfast Love",
+  "a": "steadfast-love",
+  "w": "chesed (Hebrew) — steadfast love, covenant faithfulness, lovingkindness; God’s loyal, unfailing love for his people",
+  "g": "Chesed is one of the richest words in the Old Testament. English Bibles struggle to translate it: “steadfast love”, “lovingkindness”, “mercy”, “faithful love”, “loyalty”.",
+  "m": [
+   "steadfast love",
+   "hesed",
+   "chesed",
+   "lovingkindness"
+  ],
+  "r": 0.1094
+ },
+ {
+  "n": "Omniscience",
+  "a": "omniscience",
+  "w": "omniscientia (Latin) — all-knowing; God’s perfect and complete knowledge of himself and of all things, past, present, future and possible",
+  "g": "Omniscience means God knows everything. He knows himself perfectly, and he knows all things — past, present and future, actual and possible — completely, at once and without effort.",
+  "m": [
+   "omniscience",
+   "omniscient"
+  ],
+  "r": 0.0096
+ },
+ {
+  "n": "Omnipotence",
+  "a": "omnipotence",
+  "w": "omnipotentia (Latin) — all-powerful; God’s ability to do all that he wills, without limit or effort",
+  "g": "Omnipotence means God is all-powerful. He can do whatever he wills, and nothing can stop him. “Our God is in the heavens; he does all that he pleases” (Psalm 115:3).",
+  "m": [
+   "omnipotence",
+   "omnipotent"
+  ],
+  "r": 0.0048
+ },
+ {
+  "n": "Eternity of God",
+  "a": "eternity-of-god",
+  "w": "olam (Hebrew) / aiōnios (Greek) — everlasting; God without beginning or end, not bound by time",
+  "g": "God is eternal: he has no beginning and no end. He always was, always is and always will be. “Before the mountains were brought forth, or ever you had formed the earth and the world, from everlasting to everlasting you are God” (Psalm 90:2).",
+  "m": [
+   "eternity of god",
+   "everlasting god"
+  ],
+  "r": 0.0036
+ },
+ {
+  "n": "Simplicity of God",
+  "a": "simplicity-of-god",
+  "w": "simplicitas (Latin) — without parts; God is not made up of pieces, but is wholly and undividedly all that he is",
+  "g": "In theology, “simple” does not mean easy to understand. It means “not made of parts”. God is not built up from separate pieces — a bit of love, a bit of justice, a bit of power — that could be taken apart or that pull against one another.",
+  "m": [
+   "simplicity of god",
+   "divine simplicity"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Impassibility",
+  "a": "impassibility",
+  "w": "impassibilis (Latin) — not subject to suffering or passions; God is not overcome or changed by emotions or outside forces",
+  "g": "Impassibility means God is not subject to “passions” in the old sense of the word — feelings that come over a person from outside, change them and sometimes overwhelm them.",
+  "m": [
+   "impassibility",
+   "impassible"
+  ],
+  "r": 0.0006
+ },
+ {
+  "n": "Decrees of God",
+  "a": "decrees-of-god",
+  "w": "boulē (Greek) — counsel, purpose; God’s eternal plan by which he has ordained whatever comes to pass",
+  "g": "God’s decree is his eternal plan for everything that happens. Before the world began, God, in his wisdom, determined what he would do and what he would allow. Paul speaks of God “who works all things according to the counsel of his will” (Ephesians 1:11).",
+  "m": [
+   "decree of god",
+   "decrees of god",
+   "eternal decree",
+   "god's decree"
+  ],
+  "r": 0.0048
+ },
+ {
+  "n": "Common Grace",
+  "a": "common-grace",
+  "w": "gratia communis (Latin) — common grace; God’s undeserved kindness to all people, believers and unbelievers alike, which restrains sin and gives good gifts",
+  "g": "Common grace is the goodness God shows to all people, not just to believers. It is called “common” because everyone shares it, and “grace” because no one deserves it.",
+  "m": [
+   "common grace"
+  ],
+  "r": 0.0162
+ },
+ {
+  "n": "Satan",
+  "a": "satan",
+  "w": "satan (Hebrew) / diabolos (Greek) — adversary, accuser, slanderer; the chief of the fallen angels, the enemy of God and his people",
+  "g": "Satan is a personal, spiritual being, the leader of the angels who rebelled against God. His name means “adversary” or “accuser”, and “devil” means “slanderer”.",
+  "m": [
+   "satan",
+   "the devil"
+  ],
+  "r": 0.1202
+ },
+ {
+  "n": "Demons",
+  "a": "demons",
+  "w": "daimonion (Greek) — demon; an unclean spirit; a fallen angel serving Satan in opposition to God",
+  "g": "Demons are fallen angels — spiritual beings created good who joined Satan in rebellion against God. The Gospels also call them “unclean spirits”. They are real, personal and evil, and they serve Satan’s purposes in the world.",
+  "m": [
+   "demon",
+   "demons",
+   "unclean spirit",
+   "unclean spirits"
+  ],
+  "r": 0.0577
+ },
+ {
+  "n": "General and Special Revelation",
+  "a": "general-special-revelation",
+  "w": "revelatio generalis / specialis (Latin) — God making himself known to all people through creation and conscience, and savingly through his word",
+  "g": "Revelation is God making himself known. Theologians distinguish two ways he does this. General revelation is what God shows of himself to everyone, everywhere, through the created world and the human conscience.",
+  "m": [
+   "general revelation",
+   "special revelation",
+   "natural revelation"
+  ],
+  "r": 0.0042
+ },
+ {
+  "n": "Inspiration of Scripture",
+  "a": "inspiration",
+  "w": "theopneustos (Greek) — God-breathed; the Holy Spirit’s work in the human authors so that what they wrote is the very word of God",
+  "g": "The inspiration of Scripture means that the Bible is breathed out by God. Paul writes, “All Scripture is breathed out by God” (2 Timothy 3:16), using one Greek word, theopneustos: God-breathed.",
+  "m": [
+   "inspiration of scripture",
+   "god-breathed",
+   "breathed out by god"
+  ],
+  "r": 0.0054
+ },
+ {
+  "n": "Inerrancy",
+  "a": "inerrancy",
+  "w": "inerrantia (Latin) — without error; Scripture, in its original writings, is true in everything it affirms",
+  "g": "Inerrancy means that the Bible, as originally written, is without error in everything it teaches. Because Scripture is breathed out by God (see Inspiration), and God cannot lie, what Scripture affirms is true.",
+  "m": [
+   "inerrancy",
+   "inerrant"
+  ],
+  "r": 0.003
+ },
+ {
+  "n": "Sufficiency of Scripture",
+  "a": "sufficiency-of-scripture",
+  "w": "sufficientia Scripturae (Latin) — the sufficiency of Scripture; the Bible contains all that we need to know for salvation, faith and godly living",
+  "g": "The sufficiency of Scripture means that the Bible contains everything we need to know God, to be saved and to live a life that pleases him. Nothing essential is missing.",
+  "m": [
+   "sufficiency of scripture",
+   "sola scriptura"
+  ],
+  "r": 0.0078
+ },
+ {
+  "n": "Canon",
+  "a": "canon",
+  "w": "kanōn (Greek) — a measuring rod, a rule; the list of books recognised as Holy Scripture",
+  "g": "The canon is the collection of books that make up the Bible. The Greek word kanōn meant a measuring rod or rule. The canonical books are the rule by which faith and life are measured.",
+  "m": [
+   "canon",
+   "canonical"
+  ],
+  "r": 0.0258
+ },
+ {
+  "n": "Hypostatic Union",
+  "a": "hypostatic-union",
+  "w": "henōsis hypostatikē (Greek) — personal union; the union of a full divine nature and a full human nature in the one person of Jesus Christ",
+  "g": "The hypostatic union is the teaching that Jesus Christ is one person with two natures: he is fully God and fully man. Hypostasis is the Greek word the early church used for “person”.",
+  "m": [
+   "hypostatic union",
+   "two natures",
+   "fully god and fully man"
+  ],
+  "r": 0.009
+ },
+ {
+  "n": "Threefold Office of Christ",
+  "a": "threefold-office",
+  "w": "munus triplex (Latin) — the threefold office; Christ as our Prophet, Priest and King",
+  "g": "In the Old Testament, three kinds of people were anointed for special service: prophets, priests and kings. Each office pointed forward to the Messiah — which means “Anointed One”.",
+  "m": [
+   "threefold office",
+   "prophet, priest and king",
+   "prophet, priest, and king"
+  ],
+  "r": 0.003
+ },
+ {
+  "n": "Passive Obedience of Christ",
+  "a": "passive-obedience",
+  "w": "obedientia passiva (Latin) — suffering obedience; Christ’s willing submission to suffering and death to pay the penalty for our sin",
+  "g": "Theologians speak of Christ’s obedience in two ways. His active obedience is his perfect keeping of God’s law throughout his life (see Active Obedience of Christ).",
+  "m": [
+   "passive obedience"
+  ],
+  "r": 0.0012
+ },
+ {
+  "n": "Humiliation and Exaltation of Christ",
+  "a": "humiliation-exaltation",
+  "w": "status humiliationis / exaltationis (Latin) — the two states of Christ: his lowering of himself to the cross and the grave, and his raising to glory",
+  "g": "Theologians describe Christ’s saving work in two “states”. His humiliation is the downward path: from the glory of heaven to birth, a lowly life, suffering, death and burial.",
+  "m": [
+   "state of humiliation",
+   "humiliation and exaltation"
+  ],
+  "r": 0.0012
+ },
+ {
+  "n": "Last Adam",
+  "a": "last-adam",
+  "w": "ho eschatos Adam (Greek) — the last Adam; Christ as the new head of humanity, who undoes what the first Adam did",
+  "g": "Paul calls Jesus “the last Adam” (1 Corinthians 15:45). Adam was the first man and the head of the human race; what he did affected everyone who came from him. Jesus is a second head of a new humanity.",
+  "m": [
+   "last adam",
+   "second adam"
+  ],
+  "r": 0.0126
+ },
+ {
+  "n": "Lamb of God",
+  "a": "lamb-of-god",
+  "w": "ho amnos tou theou (Greek) — the Lamb of God; Jesus as the sacrifice God provides to take away the sin of the world",
+  "g": "When John the Baptist saw Jesus coming, he cried, “Behold, the Lamb of God, who takes away the sin of the world!” (John 1:29). In one phrase John gathered up centuries of Old Testament sacrifice and pointed it all at Jesus.",
+  "m": [
+   "lamb of god",
+   "lamb who was slain"
+  ],
+  "r": 0.0355
+ },
+ {
+  "n": "Ransom",
+  "a": "ransom",
+  "w": "lytron (Greek) — ransom, the price of release; Christ’s life given as the price that sets captives free",
+  "g": "A ransom is a price paid to set someone free — a captive, a prisoner of war, a slave. Jesus used this word for his own death: “the Son of Man came not to be served but to serve, and to give his life as a ransom for many” (Mark 10:45).",
+  "m": [
+   "ransom",
+   "ransomed"
+  ],
+  "r": 0.0571
+ },
+ {
+  "n": "Penal Substitution",
+  "a": "penal-substitution",
+  "w": "poena (Latin) penalty + substitutio, substitution; Christ bearing in our place the penalty our sins deserved",
+  "g": "Penal substitution is the teaching that on the cross Christ took our place (substitution) and bore the punishment for our sins (penal, from the Latin for penalty).",
+  "m": [
+   "penal substitution",
+   "substitutionary"
+  ],
+  "r": 0.0156
+ },
+ {
+  "n": "Original Sin",
+  "a": "original-sin",
+  "w": "peccatum originale (Latin) — original sin; the guilt and corruption that all people inherit from Adam’s first sin",
+  "g": "Original sin does not mean the first sin Adam committed, but the sinful condition every human being has from the origin of their life because of Adam. It has two parts: guilt — we share in the guilt of Adam’s sin, because he represented us — and corruption — we are born with a nature bent toward sin.",
+  "m": [
+   "original sin"
+  ],
+  "r": 0.006
+ },
+ {
+  "n": "Federal Headship",
+  "a": "federal-headship",
+  "w": "foedus (Latin) — covenant; Adam and Christ as covenant representatives whose actions count for those they represent",
+  "g": "“Federal” comes from the Latin foedus, covenant. Federal headship is the teaching that God deals with humanity through two covenant heads, or representatives: Adam and Christ.",
+  "m": [
+   "federal head",
+   "federal headship",
+   "covenant head"
+  ],
+  "r": 0.0024
+ },
+ {
+  "n": "Irresistible Grace",
+  "a": "irresistible-grace",
+  "w": "gratia irresistibilis (Latin) — effective grace; the Holy Spirit’s work that infallibly brings God’s chosen people to faith",
+  "g": "Irresistible grace (sometimes called effectual grace) is the teaching that when God sets out to save someone, his grace accomplishes what he intends. The Holy Spirit so works in a sinner’s heart that they come to Christ willingly.",
+  "m": [
+   "irresistible grace",
+   "effectual grace"
+  ],
+  "r": 0.003
+ },
+ {
+  "n": "Conversion",
+  "a": "conversion",
+  "w": "epistrophē (Greek) / shuv (Hebrew) — turning; the sinner’s turning from sin to God in repentance and faith",
+  "g": "Conversion is turning — turning away from sin and turning to God in Christ. The Hebrew shuv and the Greek epistrephō both mean to turn around. The Thessalonians “turned to God from idols to serve the living and true God” (1 Thessalonians 1:9).",
+  "m": [
+   "conversion",
+   "converted"
+  ],
+  "r": 0.1178
+ },
+ {
+  "n": "Assurance of Salvation",
+  "a": "assurance",
+  "w": "plērophoria (Greek) — full assurance, certainty; a believer’s confident knowledge that they belong to Christ",
+  "g": "Assurance is a Christian’s confidence that they truly belong to Christ and will be saved. It is possible to be saved and not feel sure, and it is possible to feel sure and not be saved.",
+  "m": [
+   "assurance"
+  ],
+  "r": 0.0883
+ },
+ {
+  "n": "Bondage of the Will",
+  "a": "bondage-of-the-will",
+  "w": "servum arbitrium (Latin) — the bound will; the fallen human will, which cannot by itself choose God",
+  "g": "The bondage of the will is the teaching that since the fall, the human will is not free to choose God by its own power. We are free to choose what we want, but what we want, by nature, is not God.",
+  "m": [
+   "bondage of the will",
+   "free will"
+  ],
+  "r": 0.0066
+ },
+ {
+  "n": "Law",
+  "a": "law",
+  "w": "torah (Hebrew) / nomos (Greek) — instruction, law; God’s revealed will for human life, summed up in the Ten Commandments",
+  "g": "God’s law is his revealed will for how we should live. The Hebrew torah means instruction or teaching; it can refer to the Ten Commandments, the books of Moses, or the whole Old Testament.",
+  "m": [
+   "moral law",
+   "ceremonial law",
+   "third use of the law",
+   "uses of the law"
+  ],
+  "r": 0.0258
+ },
+ {
+  "n": "Law and Gospel",
+  "a": "law-and-gospel",
+  "w": "lex et evangelium (Latin) — law and gospel; the distinction between God’s commands and God’s promise of salvation in Christ",
+  "g": "Law and gospel are two different kinds of word God speaks. The law tells us what we must do: “Do this, and you will live” (Luke 10:28). The gospel tells us what God has done in Christ: “Believe in the Lord Jesus, and you will be saved” (Acts 16:31).",
+  "m": [
+   "law and gospel",
+   "law and the gospel"
+  ],
+  "r": 0.0036
+ },
+ {
+  "n": "Legalism",
+  "a": "legalism",
+  "w": "nomism — a reliance on law-keeping; trying to earn God’s favour, or to add human rules to his word",
+  "g": "Legalism is a distortion of God’s law. It takes two main forms. The first is trying to earn God’s favour or salvation by keeping rules. The second is adding human rules to God’s word and treating them as if they were his commands.",
+  "m": [
+   "legalism",
+   "legalistic"
+  ],
+  "r": 0.0162
+ },
+ {
+  "n": "Antinomianism",
+  "a": "antinomianism",
+  "w": "anti (against) + nomos (law) — lawlessness; the error that because we are saved by grace, God’s law has no claim on the believer",
+  "g": "Antinomianism means “against the law”. It is the error of thinking that because Christians are saved by grace and not by works, God’s moral law no longer applies to them.",
+  "m": [
+   "antinomian",
+   "antinomianism"
+  ],
+  "r": 0.0042
+ },
+ {
+  "n": "Mortification",
+  "a": "mortification",
+  "w": "mortificatio (Latin) — putting to death; the believer’s Spirit-empowered fight to kill sin",
+  "g": "Mortification means putting sin to death. It comes from the Latin mors, death. Paul writes, “if by the Spirit you put to death the deeds of the body, you will live” (Romans 8:13), and “Put to death therefore what is earthly in you” (Colossians 3:5).",
+  "m": [
+   "mortification",
+   "mortify",
+   "put to death"
+  ],
+  "r": 0.0487
+ },
+ {
+  "n": "Conscience",
+  "a": "conscience",
+  "w": "syneidēsis (Greek) — conscience; the inner sense of right and wrong that accuses or excuses us before God",
+  "g": "Conscience is the inner sense, given by God, that judges our actions and thoughts as right or wrong. It accuses us when we do wrong and approves when we do right.",
+  "m": [
+   "conscience"
+  ],
+  "r": 0.1244
+ },
+ {
+  "n": "Temptation",
+  "a": "temptation",
+  "w": "peirasmos (Greek) — testing, trial, temptation; an enticement to sin, or a trial that tests faith",
+  "g": "The Greek word peirasmos can mean either a test (a trial God sends to strengthen faith) or a temptation (an enticement to sin). The same situation can be both: God tested Abraham (Genesis 22:1), and Satan tempted Job through the same losses God permitted.",
+  "m": [
+   "temptation",
+   "tempted"
+  ],
+  "r": 0.1773
+ },
+ {
+  "n": "Indwelling of the Spirit",
+  "a": "indwelling-of-the-spirit",
+  "w": "enoikeō (Greek) — to dwell in; the Holy Spirit living within every believer",
+  "g": "The indwelling of the Spirit means that the Holy Spirit lives within every Christian. Not merely beside us or occasionally visiting, but making his home in us. “Do you not know that you are God’s temple and that God’s Spirit dwells in you?” (1 Corinthians 3:16).",
+  "m": [
+   "indwelling",
+   "indwells",
+   "indwelt"
+  ],
+  "r": 0.0397
+ },
+ {
+  "n": "Illumination",
+  "a": "illumination",
+  "w": "phōtismos (Greek) — enlightening; the Holy Spirit’s work of opening our minds to understand and receive the truth of Scripture",
+  "g": "Illumination is the work of the Holy Spirit in which he opens our minds and hearts to understand, believe and love the truth of God’s word. Inspiration is the Spirit’s work in the writers of Scripture; illumination is his work in its readers.",
+  "m": [
+   "illumination"
+  ],
+  "r": 0.0144
+ },
+ {
+  "n": "Fruit of the Spirit",
+  "a": "fruit-of-the-spirit",
+  "w": "karpos tou pneumatos (Greek) — fruit of the Spirit; the Christlike character the Holy Spirit grows in every believer",
+  "g": "“But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control; against such things there is no law” (Galatians 5:22–23).",
+  "m": [
+   "fruit of the spirit"
+  ],
+  "r": 0.0156
+ },
+ {
+  "n": "Vocation",
+  "a": "vocation",
+  "w": "vocatio (Latin) — calling; God’s call to serve him and our neighbour in the ordinary places of life",
+  "g": "Vocation means “calling”. The medieval church used it mainly for priests, monks and nuns, who were thought to have a higher, spiritual calling. The Reformers recovered the biblical teaching that every Christian has a calling from God — not only to salvation, but to serve him in ordinary life: as a parent, worker, neighbour and citizen.",
+  "m": [
+   "vocation",
+   "vocations"
+  ],
+  "r": 0.0204
+ },
+ {
+  "n": "Spiritual Gifts",
+  "a": "spiritual-gifts",
+  "w": "charismata (Greek) — gifts of grace; abilities given by the Holy Spirit to each believer for building up the church",
+  "g": "Spiritual gifts are abilities the Holy Spirit gives to believers so that they can serve others and build up the church. The Greek word charismata comes from charis, grace: they are gifts of grace, not rewards for spiritual achievement.",
+  "m": [
+   "spiritual gifts",
+   "gifts of the spirit"
+  ],
+  "r": 0.0114
+ },
+ {
+  "n": "Sacrament",
+  "a": "sacrament",
+  "w": "sacramentum (Latin) — a sacred sign; a visible sign and seal of God’s promise, instituted by Christ",
+  "g": "A sacrament is a holy sign and seal of God’s covenant promises, given by Christ to his church. Augustine called it “a visible word”. In a sacrament, God takes ordinary things — water, bread, wine — and uses them to show and confirm the gospel to our senses.",
+  "m": [
+   "sacrament",
+   "sacraments"
+  ],
+  "r": 0.0228
+ },
+ {
+  "n": "Means of Grace",
+  "a": "means-of-grace",
+  "w": "media gratiae (Latin) — means of grace; the ordinary channels God uses to give and strengthen faith: the word, the sacraments and prayer",
+  "g": "The means of grace are the ordinary ways God uses to bring people to faith and to make them grow. The Shorter Catechism names them: “the outward and ordinary means whereby Christ communicateth to us the benefits of redemption are, his ordinances, especially the word, sacraments, and prayer” (Q. 88).",
+  "m": [
+   "means of grace"
+  ],
+  "r": 0.015
+ },
+ {
+  "n": "Elder",
+  "a": "elder",
+  "w": "presbyteros (Greek) / episkopos (Greek) — elder, overseer; a man called to shepherd and govern a local church",
+  "g": "Elders are the spiritual leaders of a local church. The New Testament uses several words for the same office: presbyteros (elder, emphasising maturity), episkopos (overseer or bishop, emphasising oversight) and poimēn (shepherd or pastor, emphasising care).",
+  "m": [
+   "elder",
+   "elders",
+   "overseer",
+   "overseers"
+  ],
+  "r": 0.1875
+ },
+ {
+  "n": "Deacon",
+  "a": "deacon",
+  "w": "diakonos (Greek) — servant, minister; an officer of the church who leads in practical service and mercy",
+  "g": "The Greek word diakonos simply means servant. Jesus used it of himself: “the Son of Man came not to be served but to serve” (Mark 10:45). In the New Testament it also names a specific church office: deacons, who lead the church’s practical ministry, especially care for the poor and needy.",
+  "m": [
+   "deacon",
+   "deacons"
+  ],
+  "r": 0.0132
+ },
+ {
+  "n": "Church Discipline",
+  "a": "church-discipline",
+  "w": "disciplina ecclesiastica (Latin) — church discipline; the church’s loving correction of members who persist in serious sin, for their restoration",
+  "g": "Church discipline is the church’s responsibility to correct its members who fall into serious, unrepentant sin, with the aim of bringing them back. It is like a family’s discipline of its children — not punishment for its own sake, but love that will not let someone walk away from God without a fight.",
+  "m": [
+   "church discipline",
+   "excommunication",
+   "excommunicated"
+  ],
+  "r": 0.0156
+ },
+ {
+  "n": "Keys of the Kingdom",
+  "a": "keys-of-the-kingdom",
+  "w": "kleides tēs basileias (Greek) — the keys of the kingdom; the authority Christ gives his church to open and shut the kingdom through preaching and discipline",
+  "g": "Jesus told Peter, “I will give you the keys of the kingdom of heaven, and whatever you bind on earth shall be bound in heaven, and whatever you loose on earth shall be loosed in heaven” (Matthew 16:19).",
+  "m": [
+   "keys of the kingdom"
+  ],
+  "r": 0.003
+ },
+ {
+  "n": "Visible and Invisible Church",
+  "a": "visible-invisible-church",
+  "w": "ecclesia visibilis / invisibilis (Latin) — the church as it appears on earth, and the church as God sees it: all the elect in every age",
+  "g": "Reformed theology speaks of the church in two ways. The invisible church is the whole company of God’s chosen people — all who truly belong to Christ, in every age and place, known fully only to God.",
+  "m": [
+   "invisible church",
+   "visible church"
+  ],
+  "r": 0.003
+ },
+ {
+  "n": "Marks of the Church",
+  "a": "marks-of-the-church",
+  "w": "notae ecclesiae (Latin) — the marks of the church; the signs by which a true church can be recognised",
+  "g": "The marks of the church are the signs by which you can recognise a true church. In the Reformation, people needed to know: if Rome had departed from the gospel, where was the true church to be found?",
+  "m": [
+   "marks of the church",
+   "marks of a true church"
+  ],
+  "r": 0.0018
+ },
+ {
+  "n": "Regulative Principle of Worship",
+  "a": "regulative-principle",
+  "w": "principle that worship is regulated by Scripture; God is to be worshipped only in the ways he has commanded in his word",
+  "g": "The regulative principle of worship says that God must be worshipped only in the ways he has appointed in Scripture. Whatever God commands for worship, we do; what he does not command, we do not add.",
+  "m": [
+   "regulative principle"
+  ],
+  "r": 0.0054
+ },
+ {
+  "n": "Lord’s Day",
+  "a": "lords-day",
+  "w": "kyriakē hēmera (Greek) — the Lord’s Day; Sunday, the first day of the week, set apart for worship and rest in honour of Christ’s resurrection",
+  "g": "The Lord’s Day is Sunday, the first day of the week, which Christians set apart for worship and rest. John was “in the Spirit on the Lord’s day” (Revelation 1:10).",
+  "m": [
+   "lord's day",
+   "sabbath"
+  ],
+  "r": 0.0829
+ },
+ {
+  "n": "Pentecost",
+  "a": "pentecost",
+  "w": "pentēkostē (Greek) — fiftieth; the Jewish harvest festival fifty days after Passover, when the Holy Spirit was poured out on the church",
+  "g": "Pentecost means “fiftieth”. It was the Jewish Feast of Weeks, held fifty days after Passover, when Israel gave thanks for the first fruits of the wheat harvest (Leviticus 23:15–21).",
+  "m": [
+   "pentecost"
+  ],
+  "r": 0.0823
+ },
+ {
+  "n": "Priest and Priesthood",
+  "a": "priesthood",
+  "w": "kohen (Hebrew) / hiereus (Greek) — priest; one who represents people before God and offers sacrifices on their behalf",
+  "g": "A priest stands between God and people. He represents the people before God, offers sacrifices for their sins, prays for them and blesses them in God’s name. “For every high priest chosen from among men is appointed to act on behalf of men in relation to God, to offer gifts and sacrifices for sins” (Hebrews 5:1).",
+  "m": [
+   "high priest",
+   "priesthood"
+  ],
+  "r": 0.1791
+ },
+ {
+  "n": "Tabernacle",
+  "a": "tabernacle",
+  "w": "mishkan (Hebrew) — dwelling place; the portable tent-sanctuary where God dwelt among Israel in the wilderness",
+  "g": "The tabernacle was the portable sanctuary Israel built in the wilderness at God’s command. The Hebrew word mishkan means “dwelling place”. God said, “let them make me a sanctuary, that I may dwell in their midst” (Exodus 25:8).",
+  "m": [
+   "tabernacle"
+  ],
+  "r": 0.0913
+ },
+ {
+  "n": "Passover",
+  "a": "passover",
+  "w": "pesach (Hebrew) — passing over; the feast remembering the night God spared Israel’s firstborn and brought them out of Egypt",
+  "g": "Passover is the feast that remembers the night God rescued Israel from slavery in Egypt. God sent a final plague: the death of every firstborn. But each Israelite family killed a lamb without blemish and put its blood on the doorposts.",
+  "m": [
+   "passover"
+  ],
+  "r": 0.0871
+ },
+ {
+  "n": "Remnant",
+  "a": "remnant",
+  "w": "she’ar (Hebrew) / leimma (Greek) — what remains; the faithful few whom God preserves for himself in times of widespread unbelief",
+  "g": "The remnant is the small group of faithful people whom God preserves when most of his people turn away. The word means “what is left over”. Throughout the Bible, when judgment falls, God always keeps a remnant for himself, so that his promises do not fail.",
+  "m": [
+   "remnant"
+  ],
+  "r": 0.0667
+ },
+ {
+  "n": "Typology",
+  "a": "typology",
+  "w": "typos (Greek) — pattern, model, type; the way people, events and institutions in the Old Testament foreshadow Christ and his salvation",
+  "g": "Typology is the study of “types”: real people, events and institutions in the Old Testament that God designed to foreshadow Christ and the salvation he brings. The Greek word typos means a pattern or imprint.",
+  "m": [
+   "typology",
+   "foreshadow",
+   "foreshadows",
+   "foreshadowing"
+  ],
+  "r": 0.0282
+ },
+ {
+  "n": "Hell",
+  "a": "hell",
+  "w": "geenna (Greek) — Gehenna, hell; the place of final, conscious punishment for those who die without Christ",
+  "g": "Hell is the place of God’s final judgment on unrepentant sinners. The New Testament word Gehenna comes from the Valley of Hinnom outside Jerusalem, where children had once been sacrificed to idols and which became a symbol of judgment (Jeremiah 7:31–32).",
+  "m": [
+   "hell",
+   "gehenna"
+  ],
+  "r": 0.0391
+ },
+ {
+  "n": "Final Judgment",
+  "a": "final-judgment",
+  "w": "krisis (Greek) — judgment; the day when Christ will judge all people, living and dead, and every secret will be revealed",
+  "g": "The final judgment is the day at the end of history when Jesus Christ will judge all people. “For we must all appear before the judgment seat of Christ, so that each one may receive what is due for what he has done in the body, whether good or evil” (2 Corinthians 5:10).",
+  "m": [
+   "final judgment",
+   "last judgment",
+   "day of judgment",
+   "judgment seat"
+  ],
+  "r": 0.0541
+ },
+ {
+  "n": "Millennium",
+  "a": "millennium",
+  "w": "mille anni (Latin) — a thousand years; the reign of Christ described in Revelation 20, understood in different ways by Christians",
+  "g": "“Millennium” means a thousand years. It comes from Revelation 20:1–6, where Satan is bound for a thousand years and the saints “came to life and reigned with Christ for a thousand years” (Revelation 20:4).",
+  "m": [
+   "millennium",
+   "millennial",
+   "thousand years"
+  ],
+  "r": 0.1136
+ },
+ {
+  "n": "New Heavens and New Earth",
+  "a": "new-heavens-new-earth",
+  "w": "kainos ouranos kai gē (Greek) — a new heaven and a new earth; the renewed creation where God will dwell with his people for ever",
+  "g": "The final hope of Scripture is not that we escape the world, but that God will make it new. “Then I saw a new heaven and a new earth, for the first heaven and the first earth had passed away” (Revelation 21:1).",
+  "m": [
+   "new heavens",
+   "new heaven",
+   "new earth"
+  ],
+  "r": 0.018
+ },
+ {
+  "n": "In Christ",
+  "a": "in-christ",
+  "w": "en Christō (Greek) — union with Christ; the most fundamental description of the believer's identity",
+  "g": "\"In Christ\" is Paul's favourite phrase. He uses it, or its equivalents (\"in him,\" \"in the Lord\"), over 160 times. It is not a piece of religious decoration. It is the most fundamental statement that can be made about a Christian — more foundational than your behaviour, your feelings, your progress, your failures.",
+  "m": [
+   "union with christ"
+  ],
+  "r": 0.0288
  }
 ]
