@@ -12,7 +12,7 @@ byte-identical files, so nothing new is committed.
 
 A "place" is one block of commentary as the reader shows it: a verse entry's
 commentary (or its study note), a section's overview / Theology / Then & Now,
-or a chapter's Overview / Theology / Then & Now / For Reflection.  On the
+or a chapter's Overview / Theology / Then & Now / For Reflection / article.  On the
 Reference pages and Monthly Prayer, a place is one whole entry (a term, a figure,
 a month's prayer); its "book" number counts on past the books, into REFS.
 
@@ -30,10 +30,10 @@ me my no not of on or our she so than that the their them then there these they 
 what when which who whom will with you your yours'''.split())
 
 # Fields, in the order the reader shows them.  Verse-entry fields first, then chapter fields.
-FIELDS = ['c', 'n', 'so', 'st', 'se', 'o', 't', 'e', 'r', 'sec', 'ref']
+FIELDS = ['c', 'n', 'so', 'st', 'se', 'o', 't', 'e', 'r', 'sec', 'ref', 'es']
 VERSE_FIELDS = [('commentary', 'c'), ('note', 'n')]
 SECTION_FIELDS = [('sectionOverview', 'so'), ('theology', 'st'), ('examples', 'se')]
-CHAPTER_FIELDS = [('t', 'theology'), ('e', 'examples'), ('r', 'reflection')]
+CHAPTER_FIELDS = [('t', 'theology'), ('e', 'examples'), ('r', 'reflection'), ('es', 'essay')]
 
 # The Reference pages and Monthly Prayer: page, its entries' list in the page's
 # script, title, short name for the filter, and the id each entry's card has on

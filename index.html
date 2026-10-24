@@ -82,6 +82,11 @@ summary{background:#1a3a5c;padding:.7rem 1rem;cursor:pointer;color:#c9a84c;font-
 summary::-webkit-details-marker{display:none}
 summary:hover{background:#22487a}
 .detail-body{padding:1rem;line-height:1.8}
+.essay{line-height:1.85;margin-top:.4rem}
+.essay p{margin:0 0 1rem}
+.essay .lede{font-size:1.12em;font-style:italic;color:var(--parch-2,#d9cdb3);margin-bottom:1.4rem}
+.essay h3{font-family:var(--display,Georgia),serif;font-weight:500;color:var(--gold,#c9a84c);font-size:1.45rem;letter-spacing:.01em;line-height:1.25;margin:2rem 0 .7rem;padding-top:1rem;border-top:1px solid var(--hair,rgba(200,169,90,.26))}
+.essay strong{color:var(--parch,#ece3cf)}
 .detail-body p{margin-bottom:.9rem}
 .detail-body p:last-child{margin-bottom:0}
 .passage-text{padding:1rem;line-height:1.8;color:#d4c4a8;font-style:italic;border-top:1px solid #2a4a6c}
@@ -606,7 +611,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2427"></script>
+<script src="scripture-links.js?v=2428"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1268,7 +1273,7 @@ function sdgGoto(id, c, v) {
    each folded shut until tapped. ── */
 var SX_STOP = {};
 ('a an and are as at be but by for from had has have he her hers him his i if in into is it its me my no not of on or our she so than that the their them then there these they this those to us was we were what when which who whom will with you your yours').split(' ').forEach(function(w){ SX_STOP[w] = 1; });
-var SX_FIELD = { n: ' · Note', st: ' · Theology', se: ' · Then & Now', o: ' · Overview', t: ' · Theology', e: ' · Then & Now', r: ' · For Reflection' };
+var SX_FIELD = { es: '', n: ' · Note', st: ' · Theology', se: ' · Then & Now', o: ' · Overview', t: ' · Theology', e: ' · Then & Now', r: ' · For Reflection' };
 var sx = { meta: null, metaP: null, shards: {}, pshards: {}, books: {}, res: null, filter: 'all', mode: 'all', bad: {}, ok: {}, open: {}, more: {}, all: false, seq: 0, timer: null, scroll: 0 };
 
 function sxFold(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
@@ -1534,7 +1539,7 @@ function sxText(d, p) {
   if (sxRef(sx.meta.places[p][0])) return d[sx.meta.places[p][2]] || '';
   var pl = sx.meta.places[p], ch = d[pl[1]] || {}, f = sx.meta.fields[pl[3]], v = (ch.verseByVerse || [])[pl[2]] || {};
   var html = { c: v.commentary, n: v.note, so: v.sectionOverview, st: v.theology, se: v.examples, o: ch.overview || ch.intro,
-               t: ch.theology, e: ch.examples, r: ch.reflection, sec: ((ch.sections || [])[pl[2]] || {}).commentary }[f] || '';
+               t: ch.theology, e: ch.examples, r: ch.reflection, es: ch.essay, sec: ((ch.sections || [])[pl[2]] || {}).commentary }[f] || '';
   var el = document.createElement('div'); el.innerHTML = html.replace(/<\/(p|div|li)>/g, ' </$1>');
   return el.textContent.replace(/\s+/g, ' ').trim();
 }
@@ -1607,7 +1612,8 @@ window.addEventListener('pageshow', sxResume);
 function sxLand(pl) {
   var f = sx.meta.fields[pl[3]], i = pl[2], root = document.getElementById('content'), el = null;
   var box = { o: 'Overview', t: 'Theology', e: 'Then & Now', r: 'For Reflection', st: 'Theology ·', se: 'Then & Now ·' }[f];
-  if (f === 'c' || f === 'n' || f === 'so') el = document.getElementById('vs' + i);
+  if (f === 'es') el = root.querySelector('.essay');
+  else if (f === 'c' || f === 'n' || f === 'so') el = document.getElementById('vs' + i);
   else if (f === 'sec') el = document.getElementById('sec' + i);
   else if (f === 'st' || f === 'se') {
     var anchor = document.getElementById('vs' + i);
@@ -1990,6 +1996,9 @@ function render(idx) {
   if (ref)   html += '<div class="ref">' + ref + '</div>';
   html += '<div id="gl-chips"><div class="gl-chips-label">Terms in this chapter</div><div class="gl-chips-row" id="gl-chips-row"></div></div>';
 
+  // A chapter written as one continuous article (the Evangelism study): open, no boxes
+  if (ch.essay) html += '<article class="essay">' + ch.essay + '</article>';
+
   // ESV text
   if (ch.text) {
     html += '<details><summary>ESV Text</summary><div class="passage-text">' + ch.text + '</div></details>';
@@ -2256,7 +2265,7 @@ function glBuild(){
     }
   });
   /* then anything appearing only in a box -- no jump target rather than a wrong one */
-  ['.detail-body', '.section-hd-overview', '.accent-box'].forEach(function(sel){
+  ['.essay', '.detail-body', '.section-hd-overview', '.accent-box'].forEach(function(sel){
     [].slice.call(root.querySelectorAll(sel)).forEach(function(bx){
       var txt = (bx.textContent || '').replace(/\u2019/g, "'"), m;
       GL_RX.lastIndex = 0;
