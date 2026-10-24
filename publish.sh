@@ -75,7 +75,7 @@ for ATTEMPT in 1 2 3; do
   perl -pi -e "s/commentaries-${CUR}\b/commentaries-${NEW}/" sw.js
   # Stamp shared scripts with the version, so phones never run a stale cached
   # copy (GitHub lets browsers keep a file for 10 minutes) against a new page.
-  perl -pi -e 's/src="(scripture-links|share)\.js(\?v=\d+)?"/src="$1.js?v='"${NEW#v}"'"/g' ./*.html
+  perl -pi -e 's/src="(scripture-links|share|search-land)\.js(\?v=\d+)?"/src="$1.js?v='"${NEW#v}"'"/g' ./*.html
   perl -pi -e 's/href="(sanctuary-pages)\.css(\?v=\d+)?"/href="$1.css?v='"${NEW#v}"'"/g' ./*.html
 
   sed "s/{SW}/${NEW}/g" "$MSGFILE" > "$TMP"

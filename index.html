@@ -339,6 +339,8 @@ body.sx-open{overflow:hidden}
 .sx-clear.on{visibility:visible}
 .sx-chips{display:flex;gap:.4rem;padding:.7rem .9rem .3rem;overflow-x:auto;scrollbar-width:none}
 .sx-chips::-webkit-scrollbar{display:none}
+.sx-chips2{padding-top:.2rem}
+.sx-chips2 .sx-chip{font-size:.85rem;padding:.2rem .7rem}
 .sx-chip{flex-shrink:0;background:none;border:1px solid var(--hair);border-radius:999px;padding:.25rem .8rem;color:var(--parch-2);font-family:var(--text);font-style:italic;font-size:.95rem;cursor:pointer;touch-action:manipulation}
 .sx-chip.on{border-color:var(--gold);color:var(--gold)}
 #sx-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:calc(2.5rem + env(safe-area-inset-bottom))}
@@ -538,6 +540,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
       <button class="sx-clear" id="sx-clear" onclick="sxClear()" aria-label="Clear">&#10005;</button></div>
   </div>
   <div class="sx-chips" id="sx-chips"></div>
+  <div class="sx-chips sx-chips2" id="sx-chips2" style="display:none"></div>
   <div id="sx-body"></div>
 </div>
 <div id="pager">
@@ -598,7 +601,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=2419"></script>
+<script src="scripture-links.js?v=2420"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1188,7 +1191,7 @@ function dlStart() {
   var files = dlFiles(), done = 0, failed = 0, next = 0;
   btn.disabled = true; bar.style.display = 'block';
   sxMeta().catch(function(){ return null; }).then(function(m){
-    if (m) files = files.concat(['search/places.json'], m.shards.map(function(s){ return 'search/w-' + s + '.json'; }));
+    if (m) files = files.concat(['search/places.json'], m.shards.map(function(s){ return 'search/w-' + s + '.json'; }), (m.refs || []).map(function(r){ return 'search/r-' + r[0] + '.json'; }));
     return caches.open(DL_CACHE);
   }).then(function(c){
     function step() {
@@ -1254,8 +1257,9 @@ function sdgGoto(id, c, v) {
 }
 /* ── Search. The index in search/ is built by scripts/build_search_index.py
    (publish.sh runs it); sxWords() must follow the same word rules. Results are
-   places (a verse entry's commentary, a section's or chapter's box), grouped by
-   book, richest book first, each folded shut until tapped. ── */
+   places (a verse entry's commentary, a section's or chapter's box, an entry on
+   a Reference page or a month's prayer), grouped by book or page, richest first,
+   each folded shut until tapped. ── */
 var SX_STOP = {};
 ('a an and are as at be but by for from had has have he her hers him his i if in into is it its me my no not of on or our she so than that the their them then there these they this those to us was we were what when which who whom will with you your yours').split(' ').forEach(function(w){ SX_STOP[w] = 1; });
 var SX_FIELD = { n: ' · Note', st: ' · Theology', se: ' · Then & Now', o: ' · Overview', t: ' · Theology', e: ' · Then & Now', r: ' · For Reflection' };
@@ -1303,7 +1307,8 @@ function sxInput() {
   document.getElementById('sx-clear').classList.toggle('on', !!document.getElementById('sx-q').value);
   clearTimeout(sx.timer); sx.timer = setTimeout(sxRun, 220);
 }
-function sxRun() {
+// keep: the open groups and scroll to put back, when coming back from a Reference page
+function sxRun(keep) {
   var q = document.getElementById('sx-q').value, ws = sxWords(q), seq = ++sx.seq;
   if (!ws.length) { sx.res = null; sxDraw(); return; }
   sxMeta().then(function(){
@@ -1313,22 +1318,44 @@ function sxRun() {
     sets.sort(function(a, b){ return a.size - b.size; });
     var hits = []; sets[0].forEach(function(p){ if (sets.every(function(s){ return s.has(p); })) hits.push(p); });
     hits.sort(function(a, b){ return a - b; });
-    sx.res = { q: q, ws: ws, hits: hits }; sx.open = {}; sx.more = {}; sx.all = false;
-    sxDraw(); document.getElementById('sx-body').scrollTop = 0;
+    sx.res = { q: q, ws: ws, hits: hits };
+    sx.open = keep ? keep.open : {}; sx.more = keep ? keep.more : {}; sx.all = keep ? keep.all : false;
+    for (var b in sx.open) if (sx.open[b]) sxLoad(+b);
+    sxDraw(); document.getElementById('sx-body').scrollTop = keep ? keep.scroll : 0;
   }).catch(function(){
     if (seq !== sx.seq) return;
     sx.res = null;
     document.getElementById('sx-body').innerHTML = '<div class="sx-in"><div class="sx-hint">Search could not load. Check the connection, or download everything for offline use under Settings.</div></div>';
   });
 }
+// Filters: All, a Testament, Studies, Reference (with a second row for each of
+// its pages, as 'r:dictionary' and so on) and Monthly Prayer ('r:prayer').
+var SX_REFS = [['dictionary', 'Dictionary'], ['figures', 'Figures'], ['philosophers', 'Philosophers'], ['heresies', 'Heresies'],
+               ['councils', 'Councils'], ['creeds', 'Creeds'], ['solas', 'Solas']];
+function sxInRef() { return sx.filter === 'REF' || (/^r:/.test(sx.filter) && sx.filter !== 'r:prayer'); }
 function sxChips() {
-  var fs = [['all', 'All'], ['OT', 'Old Testament'], ['NT', 'New Testament'], ['SL', 'Studies']];
-  document.getElementById('sx-chips').innerHTML = fs.map(function(f){
-    return '<button class="sx-chip' + (sx.filter === f[0] ? ' on' : '') + '" onclick="sxFilter(\'' + f[0] + '\')">' + f[1] + '</button>';
-  }).join('');
+  var chip = function(f, on){
+    return '<button class="sx-chip' + (on ? ' on' : '') + '" onclick="sxFilter(\'' + f[0] + '\')">' + f[1] + '</button>';
+  };
+  var fs = [['all', 'All'], ['OT', 'Old Testament'], ['NT', 'New Testament'], ['SL', 'Studies'], ['REF', 'Reference'], ['r:prayer', 'Prayer']];
+  var sub = document.getElementById('sx-chips2'), inRef = sxInRef();
+  document.getElementById('sx-chips').innerHTML = fs.map(function(f){ return chip(f, sx.filter === f[0] || (f[0] === 'REF' && inRef)); }).join('');
+  sub.innerHTML = inRef ? [['REF', 'All reference']].concat(SX_REFS.map(function(r){ return ['r:' + r[0], r[1]]; }))
+    .map(function(f){ return chip(f, sx.filter === f[0]); }).join('') : '';
+  sub.style.display = inRef ? '' : 'none';
 }
 function sxFilter(f) { sx.filter = f; sx.open = {}; sx.more = {}; sx.all = false; sxChips(); sxDraw(); document.getElementById('sx-body').scrollTop = 0; }
 function sxBook(b) { var id = sx.meta.books[b]; return BOOKS.find(function(x){ return x.id === id; }); }
+// A Reference page (or Monthly Prayer) as [page, title, short name]: its places count on past the books.
+function sxRef(b) { var r = b - sx.meta.books.length; return r >= 0 && sx.meta.refs ? sx.meta.refs[r] || null : null; }
+function sxTitle(b) { var r = sxRef(b); return r ? r[1] : sxBook(b).title; }
+function sxKeep(b) {
+  var r = sxRef(b), bk = r ? null : sxBook(b);
+  if (!r && !bk) return false;
+  if (sx.filter === 'all') return true;
+  if (r) return sx.filter === 'r:' + r[0] || (sx.filter === 'REF' && r[0] !== 'prayer');
+  return bk.testament === sx.filter;
+}
 function sxEsc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
 // A Dictionary entry whose name is what was typed comes first.
@@ -1348,13 +1375,13 @@ function sxDict(q) {
 function sxDraw() {
   var body = document.getElementById('sx-body');
   if (!sx.res) {
-    body.innerHTML = '<div class="sx-in"><div class="sx-hint">Search every book and study.<br>Several words find places that contain them all.</div></div>';
+    body.innerHTML = '<div class="sx-in"><div class="sx-hint">Search every book and study, the Reference pages and the monthly prayers.<br>Several words find places that contain them all.</div></div>';
     return;
   }
   var m = sx.meta, groups = {}, order = [];
   sx.res.hits.forEach(function(p){
-    var b = m.places[p][0], bk = sxBook(b);
-    if (!bk || (sx.filter !== 'all' && bk.testament !== sx.filter)) return;
+    var b = m.places[p][0];
+    if (!sxKeep(b)) return;
     if (!groups[b]) { groups[b] = []; order.push(b); }
     groups[b].push(p);
   });
@@ -1365,39 +1392,44 @@ function sxDraw() {
     h += '<div class="sx-hint">Nothing found for &ldquo;' + sxEsc(sx.res.q) + '&rdquo;' + (sx.filter !== 'all' ? ' here &mdash; try All.' : '.') + '</div></div>';
     body.innerHTML = h; return;
   }
-  h += '<div class="sx-count">' + total + (total === 1 ? ' place' : ' places') + ' in ' + order.length + (order.length === 1 ? ' book or study' : ' books and studies') + '</div>';
+  h += '<div class="sx-count">' + total + (total === 1 ? ' place' : ' places') + ' in '
+    + (order.length === 1 ? sxEsc(sxTitle(order[0])) : order.length + ' books, studies and pages') + '</div>';
   var shown = sx.all ? order : order.slice(0, 8);
   shown.forEach(function(b){
     var ps = groups[b], op = !!sx.open[b];
-    h += '<div class="sx-grp' + (op ? ' open' : '') + '"><button class="sx-gh" onclick="sxToggle(' + b + ')"><span class="sx-gt">' + sxBook(b).title + '</span>'
+    h += '<div class="sx-grp' + (op ? ' open' : '') + '"><button class="sx-gh" onclick="sxToggle(' + b + ')"><span class="sx-gt">' + sxEsc(sxTitle(b)) + '</span>'
       + '<span class="sx-gc">' + ps.length + (ps.length === 1 ? ' place' : ' places') + '</span><span class="sx-chev">&#8250;</span></button>';
     if (op) h += sxHits(b, ps);
     h += '</div>';
   });
   if (shown.length < order.length) {
     var rest = order.length - shown.length;
-    h += '<div class="sx-grp"><button class="sx-gh" onclick="sx.all=true;sxDraw()"><span class="sx-gt" style="color:var(--muted)">&hellip;and ' + rest + ' more ' + (rest === 1 ? 'book or study' : 'books and studies') + '</span><span class="sx-chev">&#8250;</span></button></div>';
+    h += '<div class="sx-grp"><button class="sx-gh" onclick="sx.all=true;sxDraw()"><span class="sx-gt" style="color:var(--muted)">&hellip;and ' + rest + ' more ' + (rest === 1 ? 'book, study or page' : 'books, studies and pages') + '</span><span class="sx-chev">&#8250;</span></button></div>';
   }
   body.innerHTML = h + '</div>';
 }
 function sxToggle(b) {
   sx.open[b] = !sx.open[b];
   sxDraw();
-  var id = sx.meta.books[b];
-  if (sx.open[b] && !sx.books[id]) {
-    sx.books[id] = sxGet('data/' + id + '.json').then(function(d){ sx.books[id] = d; sxDraw(); }, function(){ delete sx.books[id]; });
-  }
+  if (sx.open[b]) sxLoad(b);
+}
+// The text behind a group's snippets: the book's data, or a Reference page's search/r-PAGE.json
+function sxSrc(b) { var r = sxRef(b); return r ? 'search/r-' + r[0] + '.json' : 'data/' + sx.meta.books[b] + '.json'; }
+function sxLoad(b) {
+  var src = sxSrc(b);
+  if (!sx.books[src]) sx.books[src] = sxGet(src).then(function(d){ sx.books[src] = d; sxDraw(); }, function(){ delete sx.books[src]; });
 }
 function sxHits(b, ps) {
-  var d = sx.books[sx.meta.books[b]];
+  var d = sx.books[sxSrc(b)];
   if (!d || typeof d.then === 'function') return '<div class="sx-wait">Loading&hellip;</div>';
   var n = sx.more[b] ? ps.length : Math.min(6, ps.length), h = '';
   for (var i = 0; i < n; i++) h += '<a class="sx-hit" href="#" onclick="sxGo(' + ps[i] + ');return false"><div class="sx-loc">' + sxEsc(sxLabel(ps[i])) + '</div><div class="sx-sn">' + sxSnippet(d, ps[i]) + '</div></a>';
-  if (n < ps.length) h += '<button class="sx-more" onclick="sx.more[' + b + ']=true;sxDraw()">Show ' + (ps.length - n) + ' more in ' + sxBook(b).title + '</button>';
+  if (n < ps.length) h += '<button class="sx-more" onclick="sx.more[' + b + ']=true;sxDraw()">Show ' + (ps.length - n) + ' more in ' + sxEsc(sxTitle(b)) + '</button>';
   return h;
 }
 // "Romans 3:25", "Romans 3:21–31 · Theology", "Romans 3 · Overview", "Unit 2 · The Covenant of Grace"
 function sxLabel(p) {
+  if (sxRef(sx.meta.places[p][0])) return sx.meta.places[p][4];
   var pl = sx.meta.places[p], bk = sxBook(pl[0]), k = pl[1], f = sx.meta.fields[pl[3]], lab = pl[4];
   var bible = !!PK_ABBR[bk.id], base;
   if (bible) base = k === '0' ? bk.title + ' · Introduction' : (bk.id === 'psalms' ? 'Psalm ' : bk.title + ' ') + k;
@@ -1406,6 +1438,7 @@ function sxLabel(p) {
   return base + (SX_FIELD[f] || '');
 }
 function sxText(d, p) {
+  if (sxRef(sx.meta.places[p][0])) return d[sx.meta.places[p][2]] || '';
   var pl = sx.meta.places[p], ch = d[pl[1]] || {}, f = sx.meta.fields[pl[3]], v = (ch.verseByVerse || [])[pl[2]] || {};
   var html = { c: v.commentary, n: v.note, so: v.sectionOverview, st: v.theology, se: v.examples, o: ch.overview || ch.intro,
                t: ch.theology, e: ch.examples, r: ch.reflection, sec: ((ch.sections || [])[pl[2]] || {}).commentary }[f] || '';
@@ -1436,7 +1469,8 @@ function sxSnippet(d, p) {
 
 // Open the place in the reader, at the word, with "Back to results" on hand.
 function sxGo(p) {
-  var pl = sx.meta.places[p], id = sx.meta.books[pl[0]], k = +pl[1];
+  var pl = sx.meta.places[p], id = sx.meta.books[pl[0]], k = +pl[1], ref = sxRef(pl[0]);
+  if (ref) { sxGoRef(ref[0], pl[1]); return; }
   sxClose();
   var land = function(){ requestAnimationFrame(function(){ requestAnimationFrame(function(){ sxLand(pl); }); }); };
   if (currentBook && currentBook.id === id && currentData && document.getElementById('reader-screen').style.display !== 'none') {
@@ -1451,6 +1485,31 @@ function sxGo(p) {
   document.getElementById('bc-go').innerHTML = '&#8592; Back to results';
   document.getElementById('back-chip').classList.add('show');
 }
+// A Reference page is a page of its own: search-land.js there marks the words and
+// offers "Back to results", which comes back here and puts the results back (sxResume).
+function sxGoRef(page, id) {
+  try {
+    sessionStorage.setItem('sx-back', JSON.stringify({ q: sx.res.q, filter: sx.filter, open: sx.open, more: sx.more, all: sx.all,
+      scroll: document.getElementById('sx-body').scrollTop }));
+    sessionStorage.setItem('sx-land', JSON.stringify({ id: id, ws: sx.res.ws }));
+  } catch (e) {}
+  window.location.href = page + '.html#' + encodeURIComponent(id);
+}
+function sxResume() {
+  var st = null;
+  try {
+    if (!sessionStorage.getItem('sx-return')) return;
+    sessionStorage.removeItem('sx-return');
+    st = JSON.parse(sessionStorage.getItem('sx-back'));
+  } catch (e) {}
+  if (!st) return;
+  if (sxIsOpen() && sx.res && sx.res.q === st.q) return;   // the page was kept as it was
+  document.getElementById('sx-q').value = st.q; sx.filter = st.filter;
+  document.getElementById('sx-clear').classList.toggle('on', !!st.q);
+  sxOpen(true); document.getElementById('sx-q').blur();
+  sxRun(st);
+}
+window.addEventListener('pageshow', sxResume);
 function sxLand(pl) {
   var f = sx.meta.fields[pl[3]], i = pl[2], root = document.getElementById('content'), el = null;
   var box = { o: 'Overview', t: 'Theology', e: 'Then & Now', r: 'For Reflection', st: 'Theology ·', se: 'Then & Now ·' }[f];
@@ -1682,7 +1741,7 @@ function buildHome() {
   html += '<div class="home-lbl">Library</div><div class="home-card">'
     + '<div class="section-toggle" onclick="sxOpen()">'
     + '<span class="section-title">Search</span>'
-    + '<span class="section-count">every book &amp; study</span><span class="section-chevron">&#8250;</span></div>'
+    + '<span class="section-count">everything</span><span class="section-chevron">&#8250;</span></div>'
     + '<div class="section-toggle" onclick="pkOpen()">'
     + '<span class="section-title">Go to a Passage</span>'
     + '<span class="section-count">66 books</span><span class="section-chevron">&#8250;</span></div>'
