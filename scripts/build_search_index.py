@@ -50,7 +50,7 @@ REFS = [
     ('prayer', 'MONTHS', 'Monthly Prayer', 'Prayer', lambda e, i: 'card-%d' % i),
 ]
 # Keys that hold ids and sorting codes rather than text the reader sees.
-REF_SKIP = {'anchor', 'letter', 'era', 'id', 'yearSort', 'icon'}
+REF_SKIP = {'anchor', 'letter', 'era', 'id', 'yearSort', 'icon', 'see', 'sort', 'her'}
 
 
 def plain(h):

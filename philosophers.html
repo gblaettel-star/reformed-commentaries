@@ -83,7 +83,7 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
-<link rel="stylesheet" href="sanctuary-pages.css?v=2426">
+<link rel="stylesheet" href="sanctuary-pages.css?v=2427">
 <meta name="theme-color" content="#0b1524">
 </head>
 <body>
@@ -95,6 +95,7 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
   </div>
   <h2>Ideas have consequences — and a history</h2>
 </header>
+<p class="page-scope">The ideas that shaped — and challenged — the Christian faith, from Plato to the present, each weighed from a Reformed perspective. Pastors and theologians to read for their teaching are under <a href="figures.html">Theological Figures</a>.</p>
 
 <div class="era-bar" id="eraBar"></div>
 <div class="az-bar" id="azBar"></div>
@@ -106,7 +107,7 @@ main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
 
 <main id="mainContent"></main>
 
-<script src="scripture-links.js?v=2426"></script>
+<script src="scripture-links.js?v=2427"></script>
 <script>
 // ── Data ────────────────────────────────────────────────────────────────────
 
@@ -122,17 +123,11 @@ const ERAS = [
 
 const PHILOSOPHERS = [
   {
-    name: 'Anselm of Canterbury',
-    dates: '1033–1109',
-    era: 'medieval',
-    bio: 'Archbishop of Canterbury and one of the towering intellects of the medieval church, Anselm sought to show that Christian faith is not blind but rationally defensible. His motto, <em>fides quaerens intellectum</em> — "faith seeking understanding" — defines his entire project. He believed reason could never replace faith but could illumine it.',
-    influence: [
-      { icon: '✦', text: 'Formulated the <em>ontological argument</em> for God\'s existence: God is "that than which nothing greater can be conceived," and a God who exists is greater than one who does not, therefore God exists.' },
-      { icon: '✦', text: 'His <em>Cur Deus Homo</em> ("Why God Became Man") gave the church its most influential account of the atonement — the satisfaction theory — which deeply shaped Reformed soteriology.' },
-      { icon: '✦', text: 'Demonstrated that rigorous philosophical thinking and orthodox faith are not enemies but allies, a conviction central to the Reformed tradition.' },
-    ],
-    reformed: 'Sproul regarded Anselm\'s satisfaction theory of atonement as foundational. Calvin built upon it; the Westminster Standards presuppose it. Anselm shows that the cross was not arbitrary — God\'s justice required satisfaction, and Christ alone could provide it.',
-    keyWork: 'Cur Deus Homo (1098)'
+    name: "Anselm of Canterbury",
+    dates: "1033–1109",
+    era: "medieval",
+    see: "anselm",
+    note: "Archbishop of Canterbury: “faith seeking understanding”, the ontological argument, and <em>Cur Deus Homo</em> on why God became man."
   },
   {
     name: 'Aquinas, Thomas',
@@ -161,30 +156,18 @@ const PHILOSOPHERS = [
     keyWork: 'Nicomachean Ethics; Metaphysics (c. 350 BC)'
   },
   {
-    name: 'Augustine of Hippo',
-    dates: '354–430',
-    era: 'patristic',
-    bio: 'Bishop of Hippo and the most influential theologian of the Western church after Paul, Augustine\'s journey from Manichaeism through Neo-Platonism to Christian faith shaped his towering synthesis of classical philosophy and biblical revelation. His <em>Confessions</em> remain the greatest spiritual autobiography ever written: "Our heart is restless, until it repose in Thee."',
-    influence: [
-      { icon: '✦', text: 'His doctrine of original sin — that Adam\'s fall corrupted the entire race, leaving the will in bondage — is the foundation of Reformed anthropology.' },
-      { icon: '✦', text: 'His doctrine of divine grace — that salvation is entirely God\'s sovereign gift, not human merit — is the bedrock of Reformed soteriology. Calvin could say, "Augustine is wholly ours."' },
-      { icon: '✦', text: 'His <em>City of God</em>, with its two cities, gave Reformed political theology a framework it has drawn on ever since.' },
-    ],
-    reformed: 'Calvin simply is an Augustinian. The five points of Calvinism are nothing more than an Augustinian account of grace rendered precise. Sproul, Ferguson, and Begg all trace the Reformed tradition directly to Augustine. To understand the Reformation is to understand that it was, at its core, a recovery of Augustine against medieval semi-Pelagianism.',
-    keyWork: 'Confessions (397–400); The City of God (413–426)'
+    name: "Augustine of Hippo",
+    dates: "354–430",
+    era: "patristic",
+    see: "augustine",
+    note: "Bishop of Hippo, whose theology of grace and whose <em>Confessions</em> and <em>City of God</em> shaped the whole Western church — and the Reformation."
   },
   {
-    name: 'Calvin, John',
-    dates: '1509–1564',
-    era: 'reformation',
-    bio: 'The great systematizer of the Reformation, Calvin\'s <em>Institutes of the Christian Religion</em> — revised and expanded across his lifetime — remains the most important work of Reformed theology ever written. A humanist scholar turned reformer, Calvin brought rigorous exegesis, systematic clarity, and pastoral warmth to every page. Geneva became under his influence the "Rome of Protestantism."',
-    influence: [
-      { icon: '✦', text: 'The <em>Institutes</em> gave the Reformed world its theological framework: the knowledge of God, Scripture\'s authority, sin and grace, the person and work of Christ, the church, and the sacraments — all treated with unmatched depth.' },
-      { icon: '✦', text: 'His commentaries on almost the entire Bible remain models of grammatical-historical exegesis combined with pastoral application.' },
-      { icon: '✦', text: 'His doctrine of double predestination — that God elects some to salvation and passes over others — became the defining and most contested doctrine of the Reformed tradition.' },
-    ],
-    reformed: 'Calvin is the fountainhead. Every major figure in this study — Sproul, Begg, Ferguson, Packer — drinks from this stream. To study Calvin is not merely history; it is to encounter a man so saturated in Scripture that his theology feels not like a system imposed on the Bible but drawn out of it.',
-    keyWork: 'Institutes of the Christian Religion (final ed. 1559)'
+    name: "Calvin, John",
+    dates: "1509–1564",
+    era: "reformation",
+    see: "calvin",
+    note: "The Reformer of Geneva: the <em>Institutes</em>, the knowledge of God and of self, and the sense of the divine in every person."
   },
   {
     name: 'Darwin, Charles',
@@ -304,17 +287,11 @@ const PHILOSOPHERS = [
     keyWork: 'Two Treatises of Government (1689); An Essay Concerning Human Understanding (1689)'
   },
   {
-    name: 'Luther, Martin',
-    dates: '1483–1546',
-    era: 'reformation',
-    bio: 'Augustinian monk, professor of biblical theology at Wittenberg, and the most consequential figure of the Reformation, Luther\'s rediscovery of the Pauline doctrine of justification by faith alone triggered the greatest upheaval in Western Christianity since the patristic era. His courage at Worms — "Here I stand; I can do no other" — remains the defining image of Christian conviction against institutional power.',
-    influence: [
-      { icon: '✦', text: 'Sola Fide — justification by faith alone, not by works — became the material principle of the Reformation and remains the watershed doctrine separating Protestantism from Rome.' },
-      { icon: '✦', text: 'Sola Scriptura — Scripture alone as the supreme authority — became the formal principle, establishing the Bible as the judge of all church tradition.' },
-      { icon: '✦', text: 'His German Bible translation not only gave Germany a common language but modeled the Reformers\' conviction that Scripture belongs to all God\'s people, not to a clerical elite.' },
-    ],
-    reformed: 'Every Reformed theologian — Calvin, Sproul, Begg, Ferguson — stands on Luther\'s shoulders at the central point: the gospel of free justification by grace through faith alone in Christ alone. Sproul often used the old Lutheran phrase for justification: "the article by which the church stands or falls." To understand Luther is to understand why the Reformation was not merely a reform but a recovery — of the Gospel itself.',
-    keyWork: 'The Freedom of a Christian (1520); Commentary on Galatians (1535)'
+    name: "Luther, Martin",
+    dates: "1483–1546",
+    era: "reformation",
+    see: "luther",
+    note: "The Reformer of Wittenberg: justification by faith alone, the bondage of the will, and conscience captive to the word of God."
   },
   {
     name: 'Marx, Karl',
@@ -434,17 +411,11 @@ const PHILOSOPHERS = [
     keyWork: 'Tractatus Logico-Philosophicus (1921); Philosophical Investigations (1953, posthumous)'
   },
   {
-    name: 'Zwingli, Ulrich',
-    dates: '1484–1531',
-    era: 'reformation',
-    bio: 'The Reformer of Zurich and the first of the major Reformed theologians, Zwingli brought the Reformation to German-speaking Switzerland with a humanist\'s love of Scripture and a pastor\'s concern for the people. Though he and Luther agreed on justification by faith, their famous clash at Marburg (1529) over the Lord\'s Supper exposed deep differences about the relationship between the spiritual and the material, the Word and the sacrament.',
-    influence: [
-      { icon: '✦', text: 'Zwingli\'s insistence on Scripture as the supreme authority for the church — preached through systematically through whole books — established the expository preaching tradition central to Reformed worship.' },
-      { icon: '△', text: 'His symbolic view of the Lord\'s Supper — "This is my body" means "This signifies my body" — divided the Reformation and remains a point of debate within the Reformed tradition itself.' },
-      { icon: '✦', text: 'His vision of the Reformation as encompassing civil as well as ecclesiastical life anticipated Calvin\'s Geneva and the broader Reformed understanding of the lordship of Christ over all of life.' },
-    ],
-    reformed: 'Zwingli is the often-overlooked founding father. Calvin\'s more nuanced sacramental theology — Christ is truly present spiritually in the Supper — corrects Zwingli\'s bare memorialism. But Zwingli\'s legacy of Scripture-saturated preaching, congregational participation in church governance, and the comprehensive reach of the Gospel over all of life remains a permanent contribution to the Reformed tradition.',
-    keyWork: 'Of the Clarity and Certainty of the Word of God (1522); On True and False Religion (1525)'
+    name: "Zwingli, Ulrich",
+    dates: "1484–1531",
+    era: "reformation",
+    see: "zwingli",
+    note: "The Reformer of Zurich: expository preaching through whole books, and the debate with Luther over the Lord’s Supper."
   },
   {
     name: 'Boethius',
@@ -513,6 +484,7 @@ const PHILOSOPHERS = [
   },
   {
     name: 'Justin Martyr',
+    sort: 'justin',
     dates: 'c. 100–165',
     era: 'patristic',
     bio: 'The first great Christian philosopher, Justin was a Gentile pagan who moved through Stoicism, Aristotelianism, Pythagoreanism, and Platonism before being converted to Christianity by an old man on the seashore who pointed him to the Hebrew prophets. He founded a philosophical school in Rome, wrote the first sustained intellectual defenses of Christianity addressed to the Roman Emperor, and was beheaded for his faith — hence "Martyr." His <em>Apologies</em> and <em>Dialogue with Trypho</em> are the earliest major works of Christian philosophy.',
@@ -590,17 +562,11 @@ const PHILOSOPHERS = [
     keyWork: 'God and Other Minds (1967); The Nature of Necessity (1974); Warranted Christian Belief (2000)'
   },
   {
-    name: 'Schaeffer, Francis',
-    dates: '1912–1984',
-    era: 'contemporary',
-    bio: 'American pastor, missionary to European intellectuals, and founder of L\'Abri Fellowship in the Swiss Alps, Schaeffer became the most influential evangelical cultural critic of the 20th century. He read philosophy, art history, and cultural history through Reformed theological spectacles, tracing a coherent story of Western civilization\'s decline from its Christian foundations and calling the church to engage ideas seriously rather than retreating into a cultural ghetto. His <em>How Should We Then Live?</em> is as important as Sproul\'s <em>Consequences of Ideas</em>.',
-    influence: [
-      { icon: '✦', text: '<em>How Should We Then Live?</em> (1976) traced the decline of Western thought and culture from the Reformation through modernism and existentialism to the nihilism of the present, arguing that only a recovery of the biblical "upper story" of meaning, morality, and truth could reverse the descent.' },
-      { icon: '✦', text: 'He modeled something rare: serious intellectual engagement with art, philosophy, and culture combined with warm pastoral care for seekers and doubters. L\'Abri welcomed everyone who came with honest questions — and many came to faith there.' },
-      { icon: '✦', text: 'His <em>Escape from Reason</em> (1968) showed how the Enlightenment\'s separation of the rational "lower story" from the irrational "upper story" (values, meaning, religion) produced the despair of modern art, music, and culture — and how the Gospel reunifies what modernity split apart.' },
-    ],
-    reformed: 'Schaeffer is the practitioner where others are theorists. He lived what Sproul and Plantinga argued — that the Christian worldview is rationally coherent and culturally comprehensive. His challenge to the evangelical church remains urgent: you cannot withdraw from culture and simply preach; you must understand the ideas your congregation has absorbed before you can bring the Gospel to bear on them. His trilogy — <em>The God Who Is There</em>, <em>Escape from Reason</em>, <em>He Is There and He Is Not Silent</em> — should be required reading for every Reformed pastor.',
-    keyWork: 'The God Who Is There (1968); Escape from Reason (1968); How Should We Then Live? (1976)'
+    name: "Schaeffer, Francis",
+    dates: "1912–1984",
+    era: "contemporary",
+    see: "schaeffer",
+    note: "Founder of L’Abri and critic of modern culture: <em>Escape from Reason</em>, <em>How Should We Then Live?</em>, and Christianity as “true truth”."
   },
   {
     name: 'Singer, Peter',
@@ -628,6 +594,189 @@ const PHILOSOPHERS = [
     reformed: 'Socrates shows how far honest, rigorous, humble inquiry can reach — and where it stops. He arrived at the immortality of the soul, the reality of moral truth, and the judgment of the wicked after death. He did not arrive at the resurrection, the atonement, or the name of Jesus. General revelation can create the hunger; only special revelation can feed it. The Reformed tradition honors genuine wisdom wherever it is found while insisting that Christ alone is the wisdom of God (1 Cor. 1:24).',
     keyWork: 'As recorded in Plato\'s Apology, Phaedo, Meno, and Republic (c. 399–360 BC)'
   },
+
+  {
+    name: "Stoics and Epicureans",
+    sort: "stoics",
+    dates: "3rd century BC – 3rd century AD",
+    era: "ancient",
+    bio: "The two great popular philosophies of the Greek and Roman world — the ones Paul met face to face in Athens: “Some of the Epicurean and Stoic philosophers also conversed with him” (Acts 17:18). The Stoics, from Zeno onward, taught that a divine reason (<em>logos</em>) orders everything, and that the wise person accepts fate calmly and lives by virtue. The Epicureans, followers of Epicurus, taught that the gods are distant, the soul dies with the body, and the goal of life is a quiet, untroubled pleasure.",
+    influence: [{"icon": "△", "text": "Stoicism gave the ancient world, and later Christianity, a vocabulary of virtue, duty, natural law and self-control. Paul quoted a Stoic poet in Athens — “For we are indeed his offspring” (Acts 17:28) — as a point of contact."}, {"icon": "▲", "text": "But the Stoic god is an impersonal reason woven into the world, not the personal Creator, and Stoic calm accepts fate rather than trusting a Father. Its renewed popularity today often offers self-mastery without grace."}, {"icon": "▲", "text": "Epicureanism’s denial of providence, judgment and life after death is the ancestor of modern materialism: “Let us eat and drink, for tomorrow we die” (1 Corinthians 15:32)."}],
+    reformed: "Paul’s speech on the Areopagus (Acts 17:22–31) is a model of engagement: he finds common ground in what his hearers already sense — that God made the world and is not far from us — and then confronts them with what neither school could accept: the call to repent, a coming judgment and a man raised from the dead. Calvin, who had studied Seneca closely, valued Stoic moral insight but rejected its fatalism; providence, he insisted, is the care of a personal Father, not the turning of a cosmic wheel.",
+    keyWork: "Seneca, Letters from a Stoic (1st century AD); Epictetus, Enchiridion (c. 125); Lucretius, On the Nature of Things (1st century BC)"
+  },
+
+  {
+    name: "Hobbes, Thomas",
+    dates: "1588–1679",
+    era: "modern",
+    bio: "English philosopher who lived through the bloodshed of the English Civil War and concluded that, left to themselves, human beings live in a “war of all against all”, where life is “solitary, poor, nasty, brutish, and short”. In <em>Leviathan</em> he argued that people escape this condition only by handing their rights to an all-powerful sovereign. A thoroughgoing materialist, he held that everything, including the mind, is matter in motion.",
+    influence: [{"icon": "△", "text": "Hobbes took human sinfulness seriously — more seriously than many optimistic thinkers who followed — and saw that society needs restraint. Reformed readers recognise a distorted echo of the doctrine of depravity."}, {"icon": "▲", "text": "His materialism and his grounding of morality in self-interest and the sovereign’s command, rather than in God’s law, laid foundations for secular political theory."}, {"icon": "▲", "text": "His “social contract” — society as an agreement among individuals rather than a God-given order — shaped Locke, Rousseau and modern liberal democracy, for good and ill."}],
+    reformed: "Hobbes saw the problem of human evil clearly but proposed the wrong cure. Scripture does give government a sword to restrain evil (Romans 13:1–4), but it places rulers under God’s law, not above all law. The Reformed tradition — from Calvin’s teaching on lesser magistrates to Samuel Rutherford’s <em>Lex, Rex</em> (1644), published seven years before <em>Leviathan</em> — insisted that the law is king, not the king the law. The real answer to the war of all against all is not an absolute state but the new heart the gospel gives.",
+    keyWork: "Leviathan (1651)"
+  },
+
+  {
+    name: "Reid, Thomas",
+    dates: "1710–1796",
+    era: "modern",
+    bio: "Scottish Presbyterian minister and philosopher, professor at Aberdeen and Glasgow, and founder of the Scottish “common sense” school. Reid answered the radical scepticism of his fellow Scot David Hume, who had argued that we cannot really know that the outside world, causes or even our own selves exist. Reid replied that certain beliefs — that the world around us is real, that our memories are generally reliable, that other minds exist — are rightly held without proof, as the starting points of all reasoning.",
+    influence: [{"icon": "✦", "text": "Reid defended the reliability of our God-given faculties against scepticism, insisting that it is reasonable to trust our senses, memory and reason unless we have good grounds to doubt them."}, {"icon": "✦", "text": "Common sense realism became the dominant philosophy at old Princeton Seminary and in American colleges in the nineteenth century, shaping Charles Hodge and B. B. Warfield."}, {"icon": "✦", "text": "In the late twentieth century Alvin Plantinga and Nicholas Wolterstorff revived Reid as a forerunner of “Reformed epistemology”: belief in God, like belief in other minds, can be properly basic."}],
+    reformed: "Reid is one of the quiet heroes of Christian philosophy. His conviction that our minds are fitted by the Creator to know the world fits naturally with the doctrine of creation and with Calvin’s teaching on the sense of the divine. Critics, including Cornelius Van Til, argued that common sense realism gave fallen reason too much credit and too little attention to the effects of sin on the mind. But Reid’s answer to Hume remains powerful, and his influence on Reformed thinking is deep.",
+    keyWork: "An Inquiry into the Human Mind on the Principles of Common Sense (1764); Essays on the Intellectual Powers of Man (1785)"
+  },
+
+  {
+    name: "Voltaire",
+    dates: "1694–1778",
+    era: "modern",
+    bio: "The pen-name of François-Marie Arouet, French writer, wit and the most famous figure of the Enlightenment. Voltaire attacked the power, intolerance and superstition of the church with satire, plays, histories and pamphlets, under the slogan <em>Écrasez l’infâme</em> — “Crush the infamous thing”. He was a deist: he believed in a Creator who made the world and then left it to run by natural laws, but rejected revelation, miracles and the deity of Christ. His novel <em>Candide</em> mocks the idea that this is the best of all possible worlds.",
+    influence: [{"icon": "▲", "text": "Voltaire made mockery of Christianity fashionable among the educated, and helped turn Enlightenment “reason” into a weapon against revealed religion."}, {"icon": "△", "text": "His campaigns against real injustices — such as the torture and execution of the Protestant Jean Calas in 1762 — exposed cruelty done in the church’s name and promoted religious toleration."}, {"icon": "▲", "text": "His deism, which keeps God at a distance and denies his involvement in the world, was a stepping stone from Christian faith to modern atheism."}],
+    reformed: "Voltaire was right to be outraged by persecution — the Huguenots had suffered terribly under French kings and bishops. But he attacked the gospel along with the abuses. Deism leaves us a God who made the world and abandoned it, and so no providence, no revelation and no Saviour. Scripture’s God is the one who “upholds the universe by the word of his power” (Hebrews 1:3) and has spoken finally in his Son. Voltaire’s mockery reminds Christians to answer with both truth and integrity, so that the gospel is not discredited by our conduct.",
+    keyWork: "Philosophical Letters (1734); Candide (1759); Philosophical Dictionary (1764)"
+  },
+
+  {
+    name: "Mill, John Stuart",
+    dates: "1806–1873",
+    era: "modern",
+    bio: "English philosopher, economist and Member of Parliament, raised by his father in an extraordinary educational experiment — Greek at three, Latin at eight — and without any religion. Mill became the leading voice of utilitarianism, which judges actions by whether they produce “the greatest happiness of the greatest number”, and of classical liberalism. His essay <em>On Liberty</em> argues that the only legitimate reason to restrict a person’s freedom is to prevent harm to others.",
+    influence: [{"icon": "▲", "text": "Utilitarianism measures right and wrong by results and happiness rather than by God’s law. It underlies much modern ethics, including arguments for euthanasia and embryo research."}, {"icon": "△", "text": "Mill’s “harm principle” — that the law should not forbid anything that harms only oneself — protects freedom of speech and conscience, but also drives the modern assumption that private morality is no one else’s business."}, {"icon": "✦", "text": "He campaigned for the rights of women, including the vote, and against slavery, causes many Christians also championed."}],
+    reformed: "Mill rightly valued freedom of conscience, which Reformed Christians, having suffered persecution, also prize. But utilitarianism has no stable foundation: who defines happiness, and why should I seek the happiness of others rather than my own? Scripture grounds morality in the character and commands of God, and defines human flourishing as knowing and enjoying him. The harm principle, cut loose from a biblical view of the person, tends to reduce morality to consent — and cannot see that sin always harms the sinner and dishonours God.",
+    keyWork: "On Liberty (1859); Utilitarianism (1863)"
+  },
+
+  {
+    name: "Freud, Sigmund",
+    dates: "1856–1939",
+    era: "modern",
+    bio: "Austrian neurologist and founder of psychoanalysis, who fled Vienna for London after the Nazi takeover in 1938. Freud argued that much of human behaviour is driven by unconscious desires, especially sexual and aggressive ones, shaped in early childhood and kept hidden by repression. Talking therapy, he believed, could bring them to light. An atheist, he explained religion as a “universal obsessional neurosis” and God as a projection of the human longing for a protective father.",
+    influence: [{"icon": "▲", "text": "Freud’s account of religion as wish-fulfilment became one of the most popular arguments against faith: God is only what we wish were true."}, {"icon": "△", "text": "His insight that our motives are often hidden from ourselves echoes, in distorted form, the Bible’s teaching that “the heart is deceitful above all things” (Jeremiah 17:9)."}, {"icon": "▲", "text": "His view of humans as driven chiefly by sexual desire, and of guilt as a psychological problem rather than a moral reality, helped shape the sexual revolution and the therapeutic culture of the West."}],
+    reformed: "The wish-fulfilment argument cuts both ways: if belief in God could be a projection of our wishes, unbelief could equally be a projection of the wish that there were no Judge — as Freud’s own hostility to his father might suggest. Scripture agrees with Freud that we deceive ourselves, but locates the problem in sin against a holy God, not merely in repressed instinct. Guilt is not only a feeling to be managed but a real condition to be forgiven, and only the gospel can address it. Christian counselling has wisely learned to listen carefully, without adopting Freud’s view of the person.",
+    keyWork: "The Interpretation of Dreams (1899); The Future of an Illusion (1927); Civilization and Its Discontents (1930)"
+  },
+
+  {
+    name: "Chesterton, G. K.",
+    dates: "1874–1936",
+    era: "contemporary",
+    bio: "English journalist, novelist, poet and debater — a large, cheerful man whose paradoxes and wit made him one of the best-known writers of his age. Raised in a vaguely Unitarian home and tempted by despair as a young man, Chesterton came to orthodox Christianity through reflection on wonder, gratitude and the strangeness of the world. He joined the Roman Catholic Church in 1922. His <em>Orthodoxy</em> and <em>The Everlasting Man</em> defended the faith with imagination and humour.",
+    influence: [{"icon": "✦", "text": "Chesterton showed that orthodoxy is not dull but the greatest adventure — the sane and joyful alternative to the materialism, scepticism and pessimism of his day."}, {"icon": "✦", "text": "<em>The Everlasting Man</em> answered the attempt to treat Christ as one religious teacher among many, and played a part in C. S. Lewis’s journey to faith."}, {"icon": "△", "text": "His defence of Christianity was explicitly Roman Catholic, including views on the church, the sacraments and Mary that the Reformed tradition rejects."}],
+    reformed: "Reformed readers will part company with Chesterton on the church, justification and the sacraments, and should read him with that in mind. But few writers have exposed so well the incoherence of modern unbelief, or recovered the sense of wonder and gratitude at the heart of the Christian view of creation. His instinct that the world is a gift from a good Creator, and that sin is the one Christian doctrine that can be empirically proved, makes him a valuable ally in apologetics.",
+    keyWork: "Orthodoxy (1908); The Everlasting Man (1925)"
+  },
+
+  {
+    name: "Russell, Bertrand",
+    dates: "1872–1970",
+    era: "contemporary",
+    bio: "British philosopher, mathematician, Nobel laureate in Literature and public campaigner, one of the founders of analytic philosophy. With A. N. Whitehead he wrote <em>Principia Mathematica</em>, an attempt to ground mathematics in logic. Russell was an outspoken atheist; his lecture “Why I Am Not a Christian” (1927) set out the case against God, Christ and Christian morality that later atheists repeated. He campaigned for pacifism, nuclear disarmament and sexual liberalism, and was jailed twice for his protests.",
+    influence: [{"icon": "▲", "text": "“Why I Am Not a Christian” popularised arguments — against the cosmological argument, against Christ’s moral character, and against Christianity as born of fear — that remain standard in popular atheism."}, {"icon": "△", "text": "His logical rigour and the analytic philosophy he helped found later became, unexpectedly, the main setting for a revival of Christian philosophy through thinkers such as Plantinga."}, {"icon": "▲", "text": "His view that a meaningful life must be built “on the firm foundation of unyielding despair” in a universe without purpose expresses the bleak honesty of consistent atheism."}],
+    reformed: "Russell’s atheism was honest about its consequences: without God, human life is a brief accident in a meaningless universe. That honesty is itself an argument for the gospel. His objections to Christianity were often directed at a caricature — he criticised Christ’s teaching on hell while ignoring the cross — and his own moral passion for peace and justice had no foundation in his worldview. As Romans 1 teaches, the knowledge of God is suppressed, not absent; Russell’s life shows a man who could not stop asking the questions only God can answer.",
+    keyWork: "Principia Mathematica (with Whitehead, 1910–1913); Why I Am Not a Christian (1927); A History of Western Philosophy (1945)"
+  },
+
+  {
+    name: "Bultmann, Rudolf",
+    dates: "1884–1976",
+    era: "contemporary",
+    bio: "German Lutheran New Testament scholar at Marburg, and one of the most influential biblical critics of the twentieth century. Bultmann argued that the New Testament presents its message in the “mythological” worldview of the ancient world — heaven above, hell below, miracles, demons, a literal resurrection — which modern people cannot believe. The task was to “demythologise”: to strip away the myth and reinterpret the message in terms of existentialist philosophy, as a call to authentic existence.",
+    influence: [{"icon": "▲", "text": "Demythologising treated the miracles, the virgin birth and the bodily resurrection as myth, so that “Easter” became the rise of faith in the disciples rather than an event in history."}, {"icon": "▲", "text": "His sceptical “form criticism” held that we can know very little about the historical Jesus, since the Gospels mainly reflect the beliefs of the early church."}, {"icon": "△", "text": "He did call people to a personal decision of faith in response to the preached word, and he opposed the Nazi-aligned “German Christians” as a member of the Confessing Church."}],
+    reformed: "Bultmann’s programme shows what happens when modern assumptions are made the judge of Scripture rather than the reverse. Paul did not regard the resurrection as a myth but as the heart of the gospel: “if Christ has not been raised, your faith is futile” (1 Corinthians 15:17). Later scholarship has also undermined Bultmann’s historical scepticism: the Gospels are far closer to eyewitness testimony than he allowed. A faith that does not rest on what God actually did in history is not the Christian faith.",
+    keyWork: "Jesus and the Word (1926); “New Testament and Mythology” (1941); Theology of the New Testament (1948–1953)"
+  },
+
+  {
+    name: "Barth, Karl",
+    dates: "1886–1968",
+    era: "contemporary",
+    bio: "Swiss Reformed theologian and the most influential Protestant theologian of the twentieth century. Trained in liberal theology, Barth was shocked when his teachers supported the German war effort in 1914, and turned back to Scripture. His commentary on Romans (1919, revised 1922) “fell like a bomb on the playground of the theologians”. He led the theological resistance to Nazism, drafting the Barmen Declaration (1934), and spent decades on his vast <em>Church Dogmatics</em>. His movement is often called neo-orthodoxy.",
+    influence: [{"icon": "✦", "text": "Barth broke the hold of liberal theology, insisting that God speaks and humans listen, that theology must begin with God’s self-revelation in Jesus Christ, and that the church must not bow to the spirit of the age."}, {"icon": "✦", "text": "The Barmen Declaration’s confession that Jesus Christ is “the one Word of God which we have to hear, and which we have to trust and obey in life and in death” remains a model of the church standing against tyranny."}, {"icon": "▲", "text": "But Barth taught that Scripture becomes the Word of God when God speaks through it, rather than being God’s word in itself; he reworked election so that all humanity is elect in Christ, leaving his view open to universalism; and he rejected natural theology completely."}],
+    reformed: "Reformed theologians have long been divided on Barth. Many admire his Christ-centredness, his doctrine of God and his courage. But Cornelius Van Til argued that his “new modernism” used orthodox language with new meanings, and others have pointed to serious departures from the Reformed confessions: on Scripture, on election and reprobation, on the historicity of events such as the fall, and on the relationship between God’s revelation and history. Barth is best read critically: grateful for his recovery of a sovereign, speaking God, but holding firmly to the confessional doctrine of Scripture.",
+    keyWork: "The Epistle to the Romans (1919/1922); Church Dogmatics (1932–1967); Evangelical Theology: An Introduction (1962)"
+  },
+
+  {
+    name: "Tillich, Paul",
+    dates: "1886–1965",
+    era: "contemporary",
+    bio: "German-American Lutheran theologian and philosopher, dismissed from his post by the Nazis in 1933, who went on to teach at Union Theological Seminary, Harvard and Chicago and became one of the best-known theologians in America. Tillich used a “method of correlation”: philosophy raises the questions of human existence, and theology answers them in symbols. God, for Tillich, is not a being who exists but “the ground of being” or “being-itself”, and faith is “ultimate concern”.",
+    influence: [{"icon": "▲", "text": "By defining God as “being-itself” rather than a personal being who acts and speaks, Tillich moved theology toward a vague mysticism that many found indistinguishable from atheism."}, {"icon": "▲", "text": "He treated the Christian story — creation, fall, incarnation, resurrection — as symbols of human existence rather than historical events."}, {"icon": "△", "text": "His analysis of anxiety and the human search for meaning in <em>The Courage to Be</em> was widely read, and he took seriously the questions modern people ask."}],
+    reformed: "Tillich shows the end of the road for theology that lets philosophy set the agenda. The God of Scripture is not an abstraction — “the ground of being” — but the living, personal LORD who says “I AM” (Exodus 3:14), who speaks, acts in history, loves and judges. Tillich’s symbolic reading empties the gospel of its content: if the resurrection is only a symbol, there is no good news. His questions about anxiety and meaning are real; the answer is not a symbol but a person, Jesus Christ, risen from the dead.",
+    keyWork: "The Courage to Be (1952); Dynamics of Faith (1957); Systematic Theology (1951–1963)"
+  },
+
+  {
+    name: "Dooyeweerd, Herman",
+    dates: "1894–1977",
+    era: "contemporary",
+    bio: "Dutch legal philosopher at the Free University of Amsterdam, and the leading figure of Reformational philosophy, which grew from Abraham Kuyper’s vision of Christ’s lordship over all of life. Dooyeweerd argued that no thinking is religiously neutral: all philosophy rests on religious “ground motives”. He identified the ground motives of Greek thought (form and matter), medieval Catholicism (nature and grace) and modern humanism (nature and freedom), and set against them the biblical motive of creation, fall and redemption.",
+    influence: [{"icon": "✦", "text": "Dooyeweerd showed that the claim of secular thought to be neutral and purely rational is itself a religious commitment — a powerful insight for Christian scholarship."}, {"icon": "✦", "text": "His theory of “modal aspects” — the many irreducible dimensions of reality, from the numerical and physical to the ethical and faith — offered a Christian framework for every academic discipline."}, {"icon": "△", "text": "His work is notoriously difficult, and some Reformed theologians worried that his philosophy was too detached from the church’s confessions and too critical of traditional theology."}],
+    reformed: "Dooyeweerd’s great contribution was to take seriously Kuyper’s conviction that Christ claims every sphere of life, including thought itself. His critique of the “pretended autonomy” of reason parallels Van Til’s apologetics, though the two disagreed on many points. Through thinkers such as his brother-in-law D. H. T. Vollenhoven and later Reformational scholars, his ideas shaped Christian universities and organisations worldwide. He is hard going, but his central insight — that there is no neutral ground — remains vital.",
+    keyWork: "A New Critique of Theoretical Thought (1953–1958); Roots of Western Culture (1959)"
+  },
+
+  {
+    name: "Van Til, Cornelius",
+    dates: "1895–1987",
+    era: "contemporary",
+    bio: "Dutch-American Reformed theologian who taught apologetics at Westminster Theological Seminary from its founding in 1929 until 1972. Van Til developed presuppositional apologetics: every person reasons from basic presuppositions, and there is no neutral ground between belief and unbelief. The Christian should not try to prove God from “neutral” premises, but should show that only the Christian worldview — the self-revealing triune God of Scripture — makes reason, science and morality possible at all.",
+    influence: [{"icon": "✦", "text": "Van Til applied Reformed theology — the Creator–creature distinction, the authority of Scripture, the effects of sin on the mind — consistently to apologetics, refusing to grant that the unbeliever’s reason is neutral."}, {"icon": "✦", "text": "His “transcendental” argument — that without God nothing makes sense, not even the logic the unbeliever uses — has been developed by Greg Bahnsen, John Frame and others."}, {"icon": "△", "text": "His style is dense and his arguments easy to misunderstand, and debates continue within Reformed circles between presuppositionalists and classical or evidentialist apologists such as R. C. Sproul."}],
+    reformed: "Van Til’s great insight is that the Bible must govern how we argue for the Bible. He took seriously Romans 1: unbelievers know God but suppress the truth, so apologetics is not about filling a gap in neutral information but about exposing the foundations of unbelief and calling people to repentance. Critics charge him with circular reasoning, and his writing is not easy. But many have found that his approach, rightly understood, gives the apologist both confidence and humility — confidence in the God who has spoken, humility because only the Spirit can open blind eyes.",
+    keyWork: "The Defense of the Faith (1955); Christian Apologetics (1976)"
+  },
+
+  {
+    name: "Frankfurt School (Critical Theory)",
+    sort: "frankfurt",
+    dates: "founded 1923",
+    era: "contemporary",
+    bio: "A circle of Marxist thinkers at the Institute for Social Research in Frankfurt, including Max Horkheimer, Theodor Adorno, Herbert Marcuse and later Jürgen Habermas. Many fled the Nazis to the United States. They developed “critical theory”: not merely describing society but unmasking its hidden structures of power and domination in order to change it. Marcuse’s writings inspired the student radicals of the 1960s, and critical theory has spread through the humanities and social sciences.",
+    influence: [{"icon": "▲", "text": "Critical theory treats truth claims, institutions and moral norms chiefly as expressions of power, and divides society into oppressors and oppressed — a framework that underlies much contemporary identity politics."}, {"icon": "▲", "text": "Marcuse’s “repressive tolerance” (1965) argued that tolerance should be withdrawn from movements considered oppressive, an idea that has shaped later restrictions on speech."}, {"icon": "△", "text": "The Frankfurt thinkers did expose real dangers: the dehumanising effects of mass consumer culture, propaganda and the totalitarian state, which they had seen at first hand."}],
+    reformed: "Scripture agrees that power is often abused and that the oppressed matter deeply to God (Psalm 146:7–9). But critical theory offers a rival story of the world: its fundamental problem is oppression rather than sin, salvation is liberation through social change, and identity is defined by group membership. The gospel says all people, oppressed and oppressor alike, are sinners in need of grace, and offers a unity in Christ that overcomes every division (Galatians 3:28). Christians can learn from its critiques while rejecting its framework.",
+    keyWork: "Horkheimer and Adorno, Dialectic of Enlightenment (1947); Marcuse, One-Dimensional Man (1964)"
+  },
+
+  {
+    name: "MacIntyre, Alasdair",
+    dates: "1929–2025",
+    era: "contemporary",
+    bio: "Scottish-born philosopher who taught in Britain and the United States, most of all at Notre Dame. After moving from Marxism to Christianity, he became a Roman Catholic in the 1980s. His landmark book <em>After Virtue</em> (1981) argued that modern moral debate is shrill and endless because we have inherited fragments of older moral traditions without the framework that made sense of them. He called for a recovery of the virtue tradition of Aristotle and Aquinas, lived out in communities.",
+    influence: [{"icon": "✦", "text": "MacIntyre showed that the Enlightenment project of grounding morality in neutral reason has failed, leaving modern people with competing moral fragments and no way to settle disputes."}, {"icon": "✦", "text": "He argued that rationality itself is rooted in traditions and communities — an insight that strengthened the case for distinctively Christian thought and practice."}, {"icon": "△", "text": "His final call to wait for “another — doubtless very different — St Benedict” inspired movements of Christian community, though his own tradition was Aristotelian and Thomist rather than Reformed."}],
+    reformed: "MacIntyre’s diagnosis is a gift to Reformed Christians: secular morality has no foundation of its own, and moral reasoning is never neutral — points Van Til and Dooyeweerd made in their own way. Reformed readers will want to ground virtue not finally in Aristotle but in God’s law and the renewing work of the Spirit, and to see the church, not merely local community, as the setting for a life of virtue. But his analysis of why moral debate has broken down is one of the most illuminating of our time.",
+    keyWork: "After Virtue (1981); Whose Justice? Which Rationality? (1988)"
+  },
+
+  {
+    name: "Taylor, Charles",
+    dates: "1931–",
+    era: "contemporary",
+    bio: "Canadian philosopher at McGill University and a Roman Catholic, known for his studies of the modern self and of secularisation. His monumental <em>A Secular Age</em> (2007) asks how the West moved from a world in 1500 in which it was virtually impossible not to believe in God to one in 2000 in which belief is one option among many, and often the harder one. He describes modern people as living within an “immanent frame” — a world understood without reference to anything beyond it.",
+    influence: [{"icon": "✦", "text": "Taylor showed that secularism is not simply what is left when religion is subtracted, but a new set of assumptions and stories that shape how everyone, believer or not, experiences the world."}, {"icon": "✦", "text": "His account of “expressive individualism” — the belief that each person must discover and express their own authentic self — explains much of modern culture, including sexuality and identity."}, {"icon": "△", "text": "His Catholic framework and his reluctance to make strong truth claims mean that his work diagnoses more than it prescribes."}],
+    reformed: "Taylor has become one of the most important guides for Christians seeking to understand the culture they live and minister in. Writers such as Carl Trueman (<em>The Rise and Triumph of the Modern Self</em>) and James K. A. Smith have drawn heavily on him. Reformed readers will want to add what Taylor leaves out — the clear proclamation of the gospel and the authority of Scripture. But to preach to secular people we must understand how they see the world, and Taylor helps us do that.",
+    keyWork: "Sources of the Self (1989); A Secular Age (2007)"
+  },
+
+  {
+    name: "Dawkins, Richard",
+    dates: "1941–",
+    era: "contemporary",
+    bio: "British evolutionary biologist and Oxford professor for the Public Understanding of Science, whose <em>The Selfish Gene</em> (1976) explained evolution from the perspective of genes. He became the most famous of the “New Atheists” — with Sam Harris, Daniel Dennett and Christopher Hitchens — after the 11 September 2001 attacks. His bestseller <em>The God Delusion</em> (2006) argued that belief in God is irrational and that religion is positively harmful.",
+    influence: [{"icon": "▲", "text": "Dawkins made atheism popular and confident, presenting belief in God as a scientific hypothesis that has failed, and faith as belief without evidence."}, {"icon": "▲", "text": "His argument that evolution makes design unnecessary, and that religion causes violence and should not be taught to children, shaped a generation of sceptics."}, {"icon": "△", "text": "The New Atheism provoked a strong response: Christian scientists and philosophers such as John Lennox and Alister McGrath engaged him publicly, and many found the debate drew them to examine Christianity seriously."}],
+    reformed: "Dawkins defines faith as believing without evidence, but that is not the biblical meaning: faith is trust in God, who has given evidence in creation, in history and supremely in the resurrection of Christ. His argument that a designer would need a designer misunderstands the God of Scripture, who is not a complex object within the universe but its uncreated Creator. Romans 1 explains the suppression of what creation reveals. Interestingly, Dawkins has more recently described himself as a “cultural Christian”, recognising the inheritance he cannot do without.",
+    keyWork: "The Selfish Gene (1976); The Blind Watchmaker (1986); The God Delusion (2006)"
+  },
+
+  {
+    name: "Butler, Judith",
+    dates: "1956–",
+    era: "contemporary",
+    bio: "American philosopher at the University of California, Berkeley, and one of the most influential figures in gender studies and queer theory. Drawing on Foucault and Derrida, her book <em>Gender Trouble</em> (1990) argued that gender is not something we are, rooted in nature, but something we do — “performative”, constituted by repeated acts shaped by social norms. She went further, questioning whether even biological sex is a stable, natural category.",
+    influence: [{"icon": "▲", "text": "Butler’s theory that gender is a social performance rather than a given reality underlies much of contemporary gender ideology, including the separation of gender identity from biological sex."}, {"icon": "▲", "text": "Her work treats the male–female distinction and the norm of marriage as social constructions to be subverted, regarding them as instruments of power that exclude those who do not fit."}, {"icon": "△", "text": "She rightly draws attention to the dignity of people who suffer violence and exclusion, a concern Christians should share."}],
+    reformed: "Scripture teaches that being male and female is not a social construction but a gift of creation: “male and female he created them” (Genesis 1:27). Our bodies are not raw material for self-invention but part of the good design of a loving Creator, and our identity is received, not performed. Christians must respond to people who struggle with their sex or sexuality with compassion and patience, rejecting both cruelty and the ideology that denies creation. The gospel offers what Butler cannot: an identity secure in Christ.",
+    keyWork: "Gender Trouble (1990); Bodies That Matter (1993)"
+  }
+
 ];
 
 // ── State ───────────────────────────────────────────────────────────────────
@@ -664,9 +813,11 @@ function filtered() {
 }
 
 function sortKey(p) {
-  // sort by last name (last word of name)
+  // an explicit key, else the surname: "Kant, Immanuel", "Augustine of Hippo", "Plato"
+  if (p.sort) return p.sort;
   const parts = p.name.split(',');
   if(parts.length > 1) return parts[0].trim().toLowerCase();
+  if (/ of /.test(p.name)) return p.name.split(' of ')[0].trim().toLowerCase();
   const words = p.name.trim().split(/\s+/);
   return words[words.length-1].toLowerCase();
 }
@@ -701,6 +852,22 @@ function render() {
 }
 
 function philCard(p) {
+  // someone whose home is Theological Figures: a pointer, not a second entry
+  if (p.see) {
+    const a = p.name.replace(/[^a-z]/gi,'_');
+    const eraLabel = ERAS.find(e => e.id === p.era)?.label || p.era;
+    return `
+<div class="phil-card phil-see" id="phil-${a}">
+  <div class="phil-header">
+    <div class="phil-name">${p.name}</div>
+    <div class="phil-meta"><span>${p.dates}</span><span class="era-tag">${eraLabel}</span></div>
+  </div>
+  <div class="phil-body">
+    <p>${p.note}</p>
+    <p><a class="see-link" href="figures.html#${p.see}">Read the full entry in Theological Figures &#8594;</a></p>
+  </div>
+</div>`;
+  }
   const eraLabel = ERAS.find(e => e.id === p.era)?.label || p.era;
   const anchor = p.name.replace(/[^a-z]/gi,'_');
   const influenceRows = p.influence.map(i =>
@@ -782,8 +949,8 @@ function resetPage() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
-<script src="share.js?v=2426" data-card-selector=".phil-card"></script>
+<script src="share.js?v=2427" data-card-selector=".phil-card"></script>
 <script>if (window.autoLinkifyScripture) autoLinkifyScripture();</script>
-<script src="search-land.js?v=2426"></script>
+<script src="search-land.js?v=2427"></script>
 </body>
 </html>

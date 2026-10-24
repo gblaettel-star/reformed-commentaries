@@ -101,3 +101,14 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   .fig-quote-source,.voice-attr,.proponent-chip,.figure-chip,.guard-chip,.footer-note{font-size:.88rem}
 }
 .fig-work-text{font-size:1rem;line-height:1.7}
+
+/* What belongs on this page (Figures / Philosophers) */
+.page-scope{max-width:720px;margin:1rem auto .2rem;padding:0 1.2rem;color:var(--muted);font-style:italic;text-align:center;line-height:1.55;font-size:.98rem}
+.page-scope a,.see-link{color:var(--gold);text-decoration-color:rgba(200,169,90,.4)}
+/* Figures: the history-of-ideas note, styled like the other panels */
+.fig-ideas-wrap{border-left:1px solid var(--hair);padding-left:1rem;margin-top:1.2rem}
+.fig-ideas-label{color:var(--gold);font-family:var(--display);font-weight:500;letter-spacing:.22em;text-transform:uppercase;font-size:.8rem;margin-bottom:.5rem}
+.fig-ideas-text{line-height:1.8}
+@media (max-width:600px){.fig-ideas-wrap{padding-left:.8rem}}
+/* A link to an entry (#name) stops below the sticky header, not under it */
+.term-card,.fig-card,.phil-card,.heresy-card,.council-card,.creed-card,.sola-card,.prayer-card,.letter-head,.era-head{scroll-margin-top:8.5rem}
