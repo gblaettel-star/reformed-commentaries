@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="display.js?v=3104"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -227,6 +228,25 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 #ts-range{flex:1;accent-color:#c9a84c;height:2rem}
 .ts-val{text-align:center;color:#e8dcc8;font-size:.9rem;margin-bottom:.6rem}
 .ts-sample{color:#d4c4a8;font-style:italic;line-height:1.7;border-top:1px solid #2a4a6c;padding-top:.7rem;margin-bottom:.8rem;font-size:calc(1rem * var(--ts,1))}
+.ds-lbl{color:var(--muted,#8e9db0);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin:.2rem 0 .45rem}
+.ds-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.7rem}
+.ds-opts.ds-three{grid-template-columns:1fr 1fr 1fr}
+.ds-opt{display:flex;flex-direction:column;align-items:center;gap:.3rem;background:none;border:1px solid var(--hair,#2a4a6c);border-radius:12px;color:var(--parch-2,#d9cdb3);font-size:.9rem;line-height:1.25;padding:.55rem .35rem;min-height:3.4rem;cursor:pointer;touch-action:manipulation}
+.ds-opt[aria-pressed=true]{border:2px solid var(--gold,#c8a95a);color:var(--parch,#ece3cf)}
+.ds-a{font-size:1.5rem;line-height:1}
+.ds-a-classic{font-family:'EB Garamond',Georgia,serif}
+.ds-a-clear{font-family:'Atkinson Hyperlegible',Verdana,system-ui,sans-serif;font-style:normal;font-weight:700}
+.ds-sw{display:block;width:100%;max-width:4.2rem;border-radius:8px;padding:.25rem 0;font-size:1.15rem;font-weight:600;font-family:Verdana,system-ui,sans-serif}
+/* Swatches and samples keep their own look whatever scheme is active (ids outrank display.js). */
+html body #ts-sheet .ds-sw.ds-sw-night{background:#0b1524!important;color:#ece3cf!important;border:1px solid #c8a95a!important}
+html body #ts-sheet .ds-sw.ds-sw-light{background:#fbf7ef!important;color:#161616!important;border:1px solid #8a7350!important}
+html body #ts-sheet .ds-sw.ds-sw-contrast{background:#000!important;color:#ffe14d!important;border:1px solid #fff!important}
+html body #ts-sheet .ds-a.ds-a-classic{font-family:'EB Garamond',Georgia,serif!important}
+#ts-home-val{white-space:normal;text-align:right;line-height:1.3}
+.ds-toggle{display:flex;align-items:center;gap:.6rem;width:100%;background:none;border:1px solid var(--hair,#2a4a6c);border-radius:12px;color:var(--parch-2,#d9cdb3);font-size:.95rem;padding:.6rem .8rem;margin-bottom:.8rem;cursor:pointer;text-align:left;touch-action:manipulation}
+.ds-box{width:1.3rem;height:1.3rem;border:2px solid var(--gold,#c8a95a);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ds-toggle[aria-pressed=true] .ds-box:after{content:"\2713";color:var(--gold,#c8a95a);font-weight:700;font-size:1rem;line-height:1}
+#ts-sheet{max-height:calc(100vh - 3rem);overflow-y:auto;overscroll-behavior:contain}
 .ts-reset{width:100%;background:#1a3a5c;border:1px solid #2a4a6c;color:#c9a84c;font-family:'Georgia',serif;font-size:.88rem;padding:.6rem;border-radius:6px;cursor:pointer}
 
 /* ── About (home screen) ── */
@@ -535,7 +555,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
     </div>
     <button id="next-btn" onclick="navigate(1)" aria-label="Next chapter">&#8594;</button>
     <button id="sx-btn" onclick="sxOpen()" aria-label="Search" title="Search"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
-    <button id="ts-btn" onclick="tsOpen()" aria-label="Text size" title="Text size"><small>A</small>A</button>
+    <button id="ts-btn" onclick="tsOpen()" aria-label="Text and display" title="Text and display"><small>A</small>A</button>
   </nav>
 </header>
 
@@ -585,17 +605,29 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
 </div>
 <div id="back-chip"><button id="bc-go" onclick="backChipGo()"></button><button class="bc-x" onclick="backChipHide()" aria-label="Dismiss">&#10005;</button></div>
 <div id="ts-backdrop" onclick="tsClose()"></div>
-<div id="ts-sheet" role="dialog" aria-label="Text size">
-  <div class="pk-head"><span style="width:2.4rem"></span><span class="pk-title">Text Size</span>
+<div id="ts-sheet" role="dialog" aria-label="Text and display">
+  <div class="pk-head"><span style="width:2.4rem"></span><span class="pk-title">Text &amp; Display</span>
     <button class="vjump-close" onclick="tsClose()" aria-label="Close">&#10005;</button></div>
   <div class="ts-row">
     <button class="ts-step minus" onclick="tsStep(-1)" aria-label="Smaller">A&minus;</button>
-    <input type="range" id="ts-range" min="80" max="160" step="5" oninput="tsSet(this.value/100)" aria-label="Text size">
+    <input type="range" id="ts-range" min="80" max="200" step="5" oninput="tsSet(this.value/100)" aria-label="Text size">
     <button class="ts-step plus" onclick="tsStep(1)" aria-label="Larger">A+</button>
   </div>
   <div class="ts-val" id="ts-val"></div>
   <div class="ts-sample">&ldquo;Your word is a lamp to my feet and a light to my path.&rdquo; &mdash; Psalm 119:105</div>
-  <button class="ts-reset" onclick="tsSet(1)">Back to normal size (100%)</button>
+  <div class="ds-lbl">Typeface</div>
+  <div class="ds-opts" id="ds-font">
+    <button class="ds-opt" data-v="classic" onclick="dsSet({font:'classic'})"><span class="ds-a ds-a-classic">Aa</span>Classic</button>
+    <button class="ds-opt" data-v="clear" onclick="dsSet({font:'clear'})"><span class="ds-a ds-a-clear">Aa</span>Clear, easier to read</button>
+  </div>
+  <button class="ds-toggle" id="ds-bold" onclick="dsSet({bold:!Display.get().bold})" aria-pressed="false"><span class="ds-box"></span>Heavier, bolder text</button>
+  <div class="ds-lbl">Colours</div>
+  <div class="ds-opts ds-three" id="ds-theme">
+    <button class="ds-opt" data-v="night" onclick="dsSet({theme:'night'})"><span class="ds-sw ds-sw-night">Aa</span>Night</button>
+    <button class="ds-opt" data-v="light" onclick="dsSet({theme:'light'})"><span class="ds-sw ds-sw-light">Aa</span>Light</button>
+    <button class="ds-opt" data-v="contrast" onclick="dsSet({theme:'contrast'})"><span class="ds-sw ds-sw-contrast">Aa</span>High contrast</button>
+  </div>
+  <button class="ts-reset" onclick="tsSet(1);dsSet({theme:'night',font:'classic',bold:false})">Back to the normal look</button>
 </div>
 <div id="pk-backdrop" onclick="pkClose()"></div>
 <div id="pk-sheet" role="dialog" aria-label="Go to a passage">
@@ -616,7 +648,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=3103"></script>
+<script src="scripture-links.js?v=3104"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1167,11 +1199,11 @@ function pkGo(id, c, v) {
 }
 var pkAfterOpen = null;
 
-/* ── Text size: a slider from 80% to 160% in 5% steps (17 sizes). Scales the
+/* ── Text size: a slider from 80% to 200% in 5% steps (25 sizes). Scales the
    reading area (<main>) through the --ts variable set in scripture-links.js. ── */
 function tsGet() { return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ts')) || 1; }
 function tsSet(v) {
-  v = Math.min(1.6, Math.max(0.8, Math.round(v * 20) / 20));
+  v = Math.min(2, Math.max(0.8, Math.round(v * 20) / 20));
   var y = window.scrollY, h = document.documentElement.scrollHeight;
   document.documentElement.style.setProperty('--ts', v);
   try { localStorage.setItem('text-scale', v); } catch (e) {}
@@ -1180,13 +1212,42 @@ function tsSet(v) {
   var r = document.getElementById('ts-range'); if (r) r.value = Math.round(v * 100);
   var lab = document.getElementById('ts-val');
   if (lab) lab.textContent = Math.round(v * 100) + '%' + (v === 1 ? ' · normal' : '');
-  var hv = document.getElementById('ts-home-val'); if (hv) hv.textContent = Math.round(v * 100) + '%';
+  var hv = document.getElementById('ts-home-val'); if (hv) hv.textContent = tsHomeLabel(v);
   syncHeaderOffset();
 }
 function tsStep(d) { tsSet(tsGet() + d * 0.05); }
+/* Typeface, heavier text and colour scheme (display.js applies them on every page). */
+var DS_NAMES = { night: 'Night', light: 'Light', contrast: 'High contrast' };
+function tsHomeLabel(v) {
+  var d = window.Display ? Display.get() : { theme: 'night', font: 'classic', bold: false };
+  var bits = [Math.round((v || tsGet()) * 100) + '%'];
+  if (d.theme !== 'night') bits.push(DS_NAMES[d.theme]);
+  if (d.font === 'clear') bits.push('Clear');
+  if (d.bold) bits.push('Bold');
+  return bits.join(' · ');
+}
+function dsSync() {
+  if (!window.Display) return;
+  var d = Display.get();
+  [['ds-font', d.font], ['ds-theme', d.theme]].forEach(function (g) {
+    var box = document.getElementById(g[0]); if (!box) return;
+    box.querySelectorAll('.ds-opt').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === g[1] ? 'true' : 'false'); });
+  });
+  var bb = document.getElementById('ds-bold'); if (bb) bb.setAttribute('aria-pressed', d.bold ? 'true' : 'false');
+  var hv = document.getElementById('ts-home-val'); if (hv) hv.textContent = tsHomeLabel();
+}
+function dsSet(o) {
+  if (!window.Display) return;
+  var y = window.scrollY, h = document.documentElement.scrollHeight;
+  Display.set(o);
+  if (h > 0) window.scrollTo(0, y * document.documentElement.scrollHeight / h);
+  dsSync();
+  syncHeaderOffset();
+}
 function tsOpen() {
   pkClose(); closeVerseJump();
   tsSet(tsGet());
+  dsSync();
   document.getElementById('ts-backdrop').classList.add('open');
   document.getElementById('ts-sheet').classList.add('open');
 }
@@ -1885,8 +1946,8 @@ function buildHome() {
     + '</div>';
   // Settings
   html += '<div class="home-lbl">Settings</div><div class="home-card">'
-    + '<div class="section-toggle" onclick="tsOpen()"><span class="section-title">Text size</span>'
-    + '<span class="section-count" id="ts-home-val">' + Math.round(tsGet() * 100) + '%</span><span class="section-chevron">&#8250;</span></div>'
+    + '<div class="section-toggle" onclick="tsOpen()"><span class="section-title">Text &amp; display</span>'
+    + '<span class="section-count" id="ts-home-val">' + tsHomeLabel() + '</span><span class="section-chevron">&#8250;</span></div>'
     + '<div class="section-toggle" onclick="dlToggle()"><span class="section-title">Offline reading</span>'
     + '<span class="section-count dl-status" id="dl-status"></span><span class="section-chevron" id="dl-chevron">&#8250;</span></div>'
     + '<div class="dl-body" id="dl-body">'
