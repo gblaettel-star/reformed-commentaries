@@ -99,9 +99,81 @@ function smartQuotes(root){
   }
 }
 
+// "Westminster 24.5", "Westminster Confession 21.7–8", "WCF 1.6, 1.10", "(Confession 24.5–6)",
+// "the Westminster Confession, chapter 18" -> links to that place in westminster.html.
+// A series runs on: "Westminster 1.4–5, 8" links 1.4 and 1.8; "Westminster 9.3; 10.2" both.
+function linkifyWestminster(root){
+  if (!root || !document.createTreeWalker) return;
+  var head = /\b(Westminster(?:[\s ]+Confession(?:[\s ]+of[\s ]+Faith)?|[\s ]+position)?|WCF|Confession)(,?[\s ]+[Cc]hapter[\s ]+|[\s ]+Ch\.[\s ]*|[\s ]+\(?)(\d{1,2}|[IVX]{1,6}(?=\.\d|[^A-Za-z]|$))(?:\.(\d{1,2}))?(?:[–-]\d{1,2})?(?![\d:.]\d)/g;
+  var more = /^((?:[\s ]*[,;]|[\s ]+and)[\s ]*)(\d{1,2})(?:\.(\d{1,2}))?(?:[–-]\d{1,2})?(?![\d:]|\.\d|[\s ]*[A-Za-z])/;
+  var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(n){
+      if (!/(Westminster|WCF|Confession)[\s\S]*\d/.test(n.nodeValue || '')) return NodeFilter.FILTER_REJECT;
+      for (var p = n.parentNode; p && p !== root; p = p.parentNode){
+        if (p.nodeName === 'A') return NodeFilter.FILTER_REJECT;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  var nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  if (!nodes.length) return;
+  if (!document.getElementById('wcf-link-style')){
+    var st = document.createElement('style'); st.id = 'wcf-link-style';
+    st.textContent = 'a.wcf-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.45);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}a.wcf-link:hover{text-decoration-color:#c9a84c}';
+    (document.head || document.documentElement).appendChild(st);
+  }
+  function roman(r){
+    var v = {I:1, V:5, X:10}, n = 0;
+    for (var i = 0; i < r.length; i++) n += v[r[i]] < (v[r[i + 1]] || 0) ? -v[r[i]] : v[r[i]];
+    return n;
+  }
+  function mk(label, ch, sec){
+    var a = document.createElement('a');
+    a.href = 'westminster.html#wcf-' + ch + (sec ? '-' + sec : '');
+    a.className = 'wcf-link';
+    a.textContent = label;
+    return a;
+  }
+  nodes.forEach(function(node){
+    var text = node.nodeValue, m, last = 0, frag = null;
+    head.lastIndex = 0;
+    while ((m = head.exec(text))){
+      var ch = /^\d/.test(m[3]) ? +m[3] : roman(m[3]);
+      if (/\($/.test(m[2]) && !m[4]) continue;   // "Westminster (1646)" is a date, not a place
+      if (ch < 1 || ch > 33) continue;
+      if (m[1] === 'Confession'){
+        // bare "Confession 24.5" only where no other name comes before it ("Belgic Confession 29")
+        if (!m[4] || /[A-Za-z][\s ]*$/.test(text.slice(0, m.index))) continue;
+      }
+      if (!frag) frag = document.createDocumentFragment();
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      if (/\($/.test(m[2])){                     // "Westminster Confession (18.2)": link the number
+        frag.appendChild(document.createTextNode(m[1] + m[2]));
+        frag.appendChild(mk(m[0].slice(m[1].length + m[2].length), ch, m[4]));
+      } else frag.appendChild(mk(m[0], ch, m[4]));
+      var pos = m.index + m[0].length, hasSec = !!m[4], r;
+      while ((r = more.exec(text.slice(pos)))){
+        var c2 = r[3] ? +r[2] : (hasSec ? ch : +r[2]);
+        var s2 = r[3] ? r[3] : (hasSec ? r[2] : null);
+        if (c2 < 1 || c2 > 33) break;
+        frag.appendChild(document.createTextNode(r[1]));
+        frag.appendChild(mk(r[0].slice(r[1].length), c2, s2));
+        ch = c2; hasSec = !!s2;
+        pos += r[0].length;
+      }
+      last = pos; head.lastIndex = pos;
+    }
+    if (frag){
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    }
+  });
+}
+
 function linkifyScripture(root, curBook, curChapter){
   if (!root || !document.createTreeWalker) return;
   try { smartQuotes(root); } catch (e) {}
+  try { linkifyWestminster(root); } catch (e) {}
   var SP = '[\\s\\u00A0]';
   var re = new RegExp(
     '\\b(vv?\\.|verses?)' + SP + '*(\\d+(?:[-–,]' + SP + '?\\d+)*)' +                                     // 1,2: verse words

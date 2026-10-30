@@ -47,6 +47,7 @@ REFS = [
     ('councils', 'COUNCILS', 'Church Councils', 'Councils', by_name('council-')),
     ('creeds', 'CREEDS', 'Creeds & Confessions', 'Creeds', by_name('creed-')),
     ('solas', 'SOLAS', 'The Five Solas', 'Solas', lambda e, i: e['id']),
+    ('westminster', 'WCF', 'The Westminster Confession', 'Westminster', lambda e, i: e['id']),
     ('prayer', 'MONTHS', 'Monthly Prayer', 'Prayer', lambda e, i: 'card-%d' % i),
 ]
 # Keys that hold ids and sorting codes rather than text the reader sees.
