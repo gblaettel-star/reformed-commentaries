@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=3959"></script>
+<script src="display.js?v=3960"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -653,7 +653,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=3959"></script>
+<script src="scripture-links.js?v=3960"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1573,7 +1573,8 @@ function sxDraw() {
     body.innerHTML = '<div class="sx-in"><div class="sx-hint">Search every book and study, the Reference pages and the monthly prayers.<br>'
       + '<b>All words</b> finds places with every word, in any order; &ldquo;adopt&rdquo; also finds adoption. '
       + '<b>Whole words</b> leaves out the longer words. <b>Exact phrase</b> finds the words together, in that order &mdash; '
-      + 'or put a phrase in quotes: &ldquo;fruit of the Spirit&rdquo; grace.</div></div>';
+      + 'or put a phrase in quotes: &ldquo;fruit of the Spirit&rdquo; grace. '
+      + '<b>Definitions</b> shows only the articles written on that word, such as the Dictionary entry on &ldquo;flesh&rdquo;.</div></div>';
     return;
   }
   var m = sx.meta, groups = {}, order = [];
