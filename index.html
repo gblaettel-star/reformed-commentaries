@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=3955"></script>
+<script src="display.js?v=3956"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -261,7 +261,7 @@ html body #ts-sheet .ds-a.ds-a-classic{font-family:'EB Garamond',Georgia,serif!i
 .about-chevron{color:#c9a84c;font-size:1rem;transition:transform .2s;flex-shrink:0}
 .about-chevron.open{transform:rotate(90deg)}
 .about-body{overflow:hidden;max-height:0;transition:max-height .25s ease;background:#0e2236;padding:0 1rem}
-.about-body.open{max-height:700px;padding:.9rem 1rem 1.2rem}
+.about-body.open{max-height:1000px;padding:.9rem 1rem 1.2rem}
 .about-body p{color:#7090b0;font-size:.82rem;line-height:1.75;margin-bottom:.8rem}
 .about-body p:last-child{margin-bottom:0}
 
@@ -653,7 +653,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=3955"></script>
+<script src="scripture-links.js?v=3956"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -726,7 +726,7 @@ const BOOKS = [
   { id:'revelation',   title:'Revelation',   subtitle:'The Lamb Who Conquers',               testament:'NT', chapters:22 },
   // Studies, grouped by topic (TOPIC_GROUPS below sets the order and headings)
   // The Bible
-  { id:'positions', title:'Positions at a Glance', subtitle:'Where this commentary stands on each question, and the main alternatives', testament:'SL', group:'bible', chapters:13 },
+  { id:'positions', title:'Positions at a Glance', subtitle:'Where this commentary stands on each question, and the main alternatives', testament:'SL', group:'about', chapters:13 },  // not listed with the studies; linked from the About section
   { id:'big-story', title:'The Big Story of the Bible', subtitle:'From Eden to the New Jerusalem', testament:'SL', group:'bible', chapters:6 },
   { id:'how-we-got-our-bible',  title:'How We Got Our Bible',  subtitle:'Inspiration, Canon, Transmission, and Translation',   testament:'SL', group:'bible', chapters:7 },
   { id:'bible-book-by-book', title:'The Bible Book by Book', subtitle:'A Short Outline of Every Book, Pointing to Christ', testament:'SL', group:'bible', chapters:66 },
@@ -1969,6 +1969,7 @@ function buildHome() {
     + '<div class="about-body" id="about-body">'
     + '<p>Soli Deo Gloria is a Reformed Bible commentary app designed to open the Scriptures with depth, warmth, and reverence. Each commentary draws on the work of faithful expositors including Timothy Keller, Alistair Begg, R.C. Sproul, Sinclair Ferguson, John MacArthur, John Stott, John Calvin, Derek Kidner, Bruce Waltke, Gordon Wenham, and D.A. Carson.</p>'
     + '<p>The aim is not merely to inform the mind but to stir the heart &mdash; to see Christ on every page, and to leave the reader with a deeper love for God and his Word.</p>'
+    + '<p>Where does this commentary stand on the millennium, baptism, the gifts of the Spirit or assurance? <a href="#" onclick="openBook(\'positions\');return false" style="color:var(--gold)">Positions at a glance</a> lists each position in a sentence, with the main alternatives.</p>'
     + '<p>Scripture quotations are from the ESV&reg; Bible (The Holy Bible, English Standard Version&reg;), copyright &copy; 2001 by Crossway, a publishing ministry of Good News Publishers. Used by permission. All rights reserved.</p>'
     + '</div>'
     + '</div>';
