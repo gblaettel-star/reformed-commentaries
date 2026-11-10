@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=3958"></script>
+<script src="display.js?v=3959"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -653,7 +653,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=3958"></script>
+<script src="scripture-links.js?v=3959"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1521,7 +1521,7 @@ function sxChips() {
   var chip = function(f, on){
     return '<button class="sx-chip' + (on ? ' on' : '') + '" onclick="sxFilter(\'' + f[0] + '\')">' + f[1] + '</button>';
   };
-  var fs = [['all', 'All'], ['OT', 'Old Testament'], ['NT', 'New Testament'], ['SL', 'Studies'], ['REF', 'Reference'], ['r:prayer', 'Prayer']];
+  var fs = [['all', 'All'], ['DEF', 'Definitions'], ['OT', 'Old Testament'], ['NT', 'New Testament'], ['SL', 'Studies'], ['REF', 'Reference'], ['r:prayer', 'Prayer']];
   var sub = document.getElementById('sx-chips2'), inRef = sxInRef();
   document.getElementById('sx-chips').innerHTML = fs.map(function(f){ return chip(f, sx.filter === f[0] || (f[0] === 'REF' && inRef)); }).join('');
   sub.innerHTML = inRef ? [['REF', 'All reference']].concat(SX_REFS.map(function(r){ return ['r:' + r[0], r[1]]; }))
@@ -1540,6 +1540,17 @@ function sxKeep(b) {
   if (r) return sx.filter === 'r:' + r[0] || (sx.filter === 'REF' && r[0] !== 'prayer');
   return bk.testament === sx.filter;
 }
+// Definitions: only the Reference entries whose own title is the word searched for
+// (a whole article on it, e.g. Dictionary "Flesh (Pauline)" for flesh), best match first.
+function sxDefScore(p) {
+  var pl = sx.meta.places[p], r = sxRef(pl[0]);
+  if (!r || r[0] === 'prayer' || !pl[4]) return 0;
+  var t = sxFold(pl[4]), core = t.replace(/\(.*?\)/g, '').replace(/[^a-z ]/g, ' ').replace(/\s+/g, ' ').trim();
+  var ws = sxWords(sx.res.q);
+  if (!ws.length || !ws.every(function(w){ return new RegExp('\\b' + w).test(t); })) return 0;
+  var q = ws.join(' ');
+  return core === q || core === q + 's' || core.replace(/^the /, '') === q ? 3 : core.indexOf(q) === 0 ? 2 : 1;
+}
 function sxEsc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
 // A Dictionary entry whose name is what was typed comes first.
@@ -1548,7 +1559,7 @@ function sxDict(q) {
   var f = sxFold(q).replace(/[^a-z ]/g, '').replace(/\s+/g, ' ').trim();
   if (f.length < 3) return '';
   var t = GLOSS.find(function(t){
-    return [t.n].concat(t.m).some(function(m){ m = sxFold(m); return m === f || m + 's' === f || m === f + 's'; });
+    return [t.n, t.n.replace(/\s*\(.*?\)/g, '')].concat(t.m).some(function(m){ m = sxFold(m); return m === f || m + 's' === f || m === f + 's'; });
   });
   if (!t) return '';
   var g = t.g.length > 240 ? t.g.slice(0, 240).replace(/\s+\S*$/, '') + '…' : t.g;
@@ -1569,15 +1580,21 @@ function sxDraw() {
   sxVerify();
   sx.res.hits.forEach(function(p){
     var b = m.places[p][0];
-    if (!sxKeep(b) || sx.bad[p]) return;
+    if (sx.filter === 'DEF' ? !sxDefScore(p) : !sxKeep(b)) return;
+    if (sx.bad[p]) return;
     if (!groups[b]) { groups[b] = []; order.push(b); }
     groups[b].push(p);
   });
-  order.sort(function(a, b){ return groups[b].length - groups[a].length || a - b; });
+  if (sx.filter === 'DEF') order.forEach(function(b){
+    groups[b].sort(function(x, y){ return sxDefScore(y) - sxDefScore(x) || x - y; });
+    if (!sx.open[b]) { sx.open[b] = true; sxLoad(b); }
+  });
+  order.sort(sx.filter === 'DEF' ? function(a, b){ return sxDefScore(groups[b][0]) - sxDefScore(groups[a][0]) || a - b; }
+                                 : function(a, b){ return groups[b].length - groups[a].length || a - b; });
   var total = order.reduce(function(n, b){ return n + groups[b].length; }, 0);
   var h = '<div class="sx-in">' + sxDict(sx.res.q);
   if (!total) {
-    h += '<div class="sx-hint">Nothing found for &ldquo;' + sxEsc(sx.res.q) + '&rdquo;' + (sx.filter !== 'all' ? ' here &mdash; try All.' : '.') + '</div></div>';
+    h += '<div class="sx-hint">Nothing found for &ldquo;' + sxEsc(sx.res.q) + '&rdquo;' + (sx.filter === 'DEF' ? ': no article has it as its title. Try All.' : sx.filter !== 'all' ? ' here &mdash; try All.' : '.') + '</div></div>';
     body.innerHTML = h; return;
   }
   h += '<div class="sx-count">' + total + (total === 1 ? ' place' : ' places') + ' in '
