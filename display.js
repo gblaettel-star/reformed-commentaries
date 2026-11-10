@@ -38,9 +38,9 @@
   // in the pages use fixed colours rather than the shared variables. The dim
   // overlays behind panels (ids ending in "backdrop", and #rc-bd) are left
   // see-through.
-  function scheme(t, bg, fg, accent, line, soft) {
+  function scheme(t, bg, fg, accent, line, soft, hl, hlfg) {
     var h = 'html[data-theme=' + t + ']';
-    var all = h + ' body *:not([id$=backdrop]):not([id=rc-bd])';
+    var all = h + ' body *:not([id$=backdrop]):not([id=rc-bd]):not(mark):not(.sx-mark)';
     return h + '{--ink:' + bg + ';--ink-2:' + bg + ';--ink-3:' + bg + ';--parch:' + fg + ';--parch-2:' + fg
       + ';--muted:' + fg + ';--faint:' + fg + ';--gold:' + accent + ';--gold-soft:' + accent
       + ';--hair:' + line + ';--hair-soft:' + soft + ';background:' + bg + '!important}'
@@ -53,6 +53,8 @@
       + h + ' body :is(button,input,select,.verse-chip,.section-chip,.gl-chip,.pk-n,.pk-b,.pk-rc,.vjump-num,.home-card):not([id$=backdrop]):not([id=rc-bd]){border-color:' + line + '!important}'
       + h + ' body :is(.active,.on,[aria-pressed=true],[aria-selected=true],[aria-current]){outline:2px solid ' + accent + '!important;outline-offset:1px}'
       + h + ' #dl-bar>div{background-color:' + accent + '!important}'
+      // Search highlights (the matching words) keep a visible marker colour.
+      + h + ' body :is(mark,.sx-mark){background-color:' + hl + ';color:' + hlfg + '!important;border-radius:3px}'
       + h + ' input[type=range]{accent-color:' + accent + '}'
       + h + ' ::placeholder{color:' + fg + '!important;opacity:.75}'
       + h + ' body *:focus-visible{outline:3px solid ' + accent + '!important;outline-offset:2px}'
@@ -70,9 +72,9 @@
     + 'html[data-bold] body,html[data-bold] body *{font-weight:600!important;-webkit-font-smoothing:auto!important}'
     + 'html[data-bold] body :is(strong,b,h1,h2,h3,h4){font-weight:800!important}'
     // Light: near-black on warm white, dark amber accents (7:1 contrast).
-    + scheme('light', '#fbf7ef', '#161616', '#6b3f00', '#8a7350', '#c9bda6')
+    + scheme('light', '#fbf7ef', '#161616', '#6b3f00', '#8a7350', '#c9bda6', '#f2d27a', '#161616')
     // High contrast: white on black, yellow accents.
-    + scheme('contrast', '#000', '#fff', '#ffe14d', '#ffe14d', '#9a9a9a');
+    + scheme('contrast', '#000', '#fff', '#ffe14d', '#ffe14d', '#9a9a9a', '#ffe14d', '#000');
 
   var st = document.createElement('style');
   st.id = 'display-css';
