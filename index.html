@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=3967"></script>
+<script src="display.js?v=3968"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -236,6 +236,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 .ds-lbl{color:var(--muted,#8e9db0);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin:.2rem 0 .45rem}
 .ds-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.7rem}
 .ds-opts.ds-three{grid-template-columns:1fr 1fr 1fr}
+.ds-opts.ds-four{grid-template-columns:repeat(4,1fr);gap:.4rem}
 .ds-opt{display:flex;flex-direction:column;align-items:center;gap:.3rem;background:none;border:1px solid var(--hair,#2a4a6c);border-radius:12px;color:var(--parch-2,#d9cdb3);font-size:.9rem;line-height:1.25;padding:.55rem .35rem;min-height:3.4rem;cursor:pointer;touch-action:manipulation}
 .ds-opt[aria-pressed=true]{border:2px solid var(--gold,#c8a95a);color:var(--parch,#ece3cf)}
 .ds-a{font-size:1.5rem;line-height:1}
@@ -245,6 +246,7 @@ summary .copy-btn{right:.55rem;top:50%;transform:translateY(-50%)}
 /* Swatches and samples keep their own look whatever scheme is active (ids outrank display.js). */
 html body #ts-sheet .ds-sw.ds-sw-night{background:#0b1524!important;color:#ece3cf!important;border:1px solid #c8a95a!important}
 html body #ts-sheet .ds-sw.ds-sw-light{background:#fbf7ef!important;color:#161616!important;border:1px solid #8a7350!important}
+html body #ts-sheet .ds-sw.ds-sw-sepia{background:#f4ecd8!important;color:#3b2f22!important;border:1px solid #9c8158!important}
 html body #ts-sheet .ds-sw.ds-sw-contrast{background:#000!important;color:#ffe14d!important;border:1px solid #fff!important}
 html body #ts-sheet .ds-a.ds-a-classic{font-family:'EB Garamond',Georgia,serif!important}
 #ts-home-val{white-space:normal;text-align:right;line-height:1.3}
@@ -534,6 +536,41 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
 #back-chip{background:var(--ink-2);color:var(--gold);border:1px solid var(--hair);box-shadow:0 6px 18px rgba(0,0,0,.4);font-weight:400;font-style:italic;font-size:.95rem}
 #vjump-pill{background:var(--ink-2);border-color:var(--hair);box-shadow:none;width:1.05rem;opacity:.45}
 
+/* ── Bookmarks: a ribbon beside each verse entry's copy button, and under a study unit's title ── */
+.bm-btn{background:none;border:none;margin:0;padding:.3rem;cursor:pointer;color:var(--gold);opacity:.28;line-height:0;border-radius:5px;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:opacity .15s}
+.bm-btn:hover{opacity:.8}
+.bm-btn[aria-pressed=true]{opacity:1}
+.bm-btn svg{display:block}
+.vbv-entry .bm-btn{position:absolute;right:1.9rem;top:1.2rem;z-index:2}
+.vbv-entry .vbv-ref{padding-right:4rem}
+.bm-unit{display:flex;align-items:center;gap:.45rem;margin:-.5rem auto 1.3rem;padding:.35rem .8rem;line-height:1.2;font-family:var(--text);font-style:italic;font-size:.95rem;color:var(--muted);opacity:1}
+.bm-unit svg{color:var(--gold);opacity:.6}
+.bm-unit[aria-pressed=true]{color:var(--gold)}
+.bm-unit[aria-pressed=true] svg{opacity:1}
+html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
+.bm-flash{animation:bm-flash 2.4s ease}
+@keyframes bm-flash{0%,35%{background:rgba(200,169,90,.12)}100%{background:transparent}}
+#bm-toast{position:fixed;left:50%;bottom:calc(4.2rem + env(safe-area-inset-bottom));transform:translate(-50%,.6rem);z-index:130;max-width:calc(100% - 2rem);
+  background:var(--ink-2);color:var(--parch-2);border:1px solid var(--hair);border-radius:999px;padding:.55rem 1.1rem;font-family:var(--text);font-size:.95rem;
+  text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+#bm-toast.show{opacity:1;transform:translate(-50%,0)}
+/* Home: the Bookmarks list */
+.bm-list{padding:0 0 .6rem}
+.bm-empty{color:var(--muted);font-style:italic;font-size:.98rem;line-height:1.55;padding:.3rem .2rem .9rem 1rem}
+.bm-item{display:flex;align-items:center;border-top:1px solid var(--hair-soft)}
+.bm-open{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15rem;background:none;border:none;text-align:left;cursor:pointer;padding:.8rem .2rem .8rem 1rem;color:inherit;touch-action:manipulation}
+.bm-open:active{background:rgba(200,169,90,.05)}
+.bm-ref{color:var(--parch-2);font-family:var(--text);font-size:1.05rem;line-height:1.35;font-variant-numeric:lining-nums}
+.bm-date{color:var(--muted);font-style:italic;font-size:.88rem;white-space:nowrap;font-variant-numeric:lining-nums}
+.bm-x{background:none;border:none;color:var(--muted);font-size:1rem;min-width:2.75rem;min-height:2.75rem;cursor:pointer;touch-action:manipulation}
+.bm-undo{flex:1;color:var(--muted);font-style:italic;font-size:.95rem;padding:.8rem .2rem .8rem 1rem}
+.bm-undo button{background:none;border:none;color:var(--gold);font:inherit;font-style:normal;cursor:pointer;padding:0 .3rem;text-decoration:underline;text-underline-offset:3px}
+.bm-export{display:block;margin:.4rem auto .3rem}
+.bm-copy-box{width:calc(100% - 1.2rem);margin:.5rem .6rem;min-height:8rem;background:none;border:1px solid var(--hair);border-radius:8px;color:var(--parch-2);font-family:var(--text);font-size:1rem;padding:.5rem}
+/* Related study, at the foot of a verse entry */
+.rel-study{display:block;margin-top:.7rem;color:var(--gold);font-family:var(--text);font-style:italic;font-size:.98rem;line-height:1.45;text-decoration:none}
+.rel-study:active{opacity:.7}
+
 /* Number grids and counts use even (lining) figures; prose keeps old-style */
 .pk-n,.vjump-num,.pk-b,.pk-rc,.ts-val,#ch-btn,.hc-where,.section-count,.verse-chip,.app-ver{font-variant-numeric:lining-nums}
 
@@ -608,6 +645,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
     <a class="gl-btn" id="gl-full" href="#">Read the full entry &#8594;</a>
   </div>
 </div>
+<div id="bm-toast" role="status" aria-live="polite"></div>
 <div id="back-chip"><button id="bc-go" onclick="backChipGo()"></button><button class="bc-x" onclick="backChipHide()" aria-label="Dismiss">&#10005;</button></div>
 <div id="ts-backdrop" onclick="tsClose()"></div>
 <div id="ts-sheet" role="dialog" aria-label="Text and display">
@@ -627,9 +665,10 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   </div>
   <button class="ds-toggle" id="ds-bold" onclick="dsSet({bold:!Display.get().bold})" aria-pressed="false"><span class="ds-box"></span>Heavier, bolder text</button>
   <div class="ds-lbl">Colours</div>
-  <div class="ds-opts ds-three" id="ds-theme">
+  <div class="ds-opts ds-four" id="ds-theme">
     <button class="ds-opt" data-v="night" onclick="dsSet({theme:'night'})"><span class="ds-sw ds-sw-night">Aa</span>Night</button>
     <button class="ds-opt" data-v="light" onclick="dsSet({theme:'light'})"><span class="ds-sw ds-sw-light">Aa</span>Light</button>
+    <button class="ds-opt" data-v="sepia" onclick="dsSet({theme:'sepia'})"><span class="ds-sw ds-sw-sepia">Aa</span>Sepia</button>
     <button class="ds-opt" data-v="contrast" onclick="dsSet({theme:'contrast'})"><span class="ds-sw ds-sw-contrast">Aa</span>High contrast</button>
   </div>
   <button class="ts-reset" onclick="tsSet(1);dsSet({theme:'night',font:'classic',bold:false})">Back to the normal look</button>
@@ -653,7 +692,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=3967"></script>
+<script src="scripture-links.js?v=3968"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1224,7 +1263,7 @@ function tsSet(v) {
 }
 function tsStep(d) { tsSet(tsGet() + d * 0.05); }
 /* Typeface, heavier text and colour scheme (display.js applies them on every page). */
-var DS_NAMES = { night: 'Night', light: 'Light', contrast: 'High contrast' };
+var DS_NAMES = { night: 'Night', light: 'Light', sepia: 'Sepia', contrast: 'High contrast' };
 function tsHomeLabel(v) {
   var d = window.Display ? Display.get() : { theme: 'night', font: 'classic', bold: false };
   var bits = [Math.round((v || tsGet()) * 100) + '%'];
@@ -1268,7 +1307,7 @@ function tsClose() {
    persistent data cache (sw.js DATA_CACHE), which survives app updates. ── */
 var DL_CACHE = 'commentaries-data';
 var dlBusy = false;
-function dlFiles() { return BOOKS.map(function(b){ return 'data/' + b.id + '.json'; }).concat(['data/glossary.json']); }
+function dlFiles() { return BOOKS.map(function(b){ return 'data/' + b.id + '.json'; }).concat(['data/glossary.json', 'data/study-links.json']); }
 function dlToggle() {
   var b = document.getElementById('dl-body'), c = document.getElementById('dl-chevron');
   var open = !b.classList.contains('open');
@@ -1823,7 +1862,8 @@ function showHome() {
   if (window.RefCard) RefCard.close('went home');
   document.title = 'Soli Deo Gloria';
   homeContinue();
-  ['ot','nt','st','ref','prayer'].forEach(function(id) {
+  bmUndoItem = null; bmHome();
+  ['ot','nt','st','ref','prayer','bm'].forEach(function(id) {
     var body = document.getElementById('body-' + id);
     var chevron = document.querySelector('#sec-' + id + ' .section-chevron');
     if (body) body.style.maxHeight = '0';
@@ -1963,6 +2003,7 @@ function buildHome() {
   html += '<div class="home-card home-start" id="home-cont-card"><div id="home-cont"></div></div>';
   // Library: the whole Bible through the passage picker, then the studies and reference
   html += '<div class="home-lbl">Library</div><div class="home-card">'
+    + section('bm', 'Bookmarks', bmListHtml(), false, bmCountLabel())
     + '<div class="section-toggle" onclick="sxOpen()">'
     + '<span class="section-title">Search</span>'
     + '<span class="section-count">everything</span><span class="section-chevron">&#8250;</span></div>'
@@ -2231,6 +2272,8 @@ function render(idx) {
   var chMatch = /(?:chapter|psalm)\s+(\d+)\s*$/i.exec(ref || '');
   linkifyScripture(document.getElementById('content'), curCanon, chMatch ? chMatch[1] : null);
   addCopyButtons();
+  bmDecorate();
+  slDecorate();
   buildVerseIndex(ch);
   closeVerseJump();
   syncHeaderOffset();
@@ -2318,6 +2361,255 @@ document.addEventListener('keydown', function(e) {
     }
   }, { passive: true });
 })();
+
+/* ── Bookmarks ────────────────────────────────────────────────────────────
+   A ribbon beside each verse entry (Bible books) and under each study unit's
+   title toggles a bookmark. The list lives on the home screen (Library >
+   Bookmarks). Kept in localStorage under a versioned key; a bookmark is keyed
+   on book id + chapter + the entry's ref string (studies: study id + unit
+   key), never on anything that shifts when the commentary is edited. */
+var BM_KEY = 'sdg-bookmarks-v1', BM = null, bmUndoItem = null, bmUndoAt = -1;
+var BM_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/></svg>';
+var BM_ICON_ON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/></svg>';
+function bmValid(it) { return it && typeof it.k === 'string' && typeof it.b === 'string' && typeof it.l === 'string'; }
+function bmItems() {
+  if (BM) return BM;
+  BM = [];
+  var raw = null;
+  try { raw = localStorage.getItem(BM_KEY); } catch (e) { return BM; }
+  if (!raw) return BM;
+  try {
+    var o = JSON.parse(raw), a = o && Array.isArray(o.items) ? o.items : null;
+    if (!a) throw new Error('bad');
+    BM = a.filter(bmValid);
+  } catch (e) {
+    // Unreadable: keep a copy aside before anything is written over it.
+    try { localStorage.setItem(BM_KEY + '-unreadable-' + Date.now(), raw); } catch (e2) {}
+  }
+  return BM;
+}
+function bmSave() { try { localStorage.setItem(BM_KEY, JSON.stringify({ v: 1, items: bmItems() })); } catch (e) {} }
+function bmFind(k) { var a = bmItems(); for (var i = 0; i < a.length; i++) if (a[i].k === k) return i; return -1; }
+function bmPlain(html) { var t = document.createElement('textarea'); t.innerHTML = String(html || '').replace(/<[^>]+>/g, ''); return t.value.replace(/\s+/g, ' ').trim(); }
+// "v. 3" / "vv. 23&ndash;24" / "vv. 2b–4" → [3,3] / [23,24] / [2,4]
+function bmRange(ref) {
+  var m = bmPlain(ref).match(/^v{1,2}\.\s*(\d+)[a-z]?(?:\s*[–—-]\s*(\d+)[a-z]?)?/);
+  if (!m) return null;
+  var a = +m[1], b = m[2] ? +m[2] : a;
+  return b >= a ? [a, b] : [a, a];
+}
+function bmVerseLabel(book, c, ref) {
+  var plain = bmPlain(ref);
+  var m = plain.match(/^v{1,2}\.\s*(\d+[a-z]?)(?:\s*[–—-]\s*(\d+[a-z]?))?/);
+  var head = c === 0 ? book.title + ' · Introduction' : (book.id === 'psalms' ? 'Psalm ' : book.title + ' ') + c;
+  if (m && c) return (book.chapters === 1 ? book.title + ' ' : head + ':') + m[1] + (m[2] ? '–' + m[2] : '');
+  return head + ' · ' + (plain.length > 40 ? plain.slice(0, 38) + '…' : plain);
+}
+function bmItemFor(btn) {
+  if (!currentBook || !currentData) return null;
+  var k = currentKeys[currentIdx], ch = currentData[k];
+  if (btn.hasAttribute('data-i')) {
+    var v = ch.verseByVerse && ch.verseByVerse[+btn.getAttribute('data-i')];
+    if (!v) return null;
+    var r = bmRange(v.ref);
+    return { k: 'v|' + currentBook.id + '|' + k + '|' + v.ref, t: 'v', b: currentBook.id, c: k, r: v.ref, v: r ? r[0] : 0,
+             l: bmVerseLabel(currentBook, k, v.ref), d: Date.now() };
+  }
+  return { k: 'u|' + currentBook.id + '|' + k, t: 'u', b: currentBook.id, c: k,
+           l: currentBook.title + ' · ' + (bmPlain(ch.ref) || (k === 0 ? 'Introduction' : 'Unit ' + k)), d: Date.now() };
+}
+function bmSetBtn(btn, on, label) {
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  var unit = btn.classList.contains('bm-unit');
+  btn.setAttribute('aria-label', (on ? 'Remove bookmark: ' : 'Bookmark ') + label);
+  btn.innerHTML = (on ? BM_ICON_ON : BM_ICON) + (unit ? '<span>' + (on ? 'Bookmarked' : 'Bookmark this unit') + '</span>' : '');
+}
+// Ribbons on the page just drawn by render()
+function bmDecorate() {
+  if (!currentBook || !currentData) return;
+  var k = currentKeys[currentIdx], ch = currentData[k], root = document.getElementById('content');
+  if (PK_ABBR[currentBook.id]) {
+    root.querySelectorAll('.vbv-entry[id^="vs"]').forEach(function (el) {
+      var i = +el.id.slice(2), v = ch.verseByVerse && ch.verseByVerse[i];
+      if (!v || v.sectionBreak || el.querySelector(':scope > .bm-btn')) return;
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'bm-btn'; b.setAttribute('data-i', i);
+      var it = bmItemFor(b);
+      bmSetBtn(b, bmFind(it.k) >= 0, it.l);
+      el.insertBefore(b, el.firstChild);
+    });
+  } else {
+    var after = root.querySelector(':scope > .ref') || root.querySelector(':scope > h2');
+    if (!after) return;
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'bm-btn bm-unit';
+    var it = bmItemFor(b);
+    bmSetBtn(b, bmFind(it.k) >= 0, it.l);
+    after.insertAdjacentElement('afterend', b);
+  }
+}
+function bmToggle(btn) {
+  var it = bmItemFor(btn); if (!it) return;
+  var i = bmFind(it.k), a = bmItems();
+  if (i >= 0) { a.splice(i, 1); bmToast('Bookmark removed'); }
+  else { a.unshift(it); bmToast('Added to Bookmarks on the home screen'); }
+  bmSave();
+  bmSetBtn(btn, i < 0, it.l);
+  bmHome();
+}
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest && e.target.closest('.bm-btn');
+  if (!btn) return;
+  e.preventDefault(); e.stopPropagation();
+  bmToggle(btn);
+});
+var bmToastT = null;
+function bmToast(msg) {
+  var t = document.getElementById('bm-toast'); if (!t) return;
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(bmToastT); bmToastT = setTimeout(function () { t.classList.remove('show'); }, 2400);
+}
+// Home screen list, newest first
+function bmDate(d) {
+  try { return new Date(d).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; }
+}
+function bmListHtml() {
+  var a = bmItems(), h = '<div class="bm-list" id="bm-list">';
+  if (!a.length && !bmUndoItem) return h + '<div class="bm-empty">Tap the ribbon beside any verse note, or under a study unit&rsquo;s title, to keep it here.</div></div>';
+  var rows = a.map(function (it, i) {
+    return '<div class="bm-item"><button class="bm-open" onclick="bmGo(' + i + ')"><span class="bm-ref">' + sxEsc(it.l) + '</span>'
+      + '<span class="bm-date">' + bmDate(it.d) + '</span></button>'
+      + '<button class="bm-x" onclick="bmRemove(' + i + ')" aria-label="Remove ' + sxEsc(it.l).replace(/"/g, '&quot;') + '">&#10005;</button></div>';
+  });
+  if (bmUndoItem) {
+    var at = Math.min(bmUndoAt, rows.length);
+    rows.splice(at, 0, '<div class="bm-item"><div class="bm-undo">Removed ' + sxEsc(bmUndoItem.l) + '. <button onclick="bmUndo()">Undo</button></div></div>');
+  }
+  h += rows.join('');
+  if (a.length) h += '<button class="dl-btn bm-export" id="bm-export" onclick="bmExport()">Export bookmarks</button>';
+  return h + '</div>';
+}
+function bmCountLabel() { var n = bmItems().length; return n ? n + ' saved' : 'none yet'; }
+function bmHome() {
+  var body = document.getElementById('body-bm'); if (!body) return;
+  body.innerHTML = bmListHtml();
+  var c = document.querySelector('#sec-bm .section-count'); if (c) c.textContent = bmCountLabel();
+}
+function bmRemove(i) {
+  var a = bmItems(); if (!a[i]) return;
+  bmUndoItem = a.splice(i, 1)[0]; bmUndoAt = i;
+  bmSave(); bmHome();
+}
+function bmUndo() {
+  if (!bmUndoItem) return;
+  var a = bmItems();
+  if (bmFind(bmUndoItem.k) < 0) a.splice(Math.min(bmUndoAt, a.length), 0, bmUndoItem);
+  bmUndoItem = null; bmSave(); bmHome();
+}
+function bmExport() {
+  var text = 'Bookmarks from Soli Deo Gloria\n\n' + bmItems().map(function (it) { return it.l; }).join('\n');
+  var btn = document.getElementById('bm-export');
+  function done(ok) {
+    if (ok) { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Export bookmarks'; }, 1600); return; }
+    // No clipboard at all: show the text, selected, to copy by hand.
+    if (document.getElementById('bm-copy-box')) return;
+    btn.insertAdjacentHTML('afterend', '<textarea class="bm-copy-box" id="bm-copy-box" readonly aria-label="Bookmarks as text"></textarea>');
+    var ta = document.getElementById('bm-copy-box'); ta.value = text; ta.focus(); ta.select();
+  }
+  function fallback() {
+    var ta = document.createElement('textarea'), ok = false;
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    done(ok);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { done(true); }).catch(fallback);
+  else fallback();
+}
+// Open a bookmark: the same book/chapter landing the passage picker and search use.
+function bmGo(i) {
+  var it = bmItems()[i]; if (!it || !BOOKS.find(function (b) { return b.id === it.b; })) return;
+  var land = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { bmLand(it); }); }); };
+  pendingScrollRestore = null;
+  if (currentBook && currentBook.id === it.b && currentData && currentData[it.c] !== undefined) {
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('reader-screen').style.display = 'block';
+    document.getElementById('reader-nav').style.display = 'flex';
+    document.body.classList.add('reading');
+    document.title = currentBook.title;
+    render(currentKeys.indexOf(it.c)); land();
+  } else {
+    try { localStorage.setItem(it.b + '-pos', it.c); } catch (e) {}
+    pkAfterOpen = land;
+    openBook(it.b);
+  }
+}
+function bmLand(it) {
+  if (it.t !== 'v' || currentKeys[currentIdx] !== it.c) { window.scrollTo(0, 0); return; }
+  var vbv = (currentData[it.c] && currentData[it.c].verseByVerse) || [], idx = -1, want = bmPlain(it.r);
+  for (var i = 0; i < vbv.length && idx < 0; i++) if (!vbv[i].sectionBreak && vbv[i].ref === it.r) idx = i;
+  for (i = 0; i < vbv.length && idx < 0; i++) if (!vbv[i].sectionBreak && bmPlain(vbv[i].ref) === want) idx = i;
+  var el = idx >= 0 ? document.getElementById('vs' + idx) : null;
+  if (!el) { if (it.v) jumpToVerse(it.v); return; }   // the entry was reworded or split: nearest verse
+  for (var p = el; p && p.id !== 'content'; p = p.parentNode) if (p.nodeName === 'DETAILS') p.open = true;
+  scrollToEl(el);
+  el.classList.remove('bm-flash'); void el.offsetWidth; el.classList.add('bm-flash');
+}
+
+/* ── Related study, under a verse note. data/study-links.json maps
+   book id → chapter → [{v1, v2, s: study id, u: unit key}]. Loaded once, on
+   first need; if it is missing, nothing shows. Each study appears once per
+   chapter, on the first entry it overlaps, and an entry carries at most 3. ── */
+var SL_P = null, slSeq = 0;
+function slLoad() {
+  if (!SL_P) SL_P = fetch('data/study-links.json').then(function (r) { if (!r.ok) throw new Error('none'); return r.json(); })
+    .then(function (j) { return j && typeof j === 'object' ? j : {}; }).catch(function () { return {}; });
+  return SL_P;
+}
+function slDecorate() {
+  var seq = ++slSeq;
+  if (!currentBook || !PK_ABBR[currentBook.id] || !currentData) return;
+  var id = currentBook.id, k = currentKeys[currentIdx];
+  slLoad().then(function (L) {
+    if (seq !== slSeq) return;   // another chapter has been drawn since
+    var list = L[id] && L[id][String(k)];
+    if (!Array.isArray(list) || !list.length) return;
+    var ch = currentData[k], shown = {};
+    document.querySelectorAll('#content .vbv-entry[id^="vs"]').forEach(function (el) {
+      var v = ch.verseByVerse && ch.verseByVerse[+el.id.slice(2)];
+      if (!v || v.sectionBreak) return;
+      var r = bmRange(v.ref); if (!r) return;
+      var h = '', n = 0;
+      list.forEach(function (x) {
+        if (n >= 3 || !x || shown[x.s]) return;
+        var st = BOOKS.find(function (b) { return b.id === x.s; });
+        var a = +x.v1, b = +(x.v2 || x.v1);
+        if (!st || !(a <= r[1] && b >= r[0])) return;
+        shown[x.s] = 1; n++;
+        var u = String(x.u == null ? '' : x.u), unit = u === '0' ? 'Introduction' : u ? 'Unit ' + u : '';
+        h += '<a class="rel-study" href="#" onclick="slGo(\'' + x.s + '\',' + (+u || 0) + ');return false">Related study: '
+          + st.title + (unit ? ' · ' + unit : '') + ' &#8594;</a>';
+      });
+      if (h) el.insertAdjacentHTML('beforeend', h);
+    });
+  });
+}
+// Open a study at a unit, with the usual chip back to this chapter.
+function slGo(s, u) {
+  if (currentBook && currentData) {
+    var k = currentKeys[currentIdx];
+    backPos = { id: currentBook.id, key: k, y: window.scrollY,
+      label: currentBook.id === 'psalms' ? 'Psalm ' + k : currentBook.title + (k ? ' ' + k : ' Introduction') };
+  }
+  try { localStorage.setItem(s + '-pos', u); } catch (e) {}
+  pendingScrollRestore = null; pkAfterOpen = null;
+  openBook(s);
+  if (backPos) {
+    document.getElementById('bc-go').innerHTML = '&#8592; Back to ' + backPos.label;
+    document.getElementById('back-chip').classList.add('show');
+  }
+}
 
 // ── Init ─────────────────────────────────────────────────────────────────
 buildHome();
