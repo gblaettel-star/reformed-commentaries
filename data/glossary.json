@@ -2632,5 +2632,91 @@
    "union with christ"
   ],
   "r": 0.0288
+ },
+ {
+  "n": "Tanakh",
+  "a": "tanakh",
+  "w": "TaNaKh (Hebrew): an acronym of Torah, Nevi’im and Ketuvim (Law, Prophets and Writings); the Jewish name for the Hebrew Scriptures, the books Christians call the Old Testament",
+  "g": "Tanakh is the Jewish name for the Hebrew Bible, made from the first letters of its three parts: Torah (Law), Nevi’im (Prophets) and Ketuvim (Writings). It holds the same books as the Protestant Old Testament, in a different order.",
+  "m": [
+   "tanakh"
+  ],
+  "r": 0.0
+ },
+ {
+  "n": "Torah",
+  "a": "torah",
+  "w": "torah (Hebrew): teaching, instruction, law; in Jewish use the five books of Moses, and more widely the whole of God’s teaching, written and oral",
+  "g": "Torah means “teaching” or “instruction”. In Jewish use it is the five books of Moses, read through each year in the synagogue, and more widely the whole of God’s teaching, written and oral.",
+  "m": [
+   "torah"
+  ],
+  "r": 0.0055
+ },
+ {
+  "n": "Talmud",
+  "a": "talmud",
+  "w": "talmud (Hebrew): study, learning; the great collection of rabbinic teaching built on the Mishnah, the written form of Judaism’s oral law",
+  "g": "The Mishnah (about AD 200) is the first written code of Judaism’s oral law; the Talmud is the vast rabbinic discussion built on it, completed in Babylonia around AD 500 to 600. It shapes Jewish life and reading of the Bible to this day.",
+  "m": [
+   "talmud",
+   "mishnah"
+  ],
+  "r": 0.0249
+ },
+ {
+  "n": "Midrash",
+  "a": "midrash",
+  "w": "midrash (Hebrew): from darash, to seek or inquire; rabbinic interpretation of Scripture, and the collections in which it is gathered",
+  "g": "Midrash (from the Hebrew for “to seek”) is rabbinic interpretation that searches Scripture for meaning beyond the surface, and the collections that preserve it, such as Genesis Rabbah.",
+  "m": [
+   "midrash"
+  ],
+  "r": 0.0017
+ },
+ {
+  "n": "Targum",
+  "a": "targum",
+  "w": "targum (Aramaic/Hebrew): translation; the ancient Aramaic paraphrases of the Hebrew Scriptures, read in the synagogue",
+  "g": "The Targums are ancient Aramaic paraphrases of the Hebrew Scriptures, read in the synagogue. Several name the Messiah where the Hebrew does not, as the Targum of Isaiah does at Isaiah 52:13.",
+  "m": [
+   "targum",
+   "targums"
+  ],
+  "r": 0.0094
+ },
+ {
+  "n": "Akedah (Binding of Isaac)",
+  "a": "akedah",
+  "w": "akedah (Hebrew): binding; the Jewish name for Genesis 22, where Abraham binds Isaac on the altar at Moriah",
+  "g": "Akedah (Hebrew for “binding”) is the Jewish name for Genesis 22, where Abraham binds Isaac on the altar at Moriah and God provides a ram instead. It is read at the Jewish New Year.",
+  "m": [
+   "akedah",
+   "binding of isaac"
+  ],
+  "r": 0.0017
+ },
+ {
+  "n": "Shema",
+  "a": "shema",
+  "w": "shema (Hebrew): hear; the confession of Deuteronomy 6:4, “Hear, O Israel: The LORD our God, the LORD is one”, recited by Jews morning and evening",
+  "g": "The Shema is the confession of Deuteronomy 6:4–5, “Hear, O Israel: The LORD our God, the LORD is one”, recited by Jews morning and evening. Jesus called it the greatest commandment.",
+  "m": [
+   "shema"
+  ],
+  "r": 0.0105
+ },
+ {
+  "n": "Messiah Son of Joseph",
+  "a": "messiah-son-of-joseph",
+  "w": "Mashiach ben Yosef (Hebrew): Messiah son of Joseph; in rabbinic tradition a Messiah from the tribe of Joseph who dies in battle before the Messiah son of David (Mashiach ben David) comes to reign",
+  "g": "In rabbinic tradition the Messiah son of Joseph is a Messiah who falls in battle before the Messiah son of David comes to reign. The Talmud (Sukkah 52a) links him with the pierced one of Zechariah 12:10.",
+  "m": [
+   "messiah son of joseph",
+   "messiah ben joseph",
+   "messiah son of david",
+   "messiah ben david"
+  ],
+  "r": 0.0006
  }
 ]
