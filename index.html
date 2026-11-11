@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4167"></script>
+<script src="display.js?v=4168"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -693,7 +693,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4167"></script>
+<script src="scripture-links.js?v=4168"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1577,7 +1577,7 @@ function sxRun(keep) {
 // Filters: All, a Testament, Studies, Reference (with a second row for each of
 // its pages, as 'r:dictionary' and so on) and Monthly Prayer ('r:prayer').
 var SX_REFS = [['dictionary', 'Dictionary'], ['figures', 'Figures'], ['philosophers', 'Philosophers'], ['heresies', 'Heresies'],
-               ['councils', 'Councils'], ['creeds', 'Creeds'], ['solas', 'Solas']];
+               ['councils', 'Councils'], ['creeds', 'Creeds'], ['solas', 'Solas'], ['timeline', 'Timeline']];
 function sxInRef() { return sx.filter === 'REF' || (/^r:/.test(sx.filter) && sx.filter !== 'r:prayer'); }
 function sxChips() {
   var chip = function(f, on){
@@ -1983,6 +1983,10 @@ function buildHome() {
   }).join('');
 
   var refHtml = ''
+    + '<div class="book-row" onclick="window.location.href=\'timeline.html\'">'
+    + '<div class="row-name">Bible Timeline &amp; Maps</div>'
+    + '<div class="row-sub">From the patriarchs to the apostles, with maps of the lands and journeys</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
     + '<div class="book-row" onclick="window.location.href=\'dictionary.html\'">'
     + '<div class="row-name">Theological Dictionary</div>'
     + '<div class="row-sub">Key words of the faith — explained and felt</div>'
