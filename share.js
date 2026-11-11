@@ -24,7 +24,14 @@
     + '.copy-btn:active{opacity:1}'
     + '.copy-btn.copied{opacity:1;color:#7bbf6a;background:rgba(123,191,106,.14)}'
     + '.copy-btn svg{display:block}'
-    + '.copy-host{position:relative}';
+    + '.copy-host{position:relative}'
+    + '.refbm-btn{position:absolute;top:.55rem;right:2.45rem;background:none;border:none;margin:0;padding:.3rem;cursor:pointer;color:#c9a84c;opacity:.4;line-height:0;border-radius:5px;z-index:5;-webkit-tap-highlight-color:transparent;transition:opacity .15s,background .15s}'
+    + '.refbm-btn:hover{opacity:1;background:rgba(201,168,76,.14)}'
+    + '.refbm-btn[aria-pressed="true"]{opacity:1}'
+    + '.refbm-btn svg{display:block}'
+    + '.copy-host [class$="-name"],.copy-host .sola-latin,.copy-host .prayer-month-name{padding-right:4.2rem}'
+    + '.refbm-toast{position:fixed;left:50%;bottom:1.4rem;transform:translateX(-50%) translateY(1rem);background:#1a3a5c;color:#e8dcc8;border:1px solid #c9a84c;border-radius:20px;padding:.5rem 1rem;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:300;max-width:calc(100% - 2rem);text-align:center}'
+    + '.refbm-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
   function htmlToText(html) {
@@ -39,8 +46,58 @@
       .replace(/\n{3,}/g, '\n\n').trim();
   }
 
+  /* Bookmarks: a ribbon beside the copy icon keeps the card in the same list
+     as the commentary's bookmarks (home screen, Library, Bookmarks). */
+  var BM_KEY = 'sdg-bookmarks-v1';
+  var BM_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 3.5h11v17l-5.5-4-5.5 4z"/></svg>';
+  var BM_ICON_ON = BM_ICON.replace('fill="none"', 'fill="currentColor"');
+  var PAGE = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+  var PAGE_NAMES = { dictionary: 'Dictionary', figures: 'Figures', philosophers: 'Philosophers', heresies: 'Heresies',
+    councils: 'Councils', creeds: 'Creeds', solas: 'Five Solas', westminster: 'Westminster', confession1689: '1689 Confession',
+    heidelberg: 'Heidelberg', timeline: 'Timeline', prayer: 'Monthly Prayer' };
+  function bmRead() {
+    try { var o = JSON.parse(localStorage.getItem(BM_KEY) || '{"v":1,"items":[]}'); return o && Array.isArray(o.items) ? o : null; }
+    catch (e) { return null; }   // unreadable: leave it for the home screen to set aside, never write over it
+  }
+  function bmKey(card) { return 'r|' + PAGE + '|' + card.id; }
+  function bmHas(o, k) { for (var i = 0; i < o.items.length; i++) if (o.items[i].k === k) return i; return -1; }
+  function bmTitle(card) {
+    var el = card.querySelector('[class$="-name"], .sola-latin, .prayer-month-name');
+    var t = (el ? el.textContent : card.id).replace(/\s+/g, ' ').trim();
+    if (PAGE === 'prayer') t += ' prayer';
+    return (PAGE_NAMES[PAGE] || PAGE) + ' · ' + (t.length > 60 ? t.slice(0, 58) + '…' : t);
+  }
+  function bmSet(btn, on, label) {
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', (on ? 'Remove bookmark: ' : 'Bookmark ') + label);
+    btn.title = on ? 'Bookmarked' : 'Bookmark';
+    btn.innerHTML = on ? BM_ICON_ON : BM_ICON;
+  }
+  var toastT = null;
+  function bmToast(msg) {
+    var t = document.getElementById('refbm-toast');
+    if (!t) { t = document.createElement('div'); t.id = 'refbm-toast'; t.className = 'refbm-toast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('show'); }, 2400);
+  }
+  function bmToggle(btn, card) {
+    var o = bmRead(); if (!o) { bmToast('Bookmarks could not be read on this device'); return; }
+    var k = bmKey(card), i = bmHas(o, k), label = bmTitle(card);
+    if (i >= 0) { o.items.splice(i, 1); bmToast('Bookmark removed'); }
+    else { o.items.unshift({ k: k, t: 'r', b: 'ref', p: PAGE + '.html', a: card.id, l: label, d: Date.now() }); bmToast('Added to Bookmarks on the home screen'); }
+    try { localStorage.setItem(BM_KEY, JSON.stringify({ v: 1, items: o.items })); } catch (e) { bmToast('Bookmark could not be saved'); return; }
+    bmSet(btn, i < 0, label);
+  }
+
   function addButtons() {
+    var o = PAGE_NAMES[PAGE] ? bmRead() : null;
     document.querySelectorAll(CARD).forEach(function (card) {
+      if (o && card.id && !card.querySelector(':scope > .refbm-btn')) {
+        var r = document.createElement('button');
+        r.className = 'refbm-btn'; r.type = 'button';
+        bmSet(r, bmHas(o, bmKey(card)) >= 0, bmTitle(card));
+        card.appendChild(r);
+      }
       if (card.querySelector(':scope > .copy-btn')) return;
       card.classList.add('copy-host');
       var b = document.createElement('button');
@@ -74,6 +131,8 @@
   }
 
   document.addEventListener('click', function (e) {
+    var rb = e.target.closest && e.target.closest('.refbm-btn');
+    if (rb) { e.preventDefault(); e.stopPropagation(); var c = rb.closest(CARD); if (c) bmToggle(rb, c); return; }
     var btn = e.target.closest && e.target.closest('.copy-btn');
     if (!btn) return;
     e.preventDefault(); e.stopPropagation();
@@ -81,7 +140,7 @@
     if (!card) return;
     var hasScripture = SCRIPTURE ? !!card.querySelector(SCRIPTURE) : false;
     var clone = card.cloneNode(true);
-    clone.querySelectorAll('.copy-btn').forEach(function (x) { x.remove(); });
+    clone.querySelectorAll('.copy-btn, .refbm-btn').forEach(function (x) { x.remove(); });
     var text = htmlToText(clone.innerHTML) + '\n\n' + FOOTER;
     if (hasScripture) text += '\n\n' + ESV;
     copyText(text.replace(/\n{3,}/g, '\n\n').trim(), btn);
@@ -95,6 +154,11 @@
     setTimeout(function () { pending = false; addButtons(); }, 60);
   });
 
+  window.addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    var o = bmRead(); if (!o) return;
+    document.querySelectorAll('.refbm-btn').forEach(function (r) { var c = r.closest(CARD); if (c) bmSet(r, bmHas(o, bmKey(c)) >= 0, bmTitle(c)); });
+  });
   function start() {
     addButtons();
     observer.observe(document.body, { childList: true, subtree: true });

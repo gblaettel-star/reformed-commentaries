@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4170"></script>
+<script src="display.js?v=4171"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -693,7 +693,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4170"></script>
+<script src="scripture-links.js?v=4171"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -2510,7 +2510,7 @@ function bmDate(d) {
 }
 function bmListHtml() {
   var a = bmItems(), h = '<div class="bm-list" id="bm-list">';
-  if (!a.length && !bmUndoItem) return h + '<div class="bm-empty">Tap the ribbon beside any verse note, or under a study unit&rsquo;s title, to keep it here.</div></div>';
+  if (!a.length && !bmUndoItem) return h + '<div class="bm-empty">Tap the ribbon beside any verse note, under a study unit&rsquo;s title, or on any reference entry, to keep it here.</div></div>';
   var rows = a.map(function (it, i) {
     return '<div class="bm-item"><button class="bm-open" onclick="bmGo(' + i + ')"><span class="bm-ref">' + sxEsc(it.l) + '</span>'
       + '<span class="bm-date">' + bmDate(it.d) + '</span></button>'
@@ -2524,6 +2524,8 @@ function bmListHtml() {
   if (a.length) h += '<button class="dl-btn bm-export" id="bm-export" onclick="bmExport()">Export bookmarks</button>';
   return h + '</div>';
 }
+// Back from a reference page (bookmarks added there): read the list afresh.
+window.addEventListener('pageshow', function () { BM = null; bmHome(); });
 function bmCountLabel() { var n = bmItems().length; return n ? n + ' saved' : 'none yet'; }
 function bmHome() {
   var body = document.getElementById('body-bm'); if (!body) return;
@@ -2564,7 +2566,9 @@ function bmExport() {
 }
 // Open a bookmark: the same book/chapter landing the passage picker and search use.
 function bmGo(i) {
-  var it = bmItems()[i]; if (!it || !BOOKS.find(function (b) { return b.id === it.b; })) return;
+  var it = bmItems()[i];
+  if (it && it.t === 'r' && /^[a-z0-9]+\.html$/.test(it.p || '')) { window.location.href = it.p + '#' + encodeURIComponent(it.a || ''); return; }
+  if (!it || !BOOKS.find(function (b) { return b.id === it.b; })) return;
   var land = function () { requestAnimationFrame(function () { requestAnimationFrame(function () { bmLand(it); }); }); };
   pendingScrollRestore = null;
   if (currentBook && currentBook.id === it.b && currentData && currentData[it.c] !== undefined) {
