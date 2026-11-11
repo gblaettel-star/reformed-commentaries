@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4175"></script>
+<script src="display.js?v=4176"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -115,6 +115,7 @@ summary:hover{background:#22487a}
 .vbv-commentary p{margin-bottom:.7rem}
 .vbv-commentary p:last-child{margin-bottom:0}
 .scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.study-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.55);text-decoration-thickness:1px;text-underline-offset:3px}
 .scripture-link:hover{text-decoration-color:#c9a84c}
 .accent-box{background:#112840;border-left:3px solid #c9a84c;padding:1rem 1.2rem;line-height:1.8}
 .accent-box p{margin-bottom:.7rem}
@@ -693,7 +694,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4175"></script>
+<script src="scripture-links.js?v=4176"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -2312,6 +2313,7 @@ function render(idx) {
   addCopyButtons();
   bmDecorate();
   slDecorate();
+  studyTitleLinks(document.getElementById('content'));
   buildVerseIndex(ch);
   closeVerseJump();
   syncHeaderOffset();
@@ -2598,6 +2600,42 @@ function bmLand(it) {
   scrollToEl(el);
   el.classList.remove('bm-flash'); void el.offsetWidth; el.classList.add('bm-flash');
 }
+
+/* ── A study named in italics ("the study *Biblical Counseling*") becomes a
+   link that opens it. A one-word title ("Anger", "Shame") is linked only when
+   the word "study" is close by, so an ordinary italic word stays as it is. ── */
+var ST_TITLES = null;
+function stNorm(t) { return String(t || '').replace(/[’‘]/g, "'").replace(/\s+/g, ' ').trim().toLowerCase(); }
+function studyTitleLinks(root) {
+  if (!root) return;
+  if (!ST_TITLES) {
+    ST_TITLES = {};
+    BOOKS.forEach(function (b) { if (b.testament === 'SL') ST_TITLES[stNorm(b.title)] = b.id; });
+  }
+  root.querySelectorAll('em').forEach(function (em) {
+    if (em.closest('a, .study-link')) return;
+    var id = ST_TITLES[stNorm(em.textContent)];
+    if (!id || (currentBook && currentBook.id === id)) return;
+    if (!/\s/.test(em.textContent.trim())) {
+      var host = em.parentNode, ctx = host ? host.textContent : '', at = ctx.indexOf(em.textContent);
+      if (!/stud(y|ies)/i.test(ctx.slice(Math.max(0, at - 40), at + em.textContent.length + 25))) return;
+    }
+    var a = document.createElement('a');
+    a.href = '#'; a.className = 'study-link'; a.setAttribute('data-study', id);
+    em.parentNode.insertBefore(a, em); a.appendChild(em);
+  });
+}
+document.addEventListener('click', function (e) {
+  var a = e.target.closest && e.target.closest('a.study-link');
+  if (!a) return;
+  e.preventDefault();
+  var id = a.getAttribute('data-study');
+  if (!BOOKS.find(function (b) { return b.id === id; })) return;
+  pendingScrollRestore = null;
+  try { localStorage.setItem(id + '-pos', 0); } catch (err) {}
+  openBook(id);
+  window.scrollTo(0, 0);
+});
 
 /* ── Related study, under a verse note. data/study-links.json maps
    book id → chapter → [{v1, v2, s: study id, u: unit key}]. Loaded once, on
