@@ -104,11 +104,11 @@ function smartQuotes(root){
 // A series runs on: "Westminster 1.4–5, 8" links 1.4 and 1.8; "Westminster 9.3; 10.2" both.
 function linkifyWestminster(root){
   if (!root || !document.createTreeWalker) return;
-  var head = /\b(Westminster(?:[\s ]+Confession(?:[\s ]+of[\s ]+Faith)?|[\s ]+position)?|WCF|Confession)(,?[\s ]+[Cc]hapter[\s ]+|[\s ]+Ch\.[\s ]*|[\s ]+\(?)(\d{1,2}|[IVX]{1,6}(?=\.\d|[^A-Za-z]|$))(?:\.(\d{1,2}))?(?:[–-]\d{1,2})?(?![\d:.]\d)/g;
+  var head = /\b(1689(?:[\s ]+London[\s ]+Baptist)?(?:[\s ]+Confession(?:[\s ]+of[\s ]+Faith)?)?|Westminster(?:[\s ]+Confession(?:[\s ]+of[\s ]+Faith)?|[\s ]+position)?|WCF|Confession)(,?[\s ]+[Cc]hapter[\s ]+|[\s ]+Ch\.[\s ]*|[\s ]+\(?)(\d{1,2}|[IVX]{1,6}(?=\.\d|[^A-Za-z]|$))(?:\.(\d{1,2}))?(?:[–-]\d{1,2})?(?![\d:.]\d)/g;
   var more = /^((?:[\s ]*[,;]|[\s ]+and)[\s ]*)(\d{1,2})(?:\.(\d{1,2}))?(?:[–-]\d{1,2})?(?![\d:]|\.\d|[\s ]*[A-Za-z])/;
   var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: function(n){
-      if (!/(Westminster|WCF|Confession)[\s\S]*\d/.test(n.nodeValue || '')) return NodeFilter.FILTER_REJECT;
+      if (!/(Westminster|WCF|Confession|1689)[\s\S]*\d/.test(n.nodeValue || '')) return NodeFilter.FILTER_REJECT;
       for (var p = n.parentNode; p && p !== root; p = p.parentNode){
         if (p.nodeName === 'A') return NodeFilter.FILTER_REJECT;
       }
@@ -127,9 +127,10 @@ function linkifyWestminster(root){
     for (var i = 0; i < r.length; i++) n += v[r[i]] < (v[r[i + 1]] || 0) ? -v[r[i]] : v[r[i]];
     return n;
   }
+  var lbc = false;   // the place being linked is in the 1689 Confession, not Westminster
   function mk(label, ch, sec){
     var a = document.createElement('a');
-    a.href = 'westminster.html#wcf-' + ch + (sec ? '-' + sec : '');
+    a.href = (lbc ? 'confession1689.html#lbc-' : 'westminster.html#wcf-') + ch + (sec ? '-' + sec : '');
     a.className = 'wcf-link';
     a.textContent = label;
     return a;
@@ -138,9 +139,12 @@ function linkifyWestminster(root){
     var text = node.nodeValue, m, last = 0, frag = null;
     head.lastIndex = 0;
     while ((m = head.exec(text))){
+      lbc = /^1689/.test(m[1]);
+      // a bare "1689 22" is a place only after "; " or "(" ("Westminster 32.1; 1689 31"); elsewhere it may be a year running on
+      if (lbc && m[1] === '1689' && !m[4] && !/[;(][\s\u00a0]*$/.test(text.slice(0, m.index))) continue;
       var ch = /^\d/.test(m[3]) ? +m[3] : roman(m[3]);
       if (/\($/.test(m[2]) && !m[4]) continue;   // "Westminster (1646)" is a date, not a place
-      if (ch < 1 || ch > 33) continue;
+      if (ch < 1 || ch > (lbc ? 32 : 33)) continue;
       if (m[1] === 'Confession'){
         // bare "Confession 24.5" only where no other name comes before it ("Belgic Confession 29")
         if (!m[4] || /[A-Za-z][\s ]*$/.test(text.slice(0, m.index))) continue;
@@ -155,7 +159,7 @@ function linkifyWestminster(root){
       while ((r = more.exec(text.slice(pos)))){
         var c2 = r[3] ? +r[2] : (hasSec ? ch : +r[2]);
         var s2 = r[3] ? r[3] : (hasSec ? r[2] : null);
-        if (c2 < 1 || c2 > 33) break;
+        if (c2 < 1 || c2 > (lbc ? 32 : 33)) break;
         frag.appendChild(document.createTextNode(r[1]));
         frag.appendChild(mk(r[0].slice(r[1].length), c2, s2));
         ch = c2; hasSec = !!s2;

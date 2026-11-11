@@ -48,6 +48,8 @@ REFS = [
     ('creeds', 'CREEDS', 'Creeds & Confessions', 'Creeds', by_name('creed-')),
     ('solas', 'SOLAS', 'The Five Solas', 'Solas', lambda e, i: e['id']),
     ('westminster', 'WCF', 'The Westminster Confession', 'Westminster', lambda e, i: e['id']),
+    ('confession1689', 'LBC', 'The 1689 Baptist Confession', '1689', lambda e, i: e['id']),
+    ('heidelberg', 'HC', 'The Heidelberg Catechism', 'Heidelberg', lambda e, i: e['id']),
     ('timeline', 'TIMELINE', 'Bible Timeline & Maps', 'Timeline', lambda e, i: 'tl-' + e['id']),
     ('prayer', 'MONTHS', 'Monthly Prayer', 'Prayer', lambda e, i: 'card-%d' % i),
 ]

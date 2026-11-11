@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4169"></script>
+<script src="display.js?v=4170"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -693,7 +693,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4169"></script>
+<script src="scripture-links.js?v=4170"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1577,7 +1577,7 @@ function sxRun(keep) {
 // Filters: All, a Testament, Studies, Reference (with a second row for each of
 // its pages, as 'r:dictionary' and so on) and Monthly Prayer ('r:prayer').
 var SX_REFS = [['dictionary', 'Dictionary'], ['figures', 'Figures'], ['philosophers', 'Philosophers'], ['heresies', 'Heresies'],
-               ['councils', 'Councils'], ['creeds', 'Creeds'], ['solas', 'Solas'], ['timeline', 'Timeline']];
+               ['councils', 'Councils'], ['creeds', 'Creeds'], ['solas', 'Solas'], ['timeline', 'Timeline'], ['confession1689', '1689'], ['heidelberg', 'Heidelberg']];
 function sxInRef() { return sx.filter === 'REF' || (/^r:/.test(sx.filter) && sx.filter !== 'r:prayer'); }
 function sxChips() {
   var chip = function(f, on){
@@ -2014,6 +2014,14 @@ function buildHome() {
     + '<div class="book-row" onclick="window.location.href=\'westminster.html\'">'
     + '<div class="row-name">The Westminster Confession</div>'
     + '<div class="row-sub">All 33 chapters in plain English, with what each section means</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'confession1689.html\'">'
+    + '<div class="row-name">The 1689 Baptist Confession</div>'
+    + '<div class="row-sub">The confession this commentary follows: all 32 chapters in plain English, and where it differs from Westminster</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'heidelberg.html\'">'
+    + '<div class="row-name">The Heidelberg Catechism</div>'
+    + '<div class="row-sub">Our only comfort in life and in death: all 129 questions in plain English</div>'
     + '<div class="row-arrow">&#8250;</div></div>'
     + '<div class="book-row" onclick="window.location.href=\'solas.html\'">'
     + '<div class="row-name">The Five Solas</div>'
