@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4165"></script>
+<script src="display.js?v=4166"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -444,6 +444,7 @@ body.reading #reader-screen{padding-bottom:calc(3.3rem + env(safe-area-inset-bot
 .about-body p,.dl-text{color:var(--muted);font-size:.95rem}
 .dl-btn,.ts-reset{background:none;border:1px solid var(--hair);color:var(--gold);border-radius:999px;font-family:var(--text);font-size:.98rem;padding:.55rem 1.2rem}
 .dl-bar{height:2px;background:var(--hair-soft)}
+.dl-remove{display:block;background:none;border:0;color:var(--muted);font-family:var(--text);font-size:.85rem;text-decoration:underline;text-underline-offset:3px;padding:.8rem 0 0;cursor:pointer;touch-action:manipulation}
 .app-ver{font-family:var(--display);color:var(--faint);letter-spacing:.14em;font-size:.82rem;padding:.2rem 1rem 2.2rem}
 .app-ver:before{content:"✝";display:block;color:var(--gold-soft);font-size:.9rem;margin-bottom:.6rem;letter-spacing:0}
 
@@ -692,7 +693,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4165"></script>
+<script src="scripture-links.js?v=4166"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1306,7 +1307,7 @@ function tsClose() {
 /* ── Offline download: saves every book and study into the service worker's
    persistent data cache (sw.js DATA_CACHE), which survives app updates. ── */
 var DL_CACHE = 'commentaries-data';
-var dlBusy = false;
+var dlBusy = false, dlNote = '';
 function dlFiles() { return BOOKS.map(function(b){ return 'data/' + b.id + '.json'; }).concat(['data/glossary.json', 'data/study-links.json']); }
 function dlToggle() {
   var b = document.getElementById('dl-body'), c = document.getElementById('dl-chevron');
@@ -1324,12 +1325,14 @@ function dlRefresh() {
   caches.open(DL_CACHE).then(function(c){ return c.keys(); }).then(function(keys){
     var have = {}; keys.forEach(function(r){ have[new URL(r.url).pathname.replace(/^.*\/data\//, 'data/')] = 1; });
     var files = dlFiles(), n = files.filter(function(f){ return have[f]; }).length;
+    var note = dlNote; dlNote = '';
+    var rm = document.getElementById('dl-remove'); if (rm) rm.style.display = keys.length ? 'block' : 'none';
     if (n >= files.length) {
-      t.innerHTML = 'Everything is saved on this device &mdash; all ' + BOOKS.length + ' books and studies can be read without a connection. Updates still arrive automatically when you are online.';
+      t.innerHTML = 'Everything is saved on this device: all ' + BOOKS.length + ' books and studies can be read without a connection. Updates still arrive automatically when you are online.';
       btn.textContent = 'Download again'; btn.disabled = false;
       dlStatus('saved');
     } else {
-      t.textContent = (n ? n + ' of ' + files.length + ' are saved so far. ' : '') + 'Save every book and study on this device (about 24 MB) so the whole app works without a connection — on a flight or wherever there is no signal.';
+      t.textContent = note + (n ? n + ' of ' + files.length + ' are saved so far. ' : '') + 'Save every book and study on this device (about 24 MB) so the whole app works without a connection, on a flight or wherever there is no signal.';
       btn.textContent = n ? 'Download the rest' : 'Download everything'; btn.disabled = false;
       dlStatus(n ? n + ' / ' + files.length + ' saved' : 'not saved');
     }
@@ -1341,6 +1344,7 @@ function dlStart() {
   var t = document.getElementById('dl-text'), btn = document.getElementById('dl-btn'), bar = document.getElementById('dl-bar');
   var files = dlFiles(), done = 0, failed = 0, next = 0;
   btn.disabled = true; bar.style.display = 'block';
+  var rm0 = document.getElementById('dl-remove'); if (rm0) rm0.style.display = 'none';
   sxMeta().catch(function(){ return null; }).then(function(m){
     if (m) files = files.concat(['search/places.json'], m.shards.map(function(s){ return 'search/w-' + s + '.json'; }), (m.refs || []).map(function(r){ return 'search/r-' + r[0] + '.json'; }),
       m.pairs ? m.pairs.shards.map(function(s){ return 'search/p-' + s + '.json'; }) : []);
@@ -1360,10 +1364,24 @@ function dlStart() {
     return Promise.all([step(), step(), step(), step()]);
   }).then(function(){
     dlBusy = false; bar.style.display = 'none';
-    if (failed) { dlStatus('incomplete'); t.textContent = failed + ' could not be downloaded (check the connection) — tap to try again.'; btn.textContent = 'Try again'; btn.disabled = false; }
+    if (failed) { dlStatus('incomplete'); t.textContent = failed + ' could not be downloaded (check the connection). Tap to try again.'; btn.textContent = 'Try again'; btn.disabled = false; }
     else dlRefresh();
     if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
   });
+}
+
+/* Remove the saved books, studies and search files (the data cache only:
+   the app itself, bookmarks and settings stay; anything can be downloaded again). */
+function dlRemove() {
+  if (dlBusy || !window.caches) return;
+  if (!confirm('Remove the saved books and studies from this device?\n\nThe app, your bookmarks and settings stay. You will need a connection to read until you download them again.')) return;
+  var est = function(){ return (navigator.storage && navigator.storage.estimate) ? navigator.storage.estimate().then(function(e){ return e.usage || 0; }).catch(function(){ return 0; }) : Promise.resolve(0); };
+  var before = 0;
+  est().then(function(u){ before = u; return caches.delete(DL_CACHE); }).then(est).then(function(after){
+    var mb = Math.round((before - after) / 1048576);
+    dlNote = 'Removed from this device' + (mb > 0 ? ' (about ' + mb + ' MB freed)' : '') + '. ';
+    dlRefresh();
+  }).catch(function(){ dlRefresh(); });
 }
 
 /* ── Version line at the foot of the home screen: the version running on this
@@ -2023,7 +2041,8 @@ function buildHome() {
     + '<div class="dl-body" id="dl-body">'
     + '<div class="dl-text" id="dl-text">Checking what is saved on this device&hellip;</div>'
     + '<div class="dl-bar" id="dl-bar"><div></div></div>'
-    + '<button class="dl-btn" id="dl-btn" onclick="dlStart()" disabled>Download everything</button></div>'
+    + '<button class="dl-btn" id="dl-btn" onclick="dlStart()" disabled>Download everything</button>'
+    + '<button class="dl-remove" id="dl-remove" onclick="dlRemove()" style="display:none">Remove from this device</button></div>'
     + '<div class="section-toggle" onclick="toggleAbout()"><span class="section-title">About Soli Deo Gloria</span>'
     + '<span class="section-chevron" id="about-chevron">&#8250;</span></div>'
     + '<div class="about-body" id="about-body">'
