@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4166"></script>
+<script src="display.js?v=4167"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -693,7 +693,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4166"></script>
+<script src="scripture-links.js?v=4167"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -787,6 +787,7 @@ const BOOKS = [
   { id:'grace-of-god',          title:'The Grace of God',      subtitle:'Amazing Grace from First to Last',                    testament:'SL', group:'salvation', chapters:6 },
   { id:'theology-distinctives', title:'The Doctrines of Grace', subtitle:'The Great Doctrines of the Reformed Faith',           testament:'SL', group:'salvation', chapters:8 },
   { id:'assurance',             title:'Assurance of Salvation',subtitle:'Knowing That You Are His',                            testament:'SL', group:'salvation', chapters:6 },
+  { id:'union-with-christ', title:'Union with Christ', subtitle:'What It Means to Be in Christ, and Why It Matters', testament:'SL', group:'salvation', chapters:6 },
   { id:'jesus-and-apostles',    title:'Jesus & the Apostles',  subtitle:'One Gospel, Two Moments — Did They Preach the Same Message?', testament:'SL', group:'salvation', chapters:6 },
   // The Church
   { id:'the-church', title:'The Church', subtitle:'The Household of God', testament:'SL', group:'church', chapters:6 },
@@ -812,6 +813,7 @@ const BOOKS = [
   { id:'biblical-sexuality', title:'Biblical Sexuality', subtitle:'God\'s Good Design for Body and Desire', testament:'SL', group:'family', chapters:6 },
   { id:'christian-marriage',    title:'Christian Marriage',    subtitle:'Covenant Love and the Gospel',                        testament:'SL', group:'family', chapters:6 },
   { id:'divorce-remarriage', title:'Divorce & Remarriage', subtitle:'Truth and Grace for Broken Covenants', testament:'SL', group:'family', chapters:5 },
+  { id:'singleness', title:'Singleness', subtitle:'Whole in Christ, at Home in His Family', testament:'SL', group:'family', chapters:6 },
   { id:'biblical-manhood',      title:'Biblical Manhood',      subtitle:'Strength for the Sake of Others',                     testament:'SL', group:'family', chapters:6 },
   { id:'biblical-womanhood',    title:'Biblical Womanhood',    subtitle:'Strength and Dignity in Christ',                      testament:'SL', group:'family', chapters:6 },
   { id:'christian-parenting',   title:'Christian Parenting',   subtitle:'Training Up Children in the Fear of the Lord',        testament:'SL', group:'family', chapters:6 },
@@ -828,12 +830,14 @@ const BOOKS = [
   { id:'christian-and-world', title:'The Christian & the World', subtitle:'Citizens of Heaven, Neighbours on Earth', testament:'SL', group:'world', chapters:6 },
   { id:'life-ethics', title:'Life & Death Ethics', subtitle:'Every Life a Gift from God', testament:'SL', group:'world', chapters:5 },
   { id:'technology-mind', title:'Technology & the Christian Mind', subtitle:'Using Our Tools Without Being Used by Them', testament:'SL', group:'world', chapters:5 },
-  { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', group:'world', chapters:11 },
+  { id:'evangelism',            title:'Evangelism',            subtitle:'Understanding People, Sharing the Gospel',             testament:'SL', group:'world', chapters:13 },
   { id:'missions-nations', title:'Missions & the Nations', subtitle:'Let the Peoples Praise You, O God', testament:'SL', group:'world', chapters:5 },
   { id:'apologetics',           title:'Apologetics',           subtitle:'Defending and Commending the Christian Faith',        testament:'SL', group:'world', chapters:6 },
+  { id:'faith-science', title:'Faith & Science', subtitle:'Two Books, One Author', testament:'SL', group:'world', chapters:6 },
   // Suffering & Soul Care
   { id:'christian-suffering',   title:'Christian Suffering',   subtitle:'Held Fast Through the Fire',                         testament:'SL', group:'care', chapters:6 },
   { id:'biblical-counseling',   title:'Biblical Counseling',   subtitle:'Caring for Souls with the Word of God',              testament:'SL', group:'care', chapters:21 },
+  { id:'depression', title:'Depression & the Christian', subtitle:'Light and Help for the Dark Valley', testament:'SL', group:'care', chapters:6 },
   { id:'death-dying-heaven', title:'Death, Dying & Heaven', subtitle:'Hope at the Last Enemy', testament:'SL', group:'care', chapters:6 },
   // God's Plan & the Last Things
   { id:'covenant-theology',     title:'Covenant Theology',     subtitle:'The Backbone of Reformed Biblical Theology',          testament:'SL', group:'story', chapters:6 },
