@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4185"></script>
+<script src="display.js?v=4186"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -694,7 +694,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4185"></script>
+<script src="scripture-links.js?v=4186"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -842,6 +842,7 @@ const BOOKS = [
   // Faith in the World
   { id:'christian-work',        title:'Christian at Work',     subtitle:'Vocation, Calling, and the Glory of God',             testament:'SL', group:'world', chapters:6 },
   { id:'christian-business', title:'Leading a Business for Christ', subtitle:'Employees, Customers, Suppliers, Financiers and Profit before God', testament:'SL', group:'world', chapters:8 },
+  { id:'leadership', title:'Leadership', subtitle:'God’s Gift of Order, from the Home to the Nation', testament:'SL', group:'world', chapters:6 },
   { id:'money-stewardship',     title:'Money & Stewardship',   subtitle:'Wealth, Generosity, and the Kingdom of God',         testament:'SL', group:'world', chapters:6 },
   { id:'christian-and-world', title:'The Christian & the World', subtitle:'Citizens of Heaven, Neighbours on Earth', testament:'SL', group:'world', chapters:6 },
   { id:'life-ethics', title:'Life & Death Ethics', subtitle:'Every Life a Gift from God', testament:'SL', group:'world', chapters:5 },
@@ -2633,8 +2634,11 @@ function studyTitleLinks(root) {
     var id = ST_TITLES[stNorm(em.textContent)];
     if (!id || (currentBook && currentBook.id === id)) return;
     if (!/\s/.test(em.textContent.trim())) {
-      var host = em.parentNode, ctx = host ? host.textContent : '', at = ctx.indexOf(em.textContent);
-      if (!/stud(y|ies)/i.test(ctx.slice(Math.max(0, at - 40), at + em.textContent.length + 25))) return;
+      // the words just before and after this very <em> (not an earlier mention of the same word)
+      var before = '', after = '', n;
+      for (n = em.previousSibling; n && before.length < 40; n = n.previousSibling) before = (n.textContent || '') + before;
+      for (n = em.nextSibling; n && after.length < 25; n = n.nextSibling) after += (n.textContent || '');
+      if (!/stud(y|ies)/i.test(before.slice(-40) + ' ' + after.slice(0, 25))) return;
     }
     var a = document.createElement('a');
     a.href = '#'; a.className = 'study-link'; a.setAttribute('data-study', id);
