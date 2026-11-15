@@ -1,4 +1,4 @@
-const CACHE = 'commentaries-v4256';
+const CACHE = 'commentaries-v4257';
 // Book data lives in its own cache that survives version bumps, so a
 // "Download for offline" is not wiped every time the app is updated.
 const DATA_CACHE = 'commentaries-data';
@@ -20,7 +20,7 @@ const PAGES = [
   './westminster.html',
   './confession1689.html',
   './heidelberg.html',
-  './timeline.html',
+  './timeline.html', './grammar.html',
   './manifest.json',
   './icons/icon-180.png',
   './icons/icon-192.png',
