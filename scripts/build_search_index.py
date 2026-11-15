@@ -50,6 +50,7 @@ REFS = [
     ('westminster', 'WCF', 'The Westminster Confession', 'Westminster', lambda e, i: e['id']),
     ('confession1689', 'LBC', 'The 1689 Baptist Confession', '1689', lambda e, i: e['id']),
     ('heidelberg', 'HC', 'The Heidelberg Catechism', 'Heidelberg', lambda e, i: e['id']),
+    ('bible-people', 'TERMS', 'People of the Bible', 'People', lambda e, i: 'term-' + e['anchor']),
     ('bible-world', 'TERMS', 'The Bible’s World', 'Bible’s World', lambda e, i: 'term-' + e['anchor']),
     ('grammar', 'TERMS', 'Grammar for Bible Readers', 'Grammar', lambda e, i: 'term-' + e['anchor']),
     ('timeline', 'TIMELINE', 'Bible Timeline & Maps', 'Timeline', lambda e, i: 'tl-' + e['id']),

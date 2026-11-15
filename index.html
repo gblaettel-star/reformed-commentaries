@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4260"></script>
+<script src="display.js?v=4261"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -694,7 +694,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4260"></script>
+<script src="scripture-links.js?v=4261"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1606,7 +1606,7 @@ function sxRun(keep) {
 // Filters: All, a Testament, Studies, Reference (with a second row for each of
 // its pages, as 'r:dictionary' and so on) and Monthly Prayer ('r:prayer').
 var SX_REFS = [['dictionary', 'Dictionary'], ['figures', 'Figures'], ['philosophers', 'Philosophers'], ['heresies', 'Heresies'],
-               ['councils', 'Councils'], ['creeds', 'Creeds'], ['solas', 'Solas'], ['timeline', 'Timeline'], ['confession1689', '1689'], ['heidelberg', 'Heidelberg'], ['grammar', 'Grammar'], ['bible-world', 'Bible’s World']];
+               ['councils', 'Councils'], ['creeds', 'Creeds'], ['solas', 'Solas'], ['timeline', 'Timeline'], ['confession1689', '1689'], ['heidelberg', 'Heidelberg'], ['grammar', 'Grammar'], ['bible-world', 'Bible’s World'], ['bible-people', 'People']];
 function sxInRef() { return sx.filter === 'REF' || (/^r:/.test(sx.filter) && sx.filter !== 'r:prayer'); }
 function sxChips() {
   var chip = function(f, on){
@@ -2020,6 +2020,10 @@ function buildHome() {
     + '<div class="row-name">Theological Dictionary</div>'
     + '<div class="row-sub">Key words of the faith — explained and felt</div>'
     + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'bible-people.html\'">'
+    + '<div class="row-name">People of the Bible</div>'
+    + '<div class="row-sub">Who they were, their story, and what to remember</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
     + '<div class="book-row" onclick="window.location.href=\'bible-world.html\'">'
     + '<div class="row-name">The Bible&rsquo;s World</div>'
     + '<div class="row-sub">Money, time, feasts, groups, rulers and daily life in Bible times</div>'
@@ -2082,7 +2086,7 @@ function buildHome() {
     + '<span class="section-title">Go to a Passage</span>'
     + '<span class="section-count">66 books</span><span class="section-chevron">&#8250;</span></div>'
     + section('st', 'Studies by Topic', stHtml, false, st.length + ' studies')
-    + section('ref', 'Reference', refHtml, false, '9 pages')
+    + section('ref', 'Reference', refHtml, false, '10 pages')
     + section('prayer', 'Monthly Prayer', prayerHtml, false, '12 prayers')
     + '</div>';
   // Settings

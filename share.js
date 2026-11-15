@@ -54,7 +54,7 @@
   var PAGE = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
   var PAGE_NAMES = { dictionary: 'Dictionary', figures: 'Figures', philosophers: 'Philosophers', heresies: 'Heresies',
     councils: 'Councils', creeds: 'Creeds', solas: 'Five Solas', westminster: 'Westminster', confession1689: '1689 Confession',
-    heidelberg: 'Heidelberg', timeline: 'Timeline', grammar: 'Grammar', 'bible-world': 'Bible’s World', prayer: 'Monthly Prayer' };
+    heidelberg: 'Heidelberg', timeline: 'Timeline', grammar: 'Grammar', 'bible-world': 'Bible’s World', 'bible-people': 'People', prayer: 'Monthly Prayer' };
   function bmRead() {
     try { var o = JSON.parse(localStorage.getItem(BM_KEY) || '{"v":1,"items":[]}'); return o && Array.isArray(o.items) ? o : null; }
     catch (e) { return null; }   // unreadable: leave it for the home screen to set aside, never write over it
