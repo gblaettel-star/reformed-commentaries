@@ -38,7 +38,7 @@
   // in the pages use fixed colours rather than the shared variables. The dim
   // overlays behind panels (ids ending in "backdrop", and #rc-bd) are left
   // see-through.
-  function scheme(t, bg, fg, accent, line, soft, hl, hlfg) {
+  function scheme(t, bg, fg, accent, line, soft, hl, hlfg, panel) {
     var h = 'html[data-theme=' + t + ']';
     var all = h + ' body *:not([id$=backdrop]):not([id=rc-bd]):not(mark):not(.sx-mark)';
     return h + '{--ink:' + bg + ';--ink-2:' + bg + ';--ink-3:' + bg + ';--parch:' + fg + ';--parch-2:' + fg
@@ -58,7 +58,22 @@
       + h + ' input[type=range]{accent-color:' + accent + '}'
       + h + ' ::placeholder{color:' + fg + '!important;opacity:.75}'
       + h + ' body *:focus-visible{outline:3px solid ' + accent + '!important;outline-offset:2px}'
-      + h + ' [id$=backdrop],' + h + ' #rc-bd{background:rgba(0,0,0,.55)!important}';
+      + h + ' [id$=backdrop],' + h + ' #rc-bd{background:rgba(0,0,0,.55)!important}'
+      // Things that float over the text (the "Back to" chips, toasts, the
+      // verse-jump pill) are filled with the accent colour so they stand out
+      // from the page, with the page colour as their text.
+      + h + ' body :is(#back-chip,#sx-back,#bm-toast,.refbm-toast,#vjump-pill),'
+      + h + ' body :is(#back-chip,#sx-back,#bm-toast,.refbm-toast,#vjump-pill) *'
+      + '{background-color:' + accent + '!important;color:' + bg + '!important;border-color:' + accent + '!important}'
+      + h + ' body :is(#back-chip,#sx-back,#bm-toast,.refbm-toast,#vjump-pill)'
+      + '{box-shadow:0 3px 12px rgba(0,0,0,.35)!important;overflow:hidden}'
+      // The bars at top and bottom and the panels that slide up are a shade
+      // deeper than the page, with a clear edge, so they read as separate.
+      + h + ' body :is(header,#pager,[id$=-sheet],#rc),' + h + ' body :is(header,#pager,[id$=-sheet],#rc) *:not(input):not(select):not(.ds-sw):not(mark):not(.sx-mark)'
+      + '{background-color:' + panel + '!important}'
+      + h + ' body header{border-bottom:1px solid ' + line + '!important}'
+      + h + ' body #pager{border-top:1px solid ' + line + '!important}'
+      + h + ' body :is([id$=-sheet],#rc){border-top:2px solid ' + accent + '!important;box-shadow:0 -6px 20px rgba(0,0,0,.25)!important}';
   }
 
   var css =
@@ -72,11 +87,11 @@
     + 'html[data-bold] body,html[data-bold] body *{font-weight:600!important;-webkit-font-smoothing:auto!important}'
     + 'html[data-bold] body :is(strong,b,h1,h2,h3,h4){font-weight:800!important}'
     // Light: near-black on warm white, dark amber accents (7:1 contrast).
-    + scheme('light', '#fbf7ef', '#161616', '#6b3f00', '#8a7350', '#c9bda6', '#f2d27a', '#161616')
+    + scheme('light', '#fbf7ef', '#161616', '#6b3f00', '#8a7350', '#c9bda6', '#f2d27a', '#161616', '#efe6d4')
     // Sepia: dark brown on warm paper (11:1), brown accents (7.3:1), amber highlights.
-    + scheme('sepia', '#f4ecd8', '#3b2f22', '#6e4214', '#9c8158', '#d8c9a8', '#e8c77a', '#3b2f22')
+    + scheme('sepia', '#f4ecd8', '#3b2f22', '#6e4214', '#9c8158', '#d8c9a8', '#e8c77a', '#3b2f22', '#e6d8b8')
     // High contrast: white on black, yellow accents.
-    + scheme('contrast', '#000', '#fff', '#ffe14d', '#ffe14d', '#9a9a9a', '#ffe14d', '#000');
+    + scheme('contrast', '#000', '#fff', '#ffe14d', '#ffe14d', '#9a9a9a', '#ffe14d', '#000', '#111');
 
   var st = document.createElement('style');
   st.id = 'display-css';
