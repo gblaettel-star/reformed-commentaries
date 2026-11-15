@@ -5,7 +5,7 @@
    Text & Display panel on the home screen (index.html). */
 (function () {
   var root = document.documentElement;
-  var THEMES = { night: '#0b1524', light: '#fbf7ef', sepia: '#f4ecd8', contrast: '#000000' };
+  var THEMES = { night: '#0b1524', light: '#fbf7ef', sepia: '#efe2c4', contrast: '#000000' };
   var FONT_URL = 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap';
 
   function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -73,7 +73,7 @@
       + '{background-color:' + panel + '!important}'
       + h + ' body header{border-bottom:1px solid ' + line + '!important}'
       + h + ' body #pager{border-top:1px solid ' + line + '!important}'
-      + h + ' body :is([id$=-sheet],#rc){border-top:2px solid ' + accent + '!important;box-shadow:0 -6px 20px rgba(0,0,0,.25)!important}';
+      + h + ' body :is([id$=-sheet],#rc){border-top:2px solid ' + accent + '!important}';
   }
 
   var css =
@@ -88,8 +88,8 @@
     + 'html[data-bold] body :is(strong,b,h1,h2,h3,h4){font-weight:800!important}'
     // Light: near-black on warm white, dark amber accents (7:1 contrast).
     + scheme('light', '#fbf7ef', '#161616', '#6b3f00', '#8a7350', '#c9bda6', '#f2d27a', '#161616', '#efe6d4')
-    // Sepia: dark brown on warm paper (11:1), brown accents (7.3:1), amber highlights.
-    + scheme('sepia', '#f4ecd8', '#3b2f22', '#6e4214', '#9c8158', '#d8c9a8', '#e8c77a', '#3b2f22', '#e6d8b8')
+    // Sepia: dark brown on warm paper (10:1), brown accents (7.3:1), amber highlights.
+    + scheme('sepia', '#efe2c4', '#3b2f22', '#6e4214', '#8f7550', '#d3c09a', '#e8c77a', '#3b2f22', '#e6d4ae')
     // High contrast: white on black, yellow accents.
     + scheme('contrast', '#000', '#fff', '#ffe14d', '#ffe14d', '#9a9a9a', '#ffe14d', '#000', '#111');
 
