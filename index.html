@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4314"></script>
+<script src="display.js?v=4315"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -491,6 +491,13 @@ summary .copy-btn{right:1.8rem;opacity:.18}
 .vbv-quote{color:var(--parch-2);font-size:1.04rem;line-height:1.75;padding-left:.9rem;border-left:1px solid var(--hair);margin-bottom:.8rem}
 .vbv-commentary{line-height:1.85}
 .vbv-commentary p{margin-bottom:.95rem}
+.vbv-commentary details.qa{border:none;margin:0 0 .95rem}
+.vbv-commentary details.qa:last-of-type{border-bottom:none}
+.vbv-commentary details.qa>summary{font-family:inherit;text-transform:none;letter-spacing:0;font-size:inherit;font-weight:normal;color:inherit;line-height:inherit;padding:0 1.8rem 0 0}
+.vbv-commentary details.qa>summary:after{top:.9em}
+.vbv-commentary details.qa>summary .qa-more{color:var(--gold-soft);font-style:italic;font-size:.9em;white-space:nowrap}
+.vbv-commentary details.qa[open]>summary .qa-more{display:none}
+.vbv-commentary details.qa>p{margin:.5rem 0 0}
 .vbv-study{color:var(--muted)}
 .study-btn{border:1px solid var(--hair-soft);color:var(--parch-2);font-size:.86rem;padding:.15rem .75rem;font-style:italic}
 .study-btn:hover,.study-btn[aria-expanded="true"]{background:rgba(200,169,90,.07);border-color:var(--hair)}
@@ -694,7 +701,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4314"></script>
+<script src="scripture-links.js?v=4315"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -952,7 +959,7 @@ function buildShareText(btn) {
     var r = entry.querySelector('.vbv-ref'), q = entry.querySelector('.vbv-quote'), cm = entry.querySelector('.vbv-commentary');
     lines.push(shareHeader(r ? htmlToText(r.innerHTML) : ''));
     if (q)  { hasScripture = true; lines.push('', htmlToText(q.innerHTML)); }
-    if (cm) { lines.push('', htmlToText(cm.innerHTML)); }
+    if (cm) { var cmc = cm.cloneNode(true); cmc.querySelectorAll('.qa-more,.copy-btn').forEach(function(b){ b.remove(); }); lines.push('', htmlToText(cmc.innerHTML)); }
   } else if (sec) {
     var sr = sec.querySelector('.section-hd-ref'), so = sec.querySelector('.section-hd-overview');
     lines.push(shareHeader(sr ? htmlToText(sr.innerHTML) : ''));
@@ -962,7 +969,7 @@ function buildShareText(btn) {
     if (sm) { var smc = sm.cloneNode(true); smc.querySelectorAll('.copy-btn').forEach(function(b){ b.remove(); }); label = smc.textContent.trim(); }
     if (det.querySelector('.passage-text') || det.querySelector('.vbv-quote')) hasScripture = true;
     var dc = det.cloneNode(true);
-    dc.querySelectorAll('summary,.copy-btn').forEach(function(b){ b.remove(); });
+    dc.querySelectorAll(':scope > summary,.copy-btn,.qa-more').forEach(function(b){ b.remove(); });
     lines.push(shareHeader(label), '', htmlToText(dc.innerHTML));
   } else {
     return '';
@@ -997,7 +1004,7 @@ function copyShareText(text, btn) {
 // Drop a copy button into every shareable block after each render.
 function addCopyButtons() {
   var c = document.getElementById('content');
-  c.querySelectorAll('details > summary').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('beforeend', COPY_ICON); });
+  c.querySelectorAll('details:not(.qa) > summary').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('beforeend', COPY_ICON); });
   c.querySelectorAll('.section-hd').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
   c.querySelectorAll('.vbv-entry').forEach(function(s){ if (!s.querySelector('.copy-btn')) s.insertAdjacentHTML('afterbegin', COPY_ICON); });
   // An article: one button for the whole chapter, one beside each heading for its section
@@ -2281,6 +2288,7 @@ function render(idx) {
       if (curTheology) { html += '<details><summary>Theology' + curRange + '</summary><div class="accent-box">' + curTheology + '</div></details>'; curTheology = ''; }
       if (curExamples) { html += '<details><summary>Then &amp; Now' + curRange + '</summary><div class="accent-box">' + curExamples + '</div></details>'; curExamples = ''; }
     }
+    var qaFold = currentBook.id === 'mark' && k === 4;   // trial: fold question paragraphs
     ch.verseByVerse.forEach((v, i) => {
       if (v.sectionBreak) {
         flushVerses();
@@ -2297,7 +2305,7 @@ function render(idx) {
         entry += '<div class="vbv-ref">' + v.ref + '</div>';
         if (v.quote) { var q = v.quote.replace(/^[“”"]+/, '').replace(/^(&ldquo;|&rdquo;)+/, '').replace(/[“”"]+$/, '').replace(/(&ldquo;|&rdquo;)+$/, ''); entry += '<div class="vbv-quote">&ldquo;' + q + '&rdquo;</div>'; }
         if (v.note || (v.parallels && v.parallels.length)) entry += studyLine(v);
-        if (v.commentary) entry += '<div class="vbv-commentary">' + v.commentary + '</div>';
+        if (v.commentary) entry += '<div class="vbv-commentary">' + (qaFold ? foldQA(v.commentary) : v.commentary) + '</div>';
         entry += '</div>';
         verseBuffer.push(entry);
       }
@@ -2411,6 +2419,15 @@ function pagerLabel(dir) {
   return /\d/.test(ref) ? PK_ABBR[currentBook.id] + ' ' + k : ref;
 }
 function goTo(k)         { render(currentKeys.indexOf(+k)); }
+// Question-and-answer paragraphs (bold lead ending in "?") and "Where Christians differ" paragraphs
+// fold to their question; tap to read the answer. Search jumps open them (ancestor DETAILS are opened).
+function foldQA(c) {
+  return c.replace(/<p><strong>((?:(?!<\/strong>)[\s\S])*?)<\/strong>\s*([\s\S]*?)<\/p>/g, function(m, lead, rest) {
+    var plain = lead.replace(/<[^>]+>/g, '').trim();
+    if (!/\?$/.test(plain) && !/^Where Christians differ/.test(plain)) return m;
+    return '<details class="qa"><summary><strong>' + lead + '</strong> <span class="qa-more">read</span></summary><p>' + rest + '</p></details>';
+  });
+}
 function posGo(k, id)    { goTo(k); setTimeout(function(){ var e = id && document.getElementById(id); if (e) e.scrollIntoView(); else window.scrollTo(0, 0); }, 60); }
 function navigate(dir) {
   var newIdx = currentIdx + dir;
