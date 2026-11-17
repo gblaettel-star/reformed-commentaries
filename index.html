@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4329"></script>
+<script src="display.js?v=4330"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -699,7 +699,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4329"></script>
+<script src="scripture-links.js?v=4330"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -2434,7 +2434,7 @@ function boxAsides(c) {
     if (inner === undefined) { if (!/^\s*$/.test(m)) { if (open) { out += '</details>'; open = false; } out += m; } return m; }
     var lm = inner.match(/^<strong>([\s\S]*?)<\/strong>\s*/), lead = lm ? lm[1].replace(/<[^>]+>/g, '').trim() : '';
     var isD = /^Where Christians differ/.test(lead), isT = ASIDE_TX.test(lead), isV = /^This commentary’s view/.test(lead);
-    if (isV && open) { out += '<p>' + inner + '</p>'; return m; }
+    if ((isV || !lm) && open) { out += '<p>' + inner + '</p>'; return m; }
     if (open) { out += '</details>'; open = false; }
     if (!isD && !isT) { out += '<p>' + inner + '</p>'; return m; }
     var rest = inner.slice(lm[0].length), label, title = '';
