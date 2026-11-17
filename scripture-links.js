@@ -13,7 +13,9 @@
   try { v = parseFloat(localStorage.getItem('text-scale')) || 1; } catch (e) {}
   document.documentElement.style.setProperty('--ts', v);
   var st = document.createElement('style');
-  st.textContent = 'main{zoom:var(--ts,1)}html{touch-action:manipulation}';
+  // iPhone Safari otherwise "autosizes" text on its own, which fights the zoom below:
+  // the reading text then barely grows while pop-ups (sized directly) grow in full.
+  st.textContent = 'main{zoom:var(--ts,1)}html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}';
   (document.head || document.documentElement).appendChild(st);
 })();
 
