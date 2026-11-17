@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4333"></script>
+<script src="display.js?v=4334"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -699,7 +699,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4333"></script>
+<script src="scripture-links.js?v=4334"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1256,7 +1256,8 @@ function pkVerses() {
     if (!max) { pkGo(id, c, 0); return; }     // no verse-level entries: open the chapter
     var sameCh = currentBook && currentBook.id === id && currentKeys && currentKeys[currentIdx] === c && verseEntries.length;
     var curE = sameCh ? verseEntries[currentEntryIndex()] : null;
-    var h = '<button class="pk-wide" onclick="pkGo(\'' + id + '\',' + c + ',0)">&#8593; Top of ' + title + '</button><div class="pk-grid">';
+    var h = (pk.book.chapters === 1 ? '<button class="pk-wide" onclick="pkGo(\'' + id + '\',0,0)">Introduction to ' + pk.book.title + '</button>' : '')
+      + '<button class="pk-wide" onclick="pkGo(\'' + id + '\',' + c + ',0)">&#8593; Top of ' + title + '</button><div class="pk-grid">';
     for (var v = 1; v <= max; v++)
       h += '<button class="pk-n' + (curE && v >= curE.start && v <= curE.end ? ' cur' : '') + '" onclick="pkGo(\'' + id + '\',' + c + ',' + v + ')">' + v + '</button>';
     body.innerHTML = h + '</div>';
