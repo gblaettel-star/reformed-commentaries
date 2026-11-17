@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="display.js?v=4329"></script>
+<title>Biblical Counselling Worldwide</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation}
+header h1:hover{opacity:.8}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Nav chips */
+.sola-nav{display:flex;flex-wrap:wrap;gap:.4rem;padding:.65rem 1rem;background:#0a1e30;border-bottom:2px solid #2a4a6c;justify-content:center}
+.sola-chip{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.3rem .8rem;border-radius:20px;cursor:pointer;font-size:.8rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s;touch-action:manipulation}
+.sola-chip:hover{border-color:#c9a84c;color:#c9a84c}
+
+/* Intro banner */
+.intro-banner{background:#0a1e30;border-bottom:1px solid #2a4a6c;padding:1.1rem 1.5rem;text-align:center}
+.intro-text{color:#a0b8c0;font-size:.9rem;line-height:1.8;max-width:640px;margin:0 auto}
+.intro-text + .intro-text{margin-top:.7rem}
+
+main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
+
+/* Section heads (restyled by sanctuary-pages.css) */
+.era-head{color:#c9a84c;font-size:1.1rem;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid #c9a84c;padding-bottom:.4rem;margin:2.2rem 0 1.2rem;scroll-margin-top:7rem}
+.era-head:first-child{margin-top:0}
+.sub-head{color:var(--muted,#7090b0);font-family:var(--display,'Georgia'),serif;font-weight:500;font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;margin:1.6rem 0 .6rem;scroll-margin-top:7rem}
+.section-note{color:var(--parch-2,#a0b8c8);font-style:italic;font-size:.95rem;line-height:1.75;margin-bottom:1rem}
+
+/* Entries (council-card classes are restyled by sanctuary-pages.css) */
+.council-card{margin-bottom:1.4rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+.council-header{padding:1rem 1.2rem .3rem}
+.council-name{color:#c9a84c;font-size:1.25rem;font-weight:bold;line-height:1.25}
+.council-name a{color:inherit;text-decoration:none;border-bottom:1px solid var(--hair,rgba(201,168,76,.4))}
+.council-name a:hover{border-bottom-color:var(--gold,#c9a84c)}
+.council-meta{color:#7090b0;font-size:.9rem;margin-top:.3rem}
+.council-body{padding:.4rem 1.2rem 1.1rem}
+.council-body p{margin-bottom:.6rem}
+.org-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.2rem}
+.org-tag{border:1px solid var(--hair,#2a4a6c);border-radius:999px;color:var(--parch-2,#a0b8c8);font-style:italic;font-size:.85rem;padding:.12rem .7rem}
+.org-tag.lang{color:var(--gold,#c9a84c)}
+
+/* Urgent help */
+.urgent{border-left:2px solid #c0605a;padding:.5rem 0 .5rem 1rem;margin:1rem auto 0;max-width:640px;text-align:left}
+.urgent-label{display:block;color:#e0908a;font-family:var(--display,'Georgia'),serif;font-weight:500;letter-spacing:.22em;text-transform:uppercase;font-size:.8rem;margin-bottom:.3rem}
+.urgent-text{color:var(--parch,#e8dcc8);font-size:.95rem;line-height:1.75}
+
+.checked{color:var(--muted,#7090b0);font-size:.9rem;font-style:italic;text-align:center;margin-top:2.4rem;line-height:1.7}
+
+/* Scripture -> ESV links (matches the commentary) */
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
+@media (max-width:520px){main{padding:1.2rem 1rem}.intro-banner{padding:1rem}}
+</style>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="sanctuary-pages.css?v=4329">
+<meta name="theme-color" content="#0b1524">
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1 onclick="window.scrollTo({top:0,behavior:'smooth'})">Biblical Counselling Worldwide</h1>
+  </div>
+  <h2>Where to find a biblical counsellor, and where to train as one</h2>
+</header>
+
+<div class="sola-nav">
+  <button class="sola-chip" onclick="jumpTo('finding')">Finding a counsellor</button>
+  <button class="sola-chip" onclick="jumpTo('regions')">By region</button>
+  <button class="sola-chip" onclick="jumpTo('training')">Training and resources</button>
+</div>
+
+<div class="intro-banner">
+  <p class="intro-text">This is a short list of organisations that hold to the sufficiency of Scripture for the care of souls, while welcoming ordinary medical care where it is needed. It lists only a few of the best known and most trusted in each region; inclusion is not endorsement of everything an organisation says, or of every counsellor it lists. Checked November 2026.</p>
+  <p class="intro-text">Seek a biblical counsellor through your own church first, or through one of these organisations if your church has none, and tell your pastor. A good counsellor will ask you to have a medical check-up, then work through the struggle with you from God’s Word.</p>
+  <div class="urgent">
+    <span class="urgent-label">Urgent help</span>
+    <div class="urgent-text">Thoughts of suicide, self-harm, psychosis or severe anorexia need medical or emergency help today. Call your local emergency number or see a doctor now; counselling comes alongside that care, never instead of it.</div>
+  </div>
+</div>
+
+<main id="mainContent">
+
+<h2 class="era-head" id="finding">Finding a counsellor</h2>
+<p class="section-note">Directories of counsellors who hold to the sufficiency of Scripture. Ask any counsellor about their beliefs, training and church before you begin.</p>
+
+<div class="council-card" id="acbc">
+  <div class="council-header">
+    <div class="council-name"><a href="https://biblicalcounseling.com/find-a-counselor/" target="_blank" rel="noopener">ACBC: Find a Counselor</a></div>
+    <div class="council-meta">Association of Certified Biblical Counselors · Kansas City, USA · worldwide directory</div>
+  </div>
+  <div class="council-body">
+    <p>The largest certifying body for biblical counsellors. Its map lists certified counsellors and can be searched by place, language, in-person or online, and the counsellor’s sex and areas of help. Most are in North America, with others across the world.</p>
+    <div class="org-tags"><span class="org-tag">Directory</span><span class="org-tag">Certification</span><span class="org-tag">Conservative evangelical, broadly Reformed; offices hosted by Midwestern Baptist Theological Seminary (Southern Baptist)</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="ccef">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.ccef.org/find-a-counselor-near-you/" target="_blank" rel="noopener">CCEF: Find a Biblical Counselor Near You</a></div>
+    <div class="council-meta">Christian Counseling &amp; Educational Foundation · Glenside, Pennsylvania, USA</div>
+  </div>
+  <div class="council-body">
+    <p>CCEF’s guidance on finding a biblical counsellor where you live. CCEF also has its own team of counsellors, and its writers (David Powlison, Ed Welch, Paul Tripp and others) have shaped biblical counselling for decades.</p>
+    <div class="org-tags"><span class="org-tag">Directory</span><span class="org-tag">Counselling</span><span class="org-tag">Reformed evangelical; long ties to Westminster Theological Seminary (Presbyterian)</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="iabc">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.iabc.net/counselor" target="_blank" rel="noopener">IABC: Find a Counselor</a></div>
+    <div class="council-meta">International Association of Biblical Counselors · USA</div>
+  </div>
+  <div class="council-body">
+    <p>Rather than a public map, IABC’s member services office keeps a current list of its counsellors and training centres; you send a short request and they put you in touch.</p>
+    <div class="org-tags"><span class="org-tag">Referral by request</span><span class="org-tag">Broadly evangelical; less confessional than ACBC or CCEF</span></div>
+  </div>
+</div>
+
+<h2 class="era-head" id="regions">By region</h2>
+
+<h3 class="sub-head" id="north-america">North America</h3>
+
+<div class="council-card" id="faith">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.faithlafayette.org/counseling" target="_blank" rel="noopener">Faith Biblical Counseling Ministries</a></div>
+    <div class="council-meta">Faith Church · Lafayette, Indiana, USA</div>
+  </div>
+  <div class="council-body">
+    <p>A church-based counselling centre that sees people in person, and one of the best-known places to train. Its <a href="https://www.faithlafayette.org/counseling/training" target="_blank" rel="noopener">training</a> includes an annual February conference, live-streamed and on-demand tracks (some in Spanish) and a master’s degree through Faith Bible Seminary.</p>
+    <div class="org-tags"><span class="org-tag">Counselling</span><span class="org-tag">Training</span><span class="org-tag">Broadly Reformed evangelical, local-church based</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="cbcc">
+  <div class="council-header">
+    <div class="council-name"><a href="https://canadianbcc.ca/find-a-counsellor/" target="_blank" rel="noopener">Canadian Biblical Counselling Coalition</a></div>
+    <div class="council-meta">Canada · national</div>
+  </div>
+  <div class="council-body">
+    <p>A national network founded in 2016 so that every Canadian can reach local biblical care. Its Find a Counsellor page lists partner counsellors by province, with their church and whether they meet in person or online; it also runs an annual conference.</p>
+    <div class="org-tags"><span class="org-tag">Directory</span><span class="org-tag">Conference</span><span class="org-tag">Evangelical, across denominations</span></div>
+  </div>
+</div>
+
+<h3 class="sub-head" id="uk">United Kingdom and Ireland</h3>
+
+<div class="council-card" id="bcuk">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.biblicalcounselling.org.uk/" target="_blank" rel="noopener">Biblical Counselling UK</a></div>
+    <div class="council-meta">United Kingdom (including Northern Ireland) · registered charity</div>
+  </div>
+  <div class="council-body">
+    <p>Equips local churches to counsel. It runs a certificate programme in partnership with CCEF, with seminars in cities such as London, Edinburgh, Belfast and Sheffield and online. It does not recommend individual counsellors, but offers guidance on finding one, and points people first to their own church’s pastors.</p>
+    <div class="org-tags"><span class="org-tag">Training</span><span class="org-tag">Conservative evangelical, across denominations</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="acbc-uk">
+  <div class="council-header">
+    <div class="council-name"><a href="https://biblicalcounseling.com/acbc-global/by-region/united-kingdom/" target="_blank" rel="noopener">ACBC UK</a></div>
+    <div class="council-meta">United Kingdom</div>
+  </div>
+  <div class="council-body">
+    <p>The UK arm of ACBC, training and certifying biblical counsellors in local churches. Certified counsellors in Britain appear on the ACBC map above.</p>
+    <div class="org-tags"><span class="org-tag">Certification</span><span class="org-tag">As ACBC: conservative evangelical, broadly Reformed</span></div>
+  </div>
+</div>
+
+<h3 class="sub-head" id="europe">Continental Europe</h3>
+
+<div class="council-card" id="nbs">
+  <div class="council-header">
+    <div class="council-name"><a href="https://biblische-seelsorge.org/" target="_blank" rel="noopener">Netzwerk Biblische Seelsorge (NBS)</a></div>
+    <div class="council-meta">Germany, Austria and Switzerland</div>
+  </div>
+  <div class="council-body">
+    <p>The network for biblical soul care in the German-speaking world, founded in 2015 on the model of the Biblical Counseling Coalition. Its <a href="https://biblische-seelsorge.org/ueber-nbs/partner/" target="_blank" rel="noopener">partner list</a> names counsellors by town, together with partner churches and training institutions; its yearly Seelsorgekonferenz is well attended.</p>
+    <div class="org-tags"><span class="org-tag lang">In German</span><span class="org-tag">Partner list</span><span class="org-tag">Conservative evangelical</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="ebtc">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.ebtc.org/bibelschule/biblische-seelsorge" target="_blank" rel="noopener">EBTC: Biblische Seelsorge</a></div>
+    <div class="council-meta">European Bible Training Center · Germany, Switzerland, Austria</div>
+  </div>
+  <div class="council-body">
+    <p>A part-time Bible school for church members, whose two-year course in biblical counselling meets on weekends (in 2026/27 in Berlin and Soest). Its teachers include leaders of the German network above, and it publishes German translations of standard biblical counselling books.</p>
+    <div class="org-tags"><span class="org-tag lang">In German</span><span class="org-tag">Training</span><span class="org-tag">Calvinistic evangelical; linked to Grace Community Church (John MacArthur)</span></div>
+  </div>
+</div>
+
+<h3 class="sub-head" id="africa">Africa</h3>
+
+<div class="council-card" id="acbc-africa">
+  <div class="council-header">
+    <div class="council-name"><a href="https://biblicalcounseling.com/acbc-global/by-region/south-africa/" target="_blank" rel="noopener">ACBC Africa</a></div>
+    <div class="council-meta">South Africa · serving the continent</div>
+  </div>
+  <div class="council-body">
+    <p>ACBC’s African arm, begun by Wayne Mack, one of the movement’s pioneers, who moved to South Africa. It trains and certifies counsellors for local churches; certified counsellors in Africa appear on the ACBC map.</p>
+    <div class="org-tags"><span class="org-tag">Certification</span><span class="org-tag">Reformed evangelical</span></div>
+  </div>
+</div>
+
+<h3 class="sub-head" id="latin-america">Latin America and Spanish speakers</h3>
+
+<div class="council-card" id="acbc-es">
+  <div class="council-header">
+    <div class="council-name"><a href="https://biblicalcounseling.com/es/" target="_blank" rel="noopener">ACBC en español</a></div>
+    <div class="council-meta">Asociación de Consejeros Bíblicos Certificados · Spanish-speaking world</div>
+  </div>
+  <div class="council-body">
+    <p>ACBC’s Spanish site. Certification can be completed wholly in Spanish, through certified training centres that teach in Spanish and with Spanish-speaking supervisors; the ACBC map can be filtered for Spanish-speaking counsellors.</p>
+    <div class="org-tags"><span class="org-tag lang">In Spanish</span><span class="org-tag">Certification</span><span class="org-tag">As ACBC: conservative evangelical, broadly Reformed</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="abcb">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.abcb.org.br/" target="_blank" rel="noopener">Associação Brasileira de Conselheiros Bíblicos (ABCB)</a></div>
+    <div class="council-meta">Brazil</div>
+  </div>
+  <div class="council-body">
+    <p>The Brazilian association of biblical counsellors, which encourages and sets standards for counselling by pastors, missionaries and church members. It holds a training conference each July in Águas de Lindóia (São Paulo), and lists <a href="https://www.abcb.org.br/conselheiros-representantes" target="_blank" rel="noopener">representative counsellors</a>.</p>
+    <div class="org-tags"><span class="org-tag lang">In Portuguese</span><span class="org-tag">Training</span><span class="org-tag">Conservative evangelical, across denominations</span></div>
+  </div>
+</div>
+
+<h3 class="sub-head" id="asia-pacific">Asia and the Pacific</h3>
+
+<div class="council-card" id="bca">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.biblicalcounselling.org.au/" target="_blank" rel="noopener">Biblical Counselling Australia</a></div>
+    <div class="council-meta">Australia · registered charity</div>
+  </div>
+  <div class="council-body">
+    <p>A national network of pastors, counsellors and others, with supervision groups in most capital cities. It publishes a list of <a href="https://www.biblicalcounselling.org.au/accredited-biblical-counsellors-1" target="_blank" rel="noopener">accredited biblical counsellors</a>, and its academic training runs through the Presbyterian Theological College in Melbourne, fully online.</p>
+    <div class="org-tags"><span class="org-tag">Accredited list</span><span class="org-tag">Training</span><span class="org-tag">Evangelical, across denominations; Presbyterian training partner</span></div>
+  </div>
+</div>
+<p class="section-note">Elsewhere in Asia we could not yet confirm a regional body we could recommend with confidence. Use the ACBC map, searching by country or language, and ask your pastor.</p>
+
+<h2 class="era-head" id="training">Training and resources</h2>
+<p class="section-note">For church members, elders and pastors who want to learn to counsel from Scripture. Faith Biblical Counseling Ministries, Biblical Counselling UK, EBTC and ABCB above also train.</p>
+
+<div class="council-card" id="ccef-school">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.ccef.org/school/" target="_blank" rel="noopener">CCEF School of Biblical Counseling</a></div>
+    <div class="council-meta">Online · from Glenside, Pennsylvania, USA</div>
+  </div>
+  <div class="council-body">
+    <p>Ten-week online courses leading to certificates in biblical counselling, with courses on marriage, abuse and counselling in the local church. Some courses count towards Westminster Theological Seminary’s MA in Counseling. CCEF’s articles, books and Journal of Biblical Counseling are a deep well of free and low-cost help.</p>
+    <div class="org-tags"><span class="org-tag">Online courses</span><span class="org-tag">Reformed evangelical; long ties to Westminster Theological Seminary (Presbyterian)</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="ibcd">
+  <div class="council-header">
+    <div class="council-name"><a href="https://ibcd.org/cdc/" target="_blank" rel="noopener">IBCD: Care &amp; Discipleship Course</a></div>
+    <div class="council-meta">Institute for Biblical Counseling &amp; Discipleship · online · from San Diego, USA</div>
+  </div>
+  <div class="council-body">
+    <p>A self-paced video course that many churches use to train members in caring for one another, and which meets ACBC’s first-stage training requirement. Also offered <a href="https://ibcd.org/cdc-spanish/" target="_blank" rel="noopener">in Spanish</a>.</p>
+    <div class="org-tags"><span class="org-tag">Online course</span><span class="org-tag lang">English and Spanish</span><span class="org-tag">Reformed evangelical</span></div>
+  </div>
+</div>
+
+<div class="council-card" id="bcc">
+  <div class="council-header">
+    <div class="council-name"><a href="https://www.biblicalcounselingcoalition.org/" target="_blank" rel="noopener">Biblical Counseling Coalition</a></div>
+    <div class="council-meta">USA · international network</div>
+  </div>
+  <div class="council-body">
+    <p>A coalition of biblical counselling ministries with a careful <a href="https://www.biblicalcounselingcoalition.org/confessional-statement/" target="_blank" rel="noopener">confessional statement</a> on what makes counselling biblical. Its site carries a large library of articles, book reviews, a calendar of training events and reports on biblical counselling around the world.</p>
+    <div class="org-tags"><span class="org-tag">Articles and events</span><span class="org-tag">Broadly evangelical coalition</span></div>
+  </div>
+</div>
+
+<p class="checked">List checked November 2026. Organisations change; if a link no longer works, search for the organisation’s name.</p>
+
+</main>
+
+<script src="scripture-links.js?v=4329"></script>
+<script>
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+if (typeof linkifyScripture === 'function') linkifyScripture(document.getElementById('mainContent'), null, null);
+</script>
+<script src="share.js?v=4329" data-card-selector=".council-card"></script>
+<script>if (window.autoLinkifyScripture) autoLinkifyScripture();</script>
+<script src="search-land.js?v=4329"></script>
+</body>
+</html>

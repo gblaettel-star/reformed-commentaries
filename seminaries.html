@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="display.js?v=4329"></script>
+<title>Where to Study Theology</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#0d2137;color:#e8dcc8;min-height:100vh}
+
+header{background:#1a3a5c;padding:.5rem 1rem;display:flex;flex-direction:column;gap:.4rem;border-bottom:2px solid #c9a84c;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center}
+.home-link{font-size:.75rem;color:#7090b0;text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding:.2rem .5rem;border:1px solid #2a4a6c;border-radius:4px;transition:all .15s}
+.home-link:hover{color:#c9a84c;border-color:#c9a84c}
+header h1{font-size:1.15rem;color:#c9a84c;letter-spacing:.06em;flex:1;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation}
+header h1:hover{opacity:.8}
+header h2{font-size:.8rem;color:#7090b0;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+
+/* Nav chips */
+.sola-nav{display:flex;flex-wrap:wrap;gap:.4rem;padding:.65rem 1rem;background:#0a1e30;border-bottom:2px solid #2a4a6c;justify-content:center}
+.sola-chip{background:none;border:1px solid #2a4a6c;color:#7090b0;padding:.3rem .8rem;border-radius:20px;cursor:pointer;font-size:.8rem;font-family:'Georgia',serif;white-space:nowrap;transition:all .15s;touch-action:manipulation}
+.sola-chip:hover{border-color:#c9a84c;color:#c9a84c}
+
+/* Intro banner */
+.intro-banner{background:#0a1e30;border-bottom:1px solid #2a4a6c;padding:1.1rem 1.5rem;text-align:center}
+.intro-text{color:#a0b8c0;font-size:.9rem;line-height:1.8;max-width:640px;margin:0 auto}
+
+main{padding:1.5rem 2rem;max-width:780px;margin:0 auto}
+
+/* Sola card */
+.sola-card{margin-bottom:2.5rem;border:1px solid #2a4a6c;border-radius:8px;overflow:hidden}
+
+/* Card header with number badge */
+.sola-header{background:linear-gradient(135deg,#1a3a5c 0%,#0f2540 100%);padding:1.2rem 1.4rem;border-bottom:2px solid #c9a84c;position:relative}
+.sola-number{position:absolute;top:1rem;right:1.2rem;color:#2a4a6c;font-size:3.5rem;font-weight:bold;letter-spacing:-.05em;line-height:1;user-select:none}
+.sola-latin{color:#c9a84c;font-size:1.6rem;font-weight:bold;letter-spacing:.04em;margin-bottom:.3rem}
+.sola-english{color:#e8dcc8;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem}
+.sola-tagline{color:#7090b0;font-size:.88rem;font-style:italic;line-height:1.6}
+
+.sola-body{padding:1.3rem 1.4rem}
+
+/* Origin */
+.origin-box{background:#071520;border:1px solid #1a3a5c;border-radius:6px;padding:.9rem 1.1rem;margin-bottom:1.2rem}
+.origin-label{display:block;color:#c9a84c;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.4rem}
+.origin-text{color:#a0b8c8;font-size:.9rem;line-height:1.75}
+
+/* Meaning */
+.meaning-text{color:#e8dcc8;font-size:.97rem;line-height:1.9;margin-bottom:1.2rem}
+.meaning-text p{margin-bottom:.9rem}
+.meaning-text p:last-child{margin-bottom:0}
+
+/* Scripture */
+.scripture-block{background:#071a10;border-left:3px solid #4a9a60;border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin-bottom:1.2rem}
+.scripture-label{display:block;color:#4a9a60;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.scripture-ref{color:#80c090;font-weight:bold;font-size:.9rem;margin-bottom:.35rem}
+.scripture-text{color:#d4e8d4;font-style:italic;font-size:.97rem;line-height:1.8;margin-bottom:.5rem}
+.scripture-comment{color:#d4c4a8;font-size:.92rem;line-height:1.75}
+
+/* Guards against */
+.guards-wrap{margin-bottom:1.2rem}
+.guards-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.guard-chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.guard-chip{background:#1a0d1a;border:1px solid #4a2a4a;color:#c090c0;font-size:.78rem;padding:.2rem .6rem;border-radius:12px}
+
+/* Voices */
+.voices-wrap{margin-bottom:1.2rem}
+.voices-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.75rem}
+.voice-entry{margin-bottom:1rem;padding:.85rem 1rem;background:#0d2137;border:1px solid #2a4a6c;border-radius:6px}
+.voice-entry:last-child{margin-bottom:0}
+.voice-quote{color:#d4c4a8;font-style:italic;font-size:.95rem;line-height:1.8;margin-bottom:.4rem}
+.voice-attr{color:#7090b0;font-size:.78rem}
+
+/* Still matters */
+.still-matters{background:#112840;border-left:3px solid #c9a84c;padding:.9rem 1.2rem;border-radius:0 4px 4px 0}
+.still-label{color:#c9a84c;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.5rem}
+.still-text{line-height:1.8;font-size:.93rem;color:#d4c4a8}
+
+/* Scripture -> ESV links (matches the commentary) */
+.scripture-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.32);text-decoration-style:dotted;text-decoration-thickness:1px;text-underline-offset:3px}
+.scripture-link:hover{text-decoration-color:#c9a84c}
+/* Where to Study Theology */
+.inst-card{margin-bottom:1.4rem}
+.inst-card .sola-header{padding:1rem 4.6rem .6rem 1.2rem}
+.inst-card .sola-english{text-transform:none;font-size:1.35rem;margin-bottom:.3rem}
+.inst-card .sola-english a{color:inherit;text-decoration:underline;text-decoration-color:rgba(201,168,76,.35);text-underline-offset:4px}
+.inst-card .sola-english a:hover{text-decoration-color:#c9a84c}
+.inst-card .sola-body{padding:.2rem 1.2rem 1rem}
+.inst-card .meaning-text{margin-bottom:0}
+main h3.era-head{font-size:1rem;text-transform:uppercase;padding:.6rem 0;margin:2.2rem 0 1rem;scroll-margin-top:7rem}
+.note-text{color:#a0b8c0;font-style:italic;font-size:.95rem;line-height:1.8;margin:.4rem 0 1rem}
+@media (max-width:600px){main{padding:1.2rem 1rem}}
+</style>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="sanctuary-pages.css?v=4329">
+<meta name="theme-color" content="#0b1524">
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="home-link" href="index.html">&#8592; Home</a>
+    <h1 onclick="window.scrollTo({top:0,behavior:'smooth'})">Where to Study Theology</h1>
+  </div>
+  <h2>Trusted Reformed seminaries, colleges and online courses</h2>
+</header>
+
+<div class="sola-nav">
+  <button class="sola-chip" onclick="jumpTo('online')">Online</button>
+  <button class="sola-chip" onclick="jumpTo('north-america')">North America</button>
+  <button class="sola-chip" onclick="jumpTo('uk')">UK and Ireland</button>
+  <button class="sola-chip" onclick="jumpTo('europe')">Europe</button>
+  <button class="sola-chip" onclick="jumpTo('world')">Rest of the world</button>
+  <button class="sola-chip" onclick="jumpTo('free')">Free courses</button>
+</div>
+
+<div class="intro-banner">
+  <p class="intro-text">This is a short list, not a directory. Each place here teaches confessional Reformed theology, holds Scripture to be inerrant and sufficient, teaches the doctrines of grace and trains people to serve the local church. Presbyterian and Reformed schools (Westminster Standards, Three Forms of Unity) and Reformed Baptist schools (1689) both appear, and each is labelled honestly; where a school differs sharply from this commentary, that is said plainly. Inclusion is not endorsement of everything an institution or its teachers say. The list was checked in November 2026.</p>
+</div>
+
+<main id="mainContent">
+
+<p class="note-text">A word on baptism: this commentary holds to believers’ baptism (1689 Confession). Presbyterian and Continental Reformed schools baptise the infants of believers. They are honoured brothers in the same Reformed faith, and many Baptist students train with them gladly; simply know where each school stands.</p>
+
+<h3 class="era-head" id="online">Online and distance</h3>
+
+<div class="sola-card inst-card" id="rts-global">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://rts.edu/campuses/global/" target="_blank" rel="noopener">RTS Global</a></div>
+    <div class="sola-tagline">Online, from Charlotte, United States · Presbyterian (Westminster Standards)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">The online campus of Reformed Theological Seminary. You can earn a fully online, accredited Master of Arts, or take courses that count towards a residential degree, studying with a local mentor.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="westminster-theological-seminary-online">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://wts.edu/community-life/online-experience" target="_blank" rel="noopener">Westminster Theological Seminary Online</a></div>
+    <div class="sola-tagline">Online, from Philadelphia, United States · Presbyterian (Westminster Standards)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Westminster’s online programmes include a full Master of Divinity, as well as master’s degrees in religion, counselling and theological studies, taught by the same faculty as the Philadelphia campus.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="reformed-baptist-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.rbseminary.org/" target="_blank" rel="noopener">Reformed Baptist Seminary</a></div>
+    <div class="sola-tagline">Online, United States · Reformed Baptist (1689)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">A church-based seminary teaching in harmony with the 1689 Baptist Confession. Its online programmes run from a certificate to the Master of Divinity, with occasional in-person modules hosted by local churches, so students can train without leaving their congregation.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="midwestern-seminary-global-campus">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.mbts.edu/academics/online-education/" target="_blank" rel="noopener">Midwestern Seminary Global Campus</a></div>
+    <div class="sola-tagline">Online, from Kansas City, United States · Southern Baptist (Baptist Faith and Message)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Fully online degrees from bachelor’s to doctorate, with no campus visits required and an emphasis on training “for the church”. Note that its confession is the Baptist Faith and Message, which does not spell out the doctrines of grace as the 1689 Confession does.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="ligonier-connect">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://connect.ligonier.org/" target="_blank" rel="noopener">Ligonier Connect</a></div>
+    <div class="sola-tagline">Online, from Ligonier Ministries, United States · Reformed</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Not a degree, but more than a hundred structured video courses in Bible, theology and church history, with quizzes and discussion questions, by low-cost subscription. Good for personal study or a church group.</div></div>
+</div>
+
+<h3 class="era-head" id="north-america">North America</h3>
+
+<div class="sola-card inst-card" id="reformed-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://rts.edu/" target="_blank" rel="noopener">Reformed Theological Seminary</a></div>
+    <div class="sola-tagline">Several campuses, United States · Presbyterian (Westminster Standards)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">One of the largest Reformed seminaries, with residential campuses in several American cities. It offers the Master of Divinity and a range of master’s and doctoral degrees for pastors, counsellors and lay students.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="westminster-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://wts.edu/" target="_blank" rel="noopener">Westminster Theological Seminary</a></div>
+    <div class="sola-tagline">Philadelphia, United States · Presbyterian (Westminster Standards)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Founded in 1929 to stand for the full authority of Scripture when Princeton drifted. It trains pastors, counsellors and scholars on campus and online.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="westminster-seminary-california">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.wscal.edu/" target="_blank" rel="noopener">Westminster Seminary California</a></div>
+    <div class="sola-tagline">Escondido, California, United States · Reformed and Presbyterian (Westminster Standards, Three Forms of Unity)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">A small, confessional seminary committed to face-to-face teaching. It offers the Master of Divinity and master’s degrees in biblical, theological and historical studies, and serves both Presbyterian and Continental Reformed churches.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="covenant-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.covenantseminary.edu/" target="_blank" rel="noopener">Covenant Theological Seminary</a></div>
+    <div class="sola-tagline">St Louis, Missouri, United States · Presbyterian (Presbyterian Church in America)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">The denominational seminary of the Presbyterian Church in America, overseen by its General Assembly. It trains many of that church’s pastors and also offers degrees online.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="greenville-presbyterian-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.gpts.edu/" target="_blank" rel="noopener">Greenville Presbyterian Theological Seminary</a></div>
+    <div class="sola-tagline">Greenville, South Carolina, United States · Presbyterian (Westminster Standards)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">A seminary with one plain aim: “We train pastors.” It holds firmly to the Westminster Confession, keeps costs low, and makes its programmes available by distance as well as in person.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="puritan-reformed-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://prts.edu/" target="_blank" rel="noopener">Puritan Reformed Theological Seminary</a></div>
+    <div class="sola-tagline">Grand Rapids, Michigan, United States · Reformed and Presbyterian (Three Forms of Unity, Westminster Standards)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Known for its love of the Puritans and experiential (heart-searching) Reformed theology. It offers certificates entirely online, a church-embedded Master of Divinity and advanced degrees taught in short modules.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="mid-america-reformed-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.midamerica.edu/" target="_blank" rel="noopener">Mid-America Reformed Seminary</a></div>
+    <div class="sola-tagline">Dyer, Indiana, United States · Continental Reformed (Three Forms of Unity, Westminster Standards)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">A small seminary in the classic Reformed tradition, focused on preparing ministers through a three-year Master of Divinity, with a shorter master’s degree for those not seeking ordination.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="the-southern-baptist-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.sbts.edu/" target="_blank" rel="noopener">The Southern Baptist Theological Seminary</a></div>
+    <div class="sola-tagline">Louisville, Kentucky, United States · Calvinistic Baptist, Southern Baptist (Abstract of Principles)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Every professor signs the Abstract of Principles (1858), a confession drawn from the 1689 Confession, as well as the Baptist Faith and Message. It offers degrees on campus and many fully online, including several Master of Divinity tracks.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="irbs-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://irbsseminary.org/" target="_blank" rel="noopener">IRBS Theological Seminary</a></div>
+    <div class="sola-tagline">Mansfield, Texas, United States · Reformed Baptist (1689)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Founded as the Institute of Reformed Baptist Studies, now a seminary hosted by a local church. It offers the Master of Divinity, a Master of Arts and a certificate, all grounded in the 1689 Confession.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="reformation-bible-college">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://reformationbiblecollege.org/" target="_blank" rel="noopener">Reformation Bible College</a></div>
+    <div class="sola-tagline">Sanford, Florida, United States · Reformed (Ligonier Ministries)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">An undergraduate college founded by R. C. Sproul, giving a classical, distinctly Reformed education. A good choice for school leavers who want a college degree built on sound theology.</div></div>
+</div>
+
+<h3 class="era-head" id="uk">United Kingdom and Ireland</h3>
+
+<div class="sola-card inst-card" id="london-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.londonseminary.org/" target="_blank" rel="noopener">London Seminary</a></div>
+    <div class="sola-tagline">Finchley, London, England · Reformed, independent evangelical</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Founded with Martyn Lloyd-Jones to train preachers. Its Pastoral Training Course, for men called to pastor, can be taken full-time, part-time, by module or by livestream from overseas.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="union-school-of-theology">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.ust.ac.uk/" target="_blank" rel="noopener">Union School of Theology</a></div>
+    <div class="sola-tagline">Bridgend, Wales, and online · Reformed evangelical, interdenominational</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Accredited degrees from certificate to doctorate, many of them through online learning communities that let you study from home while serving in your local church.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="edinburgh-theological-seminary">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://ets.ac.uk/" target="_blank" rel="noopener">Edinburgh Theological Seminary</a></div>
+    <div class="sola-tagline">Edinburgh, Scotland, and by distance · Presbyterian (Westminster Standards, Free Church of Scotland)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Reformed training since 1843. Its University of Glasgow degrees (Bachelor and Master of Theology) can be taken full-time, part-time or by distance, and its Saturday courses are open to any church member.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="oak-hill-college">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.oakhill.ac.uk/" target="_blank" rel="noopener">Oak Hill College</a></div>
+    <div class="sola-tagline">Southgate, London, England · Conservative evangelical, Anglican and independent</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Trains men and women for ministry in the Church of England and in independent churches, in roughly equal numbers. Its teaching is Reformed in sympathy and firmly evangelical, though it is not bound to a single Reformed confession.</div></div>
+</div>
+
+<h3 class="era-head" id="europe">Continental Europe</h3>
+
+<div class="sola-card inst-card" id="theological-university-apeldoorn">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.tua.nl/en/education/o/masterlrt" target="_blank" rel="noopener">Theological University Apeldoorn</a></div>
+    <div class="sola-tagline">Apeldoorn, Netherlands · Continental Reformed (Three Forms of Unity)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">The university of the Christian Reformed Churches in the Netherlands, teaching theology on a confessional Reformed basis, with Scripture as God’s Word. Most teaching is in Dutch. Note that its churches are currently divided over women in office.</div></div>
+</div>
+
+<h3 class="era-head" id="world">Rest of the world</h3>
+
+<div class="sola-card inst-card" id="mukhanyo-theological-college">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://mtc.ac.za/" target="_blank" rel="noopener">Mukhanyo Theological College</a></div>
+    <div class="sola-tagline">KwaMhlanga and four other centres, South Africa · Reformed (Three Forms of Unity, Westminster, or 1689)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Equips pastors and other Christians across Africa through registered programmes taught at its main campus and city centres. Its teachers hold to the Reformed confessions, Presbyterian or Baptist.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="queensland-theological-college">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://www.qtc.edu.au/" target="_blank" rel="noopener">Queensland Theological College</a></div>
+    <div class="sola-tagline">Brisbane, Australia · Presbyterian (Westminster Confession)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">The college of the Presbyterian Church of Queensland, evangelical and Reformed, training pastors and other gospel workers through the Master of Divinity and other awards.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="presbyterian-theological-college">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://ptc.edu.au/" target="_blank" rel="noopener">Presbyterian Theological College</a></div>
+    <div class="sola-tagline">Melbourne, Australia, and online · Presbyterian (Westminster Confession)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">The college of the Presbyterian Church of Victoria since 1866. It offers awards from certificate to doctorate, and most units can be studied online as well as on campus.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="seminario-reformado-latinoamericano">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://srlseminario.org/" target="_blank" rel="noopener">Seminario Reformado Latinoamericano</a></div>
+    <div class="sola-tagline">Latin America and online, in Spanish · Presbyterian (Westminster) or Reformed Baptist (1689)</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">Spanish-language training from a bachelor’s degree to a doctorate, in person and fully online. Students choose its Presbyterian school or its 1689 Baptist school, according to their own church’s position.</div></div>
+</div>
+
+<h3 class="era-head" id="free">Free online courses</h3>
+
+<div class="sola-card inst-card" id="ligonier-teaching-series">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://learn.ligonier.org/series?filter=free" target="_blank" rel="noopener">Ligonier teaching series</a></div>
+    <div class="sola-tagline">Online, free · Reformed</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">R. C. Sproul’s whole library of teaching series is free to stream, together with other free series by teachers such as Sinclair Ferguson and Robert Godfrey. A good first step for anyone.</div></div>
+</div>
+
+<div class="sola-card inst-card" id="third-millennium-ministries-thirdmill">
+  <div class="sola-header">
+    <div class="sola-english"><a href="https://thirdmill.org/" target="_blank" rel="noopener">Third Millennium Ministries (Thirdmill)</a></div>
+    <div class="sola-tagline">Online, free, in several languages · Reformed</div>
+  </div>
+  <div class="sola-body"><div class="meaning-text">A full seminary curriculum on video, audio and text, free to watch or download, in English, Spanish, Arabic, Chinese, Russian and more. Thirdmill does not grant degrees, but partner schools can give credit for its courses.</div></div>
+</div>
+
+</main>
+
+<script src="scripture-links.js?v=4329"></script>
+<script>
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+<script src="share.js?v=4329" data-card-selector=".sola-card" data-scripture-selector=".scripture-text"></script>
+<script>if (window.autoLinkifyScripture) autoLinkifyScripture();</script>
+<script src="search-land.js?v=4329"></script>
+</body>
+</html>

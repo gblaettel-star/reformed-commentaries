@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4328"></script>
+<script src="display.js?v=4329"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -699,7 +699,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4328"></script>
+<script src="scripture-links.js?v=4329"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -2077,6 +2077,15 @@ function buildHome() {
     + '<div class="book-row" onclick="window.location.href=\'solas.html\'">'
     + '<div class="row-name">The Five Solas</div>'
     + '<div class="row-sub">The battle cries of the Reformation — Scripture, Grace, Faith, Christ, Glory</div>'
+    + '<div class="row-arrow">&#8250;</div></div>';
+
+  refHtml += '<div class="book-row" onclick="window.location.href=\'counselling.html\'">'
+    + '<div class="row-name">Biblical Counselling Worldwide</div>'
+    + '<div class="row-sub">Where to find a biblical counsellor, and where to train as one</div>'
+    + '<div class="row-arrow">&#8250;</div></div>'
+    + '<div class="book-row" onclick="window.location.href=\'seminaries.html\'">'
+    + '<div class="row-name">Where to Study Theology</div>'
+    + '<div class="row-sub">Trusted Reformed seminaries, colleges and online courses</div>'
     + '<div class="row-arrow">&#8250;</div></div>';
 
   var prayerHtml = '<div class="book-row" onclick="window.location.href=\'prayer.html\'">'
