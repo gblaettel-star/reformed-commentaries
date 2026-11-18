@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4353"></script>
+<script src="display.js?v=4354"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -699,7 +699,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4353"></script>
+<script src="scripture-links.js?v=4354"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -2435,7 +2435,7 @@ function boxAsides(c) {
   c.replace(/<p>([\s\S]*?)<\/p>|([^<]+|<(?!p>)[^>]*>)/g, function(m, inner) {
     if (inner === undefined) { if (!/^\s*$/.test(m)) { if (open) { out += '</details>'; open = false; } out += m; } return m; }
     var lm = inner.match(/^<strong>([\s\S]*?)<\/strong>\s*/), lead = lm ? lm[1].replace(/<[^>]+>/g, '').trim() : '';
-    var isD = /^Where Christians differ/.test(lead), isT = ASIDE_TX.test(lead), isV = /^This commentary’s view/.test(lead);
+    var isD = /^Where Christians differ/.test(lead), isU = /^Uncertain wording[.:]/.test(lead), isT = isU || ASIDE_TX.test(lead), isV = /^This commentary’s view/.test(lead);
     if ((isV || !lm) && open) { out += '<p>' + inner + '</p>'; return m; }
     if (open) { out += '</details>'; open = false; }
     if (!isD && !isT) { out += '<p>' + inner + '</p>'; return m; }
@@ -2445,7 +2445,7 @@ function boxAsides(c) {
       var tail = lead.replace(/^Where Christians differ[:.,]?\s*/, '');
       if (tail) title = tail.replace(/\.$/, '');
       else { var q = rest.match(/^([^<]{3,170}?\?)\s*/) || rest.match(/^([^<.?]{3,60})\.\s*/); if (q) { title = q[1]; rest = rest.slice(q[0].length); } }
-    } else label = 'Textual note';
+    } else label = isU ? 'Uncertain wording' : 'Textual note';
     out += '<details class="aside"><summary><b>' + label + '</b>' + (title ? ': ' + title : '') + '</summary><p>' + rest + '</p>';
     open = true; return m;
   });
