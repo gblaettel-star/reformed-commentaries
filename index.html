@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="display.js?v=4365"></script>
+<script src="display.js?v=4366"></script>
 <title>Soli Deo Gloria</title>
 <meta name="theme-color" content="#0b1524">
 <link rel="manifest" href="manifest.json">
@@ -534,7 +534,7 @@ footer:before{content:"✝";display:block;font-style:normal;color:var(--gold-sof
 .ts-step{background:none;border:1px solid var(--hair);border-radius:999px;color:var(--gold);font-family:var(--display)}
 .ts-val{font-family:var(--display);letter-spacing:.1em;color:var(--parch-2)}
 .ts-sample{border-top:1px solid var(--hair-soft);font-family:var(--text);color:var(--parch-2)}
-#ts-range{accent-color:var(--gold);min-width:0}
+#ts-range{accent-color:var(--gold);min-width:0;touch-action:none;-webkit-user-select:none;user-select:none}
 .ts-step{flex-shrink:0}
 .gl-name{font-family:var(--display);font-weight:600;font-size:1.45rem;color:var(--gold)}
 .gl-word{color:var(--muted)}
@@ -701,7 +701,7 @@ html[data-theme] body .bm-btn[aria-pressed=true]{outline:none!important}
   <button class="vjump-top" onclick="jumpToTop()">&#8593; Top of chapter</button>
 </div>
 
-<script src="scripture-links.js?v=4365"></script>
+<script src="scripture-links.js?v=4366"></script>
 <script>
 const BOOKS = [
   // Old Testament
@@ -1312,6 +1312,24 @@ function tsSet(v) {
   syncHeaderOffset();
 }
 function tsStep(d) { tsSet(tsGet() + d * 0.05); }
+/* iPhone Safari often treats a drag on a slider inside a scrolling panel as a scroll,
+   and ignores taps on the track. So the slider follows the finger directly: a tap or a
+   drag anywhere along it sets the size. (Keyboard use still goes through oninput.) */
+(function () {
+  var r = document.getElementById('ts-range'); if (!r || !window.PointerEvent) return;
+  var drag = false;
+  function fromX(x) {
+    var b = r.getBoundingClientRect(); if (!b.width) return;
+    var f = Math.min(1, Math.max(0, (x - b.left) / b.width));
+    tsSet((80 + f * 120) / 100);
+  }
+  r.addEventListener('pointerdown', function (e) {
+    drag = true; try { r.setPointerCapture(e.pointerId); } catch (x) {}
+    fromX(e.clientX); e.preventDefault();
+  });
+  r.addEventListener('pointermove', function (e) { if (drag) { fromX(e.clientX); e.preventDefault(); } });
+  ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (t) { r.addEventListener(t, function () { drag = false; }); });
+})();
 /* Typeface, heavier text and colour scheme (display.js applies them on every page). */
 var DS_NAMES = { night: 'Night', light: 'Light', sepia: 'Sepia', contrast: 'High contrast' };
 function tsHomeLabel(v) {
