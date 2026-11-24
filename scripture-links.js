@@ -481,3 +481,79 @@ var RefCard = (function(){
   }, true);
   return { open: open, close: close, isOpen: isOpen };
 })();
+
+// Reference pages: keep the "Browse" bar pinned under the title while reading, show where
+// the reader is ("you are here"), let the open list scroll, and close it after a jump.
+(function () {
+  function setup() {
+    var wrap = document.querySelector('.index-wrap,.term-index-wrap,.fig-index-wrap,.name-index-wrap');
+    if (!wrap || wrap.dataset.pinned) return;
+    var toggle = wrap.querySelector('button');
+    var chips = wrap.querySelector('.index-chips,.term-index-chips,.fig-index-chips,.name-index-chips');
+    if (!toggle || !chips) return;
+    wrap.dataset.pinned = '1';
+    var header = document.querySelector('header');
+    var st = document.createElement('style');
+    st.textContent =
+      '.pin-wrap{position:sticky;z-index:95;background:var(--ink,#0b1524)!important}' +
+      '.pin-wrap .pin-chips.open{max-height:calc(100vh - var(--pin-top,0px) - 3.5rem);overflow-y:auto;overscroll-behavior:contain}' +
+      '.pin-wrap button[data-here]::after{content:" \\00b7  " attr(data-here);color:var(--parch-2,#d4c4a8);letter-spacing:0;text-transform:none;font-style:italic}' +
+      '.pin-cur{color:var(--gold,#c9a84c)!important;font-weight:600!important;border-color:var(--gold,#c9a84c)!important}' +
+      'main [id]{scroll-margin-top:calc(var(--pin-bottom,7rem) + .6rem)}';
+    document.head.appendChild(st);
+    wrap.classList.add('pin-wrap'); chips.classList.add('pin-chips');
+    function measure() {
+      var h = header && getComputedStyle(header).position === 'sticky' ? header.getBoundingClientRect().height : 0;
+      wrap.style.top = h + 'px';
+      document.documentElement.style.setProperty('--pin-top', h + 'px');
+      document.documentElement.style.setProperty('--pin-bottom', (h + toggle.getBoundingClientRect().height) + 'px');
+    }
+    measure(); window.addEventListener('resize', measure);
+    // After a jump from the list, close it (using the page's own toggle, so its state stays right).
+    chips.addEventListener('click', function (e) {
+      if (!e.target.closest('[onclick],a,button')) return;
+      setTimeout(function () { if (chips.classList.contains('open')) toggle.click(); }, 80);
+    });
+    // "You are here": the entry whose card is at the top of the reading area.
+    var targets = null;
+    function findTargets() {
+      targets = [];
+      chips.querySelectorAll('[onclick],a[href^="#"]').forEach(function (c) {
+        var m = (c.getAttribute('onclick') || '').match(/\(\s*'([^']+)'/) || (c.getAttribute('href') || '').match(/^#(.+)/);
+        if (!m) return;
+        var id = m[1], el = document.getElementById(id) || document.getElementById('term-' + id);
+        if (!el && window.CSS && CSS.escape) el = document.querySelector('[id$="-' + CSS.escape(id) + '"]');
+        var label = Array.prototype.map.call(c.childNodes, function (n) { return n.textContent.trim(); }).filter(Boolean).join(' ');
+        if (el) targets.push([el, label.replace(/\s+/g, ' '), c]);
+      });
+      targets.sort(function (a, b) { return a[0].compareDocumentPosition(b[0]) & 4 ? -1 : 1; });
+    }
+    var ticking = false;
+    function here() {
+      ticking = false;
+      if (!targets || !targets.length) findTargets();
+      if (!targets.length) return;
+      var line = wrap.getBoundingClientRect().bottom + 24, cur = '', curChip = null;
+      for (var i = 0; i < targets.length; i++) {
+        var r = targets[i][0].getBoundingClientRect();
+        if (!r.height) continue;
+        if (r.top <= line) { cur = targets[i][1]; curChip = targets[i][2]; } else break;
+      }
+      if (cur.length > 46) cur = cur.slice(0, 44).replace(/\s+\S*$/, '') + '…';
+      if (cur) toggle.setAttribute('data-here', cur); else toggle.removeAttribute('data-here');
+      if (curChip !== here.chip) { if (here.chip) here.chip.classList.remove('pin-cur'); if (curChip) curChip.classList.add('pin-cur'); here.chip = curChip; }
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(here); } }, { passive: true });
+    new MutationObserver(function () { targets = null; here.chip = null; }).observe(chips, { childList: true });
+    // Opening the list: start it at the entry being read.
+    toggle.addEventListener('click', function () {
+      setTimeout(function () {
+        if (!chips.classList.contains('open') || !here.chip) return;
+        chips.scrollTop = Math.max(0, here.chip.offsetTop - chips.offsetTop - chips.clientHeight / 3);
+      }, 30);
+    });
+    here();
+  }
+  if (document.readyState === 'complete') setTimeout(setup, 50);
+  else window.addEventListener('load', function () { setTimeout(setup, 50); });
+})();
