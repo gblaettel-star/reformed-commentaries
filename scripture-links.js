@@ -15,7 +15,7 @@
   var st = document.createElement('style');
   // iPhone Safari otherwise "autosizes" text on its own, which fights the zoom below:
   // the reading text then barely grows while pop-ups (sized directly) grow in full.
-  st.textContent = 'main{zoom:var(--ts,1)}html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}';
+  st.textContent = 'main,.intro-banner,.page-scope{zoom:var(--ts,1)}html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}';
   (document.head || document.documentElement).appendChild(st);
 })();
 
